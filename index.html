@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>地城战术配置器 - 纯复制版</title>
+    <style>
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px 20px;
+            background: #f0f2f5;
+        }
+        .config-block {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            padding: 20px;
+        }
+        .dynamic-row {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            align-items: center;
+        }
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 120px;
+        }
+        button {
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .delete-btn { background: #ff4444; }
+        .copy-btn { background: #2196F3; }
+        .comment-container {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+        .comment-textarea {
+            width: 100%;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="config-block">
+        <h2>战术配置</h2>
+        <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="width:300px">
+    </div>
+
+    <div class="config-block">
+        <h3>站位配置</h3>
+        <div id="positionConfig"></div>
+        <button onclick="addPositionRow()" style="background:#4CAF50">+ 添加站位</button>
+    </div>
+
+    <div class="config-block">
+        <h3>楼层配置</h3>
+        <div id="floorConfig"></div>
+        <button onclick="addFloor()" style="background:#4CAF50">+ 添加楼层</button>
+    </div>
+
+    <button onclick="copyTactics()" class="copy-btn" style="position: fixed; bottom: 20px; right: 20px;">复制配置</button>
+
+    <script>
+        // 初始化基础配置
+        function init() {
+            addPositionRow();
+            addFloor();
+        }
+
+        // 站位配置
+        function addPositionRow() {
+            const row = document.createElement('div');
+            row.className = 'dynamic-row';
+            row.innerHTML = `
+                <select>
+                    <option>前排</option>
+                    <option>左翼</option>
+                    <option>右翼</option>
+                    <option>中间</option>
+                    <option>后排</option>
+                </select>
+                <input placeholder="职业（多个用,分隔）">
+                <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            document.getElementById('positionConfig').appendChild(row);
+        }
+
+        // 添加楼层
+        function addFloor() {
+            const floor = document.createElement('div');
+            floor.className = 'config-block';
+            floor.innerHTML = `
+                <div class="dynamic-row">
+                    <input placeholder="楼层（例：F1）" style="width:120px">
+                    <button class="delete-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+                <div class="comment-container">
+                    <button style="background:#9C27B0" onclick="addCommentRow(this)">+ 备注行</button>
+                    <div class="comment-rows"></div>
+                </div>
+                <div class="tactics-container"></div>
+                <button style="background:#4CAF50" onclick="addTacticRow(this)">+ 添加战术行</button>
+            `;
+            document.getElementById('floorConfig').appendChild(floor);
+        }
+
+        // 添加备注行
+        function addCommentRow(btn) {
+            const container = btn.nextElementSibling;
+            const row = document.createElement('div');
+            row.className = 'dynamic-row';
+            row.innerHTML = `
+                <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）"></textarea>
+                <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(row);
+        }
+
+        // 添加战术行
+        function addTacticRow(btn) {
+            const container = btn.previousElementSibling;
+            const row = document.createElement('div');
+            row.className = 'dynamic-row';
+            row.innerHTML = `
+                <input placeholder="职业" style="width:100px">
+                <input placeholder="技能/道具1">
+                <input placeholder="技能/道具2">
+                <input placeholder="位置" style="width:80px">
+                <input placeholder="条件" style="width:120px">
+                <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(row);
+        }
+
+        // 核心复制功能
+        function copyTactics() {
+            let output = `战术：${document.getElementById('dungeonName').value || "未命名战术"}\n\n站位：\n`;
+
+            // 处理站位配置
+            const positions = {};
+            document.querySelectorAll('#positionConfig > div').forEach(row => {
+                const pos = row.querySelector('select').value;
+                const classes = row.querySelector('input').value;
+                positions[pos] = (positions[pos] || []).concat(classes.split(/\s*,\s*/));
+            });
+
+            Object.entries(positions).forEach(([pos, classes]) => {
+                output += `  ${pos}：${classes.join('、')}\n`;
+            });
+
+            // 处理楼层配置
+            document.querySelectorAll('#floorConfig > div').forEach(floor => {
+                const floorId = floor.querySelector('input').value || "未命名楼层";
+                output += `\n${floorId}\n`;
+
+                // 处理备注
+                floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
+                    output += `  ${textarea.value}\n`;
+                });
+
+                // 处理战术行
+                floor.querySelectorAll('.tactics-container > div').forEach(row => {
+                    const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
+                    output += `  ${inputs.join(' ')}\n`;
+                });
+            });
+
+            // 执行复制操作
+            try {
+                navigator.clipboard.writeText(output);
+                alert('配置已复制到剪贴板！\n\n' + output);
+            } catch (err) {
+                const textarea = document.createElement('textarea');
+                textarea.value = output;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('已自动复制到剪贴板！');
+            }
+        }
+
+        // 初始化页面
+        window.onload = init;
+    </script>
+</body>
+</html>
