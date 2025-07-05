@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>地城战术配置器</title>
+    <title>地城战术配置器 - 纯复制版</title>
     <style>
         body {
             font-family: "Microsoft Yahei", sans-serif;
@@ -80,13 +80,11 @@
     <button onclick="copyTactics()" class="copy-btn" style="position: fixed; bottom: 20px; right: 20px;">复制配置</button>
 
     <script>
-        // 初始化基础配置
         function init() {
             addPositionRow();
             addFloor();
         }
 
-        // 站位配置
         function addPositionRow() {
             const row = document.createElement('div');
             row.className = 'dynamic-row';
@@ -104,7 +102,6 @@
             document.getElementById('positionConfig').appendChild(row);
         }
 
-        // 添加楼层
         function addFloor() {
             const floor = document.createElement('div');
             floor.className = 'config-block';
@@ -123,7 +120,6 @@
             document.getElementById('floorConfig').appendChild(floor);
         }
 
-        // 添加备注行
         function addCommentRow(btn) {
             const container = btn.nextElementSibling;
             const row = document.createElement('div');
@@ -135,7 +131,6 @@
             container.appendChild(row);
         }
 
-        // 添加战术行
         function addTacticRow(btn) {
             const container = btn.previousElementSibling;
             const row = document.createElement('div');
@@ -151,7 +146,6 @@
             container.appendChild(row);
         }
 
-        // 核心复制功能
         function copyTactics() {
             const dungeonName = document.getElementById('dungeonName').value || "未命名战术";
             const useSpoiler = document.getElementById('spoilerToggle').checked;
@@ -164,7 +158,7 @@
                 output += `战术：${dungeonName}\n站位：\n`;
             }
 
-            // 处理站位配置
+            // 站位配置
             const positions = {};
             document.querySelectorAll('#positionConfig > div').forEach(row => {
                 const pos = row.querySelector('select').value;
@@ -176,17 +170,15 @@
                 output += `  ${pos}：${classes.join('、')}\n`;
             });
 
-            // 处理楼层配置
+            // 楼层配置
             document.querySelectorAll('#floorConfig > div').forEach(floor => {
                 const floorId = floor.querySelector('input').value || "未命名楼层";
                 output += `${floorId}\n`;
 
-                // 处理备注
                 floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
                     output += `  ${textarea.value}\n`;
                 });
 
-                // 处理战术行
                 floor.querySelectorAll('.tactics-container > div').forEach(row => {
                     const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
                     output += `  ${inputs.join(' ')}\n`;
@@ -197,7 +189,6 @@
                 output += `[/spoiler]`;
             }
 
-            // 执行复制操作
             try {
                 navigator.clipboard.writeText(output);
                 alert('配置已复制到剪贴板！\n\n' + output);
@@ -212,7 +203,6 @@
             }
         }
 
-        // 初始化页面
         window.onload = init;
     </script>
 </body>
