@@ -159,12 +159,10 @@
             let output = '';
 
             if (useSpoiler) {
-                output += `[spoiler title=${dungeonName}]\n`;
+                output += `[spoiler title=${dungeonName}]\n站位：\n`;
             } else {
-                output += `战术：${dungeonName}\n`;
+                output += `战术：${dungeonName}\n站位：\n`;
             }
-
-            output += `\n站位：\n`;
 
             // 处理站位配置
             const positions = {};
@@ -181,7 +179,7 @@
             // 处理楼层配置
             document.querySelectorAll('#floorConfig > div').forEach(floor => {
                 const floorId = floor.querySelector('input').value || "未命名楼层";
-                output += `\n${floorId}\n`;
+                output += `${floorId}\n`;
 
                 // 处理备注
                 floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
@@ -196,7 +194,7 @@
             });
 
             if (useSpoiler) {
-                output += `\n[/spoiler]`;
+                output += `[/spoiler]`;
             }
 
             // 执行复制操作
