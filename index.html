@@ -3,142 +3,449 @@
 <head>
   <meta charset="UTF-8">
   <title>地城战术配置器</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #6d9eeb;
+      --success: #4caf50;
+      --danger: #e74c3c;
+      --warning: #f39c12;
+      --info: #3498db;
+      --dark: #2c3e50;
+      --light: #ecf0f1;
+      --gray: #95a5a6;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
-      font-family: "Microsoft Yahei", sans-serif;
+      font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px 10px 80px;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 60px 20px 20px;
-      background: #f0f2f5;
     }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding: 0 10px;
+    }
+    
+    .header h1 {
+      font-size: 2.2rem;
+      color: var(--dark);
+      margin-bottom: 5px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .header p {
+      color: var(--gray);
+      font-size: 1rem;
+    }
+    
+    .mobile-tip {
+      background: #fff;
+      border-radius: var(--border-radius);
+      padding: 15px;
+      margin: 15px 0;
+      text-align: center;
+      color: var(--primary);
+      font-weight: bold;
+      display: none;
+      box-shadow: var(--box-shadow);
+    }
+    
     .config-block {
       background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
       margin: 20px 0;
       padding: 20px;
+      transition: var(--transition);
+      position: relative;
     }
+    
+    .config-block:hover {
+      box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+      transform: translateY(-3px);
+    }
+    
+    .config-block h2 {
+      color: var(--primary);
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .config-block h2 i {
+      background: var(--secondary);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .config-block h3 {
+      color: var(--dark);
+      font-size: 1.3rem;
+      margin: 15px 0 10px;
+    }
+    
     .dynamic-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin: 10px 0;
+      gap: 12px;
+      margin: 12px 0;
       align-items: center;
     }
+    
     input, select, textarea {
-      padding: 8px;
+      padding: 12px 14px;
       border: 1px solid #ddd;
-      border-radius: 4px;
-      min-width: 120px;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      background: #fff;
+      flex: 1;
+      min-width: 100px;
+      transition: var(--transition);
     }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--secondary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(109, 158, 235, 0.2);
+    }
+    
     select option[disabled] {
       display: none;
     }
+    
     button {
       color: white;
       border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
+      padding: 12px 18px;
+      border-radius: var(--border-radius);
       cursor: pointer;
-      transition: 0.3s;
+      transition: var(--transition);
+      font-size: 1rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+    
     button:hover {
       opacity: 0.9;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
-    .delete-btn { background: #ff4444; }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .delete-btn { 
+      background: var(--danger);
+      min-width: 40px;
+      padding: 12px;
+    }
+    
+    .add-btn { 
+      background: var(--success);
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+    }
+    
     .copy-btn {
-      background: #2196F3;
+      background: var(--primary);
       position: fixed;
       bottom: 20px;
       right: 20px;
+      z-index: 100;
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+    
     .comment-container {
-      margin: 10px 0;
-      padding: 10px;
+      margin: 15px 0;
+      padding: 15px;
       background: #f8f9fa;
+      border-radius: var(--border-radius);
     }
+    
     .comment-textarea {
       width: 100%;
-      min-height: 60px;
+      min-height: 80px;
       white-space: pre-wrap;
+      resize: vertical;
     }
-    .spoiler-btn {
-      padding: 8px 15px;
-      border-radius: 4px;
+    
+    .spoiler-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      padding: 12px;
+      background: #f0f8ff;
+      border-radius: var(--border-radius);
       cursor: pointer;
-      transition: 0.3s;
     }
-    .spoiler-btn.active {
-      background-color: #9C27B0;
+    
+    .spoiler-toggle input {
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .spoiler-toggle label {
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .tactic-section {
+      margin: 20px 0;
+      padding: 15px;
+      border-left: 4px solid var(--info);
+      background: #f8fdff;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
+    
+    .tactic-section h4 {
+      color: var(--info);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .mobile-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .mobile-controls button {
+      flex: 1;
+    }
+    
+    .position-tag {
+      background: var(--secondary);
       color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
     }
-    .spoiler-btn.inactive {
-      background-color: #ccc;
-      color: #333;
-    }
-
+    
+    /* 响应式设计 */
     @media (max-width: 768px) {
       body {
-        padding: 20px 10px;
+        padding: 15px 8px 70px;
       }
-      .copy-btn {
-        right: 10px;
-        bottom: 10px;
+      
+      .header h1 {
+        font-size: 1.8rem;
       }
+      
+      .mobile-tip {
+        display: block;
+      }
+      
+      .config-block {
+        padding: 18px 15px;
+        margin: 15px 0;
+      }
+      
+      .config-block h2 {
+        font-size: 1.4rem;
+      }
+      
+      .dynamic-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      
       input, select, textarea, button {
-        flex: 1 1 100%;
+        width: 100% !important;
+        min-width: 100% !important;
+        padding: 14px;
       }
+      
+      .delete-btn {
+        order: 99;
+        padding: 14px;
+      }
+      
+      .copy-btn {
+        bottom: 15px;
+        right: 15px;
+        padding: 14px 20px;
+        font-size: 1rem;
+      }
+      
+      .mobile-controls {
+        flex-direction: column;
+      }
+      
+      .tactic-section {
+        padding: 12px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 12px 6px 60px;
+      }
+      
+      .header h1 {
+        font-size: 1.6rem;
+      }
+      
+      .config-block {
+        padding: 15px 12px;
+      }
+      
+      .config-block h2 {
+        font-size: 1.3rem;
+      }
+      
+      .copy-btn {
+        bottom: 12px;
+        right: 12px;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+      }
+    }
+    
+    .position-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .position-header h3 {
+      margin: 0;
+    }
+    
+    .position-header .position-tag {
+      font-size: 1rem;
+      padding: 6px 12px;
+    }
+    
+    .badge {
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      margin-left: 5px;
     }
   </style>
 </head>
 <body>
+  <div class="header">
+    <h1><i class="fas fa-dungeon"></i> 地城战术配置器</h1>
+    <p>创建并分享你的地城探险战术方案</p>
+  </div>
+  
+  <div class="mobile-tip">
+    <i class="fas fa-mobile-alt"></i> 手机模式下，所有输入框和按钮将自动调整大小
+  </div>
+
   <div class="config-block">
-    <h2>战术配置</h2>
-    <div class="dynamic-row">
-      <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="flex:1; max-width:300px;">
-      <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()">使用 Spoiler Title</button>
+    <h2><i class="fas fa-cog"></i> 战术配置</h2>
+    <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）">
+    
+    <div class="spoiler-toggle" onclick="toggleSpoiler()">
+      <input type="checkbox" id="spoilerToggle">
+      <label for="spoilerToggle">使用 Spoiler 标题格式</label>
     </div>
   </div>
 
   <div class="config-block">
-    <h3>站位配置</h3>
+    <div class="position-header">
+      <h3><i class="fas fa-users"></i> 站位配置</h3>
+      <span class="position-tag">共 <span id="positionCount">0</span> 个站位</span>
+    </div>
     <div id="positionConfig"></div>
-    <button onclick="addPositionRow()" style="background:#4CAF50">+ 添加站位</button>
+    <button class="add-btn" onclick="addPositionRow()">
+      <i class="fas fa-plus"></i> 添加站位
+    </button>
   </div>
 
   <div class="config-block">
-    <h3>楼层配置</h3>
+    <div class="position-header">
+      <h3><i class="fas fa-layer-group"></i> 楼层配置</h3>
+      <span class="position-tag">共 <span id="floorCount">0</span> 个楼层</span>
+    </div>
     <div id="floorConfig"></div>
-    <button onclick="addFloor()" style="background:#4CAF50">+ 添加楼层</button>
+    <button class="add-btn" onclick="addFloor()">
+      <i class="fas fa-plus"></i> 添加楼层
+    </button>
   </div>
 
-  <button onclick="copyTactics()" class="copy-btn">复制配置</button>
+  <button onclick="copyTactics()" class="copy-btn">
+    <i class="fas fa-copy"></i> 复制配置
+  </button>
 
   <script>
     let useSpoiler = false;
+    let positionCount = 0;
+    let floorCount = 0;
+
+    function updateCounters() {
+      document.getElementById('positionCount').textContent = positionCount;
+      document.getElementById('floorCount').textContent = floorCount;
+    }
 
     function toggleSpoiler() {
       useSpoiler = !useSpoiler;
-      const btn = document.getElementById("spoilerToggleBtn");
-      if (useSpoiler) {
-        btn.classList.remove("inactive");
-        btn.classList.add("active");
-        btn.textContent = "使用 Spoiler Title（已启用）";
-      } else {
-        btn.classList.remove("active");
-        btn.classList.add("inactive");
-        btn.textContent = "使用 Spoiler Title";
-      }
+      const checkbox = document.getElementById("spoilerToggle");
+      checkbox.checked = useSpoiler;
     }
 
     function init() {
       addPositionRow();
       addFloor();
+      updateCounters();
     }
 
     function addPositionRow() {
+      positionCount++;
+      updateCounters();
+      
       const row = document.createElement('div');
       row.className = 'dynamic-row';
       row.innerHTML = `
@@ -150,29 +457,52 @@
           <option>后排</option>
         </select>
         <input placeholder="职业（多个用,分隔）">
-        <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+        <button class="delete-btn" onclick="this.parentElement.remove(); positionCount--; updateCounters()">
+          <i class="fas fa-trash"></i>
+        </button>
       `;
       document.getElementById('positionConfig').appendChild(row);
     }
 
     function addFloor() {
+      floorCount++;
+      updateCounters();
+      
       const floor = document.createElement('div');
       floor.className = 'config-block';
       floor.innerHTML = `
         <div class="dynamic-row">
-          <input placeholder="楼层（例：F1）" style="width:120px">
-          <button class="delete-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+          <input placeholder="楼层（例：F1）">
+          <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
+            <i class="fas fa-trash"></i>
+          </button>
         </div>
         <div class="comment-container">
-          <button style="background:#9C27B0" onclick="addCommentRow(this)">+ 备注行</button>
+          <button class="add-btn" onclick="addCommentRow(this)">
+            <i class="fas fa-comment-medical"></i> 添加备注行
+          </button>
           <div class="comment-rows"></div>
         </div>
-        <div><strong>回合前：</strong></div>
-        <div class="tactics-container pre-turn"></div>
-        <button style="background:#4CAF50" onclick="addTacticRow(this, 'pre-turn')">+ 添加回合前</button>
-        <div><strong>回合中：</strong></div>
-        <div class="tactics-container post-turn"></div>
-        <button style="background:#4CAF50" onclick="addTacticRow(this, 'post-turn')">+ 添加回合中</button>
+        
+        <div class="tactic-section">
+          <h4><i class="fas fa-flag"></i> 回合前</h4>
+          <div class="tactics-container pre-turn"></div>
+          <div class="mobile-controls">
+            <button style="background:var(--info)" onclick="addTacticRow(this, 'pre-turn')">
+              <i class="fas fa-plus-circle"></i> 添加行动
+            </button>
+          </div>
+        </div>
+        
+        <div class="tactic-section">
+          <h4><i class="fas fa-fist-raised"></i> 回合中</h4>
+          <div class="tactics-container post-turn"></div>
+          <div class="mobile-controls">
+            <button style="background:var(--info)" onclick="addTacticRow(this, 'post-turn')">
+              <i class="fas fa-plus-circle"></i> 添加行动
+            </button>
+          </div>
+        </div>
       `;
       document.getElementById('floorConfig').appendChild(floor);
     }
@@ -183,13 +513,15 @@
       row.className = 'dynamic-row';
       row.innerHTML = `
         <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）"></textarea>
-        <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+        <button class="delete-btn" onclick="this.parentElement.remove()">
+          <i class="fas fa-trash"></i>
+        </button>
       `;
       container.appendChild(row);
     }
 
     function addTacticRow(btn, type) {
-      const container = btn.parentElement.querySelector('.tactics-container.' + type);
+      const container = btn.parentElement.previousElementSibling;
       const row = document.createElement('div');
       row.className = 'dynamic-row';
       row.innerHTML = `
@@ -204,7 +536,9 @@
           <option>一次性</option>
           <option>随机</option>
         </select>
-        <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+        <button class="delete-btn" onclick="this.parentElement.remove()">
+          <i class="fas fa-trash"></i>
+        </button>
       `;
       container.appendChild(row);
     }
@@ -271,7 +605,8 @@
         alert('已自动复制到剪贴板！');
       }
     }
-
+    
+    // 初始化
     window.onload = init;
   </script>
 </body>
