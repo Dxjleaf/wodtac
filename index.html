@@ -120,10 +120,10 @@
         </div>
         <div class="section-title">回合前：</div>
         <div class="pre-actions tactics-container"></div>
-        <button style="background:#4CAF50" onclick="addTacticRow(this, 'pre')">+ 添加战术行（回合前）</button>
+        <button style="background:#4CAF50" onclick="addTacticRow(this, 'pre')">+ 添加回合前</button>
         <div class="section-title">回合后：</div>
         <div class="post-actions tactics-container"></div>
-        <button style="background:#4CAF50" onclick="addTacticRow(this, 'post')">+ 添加战术行（回合后）</button>
+        <button style="background:#4CAF50" onclick="addTacticRow(this, 'post')">+ 添加回合后</button>
       `;
       document.getElementById('floorConfig').appendChild(floor);
     }
@@ -181,19 +181,25 @@
         output += `${floorId}\n`;
 
         floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
-          output += `  ${textarea.value}\n`;
+          if (textarea.value.trim() !== '') {
+            output += `  ${textarea.value}\n`;
+          }
         });
 
         output += `回合前：\n`;
         floor.querySelectorAll('.pre-actions > div').forEach(row => {
-          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
-          output += `  ${inputs.join(' ')}\n`;
+          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value).filter(v => v);
+          if (inputs.length > 0) {
+            output += `  ${inputs.join(' ')}\n`;
+          }
         });
 
         output += `回合后：\n`;
         floor.querySelectorAll('.post-actions > div').forEach(row => {
-          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
-          output += `  ${inputs.join(' ')}\n`;
+          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value).filter(v => v);
+          if (inputs.length > 0) {
+            output += `  ${inputs.join(' ')}\n`;
+          }
         });
       });
 
