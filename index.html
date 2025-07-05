@@ -41,7 +41,6 @@
       transform-origin: top center;
     }
     
-    /* 缩放控制条 - 桌面端显示 */
     .scale-control {
       position: fixed;
       top: 10px;
@@ -333,7 +332,7 @@
     /* 响应式设计 - 移动端 */
     @media (max-width: 768px) {
       .scale-control {
-        display: none; /* 移动端隐藏缩放控制条 */
+        display: none;
       }
       
       body {
@@ -364,61 +363,48 @@
         gap: calc(6px * var(--scale-factor));
       }
       
-      /* 行动配置行特殊处理 - 强制单行布局 */
+      /* 战术行特殊处理 - 强制单行布局 */
       .tactics-container .dynamic-row {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: 4px;
-        padding-bottom: 5px;
-        margin: 8px 0;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
+        gap: 4px;
+        padding-bottom: 8px;
+        margin: 8px 0;
         align-items: center;
       }
       
       .tactics-container .dynamic-row > * {
-        flex: 0 0 auto;
-        min-width: unset !important;
+        flex: 0 0 auto !important;
         width: auto !important;
+        min-width: auto !important;
       }
       
-      /* 统一设置所有输入框和选择框的基本样式 */
-      .tactics-container .dynamic-row input,
-      .tactics-container .dynamic-row select {
-        height: 36px;
-        padding: 0 4px;
-        font-size: 12px;
-        min-width: 60px !important;
-        width: 60px !important;
-        box-sizing: border-box;
-      }
-      
-      /* 特定元素微调 */
       .tactics-container .dynamic-row input[placeholder="职业"] {
-        min-width: 50px !important;
-        width: 50px !important;
+        width: 60px !important;
+        min-width: 60px !important;
       }
       
-      .tactics-container .dynamic-row input[placeholder^="技能/道具"] {
-        min-width: 70px !important;
-        width: 70px !important;
+      .tactics-container .dynamic-row input[placeholder^="技能"] {
+        width: 80px !important;
+        min-width: 80px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder="位置"] {
-        min-width: 40px !important;
-        width: 40px !important;
+        width: 50px !important;
+        min-width: 50px !important;
       }
       
       .tactics-container .dynamic-row select {
-        min-width: 80px !important;
-        width: 80px !important;
+        width: 90px !important;
+        min-width: 90px !important;
       }
       
-      /* 删除按钮样式 */
       .tactics-container .dynamic-row .delete-btn {
-        order: 0;
-        min-width: 30px !important;
-        width: 30px !important;
+        width: 36px !important;
+        min-width: 36px !important;
         height: 36px;
         padding: 0;
         display: flex;
@@ -426,24 +412,29 @@
         justify-content: center;
       }
       
-      /* placeholder优化 */
-      .tactics-container .dynamic-row ::placeholder {
-        font-size: 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .tactics-container .dynamic-row input,
+      .tactics-container .dynamic-row select {
+        height: 36px;
+        padding: 0 8px;
+        font-size: 12px;
       }
       
-      /* 确保select箭头不占用太多空间 */
+      .tactics-container .dynamic-row ::placeholder {
+        font-size: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
       .tactics-container .dynamic-row select {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        padding-right: 15px;
         background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
         background-repeat: no-repeat;
-        background-position: right 3px center;
+        background-position: right 5px center;
         background-size: 12px;
+        padding-right: 20px;
       }
       
       input, select, textarea, button {
@@ -487,33 +478,29 @@
       }
       
       .tactics-container .dynamic-row input[placeholder="职业"] {
-        min-width: 45px !important;
-        width: 45px !important;
+        width: 50px !important;
+        min-width: 50px !important;
       }
       
-      .tactics-container .dynamic-row input[placeholder^="技能/道具"] {
-        min-width: 60px !important;
-        width: 60px !important;
+      .tactics-container .dynamic-row input[placeholder^="技能"] {
+        width: 70px !important;
+        min-width: 70px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder="位置"] {
-        min-width: 35px !important;
-        width: 35px !important;
+        width: 40px !important;
+        min-width: 40px !important;
       }
       
       .tactics-container .dynamic-row select {
-        min-width: 70px !important;
-        width: 70px !important;
+        width: 80px !important;
+        min-width: 80px !important;
       }
       
       .tactics-container .dynamic-row .delete-btn {
-        min-width: 28px !important;
-        width: 28px !important;
+        width: 32px !important;
+        min-width: 32px !important;
         height: 32px;
-      }
-      
-      .tactics-container .dynamic-row ::placeholder {
-        font-size: 9px;
       }
     }
   </style>
@@ -531,7 +518,7 @@
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i> 手机模式下，所有输入框和按钮将自动调整大小
+    <i class="fas fa-mobile-alt"></i> 摸鱼模式。。。
   </div>
 
   <div class="config-block">
@@ -718,11 +705,12 @@
       `;
       container.appendChild(row);
       
-      // 如果是移动设备，添加触摸滚动提示
+      // 强制应用移动端样式
       if(isMobile) {
-        row.addEventListener('touchstart', function() {
-          this.style.overflowX = 'auto';
-        });
+        row.style.display = 'flex';
+        row.style.flexDirection = 'row';
+        row.style.flexWrap = 'nowrap';
+        row.style.overflowX = 'auto';
       }
     }
 
@@ -772,7 +760,7 @@
 
       if (spoiler) output += `[/spoiler]`;
 
-      output = output.trimEnd(); // 去除多余空行
+      output = output.trimEnd();
 
       // 复制操作
       try {
