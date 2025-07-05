@@ -60,6 +60,9 @@
     <div class="config-block">
         <h2>战术配置</h2>
         <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="width:300px">
+        <label style="margin-left: 10px;">
+            <input type="checkbox" id="spoilerToggle"> Spoiler Title
+        </label>
     </div>
 
     <div class="config-block">
@@ -150,7 +153,18 @@
 
         // 核心复制功能
         function copyTactics() {
-            let output = `战术：${document.getElementById('dungeonName').value || "未命名战术"}\n\n站位：\n`;
+            const dungeonName = document.getElementById('dungeonName').value || "未命名战术";
+            const useSpoiler = document.getElementById('spoilerToggle').checked;
+
+            let output = '';
+
+            if (useSpoiler) {
+                output += `[spoiler title=${dungeonName}]\n`;
+            } else {
+                output += `战术：${dungeonName}\n`;
+            }
+
+            output += `\n站位：\n`;
 
             // 处理站位配置
             const positions = {};
@@ -180,6 +194,10 @@
                     output += `  ${inputs.join(' ')}\n`;
                 });
             });
+
+            if (useSpoiler) {
+                output += `\n[/spoiler]`;
+            }
 
             // 执行复制操作
             try {
