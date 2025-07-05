@@ -333,7 +333,7 @@
     /* 响应式设计 - 移动端 */
     @media (max-width: 768px) {
       .scale-control {
-        display: none; /* 移动端隐藏缩放控制条 */
+        display: none;
       }
       
       body {
@@ -364,26 +364,59 @@
         gap: calc(6px * var(--scale-factor));
       }
       
-      /* 行动配置行特殊处理 - 保持单行 */
+      /* 行动配置行特殊处理 - 紧凑单行布局 */
       .tactics-container .dynamic-row {
-        flex-direction: row;
+        display: flex;
+        flex-wrap: nowrap;
         overflow-x: auto;
+        gap: 4px;
         padding-bottom: 5px;
+        margin: 8px 0;
+        -webkit-overflow-scrolling: touch;
       }
       
       .tactics-container .dynamic-row > * {
         flex: 0 0 auto;
-        min-width: 80px;
+        min-width: unset;
+        width: auto !important;
       }
       
       .tactics-container .dynamic-row input,
       .tactics-container .dynamic-row select {
-        width: auto !important;
+        width: 70px !important;
+        min-width: 70px !important;
+        padding: 8px 4px;
+        font-size: 12px;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="职业"] {
+        width: 50px !important;
+        min-width: 50px !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder^="技能/道具"] {
+        width: 60px !important;
+        min-width: 60px !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="位置"] {
+        width: 40px !important;
+        min-width: 40px !important;
+      }
+      
+      .tactics-container .dynamic-row select {
+        width: 80px !important;
         min-width: 80px !important;
       }
       
       .tactics-container .dynamic-row .delete-btn {
         order: 0;
+        min-width: 28px;
+        padding: 8px;
+      }
+      
+      .tactics-container .dynamic-row ::placeholder {
+        font-size: 10px;
       }
       
       input, select, textarea, button {
@@ -440,6 +473,44 @@
         right: calc(8px * var(--scale-factor));
         padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
         font-size: calc(0.8rem * var(--scale-factor));
+      }
+      
+      /* 进一步缩小行动配置行元素 */
+      .tactics-container .dynamic-row input,
+      .tactics-container .dynamic-row select {
+        width: 60px !important;
+        min-width: 60px !important;
+        padding: 6px 3px;
+        font-size: 11px;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="职业"] {
+        width: 45px !important;
+        min-width: 45px !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder^="技能/道具"] {
+        width: 55px !important;
+        min-width: 55px !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="位置"] {
+        width: 35px !important;
+        min-width: 35px !important;
+      }
+      
+      .tactics-container .dynamic-row select {
+        width: 70px !important;
+        min-width: 70px !important;
+      }
+      
+      .tactics-container .dynamic-row .delete-btn {
+        min-width: 25px;
+        padding: 6px;
+      }
+      
+      .tactics-container .dynamic-row ::placeholder {
+        font-size: 9px;
       }
     }
   </style>
@@ -618,13 +689,21 @@
       const container = btn.parentElement.previousElementSibling;
       const row = document.createElement('div');
       row.className = 'dynamic-row';
+      
+      const isMobile = window.innerWidth <= 768;
+      const jobPlaceholder = isMobile ? "职业" : "职业";
+      const skillPlaceholder1 = isMobile ? "技能1" : "技能/道具1";
+      const skillPlaceholder2 = isMobile ? "技能2" : "技能/道具2";
+      const posPlaceholder = isMobile ? "位置" : "位置";
+      const conditionPlaceholder = isMobile ? "条件" : "条件";
+      
       row.innerHTML = `
-        <input placeholder="职业" style="width:100px">
-        <input placeholder="技能/道具1">
-        <input placeholder="技能/道具2">
-        <input placeholder="位置" style="width:80px">
+        <input placeholder="${jobPlaceholder}" style="width:100px">
+        <input placeholder="${skillPlaceholder1}">
+        <input placeholder="${skillPlaceholder2}">
+        <input placeholder="${posPlaceholder}" style="width:80px">
         <select>
-          <option disabled selected>条件</option>
+          <option disabled selected>${conditionPlaceholder}</option>
           <option>默认</option>
           <option>尽可能重复</option>
           <option>一次性</option>
