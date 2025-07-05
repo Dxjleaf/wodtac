@@ -158,54 +158,62 @@
     }
 
     function copyTactics() {
-      const dungeonName = document.getElementById('dungeonName').value || "未命名战术";
+      const dungeonName = document.getElementById('dungeonName').value.trim() || "未命名战术";
       const useSpoiler = document.getElementById('spoilerToggle').checked;
+      let lines = [];
 
-      let output = useSpoiler
-        ? `[spoiler title=${dungeonName}]\n站位：\n`
-        : `战术：${dungeonName}\n站位：\n`;
+      if (useSpoiler) {
+        lines.push(`[spoiler title=${dungeonName}]`);
+      } else {
+        lines.push(`战术：${dungeonName}`);
+      }
 
+      lines.push("站位：");
       const positions = {};
       document.querySelectorAll('#positionConfig > div').forEach(row => {
         const pos = row.querySelector('select').value;
         const classes = row.querySelector('input').value;
+        if (!classes.trim()) return;
         positions[pos] = (positions[pos] || []).concat(classes.split(/\s*,\s*/));
       });
 
       Object.entries(positions).forEach(([pos, classes]) => {
-        output += `  ${pos}：${classes.join('、')}\n`;
+        lines.push(`  ${pos}：${classes.join('、')}`);
       });
 
       document.querySelectorAll('#floorConfig > div').forEach(floor => {
-        const floorId = floor.querySelector('input').value || "未命名楼层";
-        output += `${floorId}\n`;
+        const floorId = floor.querySelector('input').value.trim() || "未命名楼层";
+        lines.push(floorId);
 
+        // 注释行
         floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
           if (textarea.value.trim() !== '') {
-            output += `  ${textarea.value}\n`;
+            textarea.value.split('\n').forEach(line => {
+              if (line.trim()) lines.push(`  ${line}`);
+            });
           }
         });
 
-        output += `回合前：\n`;
+        // 回合前
+        lines.push("回合前：");
         floor.querySelectorAll('.pre-actions > div').forEach(row => {
-          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value).filter(v => v);
-          if (inputs.length > 0) {
-            output += `  ${inputs.join(' ')}\n`;
-          }
+          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value.trim()).filter(v => v);
+          if (inputs.length) lines.push(`  ${inputs.join(' ')}`);
         });
 
-        output += `回合后：\n`;
+        // 回合后
+        lines.push("回合后：");
         floor.querySelectorAll('.post-actions > div').forEach(row => {
-          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value).filter(v => v);
-          if (inputs.length > 0) {
-            output += `  ${inputs.join(' ')}\n`;
-          }
+          const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value.trim()).filter(v => v);
+          if (inputs.length) lines.push(`  ${inputs.join(' ')}`);
         });
       });
 
       if (useSpoiler) {
-        output += `[/spoiler]`;
+        lines.push(`[/spoiler]`);
       }
+
+      const output = lines.filter(line => line.trim() !== '').join('\n');
 
       try {
         navigator.clipboard.writeText(output);
