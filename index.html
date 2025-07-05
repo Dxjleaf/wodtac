@@ -41,7 +41,7 @@
       transform-origin: top center;
     }
     
-    /* 固定在左上角的缩放控制条 - 不受缩放影响 */
+    /* 缩放控制条 - 桌面端显示 */
     .scale-control {
       position: fixed;
       top: 10px;
@@ -333,7 +333,7 @@
     /* 响应式设计 - 移动端 */
     @media (max-width: 768px) {
       .scale-control {
-        display: none;
+        display: none; /* 移动端隐藏缩放控制条 */
       }
       
       body {
@@ -364,7 +364,7 @@
         gap: calc(6px * var(--scale-factor));
       }
       
-      /* 行动配置行特殊处理 - 紧凑单行布局 */
+      /* 行动配置行特殊处理 - 强制单行布局 */
       .tactics-container .dynamic-row {
         display: flex;
         flex-wrap: nowrap;
@@ -373,50 +373,77 @@
         padding-bottom: 5px;
         margin: 8px 0;
         -webkit-overflow-scrolling: touch;
+        align-items: center;
       }
       
       .tactics-container .dynamic-row > * {
         flex: 0 0 auto;
-        min-width: unset;
+        min-width: unset !important;
         width: auto !important;
       }
       
+      /* 统一设置所有输入框和选择框的基本样式 */
       .tactics-container .dynamic-row input,
       .tactics-container .dynamic-row select {
-        width: 70px !important;
-        min-width: 70px !important;
-        padding: 8px 4px;
+        height: 36px;
+        padding: 0 4px;
         font-size: 12px;
+        min-width: 60px !important;
+        width: 60px !important;
+        box-sizing: border-box;
       }
       
+      /* 特定元素微调 */
       .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 50px !important;
         min-width: 50px !important;
+        width: 50px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder^="技能/道具"] {
-        width: 60px !important;
-        min-width: 60px !important;
+        min-width: 70px !important;
+        width: 70px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 40px !important;
         min-width: 40px !important;
+        width: 40px !important;
       }
       
       .tactics-container .dynamic-row select {
-        width: 80px !important;
         min-width: 80px !important;
+        width: 80px !important;
       }
       
+      /* 删除按钮样式 */
       .tactics-container .dynamic-row .delete-btn {
         order: 0;
-        min-width: 28px;
-        padding: 8px;
+        min-width: 30px !important;
+        width: 30px !important;
+        height: 36px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       
+      /* placeholder优化 */
       .tactics-container .dynamic-row ::placeholder {
         font-size: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      
+      /* 确保select箭头不占用太多空间 */
+      .tactics-container .dynamic-row select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 15px;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 3px center;
+        background-size: 12px;
       }
       
       input, select, textarea, button {
@@ -451,62 +478,38 @@
       }
     }
     
-    @media (max-width: 480px) {
-      body {
-        padding: calc(12px * var(--scale-factor)) calc(4px * var(--scale-factor)) calc(50px * var(--scale-factor));
-      }
-      
-      .header h1 {
-        font-size: calc(1.2rem * var(--scale-factor));
-      }
-      
-      .config-block {
-        padding: calc(10px * var(--scale-factor)) calc(8px * var(--scale-factor));
-      }
-      
-      .config-block h2 {
-        font-size: calc(1.1rem * var(--scale-factor));
-      }
-      
-      .copy-btn {
-        bottom: calc(8px * var(--scale-factor));
-        right: calc(8px * var(--scale-factor));
-        padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
-        font-size: calc(0.8rem * var(--scale-factor));
-      }
-      
-      /* 进一步缩小行动配置行元素 */
+    /* 超小屏幕进一步优化 */
+    @media (max-width: 400px) {
       .tactics-container .dynamic-row input,
       .tactics-container .dynamic-row select {
-        width: 60px !important;
-        min-width: 60px !important;
-        padding: 6px 3px;
+        height: 32px;
         font-size: 11px;
       }
       
       .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 45px !important;
         min-width: 45px !important;
+        width: 45px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder^="技能/道具"] {
-        width: 55px !important;
-        min-width: 55px !important;
+        min-width: 60px !important;
+        width: 60px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 35px !important;
         min-width: 35px !important;
+        width: 35px !important;
       }
       
       .tactics-container .dynamic-row select {
-        width: 70px !important;
         min-width: 70px !important;
+        width: 70px !important;
       }
       
       .tactics-container .dynamic-row .delete-btn {
-        min-width: 25px;
-        padding: 6px;
+        min-width: 28px !important;
+        width: 28px !important;
+        height: 32px;
       }
       
       .tactics-container .dynamic-row ::placeholder {
@@ -528,7 +531,7 @@
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i> 你在摸鱼吗？
+    <i class="fas fa-mobile-alt"></i> 手机模式下，所有输入框和按钮将自动调整大小
   </div>
 
   <div class="config-block">
@@ -698,12 +701,12 @@
       const conditionPlaceholder = isMobile ? "条件" : "条件";
       
       row.innerHTML = `
-        <input placeholder="${jobPlaceholder}" style="width:100px">
+        <input placeholder="${jobPlaceholder}">
         <input placeholder="${skillPlaceholder1}">
         <input placeholder="${skillPlaceholder2}">
-        <input placeholder="${posPlaceholder}" style="width:80px">
+        <input placeholder="${posPlaceholder}">
         <select>
-          <option disabled selected>${conditionPlaceholder}</option>
+          <option value="" disabled selected>${conditionPlaceholder}</option>
           <option>默认</option>
           <option>尽可能重复</option>
           <option>一次性</option>
@@ -714,6 +717,13 @@
         </button>
       `;
       container.appendChild(row);
+      
+      // 如果是移动设备，添加触摸滚动提示
+      if(isMobile) {
+        row.addEventListener('touchstart', function() {
+          this.style.overflowX = 'auto';
+        });
+      }
     }
 
     function copyTactics() {
