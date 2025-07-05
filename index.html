@@ -1,278 +1,325 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>地城战术配置器</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: "Microsoft Yahei", sans-serif;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 20px 20px;
-      background: #f0f2f5;
-    }
-    .config-block {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin: 20px 0;
-      padding: 20px;
-    }
-    .dynamic-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 10px 0;
-      align-items: center;
-    }
-    input, select, textarea {
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      min-width: 120px;
-    }
-    select option[disabled] {
-      display: none;
-    }
-    button {
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-    .delete-btn { background: #ff4444; }
-    .copy-btn {
-      background: #2196F3;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-    }
-    .comment-container {
-      margin: 10px 0;
-      padding: 10px;
-      background: #f8f9fa;
-    }
-    .comment-textarea {
-      width: 100%;
-      min-height: 60px;
-      white-space: pre-wrap;
-    }
-    .spoiler-btn {
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .spoiler-btn.active {
-      background-color: #9C27B0;
-      color: white;
-    }
-    .spoiler-btn.inactive {
-      background-color: #ccc;
-      color: #333;
-    }
+    <meta charset="UTF-8" />
+    <title>地城战术配置器</title>
+    <style>
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px 20px;
+            background: #f0f2f5;
+        }
+        .config-block {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            padding: 20px;
+        }
+        .dynamic-row {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 120px;
+        }
+        button {
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+            user-select: none;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .delete-btn { background: #ff4444; }
+        .copy-btn { background: #2196F3; }
+        .comment-container {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+        .comment-textarea {
+            width: 100%;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+        /* Spoiler Title 融合按钮样式 */
+        #spoilerToggle {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            outline: none;
+            transition: background 0.3s;
+            margin-left: 15px;
+        }
+        #spoilerToggle:checked {
+            background: #4caf50;
+        }
+        #spoilerToggle::before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        #spoilerToggle:checked::before {
+            transform: translateX(26px);
+        }
+        label[for="spoilerToggle"] {
+            user-select: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+            color: #333;
+        }
 
-    @media (max-width: 768px) {
-      body {
-        padding: 20px 10px;
-      }
-      .copy-btn {
-        right: 10px;
-        bottom: 10px;
-      }
-      input, select, textarea, button {
-        flex: 1 1 100%;
-      }
-    }
-  </style>
+        /* 桌面端与移动端输入框排布 */
+        /* 默认桌面端 flex排布 */
+        .tactics-container .dynamic-row {
+            flex-wrap: nowrap;
+        }
+        .tactics-container .dynamic-row input,
+        .tactics-container .dynamic-row select {
+            min-width: auto;
+        }
+        /* 移动端优化 */
+        @media (max-width: 600px) {
+            /* 主容器竖排 */
+            .dynamic-row {
+                flex-wrap: nowrap;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            /* 战术行改成一行排列 */
+            .tactics-container .dynamic-row {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .tactics-container .dynamic-row input,
+            .tactics-container .dynamic-row select {
+                flex: 1 1 calc(20% - 6px);
+                min-width: auto;
+                margin: 0 3px;
+                box-sizing: border-box;
+            }
+            /* 按钮在最后 */
+            .tactics-container .dynamic-row button.delete-btn {
+                flex: 0 0 auto;
+                min-width: 30px;
+                padding: 6px 8px;
+                margin-left: 3px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="config-block">
-    <h2>战术配置</h2>
-    <div class="dynamic-row">
-      <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="flex:1; max-width:300px;">
-      <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()">使用 Spoiler Title</button>
+    <div class="config-block">
+        <h2>战术配置</h2>
+        <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="width:300px" />
+        <input type="checkbox" id="spoilerToggle" />
+        <label for="spoilerToggle">Spoiler Title</label>
     </div>
-  </div>
 
-  <div class="config-block">
-    <h3>站位配置</h3>
-    <div id="positionConfig"></div>
-    <button onclick="addPositionRow()" style="background:#4CAF50">+ 添加站位</button>
-  </div>
+    <div class="config-block">
+        <h3>站位配置</h3>
+        <div id="positionConfig"></div>
+        <button onclick="addPositionRow()" style="background:#4CAF50">+ 添加站位</button>
+    </div>
 
-  <div class="config-block">
-    <h3>楼层配置</h3>
-    <div id="floorConfig"></div>
-    <button onclick="addFloor()" style="background:#4CAF50">+ 添加楼层</button>
-  </div>
+    <div class="config-block">
+        <h3>楼层配置</h3>
+        <div id="floorConfig"></div>
+        <button onclick="addFloor()" style="background:#4CAF50">+ 添加楼层</button>
+    </div>
 
-  <button onclick="copyTactics()" class="copy-btn">复制配置</button>
+    <button onclick="copyTactics()" class="copy-btn" style="position: fixed; bottom: 20px; right: 20px;">复制配置</button>
 
-  <script>
-    let useSpoiler = false;
+    <script>
+        function init() {
+            addPositionRow();
+            addFloor();
+        }
 
-    function toggleSpoiler() {
-      useSpoiler = !useSpoiler;
-      const btn = document.getElementById("spoilerToggleBtn");
-      if (useSpoiler) {
-        btn.classList.remove("inactive");
-        btn.classList.add("active");
-        btn.textContent = "使用 Spoiler Title（已启用）";
-      } else {
-        btn.classList.remove("active");
-        btn.classList.add("inactive");
-        btn.textContent = "使用 Spoiler Title";
-      }
-    }
+        // 站位配置
+        function addPositionRow() {
+            const row = document.createElement('div');
+            row.className = 'dynamic-row';
+            row.innerHTML = `
+                <select>
+                    <option>前排</option>
+                    <option>左翼</option>
+                    <option>右翼</option>
+                    <option>中间</option>
+                    <option>后排</option>
+                </select>
+                <input placeholder="职业（多个用,分隔）" />
+                <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            document.getElementById('positionConfig').appendChild(row);
+        }
 
-    function init() {
-      addPositionRow();
-      addFloor();
-    }
+        // 添加楼层
+        function addFloor() {
+            const floor = document.createElement('div');
+            floor.className = 'config-block';
+            floor.innerHTML = `
+                <div class="dynamic-row">
+                    <input placeholder="楼层（例：F1）" style="width:120px" />
+                    <button class="delete-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+                <div class="comment-container">
+                    <button style="background:#9C27B0" onclick="addCommentRow(this)">+ 备注行</button>
+                    <div class="comment-rows"></div>
+                </div>
+                <div>
+                    <div><strong>回合前：</strong></div>
+                    <div class="tactics-container tactics-before"></div>
+                    <button style="background:#4CAF50; margin-bottom:10px;" onclick="addTacticRow(this, 'before')">添加回合前</button>
+                </div>
+                <div>
+                    <div><strong>回合中：</strong></div>
+                    <div class="tactics-container tactics-during"></div>
+                    <button style="background:#4CAF50" onclick="addTacticRow(this, 'during')">添加回合中</button>
+                </div>
+            `;
+            document.getElementById('floorConfig').appendChild(floor);
+        }
 
-    function addPositionRow() {
-      const row = document.createElement('div');
-      row.className = 'dynamic-row';
-      row.innerHTML = `
-        <select>
-          <option>前排</option>
-          <option>左翼</option>
-          <option>右翼</option>
-          <option>中间</option>
-          <option>后排</option>
-        </select>
-        <input placeholder="职业（多个用,分隔）">
-        <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
-      `;
-      document.getElementById('positionConfig').appendChild(row);
-    }
+        // 添加备注行
+        function addCommentRow(btn) {
+            const container = btn.nextElementSibling;
+            const row = document.createElement('div');
+            row.className = 'dynamic-row';
+            row.innerHTML = `
+                <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）"></textarea>
+                <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(row);
+        }
 
-    function addFloor() {
-      const floor = document.createElement('div');
-      floor.className = 'config-block';
-      floor.innerHTML = `
-        <div class="dynamic-row">
-          <input placeholder="楼层（例：F1）" style="width:120px">
-          <button class="delete-btn" onclick="this.parentElement.parentElement.remove()">×</button>
-        </div>
-        <div class="comment-container">
-          <button style="background:#9C27B0" onclick="addCommentRow(this)">+ 备注行</button>
-          <div class="comment-rows"></div>
-        </div>
-        <div><strong>回合前：</strong></div>
-        <div class="tactics-container pre-turn"></div>
-        <button style="background:#4CAF50" onclick="addTacticRow(this, 'pre-turn')">+ 添加回合前</button>
-        <div><strong>回合中：</strong></div>
-        <div class="tactics-container post-turn"></div>
-        <button style="background:#4CAF50" onclick="addTacticRow(this, 'post-turn')">+ 添加回合中</button>
-      `;
-      document.getElementById('floorConfig').appendChild(floor);
-    }
+        // 添加战术行，type参数区分回合前或回合中
+        function addTacticRow(btn, type) {
+            const container = btn.previousElementSibling;
+            const row = document.createElement('div');
+            row.className = 'dynamic-row';
+            row.innerHTML = `
+                <input placeholder="职业" style="width:100px" />
+                <input placeholder="技能/道具1" />
+                <input placeholder="技能/道具2" />
+                <input placeholder="位置" style="width:80px" />
+                <select style="width:140px">
+                    <option value="">默认</option>
+                    <option value="尽可能重复">尽可能重复</option>
+                    <option value="一次性">一次性</option>
+                    <option value="随机">随机</option>
+                </select>
+                <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(row);
+        }
 
-    function addCommentRow(btn) {
-      const container = btn.nextElementSibling;
-      const row = document.createElement('div');
-      row.className = 'dynamic-row';
-      row.innerHTML = `
-        <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）"></textarea>
-        <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
-      `;
-      container.appendChild(row);
-    }
+        // 复制配置
+        function copyTactics() {
+            let dungeonName = document.getElementById('dungeonName').value.trim() || "未命名战术";
+            const spoilerOn = document.getElementById('spoilerToggle').checked;
+            let output = "";
 
-    function addTacticRow(btn, type) {
-      const container = btn.parentElement.querySelector('.tactics-container.' + type);
-      const row = document.createElement('div');
-      row.className = 'dynamic-row';
-      row.innerHTML = `
-        <input placeholder="职业" style="width:100px">
-        <input placeholder="技能/道具1">
-        <input placeholder="技能/道具2">
-        <input placeholder="位置" style="width:80px">
-        <select>
-          <option disabled selected>条件</option>
-          <option>默认</option>
-          <option>尽可能重复</option>
-          <option>一次性</option>
-          <option>随机</option>
-        </select>
-        <button class="delete-btn" onclick="this.parentElement.remove()">×</button>
-      `;
-      container.appendChild(row);
-    }
+            if (spoilerOn) {
+                output += `[spoiler title=${dungeonName}]\n`;
+            } else {
+                output += `${dungeonName}\n`;
+            }
 
-    function copyTactics() {
-      const spoiler = useSpoiler;
-      const name = document.getElementById('dungeonName').value || "未命名战术";
-      let output = spoiler ? `[spoiler title=${name}]\n` : `战术：${name}\n`;
+            output += `站位：\n`;
 
-      // 站位配置
-      output += `站位：\n`;
-      const positions = {};
-      document.querySelectorAll('#positionConfig > div').forEach(row => {
-        const pos = row.querySelector('select').value;
-        const classes = row.querySelector('input').value;
-        positions[pos] = (positions[pos] || []).concat(classes.split(/\s*,\s*/));
-      });
-      Object.entries(positions).forEach(([pos, classes]) => {
-        output += `  ${pos}：${classes.filter(c=>c).join('、')}\n`;
-      });
-
-      // 楼层配置
-      document.querySelectorAll('#floorConfig > div').forEach(floor => {
-        const floorId = floor.querySelector('input').value || "未命名楼层";
-        output += `${floorId}\n`;
-
-        floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
-          if (textarea.value.trim()) output += `  ${textarea.value.trim()}\n`;
-        });
-
-        const handleRows = (container, title) => {
-          const rows = container.querySelectorAll('div.dynamic-row');
-          if (rows.length > 0) {
-            output += `${title}：\n`;
-            rows.forEach(row => {
-              const inputs = row.querySelectorAll('input, select');
-              const values = Array.from(inputs).map(i => i.tagName === 'SELECT' ? (i.selectedIndex > 0 ? i.value : "") : i.value);
-              if (values.some(v => v.trim())) {
-                output += `  ${values.join(' ').trim()}\n`;
-              }
+            const positions = {};
+            document.querySelectorAll('#positionConfig > div').forEach(row => {
+                const pos = row.querySelector('select').value;
+                const classesRaw = row.querySelector('input').value.trim();
+                if (!classesRaw) return;
+                const classes = classesRaw.split(/\s*,\s*/).filter(c => c);
+                if (classes.length === 0) return;
+                positions[pos] = (positions[pos] || []).concat(classes);
             });
-          }
-        };
 
-        handleRows(floor.querySelector('.pre-turn'), '回合前');
-        handleRows(floor.querySelector('.post-turn'), '回合中');
-      });
+            Object.entries(positions).forEach(([pos, classes]) => {
+                output += `  ${pos}：${classes.join('、')}\n`;
+            });
 
-      if (spoiler) output += `[/spoiler]`;
+            document.querySelectorAll('#floorConfig > div').forEach(floor => {
+                const floorId = floor.querySelector('input').value.trim() || "未命名楼层";
+                output += `\n${floorId}\n`;
 
-      output = output.trimEnd(); // 去除多余空行
+                floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
+                    let val = textarea.value.trim();
+                    if (val) {
+                        output += `  ${val}\n`;
+                    }
+                });
 
-      // 复制操作
-      try {
-        navigator.clipboard.writeText(output);
-        alert('配置已复制到剪贴板！\n\n' + output);
-      } catch (err) {
-        const textarea = document.createElement('textarea');
-        textarea.value = output;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        alert('已自动复制到剪贴板！');
-      }
-    }
+                // 回合前战术行
+                output += `回合前：\n`;
+                floor.querySelectorAll('.tactics-before > div').forEach(row => {
+                    const inputs = Array.from(row.querySelectorAll('input,select')).map(i => i.value.trim() || "");
+                    output += `  ${inputs.join(' ')}\n`;
+                });
 
-    window.onload = init;
-  </script>
+                // 回合中战术行
+                output += `回合中：\n`;
+                floor.querySelectorAll('.tactics-during > div').forEach(row => {
+                    const inputs = Array.from(row.querySelectorAll('input,select')).map(i => i.value.trim() || "");
+                    output += `  ${inputs.join(' ')}\n`;
+                });
+            });
+
+            if (spoilerOn) {
+                output += `[/spoiler]`;
+            }
+
+            // 去除多余空行（连续多空行合并为1空行）
+            output = output.replace(/\n{3,}/g, '\n\n').trimEnd();
+
+            try {
+                navigator.clipboard.writeText(output);
+                alert('配置已复制到剪贴板！\n\n' + output);
+            } catch (err) {
+                const textarea = document.createElement('textarea');
+                textarea.value = output;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('已自动复制到剪贴板！');
+            }
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
