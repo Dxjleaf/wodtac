@@ -1230,20 +1230,35 @@
       
       showStatus('正在上传战术到云端...', 'info');
       
-      // 添加到本地列表
-      const existingIndex = tacticsData.findIndex(t => t.name === tactic.name);
+      // 获取现有战术列表
+      let existingTactics = [];
+      try {
+        const response = await fetch(API_URL + "/latest", {
+          method: 'GET',
+          headers: {
+            'X-Access-Key': X_ACCESS_KEY,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          existingTactics = data.record.tactics || [];
+        }
+      } catch (error) {
+        console.error('获取现有战术失败:', error);
+      }
+      
+      // 检查是否已存在同名战术
+      const existingIndex = existingTactics.findIndex(t => t.name === tactic.name);
       
       if (existingIndex !== -1) {
         // 更新现有战术
-        tacticsData[existingIndex] = tactic;
-        showStatus(`"${tactic.name}" 已更新`, 'success');
+        existingTactics[existingIndex] = tactic;
       } else {
         // 添加新战术
-        tacticsData.unshift(tactic);
-        showStatus(`"${tactic.name}" 已成功上传`, 'success');
+        existingTactics.unshift(tactic);
       }
-      
-      renderTacticsList(tacticsData);
       
       // 更新云端数据
       try {
@@ -1253,14 +1268,21 @@
             'X-Master-Key': X_MASTER_KEY,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ tactics: tacticsData })
+          body: JSON.stringify({ tactics: existingTactics })
         });
         
         if (!response.ok) {
           throw new Error('上传战术失败: ' + response.status);
         }
         
-        showStatus(`"${tactic.name}" 已同步到云端`, 'success');
+        tacticsData = existingTactics;
+        renderTacticsList(tacticsData);
+        
+        if (existingIndex !== -1) {
+          showStatus(`"${tactic.name}" 已更新`, 'success');
+        } else {
+          showStatus(`"${tactic.name}" 已成功上传`, 'success');
+        }
       } catch (error) {
         console.error('上传战术时出错:', error);
         showStatus('上传失败: ' + error.message, 'error');
