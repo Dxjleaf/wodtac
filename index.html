@@ -415,16 +415,24 @@
     
     .search-container {
       display: flex;
-      gap: calc(8px * var(--scale-factor));
       margin-bottom: calc(12px * var(--scale-factor));
     }
     
     .search-container input {
       flex: 1;
+      padding-right: 40px; /* 为搜索图标留出空间 */
     }
     
-    .search-container button {
-      background: var(--info);
+    .search-container::after {
+      content: "\f002";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
     }
     
     .tactics-list {
@@ -761,10 +769,6 @@
         width: 100%;
       }
       
-      .search-container button {
-        padding: 8px 12px;
-      }
-      
       /* 移动端搜索位置调整 */
       .mobile-search-container {
         margin-top: 10px;
@@ -772,6 +776,10 @@
       
       .desktop-search-container {
         display: none;
+      }
+      
+      .search-container::after {
+        right: 20px;
       }
     }
     
@@ -862,7 +870,7 @@
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i>摸鱼吧！
+    <i class="fas fa-mobile-alt"></i> 摸鱼吧！
   </div>
   
   <div class="layout-container">
@@ -909,9 +917,6 @@
         <div class="mobile-search-container">
           <div class="search-container">
             <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
-            <button onclick="searchTactics('mobile')">
-              <i class="fas fa-search"></i> 搜索
-            </button>
           </div>
         </div>
         
@@ -928,9 +933,6 @@
         <div class="desktop-search-container">
           <div class="search-container">
             <input type="text" id="desktopSearchInput" placeholder="搜索战术名称...">
-            <button onclick="searchTactics('desktop')">
-              <i class="fas fa-search"></i> 搜索
-            </button>
           </div>
         </div>
         
@@ -966,6 +968,7 @@
     let floorCount = 0;
     let tacticsData = [];
     let userRatings = {};
+    let searchTimer = null;
 
     // 缩放控制功能
     const scaleSlider = document.getElementById('scaleSlider');
@@ -1007,6 +1010,40 @@
       if (savedRatings) {
         userRatings = JSON.parse(savedRatings);
       }
+      
+      // 添加搜索输入监听
+      const mobileSearchInput = document.getElementById('mobileSearchInput');
+      const desktopSearchInput = document.getElementById('desktopSearchInput');
+      
+      if (mobileSearchInput) {
+        mobileSearchInput.addEventListener('input', handleSearchInput);
+      }
+      
+      if (desktopSearchInput) {
+        desktopSearchInput.addEventListener('input', handleSearchInput);
+      }
+    }
+
+    function handleSearchInput(event) {
+      // 清除之前的计时器
+      if (searchTimer) {
+        clearTimeout(searchTimer);
+      }
+      
+      // 设置新的计时器（300毫秒后执行搜索）
+      searchTimer = setTimeout(() => {
+        const searchTerm = event.target.value.toLowerCase().trim();
+        if (searchTerm) {
+          const filtered = tacticsData.filter(tactic => 
+            tactic.name.toLowerCase().includes(searchTerm)
+          );
+          renderTacticsList(filtered);
+          showStatus(`找到 ${filtered.length} 个匹配的战术`, 'success');
+        } else {
+          renderTacticsList(tacticsData);
+          showStatus('显示所有战术', 'info');
+        }
+      }, 300);
     }
 
     function addPositionRow() {
@@ -1285,8 +1322,11 @@
         showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
         
         // 清空搜索框
-        document.getElementById('desktopSearchInput').value = '';
-        document.getElementById('mobileSearchInput').value = '';
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const desktopSearchInput = document.getElementById('desktopSearchInput');
+        
+        if (mobileSearchInput) mobileSearchInput.value = '';
+        if (desktopSearchInput) desktopSearchInput.value = '';
       } catch (error) {
         console.error('获取战术数据时出错:', error);
         showStatus('加载战术失败: ' + error.message, 'error');
@@ -1369,25 +1409,6 @@
         console.error('上传战术时出错:', error);
         showStatus('上传失败: ' + error.message, 'error');
       }
-    }
-    
-    function searchTactics(platform) {
-      const searchTerm = platform === 'mobile' 
-        ? document.getElementById('mobileSearchInput').value.toLowerCase().trim()
-        : document.getElementById('desktopSearchInput').value.toLowerCase().trim();
-      
-      if (!searchTerm) {
-        renderTacticsList(tacticsData);
-        showStatus('显示所有战术', 'info');
-        return;
-      }
-      
-      const filtered = tacticsData.filter(tactic => 
-        tactic.name.toLowerCase().includes(searchTerm)
-      );
-      
-      renderTacticsList(filtered);
-      showStatus(`找到 ${filtered.length} 个匹配的战术`, 'success');
     }
     
     function renderTacticsList(tactics) {
