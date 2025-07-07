@@ -952,6 +952,7 @@
     let floorCount = 0;
     let tacticsData = [];
     let userRatings = {};
+    let myTactics = {}; // 存储用户上传的战术 {tacticName: true}
     let searchTimer = null;
 
     // 缩放控制功能
@@ -993,6 +994,12 @@
       const savedRatings = localStorage.getItem('tacticRatings');
       if (savedRatings) {
         userRatings = JSON.parse(savedRatings);
+      }
+      
+      // 从本地存储加载用户上传的战术
+      const savedMyTactics = localStorage.getItem('myTactics');
+      if (savedMyTactics) {
+        myTactics = JSON.parse(savedMyTactics);
       }
       
       // 添加搜索输入监听
@@ -1302,6 +1309,14 @@
         
         const data = await response.json();
         tacticsData = data.tactics || [];
+        
+        // 按点赞数排序（点赞数 - 点踩数）
+        tacticsData.sort((a, b) => {
+          const aScore = (a.likes || 0) - (a.dislikes || 0);
+          const bScore = (b.likes || 0) - (b.dislikes || 0);
+          return bScore - aScore; // 降序排序
+        });
+        
         renderTacticsList(tacticsData);
         showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
         
@@ -1351,20 +1366,22 @@
         console.error('获取现有战术失败:', error);
       }
       
-      // 检查是否已存在同名战术
-      let isUpdate = false;
-      const updatedTactics = existingTactics.map(t => {
-        if (t.name === tactic.name) {
-          isUpdate = true;
-          return tactic; // 更新现有战术
-        }
-        return t;
-      });
+      // 检查是否已存在同名战术 - 改为添加时间戳后缀
+      let tacticName = tactic.name;
+      const nameExists = existingTactics.some(t => t.name === tacticName);
       
-      // 如果是新战术则添加
-      if (!isUpdate) {
-        updatedTactics.unshift(tactic);
+      if (nameExists) {
+        // 添加时间戳后缀
+        const timestamp = new Date().getTime();
+        tacticName = `${tactic.name}_${timestamp}`;
+        showStatus(`已存在同名战术，已重命名为: ${tacticName}`, 'info');
       }
+      
+      // 设置新名称
+      tactic.name = tacticName;
+      
+      // 添加到云端数据
+      existingTactics.unshift(tactic);
       
       // 更新云端数据
       try {
@@ -1374,21 +1391,21 @@
             'Content-Type': 'application/json',
             'X-Master-Key': X_MASTER_KEY
           },
-          body: JSON.stringify({ tactics: updatedTactics })
+          body: JSON.stringify({ tactics: existingTactics })
         });
         
         if (!response.ok) {
           throw new Error('上传战术失败: ' + response.status);
         }
         
-        tacticsData = updatedTactics;
+        tacticsData = existingTactics;
         renderTacticsList(tacticsData);
         
-        if (isUpdate) {
-          showStatus(`"${tactic.name}" 已更新`, 'success');
-        } else {
-          showStatus(`"${tactic.name}" 已成功上传`, 'success');
-        }
+        // 添加到我的战术
+        myTactics[tacticName] = true;
+        localStorage.setItem('myTactics', JSON.stringify(myTactics));
+        
+        showStatus(`"${tacticName}" 已成功上传`, 'success');
       } catch (error) {
         console.error('上传战术时出错:', error);
         showStatus('上传失败: ' + error.message, 'error');
@@ -1433,6 +1450,9 @@
         // 获取用户评分
         const userRating = userRatings[tactic.name] || 0;
         
+        // 检查是否是用户上传的战术
+        const isMyTactic = myTactics[tactic.name] || false;
+        
         item.innerHTML = `
           <div class="tactic-header">
             <div class="tactic-name">${tactic.name}</div>
@@ -1457,6 +1477,9 @@
               <button class="copy-btn-sm" onclick="copyTacticToClipboard(${index})">
                 <i class="fas fa-copy"></i> 复制
               </button>
+              ${isMyTactic ? `<button class="delete-btn-sm" onclick="deleteTactic('${tactic.name}')">
+                <i class="fas fa-trash"></i> 删除
+              </button>` : ''}
             </div>
           </div>
         `;
@@ -1466,29 +1489,34 @@
     }
     
     function rateTactic(tacticName, rating) {
-      // 检查用户是否已经评分
-      if (userRatings[tacticName]) {
-        showStatus('您已经对此战术评过分了', 'info');
-        return;
-      }
+      // 获取当前评分
+      const currentRating = userRatings[tacticName] || 0;
       
       // 更新用户评分记录
-      userRatings[tacticName] = rating;
+      userRatings[tacticName] = rating === currentRating ? 0 : rating;
       localStorage.setItem('tacticRatings', JSON.stringify(userRatings));
       
       // 更新战术数据
       const tactic = tacticsData.find(t => t.name === tacticName);
       if (tactic) {
-        if (rating === 1) {
+        // 撤销旧评分的影响
+        if (currentRating === 1) {
+          tactic.likes = Math.max(0, (tactic.likes || 0) - 1);
+        } else if (currentRating === -1) {
+          tactic.dislikes = Math.max(0, (tactic.dislikes || 0) - 1);
+        }
+        
+        // 应用新评分
+        if (userRatings[tacticName] === 1) {
           tactic.likes = (tactic.likes || 0) + 1;
-        } else {
+        } else if (userRatings[tacticName] === -1) {
           tactic.dislikes = (tactic.dislikes || 0) + 1;
         }
         
         // 更新云端数据
         updateTacticsOnServer();
         renderTacticsList(tacticsData);
-        showStatus(`感谢您的评分！`, 'success');
+        showStatus(`评分已${userRatings[tacticName] === 0 ? '撤销' : '更新'}！`, 'success');
       }
     }
     
@@ -1504,6 +1532,40 @@
         });
       } catch (error) {
         console.error('更新战术评分时出错:', error);
+      }
+    }
+    
+    async function deleteTactic(tacticName) {
+      if (!confirm(`确定要删除战术 "${tacticName}" 吗？此操作无法撤销！`)) {
+        return;
+      }
+      
+      showStatus(`正在删除战术: ${tacticName}`, 'info');
+      
+      try {
+        // 从本地战术数据中移除
+        tacticsData = tacticsData.filter(t => t.name !== tacticName);
+        
+        // 更新云端数据
+        await fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'X-Master-Key': X_MASTER_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ tactics: tacticsData })
+        });
+        
+        // 从我的战术中移除
+        delete myTactics[tacticName];
+        localStorage.setItem('myTactics', JSON.stringify(myTactics));
+        
+        // 重新渲染列表
+        renderTacticsList(tacticsData);
+        showStatus(`"${tacticName}" 已删除`, 'success');
+      } catch (error) {
+        console.error('删除战术时出错:', error);
+        showStatus('删除失败: ' + error.message, 'error');
       }
     }
     
