@@ -765,19 +765,9 @@
         padding: 8px 12px;
       }
       
-      /* 新增：移动端搜索位置调整 */
-      .cloud-section {
-        display: flex;
-        flex-direction: column;
-      }
-      
+      /* 移动端搜索位置调整 */
       .mobile-search-container {
-        order: 1; /* 将搜索容器移到最前面 */
-        margin-bottom: 10px;
-      }
-      
-      .cloud-actions {
-        order: 2;
+        margin-top: 10px;
       }
       
       .desktop-search-container {
@@ -872,7 +862,7 @@
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i>摸鱼吧！孩子
+    <i class="fas fa-mobile-alt"></i>摸鱼吧！
   </div>
   
   <div class="layout-container">
@@ -915,7 +905,7 @@
       <div class="cloud-section">
         <h2><i class="fas fa-cloud"></i> 云端战术库</h2>
         
-        <!-- 移动端搜索容器 -->
+        <!-- 移动端搜索容器 - 放在标题下方 -->
         <div class="mobile-search-container">
           <div class="search-container">
             <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
