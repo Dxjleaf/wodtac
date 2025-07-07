@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>地城战术配置器 - 全网点击统计</title>
+  <title>地城战术配置器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -16,11 +16,9 @@
       --dark: #2c3e50;
       --light: #ecf0f1;
       --gray: #95a5a6;
-      --scale-factor: 1;
-      --border-radius: calc(6px * var(--scale-factor));
-      --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.1);
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       --transition: all 0.3s ease;
-      --content-width: 700px;
     }
     
     * {
@@ -33,84 +31,23 @@
       font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
       color: #333;
-      line-height: calc(1.5 * var(--scale-factor));
+      line-height: 1.6;
       min-height: 100vh;
-      padding: calc(40px * var(--scale-factor)) calc(10px * var(--scale-factor)) calc(70px * var(--scale-factor));
-      max-width: var(--content-width);
+      padding: 20px 10px 80px;
+      max-width: 1200px;
       margin: 0 auto;
-      transform-origin: top center;
-      position: relative;
-      overflow-x: hidden;
-    }
-    
-    /* 背景计数器样式 */
-    #global-counter {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 30vw;
-      font-weight: 900;
-      color: rgba(109, 158, 235, 0.08);
-      z-index: -1;
-      pointer-events: none;
-      user-select: none;
-      font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
-      white-space: nowrap;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      transition: all 1s ease;
-      opacity: 0.05;
-      animation: pulse 5s infinite ease-in-out;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 0.05; }
-      50% { opacity: 0.1; }
-    }
-    
-    .scale-control {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      width: 180px;
-      background: white;
-      padding: 8px;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .scale-control label {
-      font-weight: bold;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-    
-    .scale-control input {
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .scale-value {
-      font-weight: bold;
-      font-size: 12px;
-      min-width: 30px;
-      text-align: center;
     }
     
     .header {
       text-align: center;
-      margin-bottom: calc(15px * var(--scale-factor));
-      padding: 0 calc(8px * var(--scale-factor));
+      margin-bottom: 25px;
+      padding: 0 10px;
     }
     
     .header h1 {
-      font-size: calc(1.6rem * var(--scale-factor));
+      font-size: 2.2rem;
       color: var(--dark);
-      margin-bottom: calc(5px * var(--scale-factor));
+      margin-bottom: 5px;
       background: linear-gradient(45deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -118,90 +55,88 @@
     
     .header p {
       color: var(--gray);
-      font-size: calc(0.85rem * var(--scale-factor));
+      font-size: 1rem;
     }
     
     .mobile-tip {
       background: #fff;
       border-radius: var(--border-radius);
-      padding: calc(10px * var(--scale-factor));
-      margin: calc(10px * var(--scale-factor)) 0;
+      padding: 15px;
+      margin: 15px 0;
       text-align: center;
       color: var(--primary);
       font-weight: bold;
       display: none;
       box-shadow: var(--box-shadow);
-      font-size: calc(0.85rem * var(--scale-factor));
     }
     
     .config-block {
       background: white;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
-      margin: calc(12px * var(--scale-factor)) 0;
-      padding: calc(12px * var(--scale-factor));
+      margin: 20px 0;
+      padding: 20px;
       transition: var(--transition);
       position: relative;
-      font-size: calc(0.9rem * var(--scale-factor));
     }
     
     .config-block:hover {
-      box-shadow: 0 calc(5px * var(--scale-factor)) calc(10px * var(--scale-factor)) rgba(0,0,0,0.12);
-      transform: translateY(calc(-1px * var(--scale-factor)));
+      box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+      transform: translateY(-3px);
     }
     
     .config-block h2 {
       color: var(--primary);
-      font-size: calc(1.3rem * var(--scale-factor));
-      margin-bottom: calc(12px * var(--scale-factor));
-      padding-bottom: calc(6px * var(--scale-factor));
-      border-bottom: calc(1px * var(--scale-factor)) solid var(--light);
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--light);
       display: flex;
       align-items: center;
-      gap: calc(6px * var(--scale-factor));
+      gap: 10px;
     }
     
     .config-block h2 i {
       background: var(--secondary);
       color: white;
-      width: calc(28px * var(--scale-factor));
-      height: calc(28px * var(--scale-factor));
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: calc(0.9rem * var(--scale-factor));
+      font-size: 1.2rem;
     }
     
     .config-block h3 {
       color: var(--dark);
-      font-size: calc(1.1rem * var(--scale-factor));
-      margin: calc(10px * var(--scale-factor)) 0 calc(6px * var(--scale-factor));
+      font-size: 1.3rem;
+      margin: 15px 0 10px;
     }
     
     .dynamic-row {
       display: flex;
       flex-wrap: wrap;
-      gap: calc(8px * var(--scale-factor));
-      margin: calc(8px * var(--scale-factor)) 0;
+      gap: 12px;
+      margin: 12px 0;
       align-items: center;
     }
     
     input, select, textarea {
-      padding: calc(8px * var(--scale-factor)) calc(10px * var(--scale-factor));
-      border: calc(1px * var(--scale-factor)) solid #ddd;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
       border-radius: var(--border-radius);
-      font-size: calc(0.9rem * var(--scale-factor));
+      font-size: 1rem;
       background: #fff;
       flex: 1;
-      min-width: calc(80px * var(--scale-factor));
+      min-width: 100px;
       transition: var(--transition);
     }
     
     input:focus, select:focus, textarea:focus {
       border-color: var(--secondary);
       outline: none;
-      box-shadow: 0 0 0 calc(2px * var(--scale-factor)) rgba(109, 158, 235, 0.2);
+      box-shadow: 0 0 0 3px rgba(109, 158, 235, 0.2);
     }
     
     select option[disabled] {
@@ -211,23 +146,23 @@
     button {
       color: white;
       border: none;
-      padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
+      padding: 12px 18px;
       border-radius: var(--border-radius);
       cursor: pointer;
       transition: var(--transition);
-      font-size: calc(0.9rem * var(--scale-factor));
+      font-size: 1rem;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: calc(5px * var(--scale-factor));
-      box-shadow: 0 calc(1px * var(--scale-factor)) calc(3px * var(--scale-factor)) rgba(0,0,0,0.1);
+      gap: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     button:hover {
       opacity: 0.9;
-      transform: translateY(calc(-1px * var(--scale-factor)));
-      box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor)) rgba(0,0,0,0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
     
     button:active {
@@ -236,83 +171,84 @@
     
     .delete-btn { 
       background: var(--danger);
-      min-width: calc(32px * var(--scale-factor));
-      padding: calc(8px * var(--scale-factor));
+      min-width: 40px;
+      padding: 12px;
     }
     
     .add-btn { 
       background: var(--success);
       width: 100%;
-      margin-top: calc(6px * var(--scale-factor));
-      padding: calc(10px * var(--scale-factor));
+      margin-top: 10px;
+      padding: 14px;
     }
     
     .copy-btn {
       background: var(--primary);
       position: fixed;
-      bottom: calc(12px * var(--scale-factor));
-      right: calc(12px * var(--scale-factor));
+      bottom: 20px;
+      right: 20px;
       z-index: 100;
-      padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
-      font-size: calc(0.95rem * var(--scale-factor));
-      box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.2);
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
     .comment-container {
-      margin: calc(10px * var(--scale-factor)) 0;
-      padding: calc(10px * var(--scale-factor));
+      margin: 15px 0;
+      padding: 15px;
       background: #f8f9fa;
       border-radius: var(--border-radius);
     }
     
     .comment-textarea {
       width: 100%;
-      min-height: calc(60px * var(--scale-factor));
+      min-height: 80px;
       white-space: pre-wrap;
       resize: vertical;
     }
     
-    .spoiler-btn {
-      padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
+    .spoiler-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      padding: 12px;
+      background: #f0f8ff;
       border-radius: var(--border-radius);
       cursor: pointer;
-      transition: var(--transition);
+    }
+    
+    .spoiler-toggle input {
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .spoiler-toggle label {
       font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: calc(5px * var(--scale-factor));
-    }
-    
-    .spoiler-btn.active {
-      background-color: #9C27B0;
-      color: white;
-    }
-    
-    .spoiler-btn.inactive {
-      background-color: #e0e0e0;
-      color: #333;
+      color: var(--dark);
     }
     
     .tactic-section {
-      margin: calc(12px * var(--scale-factor)) 0;
-      padding: calc(10px * var(--scale-factor));
-      border-left: calc(2px * var(--scale-factor)) solid var(--info);
+      margin: 20px 0;
+      padding: 15px;
+      border-left: 4px solid var(--info);
       background: #f8fdff;
       border-radius: 0 var(--border-radius) var(--border-radius) 0;
     }
     
     .tactic-section h4 {
       color: var(--info);
-      margin-bottom: calc(8px * var(--scale-factor));
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
-      gap: calc(5px * var(--scale-factor));
+      gap: 8px;
     }
     
     .mobile-controls {
       display: flex;
-      gap: calc(6px * var(--scale-factor));
-      margin-top: calc(10px * var(--scale-factor));
+      gap: 10px;
+      margin-top: 15px;
     }
     
     .mobile-controls button {
@@ -322,92 +258,19 @@
     .position-tag {
       background: var(--secondary);
       color: white;
-      padding: calc(2px * var(--scale-factor)) calc(6px * var(--scale-factor));
-      border-radius: calc(14px * var(--scale-factor));
-      font-size: calc(0.75rem * var(--scale-factor));
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
     }
     
-    .position-header {
-      display: flex;
-      align-items: center;
-      gap: calc(6px * var(--scale-factor));
-      margin-bottom: calc(10px * var(--scale-factor));
-    }
-    
-    .position-header h3 {
-      margin: 0;
-    }
-    
-    .position-header .position-tag {
-      font-size: calc(0.85rem * var(--scale-factor));
-      padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
-    }
-    
-    .badge {
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      width: calc(18px * var(--scale-factor));
-      height: calc(18px * var(--scale-factor));
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: calc(0.7rem * var(--scale-factor));
-      margin-left: calc(3px * var(--scale-factor));
-    }
-    
-    /* 手机端提示文字样式 */
-    .mobile-hint {
-      color: rgba(149, 165, 166, 0.7);
-      font-size: calc(0.85rem * var(--scale-factor));
-      margin-left: auto;
-      white-space: nowrap;
-    }
-    
-    /* 统计信息 */
-    .stats-container {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 4px;
-      padding: 8px 12px;
-      font-size: 12px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 100;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    
-    .stats-container .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .stats-container .stat-label {
-      color: #666;
-    }
-    
-    .stats-container .stat-value {
-      font-weight: bold;
-      color: var(--primary);
-    }
-    
-    /* 响应式设计 - 移动端 */
+    /* 响应式设计 */
     @media (max-width: 768px) {
-      .scale-control {
-        display: none;
-      }
-      
       body {
-        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor));
-        max-width: 100%;
+        padding: 15px 8px 70px;
       }
       
       .header h1 {
-        font-size: calc(1.4rem * var(--scale-factor));
+        font-size: 1.8rem;
       }
       
       .mobile-tip {
@@ -415,120 +278,36 @@
       }
       
       .config-block {
-        padding: calc(12px * var(--scale-factor)) calc(10px * var(--scale-factor));
-        margin: calc(10px * var(--scale-factor)) 0;
+        padding: 18px 15px;
+        margin: 15px 0;
       }
       
       .config-block h2 {
-        font-size: calc(1.2rem * var(--scale-factor));
+        font-size: 1.4rem;
       }
       
       .dynamic-row {
         flex-direction: column;
         align-items: stretch;
-        gap: calc(6px * var(--scale-factor));
-      }
-      
-      /* 战术行特殊处理 - 强制单行布局 */
-      .tactics-container .dynamic-row {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-        gap: 4px;
-        padding-bottom: 8px;
-        margin: 8px 0;
-        align-items: center;
-      }
-      
-      .tactics-container .dynamic-row > * {
-        flex: 0 0 auto !important;
-        width: auto !important;
-        min-width: auto !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 60px !important;
-        min-width: 60px !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder^="技能"] {
-        width: 80px !important;
-        min-width: 80px !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 50px !important;
-        min-width: 50px !important;
-      }
-      
-      .tactics-container .dynamic-row select {
-        width: 90px !important;
-        min-width: 90px !important;
-      }
-      
-      .tactics-container .dynamic-row .delete-btn {
-        width: 36px !important;
-        min-width: 36px !important;
-        height: 36px;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .tactics-container .dynamic-row input,
-      .tactics-container .dynamic-row select {
-        height: 36px;
-        padding: 0 8px;
-        font-size: 12px;
-      }
-      
-      .tactics-container .dynamic-row ::placeholder {
-        font-size: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      
-      .tactics-container .dynamic-row select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 5px center;
-        background-size: 12px;
-        padding-right: 20px;
-      }
-      
-      /* 仅在移动端显示提示文字 */
-      .mobile-hint {
-        display: inline;
+        gap: 10px;
       }
       
       input, select, textarea, button {
         width: 100% !important;
         min-width: 100% !important;
-        padding: calc(10px * var(--scale-factor));
-      }
-      
-      .spoiler-btn {
-        width: 100%;
-        margin: calc(6px * var(--scale-factor)) 0 0;
+        padding: 14px;
       }
       
       .delete-btn {
         order: 99;
-        padding: calc(10px * var(--scale-factor));
+        padding: 14px;
       }
       
       .copy-btn {
-        bottom: calc(10px * var(--scale-factor));
-        right: calc(10px * var(--scale-factor));
-        padding: calc(10px * var(--scale-factor)) calc(14px * var(--scale-factor));
-        font-size: calc(0.85rem * var(--scale-factor));
+        bottom: 15px;
+        right: 15px;
+        padding: 14px 20px;
+        font-size: 1rem;
       }
       
       .mobile-controls {
@@ -536,110 +315,82 @@
       }
       
       .tactic-section {
-        padding: calc(8px * var(--scale-factor));
-      }
-      
-      #global-counter {
-        font-size: 40vw;
-      }
-      
-      .stats-container {
-        bottom: 60px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 300px;
-        padding: 6px;
+        padding: 12px;
       }
     }
     
-    /* 桌面端隐藏提示文字 */
-    @media (min-width: 769px) {
-      .mobile-hint {
-        display: none;
+    @media (max-width: 480px) {
+      body {
+        padding: 12px 6px 60px;
+      }
+      
+      .header h1 {
+        font-size: 1.6rem;
+      }
+      
+      .config-block {
+        padding: 15px 12px;
+      }
+      
+      .config-block h2 {
+        font-size: 1.3rem;
+      }
+      
+      .copy-btn {
+        bottom: 12px;
+        right: 12px;
+        padding: 12px 18px;
+        font-size: 0.95rem;
       }
     }
     
-    /* 超小屏幕进一步优化 */
-    @media (max-width: 400px) {
-      .tactics-container .dynamic-row input,
-      .tactics-container .dynamic-row select {
-        height: 32px;
-        font-size: 11px;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 50px !important;
-        min-width: 50px !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder^="技能"] {
-        width: 70px !important;
-        min-width: 70px !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 40px !important;
-        min-width: 40px !important;
-      }
-      
-      .tactics-container .dynamic-row select {
-        width: 80px !important;
-        min-width: 80px !important;
-      }
-      
-      .tactics-container .dynamic-row .delete-btn {
-        width: 32px !important;
-        min-width: 32px !important;
-        height: 32px;
-      }
-      
-      .mobile-hint {
-        font-size: calc(0.75rem * var(--scale-factor));
-      }
+    .position-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .position-header h3 {
+      margin: 0;
+    }
+    
+    .position-header .position-tag {
+      font-size: 1rem;
+      padding: 6px 12px;
+    }
+    
+    .badge {
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      margin-left: 5px;
     }
   </style>
 </head>
 <body>
-  <!-- 背景计数器 -->
-  <div id="global-counter">0</div>
-  
-  <!-- 统计信息面板 -->
-  <div class="stats-container">
-    <div class="stat-item">
-      <i class="fas fa-copy"></i>
-      <span class="stat-label">复制次数:</span>
-      <span class="stat-value" id="copy-count">0</span>
-    </div>
-    <div class="stat-item">
-      <i class="fas fa-users"></i>
-      <span class="stat-label">今日用户:</span>
-      <span class="stat-value" id="today-users">0</span>
-    </div>
-  </div>
-
-  <div class="scale-control">
-    <label for="scaleSlider">缩放:</label>
-    <input type="range" id="scaleSlider" min="30" max="150" value="100" step="5">
-    <span class="scale-value" id="scaleValue">100%</span>
-  </div>
-
   <div class="header">
     <h1><i class="fas fa-dungeon"></i> 地城战术配置器</h1>
     <p>创建并分享你的地城探险战术方案</p>
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i> 摸鱼吧！孩子
+    <i class="fas fa-mobile-alt"></i> 手机模式下，所有输入框和按钮将自动调整大小
   </div>
 
   <div class="config-block">
     <h2><i class="fas fa-cog"></i> 战术配置</h2>
-    <div class="dynamic-row">
-      <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="flex:1;">
-      <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()">
-        <i class="fas fa-eye-slash"></i> 使用 Spoiler Title
-      </button>
+    <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）">
+    
+    <div class="spoiler-toggle" onclick="toggleSpoiler()">
+      <input type="checkbox" id="spoilerToggle">
+      <label for="spoilerToggle">使用 Spoiler 标题格式</label>
     </div>
   </div>
 
@@ -656,7 +407,7 @@
 
   <div class="config-block">
     <div class="position-header">
-      <h3><i class="fas fa-layer-group"></i> 楼层配置 <span class="mobile-hint">手机端右滑删除行动</span></h3>
+      <h3><i class="fas fa-layer-group"></i> 楼层配置</h3>
       <span class="position-tag">共 <span id="floorCount">0</span> 个楼层</span>
     </div>
     <div id="floorConfig"></div>
@@ -673,23 +424,6 @@
     let useSpoiler = false;
     let positionCount = 0;
     let floorCount = 0;
-    
-    // 使用更可靠的计数服务
-    const API_ENDPOINT = "https://api.jsonbin.io/v3/b/65d7fae31f5677401f3b9a5e";
-    const API_KEY = "$2a$10$rJ.3z0UZ3Hc5dZ4fzN5DJe6tGc9WlYk7X9gB0dF1v2p3q4r5s6t7u8";
-    let copyCount = 0;
-    let todayUsers = 0;
-    let lastUpdateDate = "";
-
-    // 缩放控制功能
-    const scaleSlider = document.getElementById('scaleSlider');
-    const scaleValue = document.getElementById('scaleValue');
-    
-    scaleSlider.addEventListener('input', function() {
-      const scale = this.value / 100;
-      document.documentElement.style.setProperty('--scale-factor', scale);
-      scaleValue.textContent = this.value + '%';
-    });
 
     function updateCounters() {
       document.getElementById('positionCount').textContent = positionCount;
@@ -698,128 +432,14 @@
 
     function toggleSpoiler() {
       useSpoiler = !useSpoiler;
-      const btn = document.getElementById("spoilerToggleBtn");
-      if (useSpoiler) {
-        btn.classList.remove("inactive");
-        btn.classList.add("active");
-        btn.innerHTML = '<i class="fas fa-eye"></i> 使用 Spoiler Title（已启用）';
-      } else {
-        btn.classList.remove("active");
-        btn.classList.add("inactive");
-        btn.innerHTML = '<i class="fas fa-eye-slash"></i> 使用 Spoiler Title';
-      }
-    }
-
-    // 初始化计数
-    async function initCounter() {
-      try {
-        const response = await fetch(API_ENDPOINT, {
-          headers: {
-            "X-Master-Key": API_KEY,
-            "Content-Type": "application/json"
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error("无法获取计数数据");
-        }
-        
-        const data = await response.json();
-        const stats = data.record;
-        
-        // 检查日期是否变化
-        const today = new Date().toISOString().split('T')[0];
-        if (lastUpdateDate !== today) {
-          // 新的一天重置今日用户数
-          lastUpdateDate = today;
-          todayUsers = 0;
-        } else {
-          copyCount = stats.copyCount || 0;
-          todayUsers = stats.todayUsers || 0;
-        }
-        
-        updateCounterDisplay();
-      } catch (error) {
-        console.error('获取初始计数失败:', error);
-        // 使用本地存储作为后备
-        const localStats = localStorage.getItem('wodtac_stats');
-        if (localStats) {
-          const stats = JSON.parse(localStats);
-          copyCount = stats.copyCount || 0;
-          todayUsers = stats.todayUsers || 0;
-          updateCounterDisplay();
-        }
-      }
-    }
-    
-    // 更新计数器显示
-    function updateCounterDisplay() {
-      document.getElementById('copy-count').textContent = copyCount.toLocaleString();
-      document.getElementById('today-users').textContent = todayUsers.toLocaleString();
-      document.getElementById('global-counter').textContent = copyCount.toLocaleString();
-      
-      // 添加动画效果
-      const counterElement = document.getElementById('global-counter');
-      counterElement.style.transition = 'all 0.5s ease';
-      counterElement.style.transform = 'translate(-50%, -50%) scale(1.1)';
-      counterElement.style.opacity = '0.1';
-      
-      setTimeout(() => {
-        counterElement.style.transform = 'translate(-50%, -50%) scale(1)';
-        counterElement.style.opacity = '0.05';
-      }, 300);
-    }
-    
-    // 增加计数
-    async function incrementCounter() {
-      // 乐观更新：立即显示效果
-      copyCount++;
-      todayUsers++;
-      updateCounterDisplay();
-      
-      try {
-        // 准备更新的数据
-        const today = new Date().toISOString().split('T')[0];
-        lastUpdateDate = today;
-        
-        const newStats = {
-          copyCount: copyCount,
-          todayUsers: todayUsers,
-          lastUpdate: today
-        };
-        
-        // 更新API
-        const response = await fetch(API_ENDPOINT, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": API_KEY
-          },
-          body: JSON.stringify(newStats)
-        });
-        
-        if (!response.ok) {
-          throw new Error("更新计数失败");
-        }
-        
-        // 同时更新本地存储
-        localStorage.setItem('wodtac_stats', JSON.stringify(newStats));
-      } catch (error) {
-        console.error('更新计数失败:', error);
-        // 失败时使用本地存储
-        localStorage.setItem('wodtac_stats', JSON.stringify({
-          copyCount: copyCount,
-          todayUsers: todayUsers,
-          lastUpdate: new Date().toISOString().split('T')[0]
-        }));
-      }
+      const checkbox = document.getElementById("spoilerToggle");
+      checkbox.checked = useSpoiler;
     }
 
     function init() {
       addPositionRow();
       addFloor();
       updateCounters();
-      initCounter();
     }
 
     function addPositionRow() {
@@ -904,21 +524,13 @@
       const container = btn.parentElement.previousElementSibling;
       const row = document.createElement('div');
       row.className = 'dynamic-row';
-      
-      const isMobile = window.innerWidth <= 768;
-      const jobPlaceholder = isMobile ? "职业" : "职业";
-      const skillPlaceholder1 = isMobile ? "技能1" : "技能/道具1";
-      const skillPlaceholder2 = isMobile ? "技能2" : "技能/道具2";
-      const posPlaceholder = isMobile ? "位置" : "位置";
-      const conditionPlaceholder = isMobile ? "条件" : "条件";
-      
       row.innerHTML = `
-        <input placeholder="${jobPlaceholder}">
-        <input placeholder="${skillPlaceholder1}">
-        <input placeholder="${skillPlaceholder2}">
-        <input placeholder="${posPlaceholder}">
+        <input placeholder="职业" style="width:100px">
+        <input placeholder="技能/道具1">
+        <input placeholder="技能/道具2">
+        <input placeholder="位置" style="width:80px">
         <select>
-          <option value="" disabled selected>${conditionPlaceholder}</option>
+          <option disabled selected>条件</option>
           <option>默认</option>
           <option>尽可能重复</option>
           <option>一次性</option>
@@ -929,19 +541,9 @@
         </button>
       `;
       container.appendChild(row);
-      
-      // 强制应用移动端样式
-      if(isMobile) {
-        row.style.display = 'flex';
-        row.style.flexDirection = 'row';
-        row.style.flexWrap = 'nowrap';
-        row.style.overflowX = 'auto';
-      }
     }
 
     function copyTactics() {
-      incrementCounter(); // 增加复制计数
-      
       const spoiler = useSpoiler;
       const name = document.getElementById('dungeonName').value || "未命名战术";
       let output = spoiler ? `[spoiler title=${name}]\n` : `战术：${name}\n`;
@@ -987,7 +589,7 @@
 
       if (spoiler) output += `[/spoiler]`;
 
-      output = output.trimEnd();
+      output = output.trimEnd(); // 去除多余空行
 
       // 复制操作
       try {
