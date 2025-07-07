@@ -13,10 +13,10 @@
       --danger: #e74c3c;
       --warning: #f39c12;
       --info: #3498db;
+      --cloud: #8e44ad;
       --dark: #2c3e50;
       --light: #ecf0f1;
       --gray: #95a5a6;
-      --cloud: #8e44ad;
       --scale-factor: 1;
       --border-radius: calc(6px * var(--scale-factor));
       --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.1);
@@ -32,14 +32,15 @@
     
     body {
       font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-      color: #333;
+      background: linear-gradient(135deg, #1a2a6c, #2c3e50, #4a235a);
+      color: #fff;
       line-height: calc(1.5 * var(--scale-factor));
       min-height: 100vh;
       padding: calc(40px * var(--scale-factor)) calc(10px * var(--scale-factor)) calc(70px * var(--scale-factor));
       max-width: var(--content-width);
       margin: 0 auto;
       transform-origin: top center;
+      background-attachment: fixed;
     }
     
     .scale-control {
@@ -47,10 +48,10 @@
       top: 10px;
       left: 10px;
       width: 180px;
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       padding: 8px;
       border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       z-index: 100;
       display: flex;
       align-items: center;
@@ -61,6 +62,7 @@
       font-weight: bold;
       font-size: 12px;
       white-space: nowrap;
+      color: #333;
     }
     
     .scale-control input {
@@ -73,43 +75,61 @@
       font-size: 12px;
       min-width: 30px;
       text-align: center;
+      color: #333;
     }
     
     .header {
       text-align: center;
       margin-bottom: calc(15px * var(--scale-factor));
       padding: 0 calc(8px * var(--scale-factor));
+      position: relative;
     }
     
     .header h1 {
-      font-size: calc(1.6rem * var(--scale-factor));
-      color: var(--dark);
+      font-size: calc(1.8rem * var(--scale-factor));
+      color: white;
       margin-bottom: calc(5px * var(--scale-factor));
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 2;
     }
     
     .header p {
-      color: var(--gray);
-      font-size: calc(0.85rem * var(--scale-factor));
+      color: #e0e0e0;
+      font-size: calc(0.9rem * var(--scale-factor));
+      position: relative;
+      z-index: 2;
+    }
+    
+    .header::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(74, 111, 165, 0.6) 0%, transparent 70%);
+      z-index: 1;
     }
     
     .mobile-tip {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.2);
       border-radius: var(--border-radius);
       padding: calc(10px * var(--scale-factor));
       margin: calc(10px * var(--scale-factor)) 0;
       text-align: center;
-      color: var(--primary);
+      color: white;
       font-weight: bold;
       display: none;
       box-shadow: var(--box-shadow);
       font-size: calc(0.85rem * var(--scale-factor));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(5px);
     }
     
     .config-block {
-      background: white;
+      background: rgba(30, 40, 60, 0.8);
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
       margin: calc(12px * var(--scale-factor)) 0;
@@ -117,19 +137,22 @@
       transition: var(--transition);
       position: relative;
       font-size: calc(0.9rem * var(--scale-factor));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
     }
     
     .config-block:hover {
-      box-shadow: 0 calc(5px * var(--scale-factor)) calc(10px * var(--scale-factor)) rgba(0,0,0,0.12);
+      box-shadow: 0 calc(5px * var(--scale-factor)) calc(10px * var(--scale-factor)) rgba(0,0,0,0.3);
       transform: translateY(calc(-1px * var(--scale-factor)));
+      background: rgba(35, 45, 70, 0.85);
     }
     
     .config-block h2 {
-      color: var(--primary);
+      color: var(--secondary);
       font-size: calc(1.3rem * var(--scale-factor));
       margin-bottom: calc(12px * var(--scale-factor));
       padding-bottom: calc(6px * var(--scale-factor));
-      border-bottom: calc(1px * var(--scale-factor)) solid var(--light);
+      border-bottom: calc(1px * var(--scale-factor)) solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       gap: calc(6px * var(--scale-factor));
@@ -148,7 +171,7 @@
     }
     
     .config-block h3 {
-      color: var(--dark);
+      color: var(--light);
       font-size: calc(1.1rem * var(--scale-factor));
       margin: calc(10px * var(--scale-factor)) 0 calc(6px * var(--scale-factor));
     }
@@ -163,10 +186,11 @@
     
     input, select, textarea {
       padding: calc(8px * var(--scale-factor)) calc(10px * var(--scale-factor));
-      border: calc(1px * var(--scale-factor)) solid #ddd;
+      border: calc(1px * var(--scale-factor)) solid rgba(255, 255, 255, 0.2);
       border-radius: var(--border-radius);
       font-size: calc(0.9rem * var(--scale-factor));
-      background: #fff;
+      background: rgba(20, 30, 50, 0.7);
+      color: white;
       flex: 1;
       min-width: calc(80px * var(--scale-factor));
       transition: var(--transition);
@@ -175,7 +199,13 @@
     input:focus, select:focus, textarea:focus {
       border-color: var(--secondary);
       outline: none;
-      box-shadow: 0 0 0 calc(2px * var(--scale-factor)) rgba(109, 158, 235, 0.2);
+      box-shadow: 0 0 0 calc(2px * var(--scale-factor)) rgba(109, 158, 235, 0.4);
+      background: rgba(25, 35, 60, 0.8);
+    }
+    
+    select option {
+      background: #1e2a3e;
+      color: white;
     }
     
     select option[disabled] {
@@ -195,13 +225,13 @@
       align-items: center;
       justify-content: center;
       gap: calc(5px * var(--scale-factor));
-      box-shadow: 0 calc(1px * var(--scale-factor)) calc(3px * var(--scale-factor)) rgba(0,0,0,0.1);
+      box-shadow: 0 calc(1px * var(--scale-factor)) calc(3px * var(--scale-factor)) rgba(0,0,0,0.2);
     }
     
     button:hover {
       opacity: 0.9;
       transform: translateY(calc(-1px * var(--scale-factor)));
-      box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor)) rgba(0,0,0,0.15);
+      box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor)) rgba(0,0,0,0.3);
     }
     
     button:active {
@@ -229,13 +259,13 @@
       z-index: 100;
       padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
       font-size: calc(0.95rem * var(--scale-factor));
-      box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.2);
+      box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3);
     }
     
     .comment-container {
       margin: calc(10px * var(--scale-factor)) 0;
       padding: calc(10px * var(--scale-factor));
-      background: #f8f9fa;
+      background: rgba(25, 35, 55, 0.6);
       border-radius: var(--border-radius);
     }
     
@@ -263,15 +293,15 @@
     }
     
     .spoiler-btn.inactive {
-      background-color: #e0e0e0;
-      color: #333;
+      background-color: rgba(224, 224, 224, 0.2);
+      color: #ddd;
     }
     
     .tactic-section {
       margin: calc(12px * var(--scale-factor)) 0;
       padding: calc(10px * var(--scale-factor));
       border-left: calc(2px * var(--scale-factor)) solid var(--info);
-      background: #f8fdff;
+      background: rgba(25, 50, 70, 0.4);
       border-radius: 0 var(--border-radius) var(--border-radius) 0;
     }
     
@@ -332,7 +362,7 @@
     
     /* 新增：手机端提示文字样式 */
     .mobile-hint {
-      color: rgba(149, 165, 166, 0.7);
+      color: rgba(200, 200, 200, 0.7);
       font-size: calc(0.85rem * var(--scale-factor));
       margin-left: auto;
       white-space: nowrap;
@@ -340,19 +370,21 @@
     
     /* 云端功能区样式 */
     .cloud-section {
-      background: white;
+      background: rgba(40, 30, 60, 0.8);
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
       margin: calc(12px * var(--scale-factor)) 0;
       padding: calc(12px * var(--scale-factor));
+      border: 1px solid rgba(142, 68, 173, 0.4);
+      backdrop-filter: blur(5px);
     }
     
     .cloud-section h2 {
-      color: var(--cloud);
+      color: #d6c2ff;
       font-size: calc(1.3rem * var(--scale-factor));
       margin-bottom: calc(12px * var(--scale-factor));
       padding-bottom: calc(6px * var(--scale-factor));
-      border-bottom: calc(1px * var(--scale-factor)) solid #f0e6f5;
+      border-bottom: calc(1px * var(--scale-factor)) solid rgba(142, 68, 173, 0.3);
       display: flex;
       align-items: center;
       gap: calc(6px * var(--scale-factor));
@@ -398,17 +430,19 @@
     .tactics-list {
       max-height: 300px;
       overflow-y: auto;
-      border: 1px solid #eee;
+      border: 1px solid rgba(142, 68, 173, 0.3);
       border-radius: var(--border-radius);
       padding: calc(8px * var(--scale-factor));
+      background: rgba(30, 20, 50, 0.6);
     }
     
     .tactic-item {
-      background: #f9f9f9;
+      background: rgba(45, 35, 70, 0.7);
       border-radius: var(--border-radius);
       padding: calc(10px * var(--scale-factor));
       margin-bottom: calc(8px * var(--scale-factor));
       border-left: 3px solid var(--cloud);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     
     .tactic-header {
@@ -420,18 +454,18 @@
     
     .tactic-name {
       font-weight: bold;
-      color: var(--dark);
+      color: #f0e6ff;
       font-size: calc(1rem * var(--scale-factor));
     }
     
     .tactic-date {
-      color: var(--gray);
+      color: #b0a0cc;
       font-size: calc(0.75rem * var(--scale-factor));
     }
     
     .tactic-content {
       font-size: calc(0.85rem * var(--scale-factor));
-      color: #555;
+      color: #ddd;
       margin-bottom: calc(8px * var(--scale-factor));
       white-space: pre-wrap;
       max-height: 60px;
@@ -446,7 +480,7 @@
       left: 0;
       right: 0;
       height: 20px;
-      background: linear-gradient(to bottom, rgba(249, 249, 249, 0), rgba(249, 249, 249, 1));
+      background: linear-gradient(to bottom, rgba(45, 35, 70, 0), rgba(45, 35, 70, 0.7));
     }
     
     .tactic-footer {
@@ -470,18 +504,18 @@
       font-size: calc(0.8rem * var(--scale-factor));
       cursor: pointer;
       border: none;
-      background: #f0f0f0;
-      color: #777;
+      background: rgba(255, 255, 255, 0.1);
+      color: #aaa;
       transition: all 0.2s;
     }
     
     .rating-btn.like {
-      background: #e8f5e9;
+      background: rgba(76, 175, 80, 0.3);
       color: var(--success);
     }
     
     .rating-btn.dislike {
-      background: #ffebee;
+      background: rgba(231, 76, 60, 0.3);
       color: var(--danger);
     }
     
@@ -520,18 +554,37 @@
     }
     
     .status-success {
-      background: #e8f5e9;
-      color: var(--success);
+      background: rgba(76, 175, 80, 0.2);
+      color: #d4ffd4;
+      border: 1px solid rgba(76, 175, 80, 0.3);
     }
     
     .status-error {
-      background: #ffebee;
-      color: var(--danger);
+      background: rgba(231, 76, 60, 0.2);
+      color: #ffd4d4;
+      border: 1px solid rgba(231, 76, 60, 0.3);
     }
     
     .status-info {
-      background: #e3f2fd;
-      color: var(--info);
+      background: rgba(52, 152, 219, 0.2);
+      color: #d4eaff;
+      border: 1px solid rgba(52, 152, 219, 0.3);
+    }
+    
+    .cloud-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: var(--border-radius);
+      background: rgba(40, 40, 80, 0.5);
+      font-size: 0.85rem;
+    }
+    
+    .cloud-status i {
+      color: #6d9eeb;
     }
     
     /* 响应式设计 - 移动端 */
@@ -784,6 +837,11 @@
     <div id="tacticsList" class="tactics-list">
       <!-- 战术列表将在这里动态生成 -->
     </div>
+    
+    <div class="cloud-status">
+      <i class="fas fa-cloud"></i>
+      <span>已连接到 JSONBin.io 云端存储</span>
+    </div>
   </div>
 
   <div class="config-block">
@@ -823,10 +881,10 @@
   </button>
 
   <script>
-    // 配置您的API密钥
+    // 配置您的API密钥（直接嵌入）
+    const BIN_ID = "686bdc348a456b7966bcdf3a";
     const X_ACCESS_KEY = "$2a$10$RCoO5OkFJZF5s.yjn7veXeAxuq.4hRzwE21YaPhyLdcpNW0STBfwS";
     const X_MASTER_KEY = "$2a$10$Bz3gYeqxopB31a/nY3cyyuSXp9hNVKZeVTTsBy.tVFIBhcNDW1JIO";
-    const BIN_ID = "686bdc348a456b7966bcdf3a"; // 替换为您的bin ID
     const API_URL = "https://api.jsonbin.io/v3/b/" + BIN_ID;
     
     let useSpoiler = false;
@@ -1063,7 +1121,9 @@
         spoiler: useSpoiler,
         positions: positions,
         floors: floors,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        likes: 0,
+        dislikes: 0
       };
     }
 
@@ -1130,7 +1190,7 @@
     
     // 云端功能
     async function fetchTactics() {
-      showStatus('正在加载战术数据...', 'info');
+      showStatus('正在加载云端战术数据...', 'info');
       
       try {
         const response = await fetch(API_URL + "/latest", {
@@ -1168,9 +1228,9 @@
         return;
       }
       
-      showStatus('正在上传战术...', 'info');
+      showStatus('正在上传战术到云端...', 'info');
       
-      // 添加到本地列表（模拟上传）
+      // 添加到本地列表
       const existingIndex = tacticsData.findIndex(t => t.name === tactic.name);
       
       if (existingIndex !== -1) {
@@ -1185,8 +1245,7 @@
       
       renderTacticsList(tacticsData);
       
-      // 在实际应用中，这里应该调用API更新云端数据
-      /*
+      // 更新云端数据
       try {
         const response = await fetch(API_URL, {
           method: 'PUT',
@@ -1201,13 +1260,11 @@
           throw new Error('上传战术失败: ' + response.status);
         }
         
-        showStatus(`"${tactic.name}" 已成功上传`, 'success');
-        fetchTactics(); // 刷新列表
+        showStatus(`"${tactic.name}" 已同步到云端`, 'success');
       } catch (error) {
         console.error('上传战术时出错:', error);
         showStatus('上传失败: ' + error.message, 'error');
       }
-      */
     }
     
     function searchTactics() {
@@ -1283,7 +1340,7 @@
               <span>${tactic.dislikes || 0}</span>
             </div>
             <div class="actions">
-              <button class="copy-btn-sm" onclick="loadTactic(${index})">
+              <button class="load-btn-sm" onclick="loadTactic(${index})">
                 <i class="fas fa-download"></i> 加载
               </button>
               <button class="copy-btn-sm" onclick="copyTacticToClipboard(${index})">
@@ -1317,11 +1374,25 @@
           tactic.dislikes = (tactic.dislikes || 0) + 1;
         }
         
-        // 在实际应用中，这里应该调用API更新云端数据
-        // updateTacticOnServer(tactic);
-        
+        // 更新云端数据
+        updateTacticsOnServer();
         renderTacticsList(tacticsData);
         showStatus(`感谢您的评分！`, 'success');
+      }
+    }
+    
+    async function updateTacticsOnServer() {
+      try {
+        await fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'X-Master-Key': X_MASTER_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ tactics: tacticsData })
+        });
+      } catch (error) {
+        console.error('更新战术评分时出错:', error);
       }
     }
     
