@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>地城战术配置器</title>
+  <title>地城战术配置器 - 全网点击统计</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -39,6 +39,33 @@
       max-width: var(--content-width);
       margin: 0 auto;
       transform-origin: top center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* 新增：背景计数器样式 */
+    #global-counter {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30vw;
+      font-weight: 900;
+      color: rgba(109, 158, 235, 0.08);
+      z-index: -1;
+      pointer-events: none;
+      user-select: none;
+      font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+      white-space: nowrap;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: all 1s ease;
+      opacity: 0.05;
+      animation: pulse 5s infinite ease-in-out;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.05; }
+      50% { opacity: 0.1; }
     }
     
     .scale-control {
@@ -337,6 +364,37 @@
       white-space: nowrap;
     }
     
+    /* 新增：统计信息 */
+    .stats-container {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .stats-container .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .stats-container .stat-label {
+      color: #666;
+    }
+    
+    .stats-container .stat-value {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
     /* 响应式设计 - 移动端 */
     @media (max-width: 768px) {
       .scale-control {
@@ -480,6 +538,19 @@
       .tactic-section {
         padding: calc(8px * var(--scale-factor));
       }
+      
+      #global-counter {
+        font-size: 40vw;
+      }
+      
+      .stats-container {
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 300px;
+        padding: 6px;
+      }
     }
     
     /* 桌面端隐藏提示文字 */
@@ -530,6 +601,23 @@
   </style>
 </head>
 <body>
+  <!-- 背景计数器 -->
+  <div id="global-counter">0</div>
+  
+  <!-- 统计信息面板 -->
+  <div class="stats-container">
+    <div class="stat-item">
+      <i class="fas fa-copy"></i>
+      <span class="stat-label">复制次数:</span>
+      <span class="stat-value" id="copy-count">0</span>
+    </div>
+    <div class="stat-item">
+      <i class="fas fa-users"></i>
+      <span class="stat-label">今日用户:</span>
+      <span class="stat-value" id="today-users">0</span>
+    </div>
+  </div>
+
   <div class="scale-control">
     <label for="scaleSlider">缩放:</label>
     <input type="range" id="scaleSlider" min="30" max="150" value="100" step="5">
@@ -585,6 +673,11 @@
     let useSpoiler = false;
     let positionCount = 0;
     let floorCount = 0;
+    
+    // 使用countAPI作为免费轻量级计数器服务
+    const API_NAMESPACE = "wodtac_tactic_config";
+    let copyCount = 0;
+    let todayUsers = 0;
 
     // 缩放控制功能
     const scaleSlider = document.getElementById('scaleSlider');
@@ -615,10 +708,75 @@
       }
     }
 
+    // 初始化计数
+    async function initCounter() {
+      try {
+        // 获取复制总次数
+        const copyResponse = await fetch(`https://api.countapi.xyz/get/${API_NAMESPACE}/copy_count`);
+        const copyData = await copyResponse.json();
+        copyCount = copyData.value || 0;
+        document.getElementById('copy-count').textContent = copyCount.toLocaleString();
+        document.getElementById('global-counter').textContent = copyCount.toLocaleString();
+        
+        // 获取今日用户数（基于日期）
+        const today = new Date().toISOString().slice(0, 10);
+        const userResponse = await fetch(`https://api.countapi.xyz/get/${API_NAMESPACE}/users_${today}`);
+        const userData = await userResponse.json();
+        todayUsers = userData.value || 0;
+        document.getElementById('today-users').textContent = todayUsers.toLocaleString();
+      } catch (error) {
+        console.error('获取初始计数失败:', error);
+      }
+    }
+    
+    // 增加计数
+    async function incrementCounter() {
+      try {
+        // 增加复制总次数
+        const copyResponse = await fetch(`https://api.countapi.xyz/hit/${API_NAMESPACE}/copy_count`);
+        const copyData = await copyResponse.json();
+        copyCount = copyData.value;
+        document.getElementById('copy-count').textContent = copyCount.toLocaleString();
+        
+        // 更新背景计数器显示
+        const counterElement = document.getElementById('global-counter');
+        counterElement.textContent = copyCount.toLocaleString();
+        
+        // 添加动画效果
+        counterElement.style.transition = 'all 0.5s ease';
+        counterElement.style.transform = 'translate(-50%, -50%) scale(1.1)';
+        counterElement.style.opacity = '0.1';
+        
+        setTimeout(() => {
+          counterElement.style.transform = 'translate(-50%, -50%) scale(1)';
+          counterElement.style.opacity = '0.05';
+        }, 300);
+        
+        // 记录用户访问（每日唯一）
+        const today = new Date().toISOString().slice(0, 10);
+        const userKey = `user_${today}_${Math.random().toString(36).substr(2, 8)}`;
+        
+        // 检查是否已经记录过今日访问
+        if (!localStorage.getItem(userKey)) {
+          // 增加今日用户计数
+          const userResponse = await fetch(`https://api.countapi.xyz/hit/${API_NAMESPACE}/users_${today}`);
+          const userData = await userResponse.json();
+          todayUsers = userData.value;
+          document.getElementById('today-users').textContent = todayUsers.toLocaleString();
+          
+          // 标记用户已访问
+          localStorage.setItem(userKey, '1');
+        }
+      } catch (error) {
+        console.error('更新计数失败:', error);
+      }
+    }
+
     function init() {
       addPositionRow();
       addFloor();
       updateCounters();
+      initCounter();
     }
 
     function addPositionRow() {
@@ -739,6 +897,8 @@
     }
 
     function copyTactics() {
+      incrementCounter(); // 增加复制计数
+      
       const spoiler = useSpoiler;
       const name = document.getElementById('dungeonName').value || "未命名战术";
       let output = spoiler ? `[spoiler title=${name}]\n` : `战术：${name}\n`;
