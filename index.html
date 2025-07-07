@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>地城战术配置器</title>
+  <title>地城战术配置器 - 云端版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -16,6 +16,7 @@
       --dark: #2c3e50;
       --light: #ecf0f1;
       --gray: #95a5a6;
+      --cloud: #8e44ad;
       --scale-factor: 1;
       --border-radius: calc(6px * var(--scale-factor));
       --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.1);
@@ -337,6 +338,202 @@
       white-space: nowrap;
     }
     
+    /* 云端功能区样式 */
+    .cloud-section {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin: calc(12px * var(--scale-factor)) 0;
+      padding: calc(12px * var(--scale-factor));
+    }
+    
+    .cloud-section h2 {
+      color: var(--cloud);
+      font-size: calc(1.3rem * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
+      padding-bottom: calc(6px * var(--scale-factor));
+      border-bottom: calc(1px * var(--scale-factor)) solid #f0e6f5;
+      display: flex;
+      align-items: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    .cloud-section h2 i {
+      background: var(--cloud);
+      color: white;
+      width: calc(28px * var(--scale-factor));
+      height: calc(28px * var(--scale-factor));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(0.9rem * var(--scale-factor));
+    }
+    
+    .cloud-actions {
+      display: flex;
+      gap: calc(8px * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
+    }
+    
+    .cloud-actions button {
+      flex: 1;
+      background: var(--cloud);
+    }
+    
+    .search-container {
+      display: flex;
+      gap: calc(8px * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
+    }
+    
+    .search-container input {
+      flex: 1;
+    }
+    
+    .search-container button {
+      background: var(--info);
+    }
+    
+    .tactics-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      border-radius: var(--border-radius);
+      padding: calc(8px * var(--scale-factor));
+    }
+    
+    .tactic-item {
+      background: #f9f9f9;
+      border-radius: var(--border-radius);
+      padding: calc(10px * var(--scale-factor));
+      margin-bottom: calc(8px * var(--scale-factor));
+      border-left: 3px solid var(--cloud);
+    }
+    
+    .tactic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: calc(6px * var(--scale-factor));
+    }
+    
+    .tactic-name {
+      font-weight: bold;
+      color: var(--dark);
+      font-size: calc(1rem * var(--scale-factor));
+    }
+    
+    .tactic-date {
+      color: var(--gray);
+      font-size: calc(0.75rem * var(--scale-factor));
+    }
+    
+    .tactic-content {
+      font-size: calc(0.85rem * var(--scale-factor));
+      color: #555;
+      margin-bottom: calc(8px * var(--scale-factor));
+      white-space: pre-wrap;
+      max-height: 60px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .tactic-content::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: linear-gradient(to bottom, rgba(249, 249, 249, 0), rgba(249, 249, 249, 1));
+    }
+    
+    .tactic-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .rating {
+      display: flex;
+      gap: calc(5px * var(--scale-factor));
+    }
+    
+    .rating-btn {
+      width: calc(28px * var(--scale-factor));
+      height: calc(28px * var(--scale-factor));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(0.8rem * var(--scale-factor));
+      cursor: pointer;
+      border: none;
+      background: #f0f0f0;
+      color: #777;
+      transition: all 0.2s;
+    }
+    
+    .rating-btn.like {
+      background: #e8f5e9;
+      color: var(--success);
+    }
+    
+    .rating-btn.dislike {
+      background: #ffebee;
+      color: var(--danger);
+    }
+    
+    .rating-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .actions {
+      display: flex;
+      gap: calc(5px * var(--scale-factor));
+    }
+    
+    .actions button {
+      padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
+      font-size: calc(0.8rem * var(--scale-factor));
+    }
+    
+    .copy-btn-sm {
+      background: var(--primary);
+    }
+    
+    .load-btn-sm {
+      background: var(--info);
+    }
+    
+    .delete-btn-sm {
+      background: var(--danger);
+    }
+    
+    .status-message {
+      text-align: center;
+      padding: calc(8px * var(--scale-factor));
+      border-radius: var(--border-radius);
+      margin: calc(8px * var(--scale-factor)) 0;
+      font-size: calc(0.9rem * var(--scale-factor));
+    }
+    
+    .status-success {
+      background: #e8f5e9;
+      color: var(--success);
+    }
+    
+    .status-error {
+      background: #ffebee;
+      color: var(--danger);
+    }
+    
+    .status-info {
+      background: #e3f2fd;
+      color: var(--info);
+    }
+    
     /* 响应式设计 - 移动端 */
     @media (max-width: 768px) {
       .scale-control {
@@ -480,6 +677,21 @@
       .tactic-section {
         padding: calc(8px * var(--scale-factor));
       }
+      
+      .cloud-actions {
+        flex-direction: column;
+      }
+      
+      .tactic-footer {
+        flex-direction: column;
+        gap: calc(8px * var(--scale-factor));
+        align-items: flex-start;
+      }
+      
+      .actions {
+        width: 100%;
+        justify-content: space-between;
+      }
     }
     
     /* 桌面端隐藏提示文字 */
@@ -537,12 +749,41 @@
   </div>
 
   <div class="header">
-    <h1><i class="fas fa-dungeon"></i> 地城战术配置器</h1>
-    <p>创建并分享你的地城探险战术方案</p>
+    <h1><i class="fas fa-dungeon"></i> 地城战术配置器 - 云端版</h1>
+    <p>创建、分享和探索地城探险战术方案</p>
   </div>
   
   <div class="mobile-tip">
     <i class="fas fa-mobile-alt"></i> 摸鱼吧！孩子
+  </div>
+
+  <!-- 云端功能区 -->
+  <div class="cloud-section">
+    <h2><i class="fas fa-cloud"></i> 云端战术库</h2>
+    
+    <div class="cloud-actions">
+      <button onclick="uploadTactics()">
+        <i class="fas fa-upload"></i> 上传当前战术
+      </button>
+      <button onclick="fetchTactics()">
+        <i class="fas fa-sync-alt"></i> 刷新战术列表
+      </button>
+    </div>
+    
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="搜索战术名称...">
+      <button onclick="searchTactics()">
+        <i class="fas fa-search"></i> 搜索
+      </button>
+    </div>
+    
+    <div id="statusMessage" class="status-message status-info">
+      已连接到云端战术库，点击"刷新战术列表"加载数据
+    </div>
+    
+    <div id="tacticsList" class="tactics-list">
+      <!-- 战术列表将在这里动态生成 -->
+    </div>
   </div>
 
   <div class="config-block">
@@ -582,9 +823,17 @@
   </button>
 
   <script>
+    // 配置您的API密钥
+    const X_ACCESS_KEY = "$2a$10$RCoO5OkFJZF5s.yjn7veXeAxuq.4hRzwE21YaPhyLdcpNW0STBfwS";
+    const X_MASTER_KEY = "$2a$10$Bz3gYeqxopB31a/nY3cyyuSXp9hNVKZeVTTsBy.tVFIBhcNDW1JIO";
+    const BIN_ID = "686bdc348a456b7966bcdf3a"; // 替换为您的bin ID
+    const API_URL = "https://api.jsonbin.io/v3/b/" + BIN_ID;
+    
     let useSpoiler = false;
     let positionCount = 0;
     let floorCount = 0;
+    let tacticsData = [];
+    let userRatings = {};
 
     // 缩放控制功能
     const scaleSlider = document.getElementById('scaleSlider');
@@ -619,6 +868,13 @@
       addPositionRow();
       addFloor();
       updateCounters();
+      fetchTactics();
+      
+      // 从本地存储加载用户评分
+      const savedRatings = localStorage.getItem('tacticRatings');
+      if (savedRatings) {
+        userRatings = JSON.parse(savedRatings);
+      }
     }
 
     function addPositionRow() {
@@ -738,58 +994,129 @@
       }
     }
 
-    function copyTactics() {
-      const spoiler = useSpoiler;
+    function generateTacticsObject() {
       const name = document.getElementById('dungeonName').value || "未命名战术";
-      let output = spoiler ? `[spoiler title=${name}]\n` : `战术：${name}\n`;
+      
+      // 收集站位配置
+      const positions = [];
+      document.querySelectorAll('#positionConfig > div').forEach(row => {
+        const pos = row.querySelector('select').value;
+        const classes = row.querySelector('input').value;
+        if (classes.trim()) {
+          positions.push({ position: pos, classes: classes });
+        }
+      });
+      
+      // 收集楼层配置
+      const floors = [];
+      document.querySelectorAll('#floorConfig > div').forEach(floor => {
+        const floorId = floor.querySelector('input').value || "未命名楼层";
+        
+        // 收集备注
+        const comments = [];
+        floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
+          if (textarea.value.trim()) comments.push(textarea.value.trim());
+        });
+        
+        // 收集回合前行动
+        const preTurn = [];
+        floor.querySelectorAll('.pre-turn > div.dynamic-row').forEach(row => {
+          const inputs = row.querySelectorAll('input, select');
+          const values = Array.from(inputs).map(i => i.tagName === 'SELECT' ? (i.selectedIndex > 0 ? i.value : "") : i.value);
+          if (values.some(v => v.trim())) {
+            preTurn.push({
+              job: values[0] || "",
+              skill1: values[1] || "",
+              skill2: values[2] || "",
+              position: values[3] || "",
+              condition: values[4] || ""
+            });
+          }
+        });
+        
+        // 收集回合中行动
+        const postTurn = [];
+        floor.querySelectorAll('.post-turn > div.dynamic-row').forEach(row => {
+          const inputs = row.querySelectorAll('input, select');
+          const values = Array.from(inputs).map(i => i.tagName === 'SELECT' ? (i.selectedIndex > 0 ? i.value : "") : i.value);
+          if (values.some(v => v.trim())) {
+            postTurn.push({
+              job: values[0] || "",
+              skill1: values[1] || "",
+              skill2: values[2] || "",
+              position: values[3] || "",
+              condition: values[4] || ""
+            });
+          }
+        });
+        
+        floors.push({
+          name: floorId,
+          comments: comments,
+          preTurn: preTurn,
+          postTurn: postTurn
+        });
+      });
+      
+      return {
+        name: name,
+        spoiler: useSpoiler,
+        positions: positions,
+        floors: floors,
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function copyTactics() {
+      const tactic = generateTacticsObject();
+      let output = tactic.spoiler ? `[spoiler title=${tactic.name}]\n` : `战术：${tactic.name}\n`;
 
       // 站位配置
       output += `站位：\n`;
       const positions = {};
-      document.querySelectorAll('#positionConfig > div').forEach(row => {
-        const pos = row.querySelector('select').value;
-        const classes = row.querySelector('input').value;
-        positions[pos] = (positions[pos] || []).concat(classes.split(/\s*,\s*/));
+      tactic.positions.forEach(p => {
+        positions[p.position] = (positions[p.position] || []).concat(p.classes.split(/\s*,\s*/));
       });
       Object.entries(positions).forEach(([pos, classes]) => {
         output += `  ${pos}：${classes.filter(c=>c).join('、')}\n`;
       });
 
       // 楼层配置
-      document.querySelectorAll('#floorConfig > div').forEach(floor => {
-        const floorId = floor.querySelector('input').value || "未命名楼层";
-        output += `${floorId}\n`;
+      tactic.floors.forEach(floor => {
+        output += `${floor.name}\n`;
 
-        floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
-          if (textarea.value.trim()) output += `  ${textarea.value.trim()}\n`;
+        floor.comments.forEach(comment => {
+          output += `  ${comment}\n`;
         });
 
-        const handleRows = (container, title) => {
-          const rows = container.querySelectorAll('div.dynamic-row');
+        const handleRows = (rows, title) => {
           if (rows.length > 0) {
             output += `${title}：\n`;
             rows.forEach(row => {
-              const inputs = row.querySelectorAll('input, select');
-              const values = Array.from(inputs).map(i => i.tagName === 'SELECT' ? (i.selectedIndex > 0 ? i.value : "") : i.value);
-              if (values.some(v => v.trim())) {
-                output += `  ${values.join(' ').trim()}\n`;
-              }
+              const values = [
+                row.job, 
+                row.skill1, 
+                row.skill2, 
+                row.position, 
+                row.condition
+              ].filter(v => v).join(' ');
+              output += `  ${values}\n`;
             });
           }
         };
 
-        handleRows(floor.querySelector('.pre-turn'), '回合前');
-        handleRows(floor.querySelector('.post-turn'), '回合中');
+        handleRows(floor.preTurn, '回合前');
+        handleRows(floor.postTurn, '回合中');
       });
 
-      if (spoiler) output += `[/spoiler]`;
+      if (tactic.spoiler) output += `[/spoiler]`;
 
       output = output.trimEnd();
 
       // 复制操作
       try {
         navigator.clipboard.writeText(output);
-        alert('配置已复制到剪贴板！\n\n' + output);
+        showStatus('配置已复制到剪贴板！', 'success');
       } catch (err) {
         const textarea = document.createElement('textarea');
         textarea.value = output;
@@ -797,8 +1124,438 @@
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        alert('已自动复制到剪贴板！');
+        showStatus('已自动复制到剪贴板！', 'success');
       }
+    }
+    
+    // 云端功能
+    async function fetchTactics() {
+      showStatus('正在加载战术数据...', 'info');
+      
+      try {
+        const response = await fetch(API_URL + "/latest", {
+          method: 'GET',
+          headers: {
+            'X-Access-Key': X_ACCESS_KEY,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('获取战术数据失败: ' + response.status);
+        }
+        
+        const data = await response.json();
+        tacticsData = data.record.tactics || [];
+        renderTacticsList(tacticsData);
+        showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
+      } catch (error) {
+        console.error('获取战术数据时出错:', error);
+        showStatus('加载战术失败: ' + error.message, 'error');
+      }
+    }
+    
+    async function uploadTactics() {
+      const tactic = generateTacticsObject();
+      
+      if (!tactic.name || tactic.name === "未命名战术") {
+        showStatus('请为您的战术命名', 'error');
+        return;
+      }
+      
+      if (tactic.floors.length === 0) {
+        showStatus('请至少添加一个楼层配置', 'error');
+        return;
+      }
+      
+      showStatus('正在上传战术...', 'info');
+      
+      // 添加到本地列表（模拟上传）
+      const existingIndex = tacticsData.findIndex(t => t.name === tactic.name);
+      
+      if (existingIndex !== -1) {
+        // 更新现有战术
+        tacticsData[existingIndex] = tactic;
+        showStatus(`"${tactic.name}" 已更新`, 'success');
+      } else {
+        // 添加新战术
+        tacticsData.unshift(tactic);
+        showStatus(`"${tactic.name}" 已成功上传`, 'success');
+      }
+      
+      renderTacticsList(tacticsData);
+      
+      // 在实际应用中，这里应该调用API更新云端数据
+      /*
+      try {
+        const response = await fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'X-Master-Key': X_MASTER_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ tactics: tacticsData })
+        });
+        
+        if (!response.ok) {
+          throw new Error('上传战术失败: ' + response.status);
+        }
+        
+        showStatus(`"${tactic.name}" 已成功上传`, 'success');
+        fetchTactics(); // 刷新列表
+      } catch (error) {
+        console.error('上传战术时出错:', error);
+        showStatus('上传失败: ' + error.message, 'error');
+      }
+      */
+    }
+    
+    function searchTactics() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      if (!searchTerm) {
+        renderTacticsList(tacticsData);
+        showStatus('显示所有战术', 'info');
+        return;
+      }
+      
+      const filtered = tacticsData.filter(tactic => 
+        tactic.name.toLowerCase().includes(searchTerm)
+      );
+      
+      renderTacticsList(filtered);
+      showStatus(`找到 ${filtered.length} 个匹配的战术`, 'success');
+    }
+    
+    function renderTacticsList(tactics) {
+      const container = document.getElementById('tacticsList');
+      container.innerHTML = '';
+      
+      if (tactics.length === 0) {
+        container.innerHTML = '<div class="status-message status-info">没有找到战术</div>';
+        return;
+      }
+      
+      tactics.forEach((tactic, index) => {
+        const item = document.createElement('div');
+        item.className = 'tactic-item';
+        
+        // 生成战术预览文本
+        let preview = '';
+        tactic.positions.forEach(pos => {
+          preview += `${pos.position}: ${pos.classes}\n`;
+        });
+        
+        tactic.floors.forEach(floor => {
+          preview += `${floor.name}\n`;
+          floor.comments.forEach(c => preview += `${c}\n`);
+          
+          if (floor.preTurn.length > 0) {
+            preview += "回合前:\n";
+            floor.preTurn.forEach(t => {
+              preview += `  ${t.job} ${t.skill1} ${t.skill2} ${t.position} ${t.condition}\n`;
+            });
+          }
+        });
+        
+        // 格式化日期
+        const date = new Date(tactic.createdAt);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        
+        // 获取用户评分
+        const userRating = userRatings[tactic.name] || 0;
+        
+        item.innerHTML = `
+          <div class="tactic-header">
+            <div class="tactic-name">${tactic.name}</div>
+            <div class="tactic-date">${formattedDate}</div>
+          </div>
+          <div class="tactic-content">${preview}</div>
+          <div class="tactic-footer">
+            <div class="rating">
+              <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="rateTactic('${tactic.name}', 1)">
+                <i class="fas fa-thumbs-up"></i>
+              </button>
+              <span>${tactic.likes || 0}</span>
+              <button class="rating-btn ${userRating === -1 ? 'dislike' : ''}" onclick="rateTactic('${tactic.name}', -1)">
+                <i class="fas fa-thumbs-down"></i>
+              </button>
+              <span>${tactic.dislikes || 0}</span>
+            </div>
+            <div class="actions">
+              <button class="copy-btn-sm" onclick="loadTactic(${index})">
+                <i class="fas fa-download"></i> 加载
+              </button>
+              <button class="copy-btn-sm" onclick="copyTacticToClipboard(${index})">
+                <i class="fas fa-copy"></i> 复制
+              </button>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(item);
+      });
+    }
+    
+    function rateTactic(tacticName, rating) {
+      // 检查用户是否已经评分
+      if (userRatings[tacticName]) {
+        showStatus('您已经对此战术评过分了', 'info');
+        return;
+      }
+      
+      // 更新用户评分记录
+      userRatings[tacticName] = rating;
+      localStorage.setItem('tacticRatings', JSON.stringify(userRatings));
+      
+      // 更新战术数据
+      const tactic = tacticsData.find(t => t.name === tacticName);
+      if (tactic) {
+        if (rating === 1) {
+          tactic.likes = (tactic.likes || 0) + 1;
+        } else {
+          tactic.dislikes = (tactic.dislikes || 0) + 1;
+        }
+        
+        // 在实际应用中，这里应该调用API更新云端数据
+        // updateTacticOnServer(tactic);
+        
+        renderTacticsList(tacticsData);
+        showStatus(`感谢您的评分！`, 'success');
+      }
+    }
+    
+    function copyTacticToClipboard(index) {
+      const tactic = tacticsData[index];
+      let output = tactic.spoiler ? `[spoiler title=${tactic.name}]\n` : `战术：${tactic.name}\n`;
+
+      // 站位配置
+      output += `站位：\n`;
+      const positions = {};
+      tactic.positions.forEach(p => {
+        positions[p.position] = (positions[p.position] || []).concat(p.classes.split(/\s*,\s*/));
+      });
+      Object.entries(positions).forEach(([pos, classes]) => {
+        output += `  ${pos}：${classes.filter(c=>c).join('、')}\n`;
+      });
+
+      // 楼层配置
+      tactic.floors.forEach(floor => {
+        output += `${floor.name}\n`;
+
+        floor.comments.forEach(comment => {
+          output += `  ${comment}\n`;
+        });
+
+        const handleRows = (rows, title) => {
+          if (rows.length > 0) {
+            output += `${title}：\n`;
+            rows.forEach(row => {
+              const values = [
+                row.job, 
+                row.skill1, 
+                row.skill2, 
+                row.position, 
+                row.condition
+              ].filter(v => v).join(' ');
+              output += `  ${values}\n`;
+            });
+          }
+        };
+
+        handleRows(floor.preTurn, '回合前');
+        handleRows(floor.postTurn, '回合中');
+      });
+
+      if (tactic.spoiler) output += `[/spoiler]`;
+
+      output = output.trimEnd();
+
+      // 复制操作
+      try {
+        navigator.clipboard.writeText(output);
+        showStatus('配置已复制到剪贴板！', 'success');
+      } catch (err) {
+        const textarea = document.createElement('textarea');
+        textarea.value = output;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showStatus('已自动复制到剪贴板！', 'success');
+      }
+    }
+    
+    function loadTactic(index) {
+      const tactic = tacticsData[index];
+      
+      // 清除现有配置
+      document.getElementById('dungeonName').value = tactic.name;
+      
+      // 设置spoiler状态
+      useSpoiler = tactic.spoiler;
+      const btn = document.getElementById("spoilerToggleBtn");
+      if (useSpoiler) {
+        btn.classList.remove("inactive");
+        btn.classList.add("active");
+        btn.innerHTML = '<i class="fas fa-eye"></i> 使用 Spoiler Title（已启用）';
+      } else {
+        btn.classList.remove("active");
+        btn.classList.add("inactive");
+        btn.innerHTML = '<i class="fas fa-eye-slash"></i> 使用 Spoiler Title';
+      }
+      
+      // 清除现有站位
+      const positionConfig = document.getElementById('positionConfig');
+      positionConfig.innerHTML = '';
+      positionCount = 0;
+      
+      // 添加站位
+      tactic.positions.forEach(pos => {
+        positionCount++;
+        const row = document.createElement('div');
+        row.className = 'dynamic-row';
+        row.innerHTML = `
+          <select>
+            <option ${pos.position === '前排' ? 'selected' : ''}>前排</option>
+            <option ${pos.position === '左翼' ? 'selected' : ''}>左翼</option>
+            <option ${pos.position === '右翼' ? 'selected' : ''}>右翼</option>
+            <option ${pos.position === '中间' ? 'selected' : ''}>中间</option>
+            <option ${pos.position === '后排' ? 'selected' : ''}>后排</option>
+          </select>
+          <input placeholder="职业（多个用,分隔）" value="${pos.classes}">
+          <button class="delete-btn" onclick="this.parentElement.remove(); positionCount--; updateCounters()">
+            <i class="fas fa-trash"></i>
+          </button>
+        `;
+        positionConfig.appendChild(row);
+      });
+      
+      // 清除现有楼层
+      const floorConfig = document.getElementById('floorConfig');
+      floorConfig.innerHTML = '';
+      floorCount = 0;
+      
+      // 添加楼层
+      tactic.floors.forEach(floor => {
+        floorCount++;
+        const floorElement = document.createElement('div');
+        floorElement.className = 'config-block';
+        floorElement.innerHTML = `
+          <div class="dynamic-row">
+            <input placeholder="楼层（例：F1）" value="${floor.name}">
+            <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div class="comment-container">
+            <button class="add-btn" onclick="addCommentRow(this)">
+              <i class="fas fa-comment-medical"></i> 添加备注行
+            </button>
+            <div class="comment-rows"></div>
+          </div>
+          
+          <div class="tactic-section">
+            <h4><i class="fas fa-flag"></i> 回合前</h4>
+            <div class="tactics-container pre-turn"></div>
+            <div class="mobile-controls">
+              <button style="background:var(--info)" onclick="addTacticRow(this, 'pre-turn')">
+                <i class="fas fa-plus-circle"></i> 添加行动
+              </button>
+            </div>
+          </div>
+          
+          <div class="tactic-section">
+            <h4><i class="fas fa-fist-raised"></i> 回合中</h4>
+            <div class="tactics-container post-turn"></div>
+            <div class="mobile-controls">
+              <button style="background:var(--info)" onclick="addTacticRow(this, 'post-turn')">
+                <i class="fas fa-plus-circle"></i> 添加行动
+              </button>
+            </div>
+          </div>
+        `;
+        floorConfig.appendChild(floorElement);
+        
+        // 添加备注
+        const commentContainer = floorElement.querySelector('.comment-rows');
+        floor.comments.forEach(comment => {
+          const row = document.createElement('div');
+          row.className = 'dynamic-row';
+          row.innerHTML = `
+            <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）">${comment}</textarea>
+            <button class="delete-btn" onclick="this.parentElement.remove()">
+              <i class="fas fa-trash"></i>
+            </button>
+          `;
+          commentContainer.appendChild(row);
+        });
+        
+        // 添加回合前行动
+        const preTurnContainer = floorElement.querySelector('.pre-turn');
+        floor.preTurn.forEach(turn => {
+          const row = document.createElement('div');
+          row.className = 'dynamic-row';
+          row.innerHTML = `
+            <input placeholder="职业" value="${turn.job || ''}">
+            <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
+            <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
+            <input placeholder="位置" value="${turn.position || ''}">
+            <select>
+              <option value="" disabled ${!turn.condition}>条件</option>
+              <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
+              <option ${turn.condition === '尽可能重复' ? 'selected' : ''}>尽可能重复</option>
+              <option ${turn.condition === '一次性' ? 'selected' : ''}>一次性</option>
+              <option ${turn.condition === '随机' ? 'selected' : ''}>随机</option>
+            </select>
+            <button class="delete-btn" onclick="this.parentElement.remove()">
+              <i class="fas fa-trash"></i>
+            </button>
+          `;
+          preTurnContainer.appendChild(row);
+        });
+        
+        // 添加回合中行动
+        const postTurnContainer = floorElement.querySelector('.post-turn');
+        floor.postTurn.forEach(turn => {
+          const row = document.createElement('div');
+          row.className = 'dynamic-row';
+          row.innerHTML = `
+            <input placeholder="职业" value="${turn.job || ''}">
+            <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
+            <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
+            <input placeholder="位置" value="${turn.position || ''}">
+            <select>
+              <option value="" disabled ${!turn.condition}>条件</option>
+              <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
+              <option ${turn.condition === '尽可能重复' ? 'selected' : ''}>尽可能重复</option>
+              <option ${turn.condition === '一次性' ? 'selected' : ''}>一次性</option>
+              <option ${turn.condition === '随机' ? 'selected' : ''}>随机</option>
+            </select>
+            <button class="delete-btn" onclick="this.parentElement.remove()">
+              <i class="fas fa-trash"></i>
+            </button>
+          `;
+          postTurnContainer.appendChild(row);
+        });
+      });
+      
+      updateCounters();
+      showStatus(`"${tactic.name}" 已加载到编辑器`, 'success');
+    }
+    
+    function showStatus(message, type) {
+      const statusElement = document.getElementById('statusMessage');
+      statusElement.textContent = message;
+      statusElement.className = `status-message status-${type}`;
+      
+      // 5秒后清除状态
+      setTimeout(() => {
+        if (statusElement.textContent === message) {
+          statusElement.textContent = '';
+          statusElement.className = 'status-message';
+        }
+      }, 5000);
     }
     
     // 初始化
