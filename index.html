@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>地城战术配置器</title>
+  <title>地城战术配置器 - 输入导航优化版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -358,6 +358,21 @@
       justify-content: center;
       font-size: calc(0.7rem * var(--scale-factor));
       margin-left: calc(3px * var(--scale-factor));
+    }
+    
+    .nav-hint {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin: 10px 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #ddd;
+    }
+    
+    .nav-hint i {
+      color: var(--info);
+      margin: 0 5px;
     }
     
     /* 新增：手机端提示文字样式 */
@@ -765,6 +780,11 @@
       .desktop-search-container {
         display: none;
       }
+      
+      .nav-hint {
+        font-size: 0.8rem;
+        padding: 5px;
+      }
     }
     
     /* 桌面端隐藏提示文字 */
@@ -886,6 +906,9 @@
           <span class="position-tag">共 <span id="floorCount">0</span> 个楼层</span>
         </div>
         <div id="floorConfig"></div>
+        <div class="nav-hint">
+          <i class="fas fa-info-circle"></i> 使用 Tab 或 Enter 键在职业、技能1、技能2和位置字段间快速导航
+        </div>
         <button class="add-btn" onclick="addFloor()">
           <i class="fas fa-plus"></i> 添加楼层
         </button>
@@ -1128,11 +1151,11 @@
       const conditionPlaceholder = isMobile ? "条件" : "条件";
       
       row.innerHTML = `
-        <input placeholder="${jobPlaceholder}">
-        <input placeholder="${skillPlaceholder1}">
-        <input placeholder="${skillPlaceholder2}">
-        <input placeholder="${posPlaceholder}">
-        <select>
+        <input placeholder="${jobPlaceholder}" class="nav-input" data-nav-group="tactic">
+        <input placeholder="${skillPlaceholder1}" class="nav-input" data-nav-group="tactic">
+        <input placeholder="${skillPlaceholder2}" class="nav-input" data-nav-group="tactic">
+        <input placeholder="${posPlaceholder}" class="nav-input" data-nav-group="tactic">
+        <select class="nav-input" data-nav-group="tactic">
           <option value="" disabled selected>${conditionPlaceholder}</option>
           <option>默认</option>
           <option>尽可能重复</option>
@@ -1144,6 +1167,35 @@
         </button>
       `;
       container.appendChild(row);
+      
+      // 添加键盘导航事件
+      const inputs = row.querySelectorAll('.nav-input');
+      inputs.forEach((input, index) => {
+        input.addEventListener('keydown', function(e) {
+          // Enter 或 Tab 键导航
+          if (e.key === 'Enter' || e.key === 'Tab') {
+            // 阻止默认行为（Tab 键的默认行为在移动端可能无效）
+            e.preventDefault();
+            
+            // 如果是最后一个字段，则添加新行
+            if (index === inputs.length - 1) {
+              addTacticRow(btn, type);
+              
+              // 聚焦新行的第一个输入框
+              setTimeout(() => {
+                const newRow = container.lastElementChild;
+                if (newRow) {
+                  const firstInput = newRow.querySelector('.nav-input');
+                  if (firstInput) firstInput.focus();
+                }
+              }, 10);
+            } else {
+              // 否则聚焦下一个输入框
+              inputs[index + 1].focus();
+            }
+          }
+        });
+      });
       
       // 强制应用移动端样式
       if(isMobile) {
