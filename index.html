@@ -420,19 +420,7 @@
     
     .search-container input {
       flex: 1;
-      padding-right: 40px; /* 为搜索图标留出空间 */
-    }
-    
-    .search-container::after {
-      content: "\f002";
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.7);
-      pointer-events: none;
+      /* 移除为图标留出的空间 */
     }
     
     .tactics-list {
@@ -777,10 +765,6 @@
       .desktop-search-container {
         display: none;
       }
-      
-      .search-container::after {
-        right: 20px;
-      }
     }
     
     /* 桌面端隐藏提示文字 */
@@ -870,7 +854,7 @@
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i> 摸鱼吧！
+    <i class="fas fa-mobile-alt"></i> 输入文字自动搜索 - 无需点击按钮
   </div>
   
   <div class="layout-container">
@@ -937,7 +921,7 @@
         </div>
         
         <div id="statusMessage" class="status-message status-info">
-          已连接到云端战术库，点击"刷新战术列表"加载数据
+          已连接到云端战术库，输入文字自动搜索
         </div>
         
         <div id="tacticsList" class="tactics-list">
