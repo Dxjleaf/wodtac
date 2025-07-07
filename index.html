@@ -1196,8 +1196,8 @@
         const response = await fetch(API_URL + "/latest", {
           method: 'GET',
           headers: {
-            'X-Access-Key': X_ACCESS_KEY,
-            'Content-Type': 'application/json'
+            'X-Master-Key': X_MASTER_KEY,
+            'X-Bin-Meta': 'false'
           }
         });
         
@@ -1206,7 +1206,7 @@
         }
         
         const data = await response.json();
-        tacticsData = data.record.tactics || [];
+        tacticsData = data.tactics || [];
         renderTacticsList(tacticsData);
         showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
       } catch (error) {
@@ -1230,34 +1230,38 @@
       
       showStatus('正在上传战术到云端...', 'info');
       
-      // 获取现有战术列表
+      // 获取当前云端所有战术
       let existingTactics = [];
       try {
         const response = await fetch(API_URL + "/latest", {
           method: 'GET',
           headers: {
-            'X-Access-Key': X_ACCESS_KEY,
-            'Content-Type': 'application/json'
+            'X-Master-Key': X_MASTER_KEY,
+            'X-Bin-Meta': 'false'
           }
         });
         
         if (response.ok) {
           const data = await response.json();
-          existingTactics = data.record.tactics || [];
+          existingTactics = data.tactics || [];
         }
       } catch (error) {
         console.error('获取现有战术失败:', error);
       }
       
       // 检查是否已存在同名战术
-      const existingIndex = existingTactics.findIndex(t => t.name === tactic.name);
+      let isUpdate = false;
+      const updatedTactics = existingTactics.map(t => {
+        if (t.name === tactic.name) {
+          isUpdate = true;
+          return tactic; // 更新现有战术
+        }
+        return t;
+      });
       
-      if (existingIndex !== -1) {
-        // 更新现有战术
-        existingTactics[existingIndex] = tactic;
-      } else {
-        // 添加新战术
-        existingTactics.unshift(tactic);
+      // 如果是新战术则添加
+      if (!isUpdate) {
+        updatedTactics.unshift(tactic);
       }
       
       // 更新云端数据
@@ -1265,20 +1269,20 @@
         const response = await fetch(API_URL, {
           method: 'PUT',
           headers: {
-            'X-Master-Key': X_MASTER_KEY,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Master-Key': X_MASTER_KEY
           },
-          body: JSON.stringify({ tactics: existingTactics })
+          body: JSON.stringify({ tactics: updatedTactics })
         });
         
         if (!response.ok) {
           throw new Error('上传战术失败: ' + response.status);
         }
         
-        tacticsData = existingTactics;
+        tacticsData = updatedTactics;
         renderTacticsList(tacticsData);
         
-        if (existingIndex !== -1) {
+        if (isUpdate) {
           showStatus(`"${tactic.name}" 已更新`, 'success');
         } else {
           showStatus(`"${tactic.name}" 已成功上传`, 'success');
@@ -1481,12 +1485,13 @@
     
     function loadTactic(index) {
       const tactic = tacticsData[index];
+      if (!tactic) return;
       
       // 清除现有配置
-      document.getElementById('dungeonName').value = tactic.name;
+      document.getElementById('dungeonName').value = tactic.name || "";
       
       // 设置spoiler状态
-      useSpoiler = tactic.spoiler;
+      useSpoiler = tactic.spoiler || false;
       const btn = document.getElementById("spoilerToggleBtn");
       if (useSpoiler) {
         btn.classList.remove("inactive");
@@ -1504,7 +1509,7 @@
       positionCount = 0;
       
       // 添加站位
-      tactic.positions.forEach(pos => {
+      (tactic.positions || []).forEach(pos => {
         positionCount++;
         const row = document.createElement('div');
         row.className = 'dynamic-row';
@@ -1516,7 +1521,7 @@
             <option ${pos.position === '中间' ? 'selected' : ''}>中间</option>
             <option ${pos.position === '后排' ? 'selected' : ''}>后排</option>
           </select>
-          <input placeholder="职业（多个用,分隔）" value="${pos.classes}">
+          <input placeholder="职业（多个用,分隔）" value="${pos.classes || ''}">
           <button class="delete-btn" onclick="this.parentElement.remove(); positionCount--; updateCounters()">
             <i class="fas fa-trash"></i>
           </button>
@@ -1530,13 +1535,13 @@
       floorCount = 0;
       
       // 添加楼层
-      tactic.floors.forEach(floor => {
+      (tactic.floors || []).forEach(floor => {
         floorCount++;
         const floorElement = document.createElement('div');
         floorElement.className = 'config-block';
         floorElement.innerHTML = `
           <div class="dynamic-row">
-            <input placeholder="楼层（例：F1）" value="${floor.name}">
+            <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
             <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
               <i class="fas fa-trash"></i>
             </button>
@@ -1572,11 +1577,11 @@
         
         // 添加备注
         const commentContainer = floorElement.querySelector('.comment-rows');
-        floor.comments.forEach(comment => {
+        (floor.comments || []).forEach(comment => {
           const row = document.createElement('div');
           row.className = 'dynamic-row';
           row.innerHTML = `
-            <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）">${comment}</textarea>
+            <textarea class="comment-textarea" placeholder="// 输入备注（支持换行）">${comment || ''}</textarea>
             <button class="delete-btn" onclick="this.parentElement.remove()">
               <i class="fas fa-trash"></i>
             </button>
@@ -1586,7 +1591,7 @@
         
         // 添加回合前行动
         const preTurnContainer = floorElement.querySelector('.pre-turn');
-        floor.preTurn.forEach(turn => {
+        (floor.preTurn || []).forEach(turn => {
           const row = document.createElement('div');
           row.className = 'dynamic-row';
           row.innerHTML = `
@@ -1610,7 +1615,7 @@
         
         // 添加回合中行动
         const postTurnContainer = floorElement.querySelector('.post-turn');
-        floor.postTurn.forEach(turn => {
+        (floor.postTurn || []).forEach(turn => {
           const row = document.createElement('div');
           row.className = 'dynamic-row';
           row.innerHTML = `
