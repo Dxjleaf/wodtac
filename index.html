@@ -51,7 +51,7 @@
       line-height: calc(1.5 * var(--scale-factor));
       min-height: 100vh;
       padding: calc(40px * var(--scale-factor)) calc(10px * var(--scale-factor)) calc(70px * var(--scale-factor));
-      max-width: var(--content-width);
+      /* max-width: var(--content-width); */
       transform-origin: top center;
       background-attachment: fixed;
       width: 100%;
@@ -793,6 +793,7 @@
       right: 0;
       max-height: 300px;
       overflow-y: auto;
+      overflow-x: hidden;
       background: rgba(30, 40, 60, 0.95);
       border-radius: var(--border-radius);
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
@@ -1111,11 +1112,17 @@
         gap: 24px;
         margin-top: 10px;
         align-items: flex-start;
+        max-width: 1440px;
+        margin-left: auto;
+        margin-right: auto;
       }
       .left-column {
         grid-column: 1;
-        min-width: 240px;
-        max-width: 340px;
+        flex: 1 1 360px;
+        min-width: 320px;
+        max-width: 420px;
+        margin-right: 0;
+        box-sizing: border-box;
       }
       .center-column {
         grid-column: 2;
@@ -1138,6 +1145,19 @@
         max-width: 720px;
         margin-left: 0;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+      .cloud-section {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .tactics-list {
+        flex: 1 1 auto;
+        min-height: 120px;
+        max-height: none;
       }
     }
     
@@ -2063,7 +2083,8 @@
         });
         
         const date = new Date(tactic.createdAt);
-        const formattedDate = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ` +
+          `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
         
         const userRating = userRatings[tactic.name] || 0;
         
@@ -2402,6 +2423,29 @@
     
     // 初始化
     window.onload = init;
+
+    // 动态设置云端战术库高度为左侧三块总高度
+    function setCloudSectionHeight() {
+      if (window.innerWidth < 769) {
+        document.querySelector('.right-column').style.height = '';
+        return;
+      }
+      const middle = document.querySelector('.middle-column');
+      const right = document.querySelector('.right-column');
+      if (!middle || !right) return;
+      // 只取三块config-block高度+margin
+      const blocks = middle.querySelectorAll('.config-block');
+      let total = 0;
+      blocks.forEach(block => {
+        const style = window.getComputedStyle(block);
+        total += block.offsetHeight + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+      });
+      right.style.height = (total * 0.6) + 'px';
+    }
+    window.addEventListener('resize', setCloudSectionHeight);
+    window.addEventListener('DOMContentLoaded', setCloudSectionHeight);
+    // 关键操作后也触发
+    setTimeout(setCloudSectionHeight, 500);
   </script>
 </body>
 </html>
