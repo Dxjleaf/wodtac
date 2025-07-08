@@ -604,8 +604,9 @@
         display: none;
       }
       
+      /* 修改：增加左侧内边距，使整体向右移动 */
       body {
-        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor));
+        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor)) calc(15px * var(--scale-factor));
         max-width: 100%;
       }
       
@@ -874,7 +875,7 @@
   </div>
   
   <div class="mobile-tip">
-    <i class="fas fa-mobile-alt"></i> ✋🐟
+    <i class="fas fa-mobile-alt"></i> ✋🐟 已启用移动端优化
   </div>
   
   <div class="layout-container">
