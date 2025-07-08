@@ -868,7 +868,6 @@
   </style>
 </head>
 <body>
-  <!-- 页面内容保持不变 -->
   <div class="scale-control">
     <label for="scaleSlider">缩放:</label>
     <input type="range" id="scaleSlider" min="30" max="150" value="100" step="5">
@@ -1457,12 +1456,12 @@
           throw new Error('上传战术失败: ' + response.status);
         }
         
-        tacticsData = existingTactics;
-        renderTacticsList(tacticsData);
-        
         // 添加到我的战术
         myTactics[tacticName] = true;
         localStorage.setItem('myTactics', JSON.stringify(myTactics));
+        
+        tacticsData = existingTactics;
+        renderTacticsList(tacticsData);
         
         showStatus(`"${tacticName}" 已成功上传`, 'success');
       } catch (error) {
