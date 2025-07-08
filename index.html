@@ -17,6 +17,7 @@
       --dark: #2c3e50;
       --light: #ecf0f1;
       --gray: #95a5a6;
+      --piggy: #ff85a2; /* 猪猪头颜色 */
       --scale-factor: 1;
       --border-radius: calc(6px * var(--scale-factor));
       --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.1);
@@ -262,7 +263,6 @@
       box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3);
     }
     
-    /* 新增重置按钮样式 */
     .reset-btn {
       background: var(--danger);
       position: fixed;
@@ -387,7 +387,6 @@
       margin: 0 5px;
     }
     
-    /* 新增：手机端提示文字样式 */
     .mobile-hint {
       color: rgba(200, 200, 200, 0.7);
       font-size: calc(0.85rem * var(--scale-factor));
@@ -395,7 +394,6 @@
       white-space: nowrap;
     }
     
-    /* 云端功能区样式 */
     .cloud-section {
       background: rgba(40, 30, 60, 0.8);
       border-radius: var(--border-radius);
@@ -447,7 +445,6 @@
     
     .search-container input {
       flex: 1;
-      /* 移除为图标留出的空间 */
     }
     
     .tactics-list {
@@ -515,6 +512,7 @@
     .rating {
       display: flex;
       gap: calc(5px * var(--scale-factor));
+      align-items: center;
     }
     
     .rating-btn {
@@ -537,9 +535,10 @@
       color: var(--success);
     }
     
-    .rating-btn.dislike {
-      background: rgba(231, 76, 60, 0.3);
-      color: var(--danger);
+    /* 点踩按钮改为猪猪头按钮 */
+    .rating-btn.piggy {
+      background: rgba(255, 133, 162, 0.3); /* 粉色背景 */
+      color: var(--piggy); /* 猪猪头颜色 */
     }
     
     .rating-btn:hover {
@@ -616,7 +615,6 @@
         display: none;
       }
       
-      /* 修改：增加左侧内边距，使整体向右移动 */
       body {
         padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor)) calc(35px * var(--scale-factor));
         max-width: 100%;
@@ -645,7 +643,6 @@
         gap: calc(6px * var(--scale-factor));
       }
       
-      /* 战术行特殊处理 - 强制单行布局 */
       .tactics-container .dynamic-row {
         display: flex !important;
         flex-direction: row !important;
@@ -719,7 +716,6 @@
         padding-right: 20px;
       }
       
-      /* 新增：仅在移动端显示提示文字 */
       .mobile-hint {
         display: inline;
       }
@@ -740,19 +736,16 @@
         padding: calc(10px * var(--scale-factor));
       }
       
-      /* 修改：复制按钮宽度自适应 */
       .copy-btn {
         bottom: calc(10px * var(--scale-factor));
         right: calc(10px * var(--scale-factor));
         padding: calc(10px * var(--scale-factor)) calc(14px * var(--scale-factor));
         font-size: calc(0.85rem * var(--scale-factor));
-        /* 新增自适应宽度样式 */
         width: auto !important;
         min-width: unset !important;
         white-space: nowrap;
       }
       
-      /* 重置按钮在移动端的样式 */
       .reset-btn {
         bottom: calc(10px * var(--scale-factor));
         left: calc(10px * var(--scale-factor));
@@ -786,7 +779,6 @@
         justify-content: space-between;
       }
       
-      /* 修复移动端云端战术库按钮布局 */
       .tactic-footer .actions {
         flex-direction: column;
         gap: 6px;
@@ -801,7 +793,6 @@
         width: 100%;
       }
       
-      /* 移动端搜索位置调整 */
       .mobile-search-container {
         margin-top: 10px;
       }
@@ -816,7 +807,6 @@
       }
     }
     
-    /* 桌面端隐藏提示文字 */
     @media (min-width: 769px) {
       .mobile-hint {
         display: none;
@@ -827,7 +817,6 @@
       }
     }
     
-    /* 超小屏幕进一步优化 */
     @media (max-width: 400px) {
       .tactics-container .dynamic-row input,
       .tactics-container .dynamic-row select {
@@ -866,7 +855,6 @@
       }
     }
     
-    /* 新增：桌面布局调整 */
     @media (min-width: 769px) {
       .layout-container {
         display: flex;
@@ -945,11 +933,9 @@
     </div>
     
     <div class="right-column">
-      <!-- 云端功能区 -->
       <div class="cloud-section">
         <h2><i class="fas fa-cloud"></i> 云端战术库</h2>
         
-        <!-- 移动端搜索容器 - 放在标题下方 -->
         <div class="mobile-search-container">
           <div class="search-container">
             <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
@@ -965,7 +951,6 @@
           </button>
         </div>
         
-        <!-- 桌面端搜索容器 -->
         <div class="desktop-search-container">
           <div class="search-container">
             <input type="text" id="desktopSearchInput" placeholder="搜索战术名称...">
@@ -992,7 +977,6 @@
     <i class="fas fa-copy"></i> 复制配置
   </button>
   
-  <!-- 新增重置按钮 -->
   <button onclick="resetConfig()" class="reset-btn">
     <i class="fas fa-redo"></i> 重置配置
   </button>
@@ -1009,7 +993,7 @@
     let floorCount = 0;
     let tacticsData = [];
     let userRatings = {};
-    let myTactics = {}; // 存储用户上传的战术 {tacticName: true}
+    let myTactics = {}; 
     let searchTimer = null;
 
     // 缩放控制功能
@@ -1041,33 +1025,27 @@
       }
     }
 
-    // 新增重置功能
     function resetConfig() {
       if (!confirm('确定要重置所有配置吗？这将清除当前所有内容！')) {
         return;
       }
       
-      // 清空战术名称
       document.getElementById('dungeonName').value = '';
       
-      // 重置spoiler状态
       useSpoiler = false;
       const btn = document.getElementById("spoilerToggleBtn");
       btn.classList.remove("active");
       btn.classList.add("inactive");
       btn.innerHTML = '<i class="fas fa-eye-slash"></i> 使用 Spoiler Title';
       
-      // 清空站位配置
       const positionConfig = document.getElementById('positionConfig');
       positionConfig.innerHTML = '';
       positionCount = 0;
       
-      // 清空楼层配置
       const floorConfig = document.getElementById('floorConfig');
       floorConfig.innerHTML = '';
       floorCount = 0;
       
-      // 重新初始化
       addPositionRow();
       addFloor();
       updateCounters();
@@ -1081,19 +1059,16 @@
       updateCounters();
       fetchTactics();
       
-      // 从本地存储加载用户评分
       const savedRatings = localStorage.getItem('tacticRatings');
       if (savedRatings) {
         userRatings = JSON.parse(savedRatings);
       }
       
-      // 从本地存储加载用户上传的战术
       const savedMyTactics = localStorage.getItem('myTactics');
       if (savedMyTactics) {
         myTactics = JSON.parse(savedMyTactics);
       }
       
-      // 添加搜索输入监听
       const mobileSearchInput = document.getElementById('mobileSearchInput');
       const desktopSearchInput = document.getElementById('desktopSearchInput');
       
@@ -1107,12 +1082,10 @@
     }
 
     function handleSearchInput(event) {
-      // 清除之前的计时器
       if (searchTimer) {
         clearTimeout(searchTimer);
       }
       
-      // 设置新的计时器（300毫秒后执行搜索）
       searchTimer = setTimeout(() => {
         const searchTerm = event.target.value.toLowerCase().trim();
         if (searchTerm) {
@@ -1236,20 +1209,15 @@
       `;
       container.appendChild(row);
       
-      // 添加键盘导航事件
       const inputs = row.querySelectorAll('.nav-input');
       inputs.forEach((input, index) => {
         input.addEventListener('keydown', function(e) {
-          // Enter 或 Tab 键导航
           if (e.key === 'Enter' || e.key === 'Tab') {
-            // 阻止默认行为（Tab 键的默认行为在移动端可能无效）
             e.preventDefault();
             
-            // 如果是最后一个字段，则添加新行
             if (index === inputs.length - 1) {
               addTacticRow(btn, type);
               
-              // 聚焦新行的第一个输入框
               setTimeout(() => {
                 const newRow = container.lastElementChild;
                 if (newRow) {
@@ -1258,14 +1226,12 @@
                 }
               }, 10);
             } else {
-              // 否则聚焦下一个输入框
               inputs[index + 1].focus();
             }
           }
         });
       });
       
-      // 强制应用移动端样式
       if(isMobile) {
         row.style.display = 'flex';
         row.style.flexDirection = 'row';
@@ -1277,7 +1243,6 @@
     function generateTacticsObject() {
       const name = document.getElementById('dungeonName').value || "未命名战术";
       
-      // 收集站位配置
       const positions = [];
       document.querySelectorAll('#positionConfig > div').forEach(row => {
         const pos = row.querySelector('select').value;
@@ -1287,18 +1252,15 @@
         }
       });
       
-      // 收集楼层配置
       const floors = [];
       document.querySelectorAll('#floorConfig > div').forEach(floor => {
         const floorId = floor.querySelector('input').value || "未命名楼层";
         
-        // 收集备注
         const comments = [];
         floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
           if (textarea.value.trim()) comments.push(textarea.value.trim());
         });
         
-        // 收集回合前行动
         const preTurn = [];
         floor.querySelectorAll('.pre-turn > div.dynamic-row').forEach(row => {
           const inputs = row.querySelectorAll('input, select');
@@ -1314,7 +1276,6 @@
           }
         });
         
-        // 收集回合中行动
         const postTurn = [];
         floor.querySelectorAll('.post-turn > div.dynamic-row').forEach(row => {
           const inputs = row.querySelectorAll('input, select');
@@ -1353,7 +1314,6 @@
       const tactic = generateTacticsObject();
       let output = tactic.spoiler ? `[spoiler title=${tactic.name}]\n` : `战术：${tactic.name}\n`;
 
-      // 站位配置
       output += `站位：\n`;
       const positions = {};
       tactic.positions.forEach(p => {
@@ -1363,7 +1323,6 @@
         output += `  ${pos}：${classes.filter(c=>c).join('、')}\n`;
       });
 
-      // 楼层配置
       tactic.floors.forEach(floor => {
         output += `${floor.name}\n`;
 
@@ -1395,7 +1354,6 @@
 
       output = output.trimEnd();
 
-      // 复制操作
       try {
         navigator.clipboard.writeText(output);
         showStatus('配置已复制到剪贴板！', 'success');
@@ -1410,7 +1368,6 @@
       }
     }
     
-    // 云端功能
     async function fetchTactics() {
       showStatus('正在加载云端战术数据...', 'info');
       
@@ -1430,17 +1387,15 @@
         const data = await response.json();
         tacticsData = data.tactics || [];
         
-        // 按点赞数排序（点赞数 - 点踩数）
         tacticsData.sort((a, b) => {
           const aScore = (a.likes || 0) - (a.dislikes || 0);
           const bScore = (b.likes || 0) - (b.dislikes || 0);
-          return bScore - aScore; // 降序排序
+          return bScore - aScore;
         });
         
         renderTacticsList(tacticsData);
         showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
         
-        // 清空搜索框
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const desktopSearchInput = document.getElementById('desktopSearchInput');
         
@@ -1467,7 +1422,6 @@
       
       showStatus('正在上传战术到云端...', 'info');
       
-      // 获取当前云端所有战术
       let existingTactics = [];
       try {
         const response = await fetch(API_URL + "/latest", {
@@ -1486,24 +1440,19 @@
         console.error('获取现有战术失败:', error);
       }
       
-      // 检查是否已存在同名战术 - 改为添加时间戳后缀
       let tacticName = tactic.name;
       const nameExists = existingTactics.some(t => t.name === tacticName);
       
       if (nameExists) {
-        // 添加时间戳后缀
         const timestamp = new Date().getTime();
         tacticName = `${tactic.name}_${timestamp}`;
         showStatus(`已存在同名战术，已重命名为: ${tacticName}`, 'info');
       }
       
-      // 设置新名称
       tactic.name = tacticName;
       
-      // 添加到云端数据
       existingTactics.unshift(tactic);
       
-      // 更新云端数据
       try {
         const response = await fetch(API_URL, {
           method: 'PUT',
@@ -1518,7 +1467,6 @@
           throw new Error('上传战术失败: ' + response.status);
         }
         
-        // 添加到我的战术
         myTactics[tacticName] = true;
         localStorage.setItem('myTactics', JSON.stringify(myTactics));
         
@@ -1545,7 +1493,6 @@
         const item = document.createElement('div');
         item.className = 'tactic-item';
         
-        // 生成战术预览文本
         let preview = '';
         tactic.positions.forEach(pos => {
           preview += `${pos.position}: ${pos.classes}\n`;
@@ -1563,14 +1510,11 @@
           }
         });
         
-        // 格式化日期
         const date = new Date(tactic.createdAt);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
         
-        // 获取用户评分
         const userRating = userRatings[tactic.name] || 0;
         
-        // 检查是否是用户上传的战术
         const isMyTactic = myTactics[tactic.name] || false;
         
         item.innerHTML = `
@@ -1585,8 +1529,9 @@
                 <i class="fas fa-thumbs-up"></i>
               </button>
               <span>${tactic.likes || 0}</span>
-              <button class="rating-btn ${userRating === -1 ? 'dislike' : ''}" onclick="rateTactic('${tactic.name}', -1)">
-                <i class="fas fa-thumbs-down"></i>
+              <!-- 点踩按钮改为猪猪头按钮 -->
+              <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="rateTactic('${tactic.name}', -1)">
+                <i class="fas fa-piggy-bank"></i>
               </button>
               <span>${tactic.dislikes || 0}</span>
             </div>
@@ -1609,31 +1554,25 @@
     }
     
     function rateTactic(tacticName, rating) {
-      // 获取当前评分
       const currentRating = userRatings[tacticName] || 0;
       
-      // 更新用户评分记录
       userRatings[tacticName] = rating === currentRating ? 0 : rating;
       localStorage.setItem('tacticRatings', JSON.stringify(userRatings));
       
-      // 更新战术数据
       const tactic = tacticsData.find(t => t.name === tacticName);
       if (tactic) {
-        // 撤销旧评分的影响
         if (currentRating === 1) {
           tactic.likes = Math.max(0, (tactic.likes || 0) - 1);
         } else if (currentRating === -1) {
           tactic.dislikes = Math.max(0, (tactic.dislikes || 0) - 1);
         }
         
-        // 应用新评分
         if (userRatings[tacticName] === 1) {
           tactic.likes = (tactic.likes || 0) + 1;
         } else if (userRatings[tacticName] === -1) {
           tactic.dislikes = (tactic.dislikes || 0) + 1;
         }
         
-        // 更新云端数据
         updateTacticsOnServer();
         renderTacticsList(tacticsData);
         showStatus(`评分已${userRatings[tacticName] === 0 ? '撤销' : '更新'}！`, 'success');
@@ -1663,10 +1602,8 @@
       showStatus(`正在删除战术: ${tacticName}`, 'info');
       
       try {
-        // 从本地战术数据中移除
         tacticsData = tacticsData.filter(t => t.name !== tacticName);
         
-        // 更新云端数据
         await fetch(API_URL, {
           method: 'PUT',
           headers: {
@@ -1676,11 +1613,9 @@
           body: JSON.stringify({ tactics: tacticsData })
         });
         
-        // 从我的战术中移除
         delete myTactics[tacticName];
         localStorage.setItem('myTactics', JSON.stringify(myTactics));
         
-        // 重新渲染列表
         renderTacticsList(tacticsData);
         showStatus(`"${tacticName}" 已删除`, 'success');
       } catch (error) {
@@ -1693,7 +1628,6 @@
       const tactic = tacticsData[index];
       let output = tactic.spoiler ? `[spoiler title=${tactic.name}]\n` : `战术：${tactic.name}\n`;
 
-      // 站位配置
       output += `站位：\n`;
       const positions = {};
       tactic.positions.forEach(p => {
@@ -1703,7 +1637,6 @@
         output += `  ${pos}：${classes.filter(c=>c).join('、')}\n`;
       });
 
-      // 楼层配置
       tactic.floors.forEach(floor => {
         output += `${floor.name}\n`;
 
@@ -1735,7 +1668,6 @@
 
       output = output.trimEnd();
 
-      // 复制操作
       try {
         navigator.clipboard.writeText(output);
         showStatus('配置已复制到剪贴板！', 'success');
@@ -1754,10 +1686,8 @@
       const tactic = tacticsData[index];
       if (!tactic) return;
       
-      // 清除现有配置
       document.getElementById('dungeonName').value = tactic.name || "";
       
-      // 设置spoiler状态
       useSpoiler = tactic.spoiler || false;
       const btn = document.getElementById("spoilerToggleBtn");
       if (useSpoiler) {
@@ -1770,12 +1700,10 @@
         btn.innerHTML = '<i class="fas fa-eye-slash"></i> 使用 Spoiler Title';
       }
       
-      // 清除现有站位
       const positionConfig = document.getElementById('positionConfig');
       positionConfig.innerHTML = '';
       positionCount = 0;
       
-      // 添加站位
       (tactic.positions || []).forEach(pos => {
         positionCount++;
         const row = document.createElement('div');
@@ -1796,12 +1724,10 @@
         positionConfig.appendChild(row);
       });
       
-      // 清除现有楼层
       const floorConfig = document.getElementById('floorConfig');
       floorConfig.innerHTML = '';
       floorCount = 0;
       
-      // 添加楼层
       (tactic.floors || []).forEach(floor => {
         floorCount++;
         const floorElement = document.createElement('div');
@@ -1842,7 +1768,6 @@
         `;
         floorConfig.appendChild(floorElement);
         
-        // 添加备注
         const commentContainer = floorElement.querySelector('.comment-rows');
         (floor.comments || []).forEach(comment => {
           const row = document.createElement('div');
@@ -1856,7 +1781,6 @@
           commentContainer.appendChild(row);
         });
         
-        // 添加回合前行动
         const preTurnContainer = floorElement.querySelector('.pre-turn');
         (floor.preTurn || []).forEach(turn => {
           const row = document.createElement('div');
@@ -1880,7 +1804,6 @@
           preTurnContainer.appendChild(row);
         });
         
-        // 添加回合中行动
         const postTurnContainer = floorElement.querySelector('.post-turn');
         (floor.postTurn || []).forEach(turn => {
           const row = document.createElement('div');
@@ -1914,7 +1837,6 @@
       statusElement.textContent = message;
       statusElement.className = `status-message status-${type}`;
       
-      // 5秒后清除状态
       setTimeout(() => {
         if (statusElement.textContent === message) {
           statusElement.textContent = '';
