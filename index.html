@@ -6,6 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* 新添加的标题定位样式 */
+    .header h1 {
+      position: absolute; /* 使用绝对定位 */
+      left: 50%;           /* 水平居中 */
+      transform: translateX(-50%); /* 精确居中 */
+      top: calc(40px * var(--scale-factor)); /* 与body padding-top保持一致 */
+      font-size: calc(1.8rem * var(--scale-factor));
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      z-index: 10; /* 确保在背景效果之上 */
+      white-space: nowrap; /* 防止换行 */
+    }
+
     :root {
       --primary: #4a6fa5;
       --secondary: #6d9eeb;
@@ -17,7 +30,7 @@
       --dark: #2c3e50;
       --light: #ecf0f1;
       --gray: #95a5a6;
-      --piggy: #ff85a2; /* 猪猪头颜色 */
+      --piggy: #ff85a2;
       --scale-factor: 1;
       --border-radius: calc(6px * var(--scale-factor));
       --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.1);
@@ -39,79 +52,166 @@
       min-height: 100vh;
       padding: calc(40px * var(--scale-factor)) calc(10px * var(--scale-factor)) calc(70px * var(--scale-factor));
       max-width: var(--content-width);
-      margin: 0 auto;
       transform-origin: top center;
       background-attachment: fixed;
+      width: 100%;
+      position: relative; /* 为绝对定位标题提供参考 */
+      margin: 0 auto;
     }
     
     .scale-control {
       position: fixed;
       top: 10px;
       left: 10px;
-      width: 180px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 8px;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      width: 220px !important;
+      min-width: 220px !important;
+      max-width: 220px !important;
+      height: 44px !important;
+      background: rgba(30, 40, 60, 0.92) !important;
+      padding: 10px 16px !important;
+      border-radius: 12px !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important;
+      z-index: 12000 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      border: 1px solid rgba(109, 158, 235, 0.18) !important;
+      font-size: 13px !important;
     }
     
     .scale-control label {
-      font-weight: bold;
-      font-size: 12px;
+      font-weight: 600;
+      font-size: 13px;
       white-space: nowrap;
-      color: #333;
+      color: var(--secondary);
+      letter-spacing: 1px;
+      margin-right: 4px;
     }
     
     .scale-control input {
       flex: 1;
       min-width: 0;
+      accent-color: var(--secondary);
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 4px;
+      outline: none;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 1px 4px rgba(109,158,235,0.10);
+      margin: 0 6px;
+    }
+    
+    .scale-control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--secondary);
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(109,158,235,0.18);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .scale-control input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--secondary);
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(109,158,235,0.18);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .scale-control input[type="range"]::-ms-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--secondary);
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(109,158,235,0.18);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .scale-control input[type="range"]::-webkit-slider-runnable-track {
+      height: 4px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    
+    .scale-control input[type="range"]::-ms-fill-lower {
+      background: var(--primary);
+    }
+    
+    .scale-control input[type="range"]::-ms-fill-upper {
+      background: var(--secondary);
+    }
+    
+    .scale-control input[type="range"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--secondary);
+    }
+    
+    .scale-control input[type="range"] {
+      outline: none;
+      border: none;
+      background: transparent;
     }
     
     .scale-value {
       font-weight: bold;
-      font-size: 12px;
-      min-width: 30px;
+      font-size: 13px;
+      min-width: 38px;
       text-align: center;
-      color: #333;
+      color: var(--secondary);
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 2px 8px;
+      margin-left: 2px;
+      box-shadow: 0 1px 2px rgba(109,158,235,0.08);
+      border: 1px solid rgba(109,158,235,0.10);
     }
     
     .header {
-      text-align: center;
-      margin-bottom: calc(15px * var(--scale-factor));
-      padding: 0 calc(8px * var(--scale-factor));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: relative;
+      height: auto;
+      min-height: 90px;
+      margin-bottom: 20px;
+      padding: 0;
     }
-    
+    .header-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
     .header h1 {
-      font-size: calc(1.8rem * var(--scale-factor));
-      color: white;
-      margin-bottom: calc(5px * var(--scale-factor));
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      position: relative;
+      position: static;
+      left: unset;
+      transform: none;
+      margin-bottom: 8px;
+      font-size: 2.2rem;
+      text-align: center;
+      width: 100%;
       z-index: 2;
     }
-    
     .header p {
-      color: #e0e0e0;
-      font-size: calc(0.9rem * var(--scale-factor));
-      position: relative;
+      padding-top: 0;
+      font-size: 1.1rem;
+      text-align: center;
+      width: 100%;
       z-index: 2;
     }
-    
     .header::before {
-      content: "";
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120%;
-      height: 120%;
-      background: radial-gradient(circle, rgba(74, 111, 165, 0.6) 0%, transparent 70%);
-      z-index: 1;
+      display: none;
     }
     
     .mobile-tip {
@@ -535,10 +635,9 @@
       color: var(--success);
     }
     
-    /* 点踩按钮改为猪猪头按钮 */
     .rating-btn.piggy {
-      background: rgba(255, 133, 162, 0.3); /* 粉色背景 */
-      color: var(--piggy); /* 猪猪头颜色 */
+      background: rgba(255, 133, 162, 0.3);
+      color: var(--piggy);
     }
     
     .rating-btn:hover {
@@ -607,6 +706,139 @@
     
     .cloud-status i {
       color: #6d9eeb;
+    }
+    
+    /* 团队名称输入框 */
+    .team-name-container {
+      margin-bottom: calc(15px * var(--scale-factor));
+    }
+    
+    .team-name-input {
+      width: 100%;
+      padding: calc(10px * var(--scale-factor)) calc(15px * var(--scale-factor));
+      font-size: calc(1rem * var(--scale-factor));
+      background: rgba(20, 30, 50, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius);
+      color: white;
+    }
+    
+    .team-name-input::placeholder {
+      color: #aaa;
+    }
+    
+    /* 副本搜索区域 */
+    .dungeon-search-section {
+      background: rgba(30, 40, 60, 0.8);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin: calc(12px * var(--scale-factor)) 0;
+      padding: calc(12px * var(--scale-factor));
+      position: relative;
+      font-size: calc(0.9rem * var(--scale-factor));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+    }
+    
+    .dungeon-search-section h2 {
+      color: var(--info);
+      font-size: calc(1.3rem * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
+      padding-bottom: calc(6px * var(--scale-factor));
+      border-bottom: calc(1px * var(--scale-factor)) solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    .dungeon-search-section h2 i {
+      background: var(--info);
+      color: white;
+      width: calc(28px * var(--scale-factor));
+      height: calc(28px * var(--scale-factor));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(0.9rem * var(--scale-factor));
+    }
+    
+    .dungeon-search-container {
+      position: relative;
+      z-index: 10001;
+    }
+    
+    .dungeon-search-input {
+      width: 100%;
+      padding: calc(10px * var(--scale-factor)) calc(40px * var(--scale-factor)) calc(10px * var(--scale-factor)) calc(15px * var(--scale-factor));
+      font-size: calc(0.95rem * var(--scale-factor));
+      background: rgba(20, 30, 50, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius);
+      color: white;
+    }
+    
+    .dungeon-search-icon {
+      position: absolute;
+      right: calc(12px * var(--scale-factor));
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--secondary);
+    }
+    
+    .dungeon-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(30, 40, 60, 0.95);
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      z-index: 10010;
+      display: none;
+      margin-top: calc(5px * var(--scale-factor));
+      width: 100%;
+      border: 1px solid rgba(109, 158, 235, 0.5);
+    }
+    
+    .dungeon-result-item {
+      padding: calc(10px * var(--scale-factor)) calc(15px * var(--scale-factor));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dungeon-result-item:hover {
+      background: rgba(74, 111, 165, 0.7);
+      transform: scale(1.01);
+    }
+    
+    .dungeon-result-item:last-child {
+      border-bottom: none;
+    }
+    
+    .dungeon-name {
+      font-weight: bold;
+      font-size: calc(1rem * var(--scale-factor));
+      margin-bottom: calc(3px * var(--scale-factor));
+      color: var(--secondary);
+    }
+    
+    .dungeon-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: calc(0.8rem * var(--scale-factor));
+      color: #aaa;
+    }
+    
+    .dungeon-id {
+      background: var(--primary);
+      color: white;
+      padding: 0 calc(5px * var(--scale-factor));
+      border-radius: calc(3px * var(--scale-factor));
+      margin-right: calc(5px * var(--scale-factor));
     }
     
     /* 响应式设计 - 移动端 */
@@ -805,6 +1037,22 @@
         font-size: 0.8rem;
         padding: 5px;
       }
+      
+      .dungeon-results {
+        max-height: 200px;
+      }
+      
+      .rating-btn {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        max-width: 28px !important;
+        max-height: 28px !important;
+        border-radius: 50% !important;
+        box-sizing: border-box !important;
+        font-size: 1rem !important;
+      }
     }
     
     @media (min-width: 769px) {
@@ -855,39 +1103,104 @@
       }
     }
     
+    /* 三列布局 - 桌面端 */
     @media (min-width: 769px) {
       .layout-container {
-        display: flex;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 24px;
         margin-top: 10px;
+        align-items: flex-start;
       }
-      
       .left-column {
-        flex: 0 0 60%;
-        min-width: 0;
+        grid-column: 1;
+        min-width: 240px;
+        max-width: 340px;
       }
-      
+      .center-column {
+        grid-column: 2;
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .middle-column {
+        flex: 1 1 620px;
+        min-width: 480px;
+        max-width: 720px;
+        margin-right: 0;
+        box-sizing: border-box;
+      }
       .right-column {
-        flex: 0 0 38%;
+        flex: 1 1 620px;
+        min-width: 480px;
+        max-width: 720px;
+        margin-left: 0;
+        box-sizing: border-box;
+      }
+    }
+    
+    /* 移动端布局 */
+    @media (max-width: 768px) {
+      .layout-container {
+        display: flex;
+        flex-direction: column;
+      }
+      .left-column {
+        order: 1;
+        width: 100%;
+        max-width: 100%;
         min-width: 0;
       }
-      
-      .cloud-section {
-        margin-top: 0;
+      .center-column {
+        order: 2;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
       }
+      .middle-column, .right-column {
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+      }
+      .dungeon-search-section {
+        margin-bottom: 200px !important;
+      }
+    }
+    
+    /* 添加动画效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .dungeon-results {
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .scale-control, .copy-btn, .reset-btn {
+      --scale-factor: 1 !important;
+    }
+    .scale-control label,
+    .scale-control input,
+    .scale-value {
+      font-size: 13px !important;
+    }
+    .copy-btn, .reset-btn {
+      font-size: 0.95rem !important;
+      padding: 12px 16px !important;
+      border-radius: var(--border-radius) !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
     }
   </style>
 </head>
 <body>
-  <div class="scale-control">
-    <label for="scaleSlider">缩放:</label>
-    <input type="range" id="scaleSlider" min="30" max="150" value="100" step="5">
-    <span class="scale-value" id="scaleValue">100%</span>
-  </div>
-
   <div class="header">
-    <h1><i class="fas fa-dungeon"></i> 地城战术配置器</h1>
-    <p>创建、分享和探索地城探险战术方案</p>
+    <div class="header-inner">
+      <h1><i class="fas fa-dungeon"></i> 地城战术配置器</h1>
+      <p>创建、分享和探索地城探险战术方案</p>
+    </div>
   </div>
   
   <div class="mobile-tip">
@@ -895,79 +1208,86 @@
   </div>
   
   <div class="layout-container">
+    <!-- 左侧：副本搜索 -->
     <div class="left-column">
-      <div class="config-block">
-        <h2><i class="fas fa-cog"></i> 战术配置</h2>
-        <div class="dynamic-row">
-          <input type="text" id="dungeonName" placeholder="战术名称（如：矮人阶梯）" style="flex:1;">
-          <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()">
-            <i class="fas fa-eye-slash"></i> 使用 Spoiler Title
-          </button>
+      <div class="dungeon-search-section">
+        <h2><i class="fas fa-search"></i> 副本搜索</h2>
+        <div class="dungeon-search-container">
+          <input type="text" id="dungeonSearch" class="dungeon-search-input" placeholder="副本名称（输入以搜索）">
+          <i class="fas fa-search dungeon-search-icon"></i>
+          <div id="dungeonResults" class="dungeon-results"></div>
         </div>
-      </div>
-
-      <div class="config-block">
-        <div class="position-header">
-          <h3><i class="fas fa-users"></i> 站位配置</h3>
-          <span class="position-tag">共 <span id="positionCount">0</span> 个站位</span>
-        </div>
-        <div id="positionConfig"></div>
-        <button class="add-btn" onclick="addPositionRow()">
-          <i class="fas fa-plus"></i> 添加站位
-        </button>
-      </div>
-
-      <div class="config-block">
-        <div class="position-header">
-          <h3><i class="fas fa-layer-group"></i> 楼层配置 <span class="mobile-hint">手机端右滑删除行动</span></h3>
-          <span class="position-tag">共 <span id="floorCount">0</span> 个楼层</span>
-        </div>
-        <div id="floorConfig"></div>
-        <div class="nav-hint">
-          <i class="fas fa-info-circle"></i> 使用 Tab 或 Enter 键在职业、技能1、技能2和位置字段间快速导航
-        </div>
-        <button class="add-btn" onclick="addFloor()">
-          <i class="fas fa-plus"></i> 添加楼层
-        </button>
       </div>
     </div>
-    
-    <div class="right-column">
-      <div class="cloud-section">
-        <h2><i class="fas fa-cloud"></i> 云端战术库</h2>
-        
-        <div class="mobile-search-container">
-          <div class="search-container">
-            <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
+    <!-- 中间：战术配置和战术库合并 -->
+    <div class="center-column">
+      <div class="middle-column">
+        <div class="config-block">
+          <h2><i class="fas fa-cog"></i> 战术配置</h2>
+          <div class="team-name-container">
+            <input type="text" id="teamName" class="team-name-input" placeholder="团队名称">
+          </div>
+          <div class="dynamic-row">
+            <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()">
+              <i class="fas fa-eye-slash"></i> 使用 Spoiler Title
+            </button>
           </div>
         </div>
-        
-        <div class="cloud-actions">
-          <button onclick="uploadTactics()">
-            <i class="fas fa-upload"></i> 上传当前战术
-          </button>
-          <button onclick="fetchTactics()">
-            <i class="fas fa-sync-alt"></i> 刷新战术列表
-          </button>
-        </div>
-        
-        <div class="desktop-search-container">
-          <div class="search-container">
-            <input type="text" id="desktopSearchInput" placeholder="搜索战术名称...">
+        <div class="config-block">
+          <div class="position-header">
+            <h3><i class="fas fa-users"></i> 站位配置</h3>
+            <span class="position-tag">共 <span id="positionCount">0</span> 个站位</span>
           </div>
+          <div id="positionConfig"></div>
+          <button class="add-btn" onclick="addPositionRow()">
+            <i class="fas fa-plus"></i> 添加站位
+          </button>
         </div>
-        
-        <div id="statusMessage" class="status-message status-info">
-          已连接到云端战术库，输入文字自动搜索
+        <div class="config-block">
+          <div class="position-header">
+            <h3><i class="fas fa-layer-group"></i> 楼层配置 <span class="mobile-hint">手机端右滑删除行动</span></h3>
+            <span class="position-tag">共 <span id="floorCount">0</span> 个楼层</span>
+          </div>
+          <div id="floorConfig"></div>
+          <div class="nav-hint">
+            <i class="fas fa-info-circle"></i> 使用 Tab 或 Enter 键在职业、技能1、技能2和位置字段间快速导航
+          </div>
+          <button class="add-btn" onclick="addFloor()">
+            <i class="fas fa-plus"></i> 添加楼层
+          </button>
         </div>
-        
-        <div id="tacticsList" class="tactics-list">
-          <!-- 战术列表将在这里动态生成 -->
-        </div>
-        
-        <div class="cloud-status">
-          <i class="fas fa-cloud"></i>
-          <span>已连接到 JSONBin.io 云端存储</span>
+      </div>
+      <div class="right-column">
+        <div class="cloud-section">
+          <h2><i class="fas fa-cloud"></i> 云端战术库</h2>
+          <div class="mobile-search-container">
+            <div class="search-container">
+              <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
+            </div>
+          </div>
+          <div class="cloud-actions">
+            <button onclick="uploadTactics()">
+              <i class="fas fa-upload"></i> 上传当前战术
+            </button>
+            <button onclick="fetchTactics()">
+              <i class="fas fa-sync-alt"></i> 刷新战术列表
+            </button>
+          </div>
+          <div class="desktop-search-container">
+            <div class="search-container">
+              <input type="text" id="desktopSearchInput" placeholder="搜索战术名称...">
+            </div>
+          </div>
+          <div id="statusMessage" class="status-message status-info">
+            已连接到云端战术库，输入文字自动搜索
+          </div>
+          <div id="tacticsList" class="tactics-list">
+            <!-- 战术列表将在这里动态生成 -->
+          </div>
+          <div class="cloud-status">
+            <i class="fas fa-cloud"></i>
+            <span>已连接到 JSONBin.io 云端存储</span>
+          </div>
         </div>
       </div>
     </div>
@@ -984,7 +1304,6 @@
   <script>
     // 配置您的API密钥（直接嵌入）
     const BIN_ID = "686bdc348a456b7966bcdf3a";
-    const X_ACCESS_KEY = "$2a$10$RCoO5OkFJZF5s.yjn7veXeAxuq.4hRzwE21YaPhyLdcpNW0STBfwS";
     const X_MASTER_KEY = "$2a$10$Bz3gYeqxopB31a/nY3cyyuSXp9hNVKZeVTTsBy.tVFIBhcNDW1JIO";
     const API_URL = "https://api.jsonbin.io/v3/b/" + BIN_ID;
     
@@ -995,16 +1314,11 @@
     let userRatings = {};
     let myTactics = {}; 
     let searchTimer = null;
+    let dungeons = [];
+    let selectedDungeon = null;
 
-    // 缩放控制功能
-    const scaleSlider = document.getElementById('scaleSlider');
-    const scaleValue = document.getElementById('scaleValue');
-    
-    scaleSlider.addEventListener('input', function() {
-      const scale = this.value / 100;
-      document.documentElement.style.setProperty('--scale-factor', scale);
-      scaleValue.textContent = this.value + '%';
-    });
+    // 默认缩放到85%
+    document.documentElement.style.setProperty('--scale-factor', 0.85);
 
     function updateCounters() {
       document.getElementById('positionCount').textContent = positionCount;
@@ -1030,7 +1344,9 @@
         return;
       }
       
-      document.getElementById('dungeonName').value = '';
+      document.getElementById('teamName').value = '';
+      document.getElementById('dungeonSearch').value = '';
+      selectedDungeon = null;
       
       useSpoiler = false;
       const btn = document.getElementById("spoilerToggleBtn");
@@ -1053,11 +1369,205 @@
       showStatus('配置已重置', 'success');
     }
 
+    // 初始化副本数据
+    function initDungeons() {
+      dungeons = [
+        {id: 1, name: "泰伦索尔的奇异物品商店", recLevel: "-", limitLevel: "10 - 40", openTime: "总是可选"},
+        {id: 2, name: "喧嚷的酒吧", recLevel: "1 - 3", limitLevel: "1 - 4", openTime: "总是可选"},
+        {id: 3, name: "林中强盗", recLevel: "1 - 1", limitLevel: "1 - 1", openTime: "总是可选"},
+        {id: 4, name: "前往米勒巴赫的旅程", recLevel: "1 - 1", limitLevel: "1 - 3", openTime: "总是可选"},
+        {id: 5, name: "第一次冒险：抵达德拉斯堡", recLevel: "1 - 1", limitLevel: "1 - 1", openTime: "总是可选"},
+        {id: 6, name: "铁匠铺", recLevel: "1 - 10", limitLevel: "1 - 40", openTime: "总是可选"},
+        {id: 7, name: "深岩城广场", recLevel: "1 - 1", limitLevel: "1 - 40", openTime: "总是可选"},
+        {id: 8, name: "第一份工作", recLevel: "2 - 4", limitLevel: "2 - 7", openTime: "总是可选"},
+        {id: 9, name: "酒吧底下的地精洞穴", recLevel: "2 - 4", limitLevel: "2 - 6", openTime: "总是可选"},
+        {id: 10, name: "藏宝图", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 11, name: "港口的仓库", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "总是可选"},
+        {id: 12, name: "乡间漫步", recLevel: "2 - 4", limitLevel: "2 - 7", openTime: "总是可选"},
+        {id: 13, name: "小题大做", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "今天 06:00 - 明天 06:00<br>每5天重复"},
+        {id: 14, name: "圣诞节的白雾林", recLevel: "2 - 40", limitLevel: "2 - 40", openTime: "2025年12月21日 06:00 - 2025年12月28日 06:00<br>每年12月21日"},
+        {id: 15, name: "乌鸦之田", recLevel: "3 - 5", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 16, name: "爬虫的侵袭", recLevel: "3 - 6", limitLevel: "3 - 9", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
+        {id: 17, name: "盗贼公会", recLevel: "3 - 6", limitLevel: "3 - 9", openTime: "总是可选"},
+        {id: 18, name: "药材铺", recLevel: "3 - 5", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
+        {id: 19, name: "克伦切的兽人洞", recLevel: "4 - 6", limitLevel: "4 - 13", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
+        {id: 20, name: "阴森的树林", recLevel: "4 - 6", limitLevel: "4 - 10", openTime: "总是可选"},
+        {id: 21, name: "先人的骸骨", recLevel: "4 - 7", limitLevel: "4 - 10", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 22, name: "莫里斯王墓", recLevel: "4 - 6", limitLevel: "3 - 9", openTime: "总是可选"},
+        {id: 23, name: "兵工厂内的幽灵", recLevel: "4 - 6", limitLevel: "4 - 10", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
+        {id: 24, name: "远古恶魔", recLevel: "4 - 6", limitLevel: "3 - 10", openTime: "总是可选"},
+        {id: 25, name: "静水深流", recLevel: "4 - 7", limitLevel: "3 - 10", openTime: "总是可选"},
+        {id: 26, name: "戒指", recLevel: "4 - 6", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
+        {id: 27, name: "山脉中的古老高塔", recLevel: "5 - 7", limitLevel: "4 - 10", openTime: "总是可选"},
+        {id: 28, name: "狩猎狼群", recLevel: "5 - 7", limitLevel: "4 - 11", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 29, name: "危急的祖舒亚", recLevel: "5 - 7", limitLevel: "4 - 11", openTime: "总是可选"},
+        {id: 30, name: "法师与怪物", recLevel: "5 - 7", limitLevel: "4 - 12", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 31, name: "竖琴", recLevel: "5 - 7", limitLevel: "4 - 11", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 32, name: "献祭", recLevel: "5 - 7", limitLevel: "4 - 12", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 33, name: "纳布拉特的荣誉大厅（新手）", recLevel: "5 -", limitLevel: "4 -", openTime: "总是可选"},
+        {id: 34, name: "渡鸦堡的集市", recLevel: "5 - 7", limitLevel: "4 - 10", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
+        {id: 35, name: "泽瑞希尔的战斗学院", recLevel: "5 - 7", limitLevel: "4 - 8", openTime: "总是可选"},
+        {id: 36, name: "巨魔难题", recLevel: "6 - 8", limitLevel: "4 - 12", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 37, name: "德雷索尼亚的阴影", recLevel: "6 - 9", limitLevel: "5 - 12", openTime: "总是可选"},
+        {id: 38, name: "觉醒", recLevel: "6 - 9", limitLevel: "5 - 12", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 39, name: "深岩城的迎春烟火", recLevel: "6 - 12", limitLevel: "5 - 40", openTime: "2026年02月01日 06:00 - 2026年03月03日 06:00<br>每年02月01日"},
+        {id: 40, name: "沼泽龙蜥的狩猎之旅", recLevel: "7 - 9", limitLevel: "6 - 13", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每7天重复"},
+        {id: 41, name: "塔博塔博的亡灵巫师", recLevel: "7 - 9", limitLevel: "5 - 15", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 42, name: "在无人山谷中的制造厂", recLevel: "7 - 11", limitLevel: "5 - 14", openTime: "总是可选"},
+        {id: 43, name: "跳舞木偶夜总会", recLevel: "7 - 9", limitLevel: "5 - 13", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 44, name: "瑞俄伯的女巫", recLevel: "7 - 9", limitLevel: "5 - 13", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 45, name: "艰辛的面试或是第十三个勇士", recLevel: "7 - 10", limitLevel: "6 - 15", openTime: "2025年07月11日 06:00 - 2025年07月12日 06:00<br>每5天重复"},
+        {id: 46, name: "黑石头", recLevel: "7 - 10", limitLevel: "6 - 15", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 47, name: "盗墓贼", recLevel: "7 - 9", limitLevel: "6 - 12", openTime: "总是可选"},
+        {id: 48, name: "老旧矿井", recLevel: "8 - 11", limitLevel: "6 - 14", openTime: "总是可选"},
+        {id: 49, name: "受诅咒的遗迹", recLevel: "8 - 11", limitLevel: "5 - 16", openTime: "总是可选"},
+        {id: 50, name: "伍登格罗谜案", recLevel: "8 - 11", limitLevel: "6 - 15", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 51, name: "南瓜镇大冒险", recLevel: "8 - 12", limitLevel: "5 - 40", openTime: "2025年10月31日 06:00 - 2025年11月30日 06:00<br>每年10月31日"},
+        {id: 52, name: "通往故乡的漫长旅程", recLevel: "9 - 12", limitLevel: "6 - 15", openTime: "总是可选"},
+        {id: 53, name: "捉迷藏", recLevel: "9 - 11", limitLevel: "6 - 15", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 54, name: "追逐战！洋葱节的意外冒险", recLevel: "9 - 16", limitLevel: "6 - 40", openTime: "2025年06月15日 06:00 - 2025年07月15日 06:00<br>每年06月15日"},
+        {id: 55, name: "风车节的梦和骑士的传说", recLevel: "9 - 15", limitLevel: "7 - 40", openTime: "2025年06月15日 06:00 - 2025年07月15日 06:00<br>每年06月15日"},
+        {id: 56, name: "齐鲁玛邪教的秘密", recLevel: "10 - 13", limitLevel: "7 - 16", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
+        {id: 57, name: "马戏团失踪的孩子", recLevel: "10 - 13", limitLevel: "7 - 16", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 58, name: "纳布拉特的荣誉大厅（进阶）", recLevel: "10 - 20", limitLevel: "8 -", openTime: "总是可选"},
+        {id: 59, name: "猪王城传说", recLevel: "10 - 16", limitLevel: "8 - 40", openTime: "2025年11月05日 06:00 - 2025年12月05日 06:00<br>每年11月05日"},
+        {id: 60, name: "诅咒农场的调查", recLevel: "11 - 13", limitLevel: "7 - 16", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 61, name: "复仇之夜", recLevel: "11 - 13", limitLevel: "7 - 19", openTime: "总是可选"},
+        {id: 62, name: "阿克贝斯之泪", recLevel: "11 - 13", limitLevel: "8 - 20", openTime: "总是可选"},
+        {id: 63, name: "霰弹枪工厂的阴谋", recLevel: "12 - 14", limitLevel: "8 - 19", openTime: "总是可选"},
+        {id: 64, name: "庄园", recLevel: "12 - 14", limitLevel: "9 - 20", openTime: "总是可选"},
+        {id: 65, name: "夏日庆典", recLevel: "12 - 16", limitLevel: "8 - 40", openTime: "2025年06月15日 06:00 - 2025年07月15日 06:00<br>每年06月15日"},
+        {id: 66, name: "山中的假日", recLevel: "13 - 16", limitLevel: "10 - 21", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 67, name: "英雄的坟墓", recLevel: "14 - 16", limitLevel: "10 - 21", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
+        {id: 68, name: "凛冬将至", recLevel: "14 - 20", limitLevel: "12 - 40", openTime: "总是可选"},
+        {id: 69, name: "矮人阶梯", recLevel: "15 - 18", limitLevel: "10 - 28", openTime: "总是可选"},
+        {id: 70, name: "米勒巴赫的袭击", recLevel: "15 - 17", limitLevel: "10 - 22", openTime: "总是可选"},
+        {id: 71, name: "彩虹尽头", recLevel: "15 - 18", limitLevel: "10 - 20", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每4天重复"},
+        {id: 72, name: "塔罗斯山脉", recLevel: "15 - 25", limitLevel: "10 - 40", openTime: "总是可选"},
+        {id: 73, name: "琥珀的秘密", recLevel: "16 - 19", limitLevel: "11 - 28", openTime: "总是可选"},
+        {id: 74, name: "竞技比赛的前夜", recLevel: "16 - 19", limitLevel: "13 - 30", openTime: "总是可选"},
+        {id: 75, name: "驱逐米勒巴赫的兽人", recLevel: "16 - 19", limitLevel: "10 - 29", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 76, name: "神秘信息", recLevel: "16 - 19", limitLevel: "11 - 25", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 77, name: "亡灵巫师塔博塔博的回归", recLevel: "17 - 20", limitLevel: "13 - 30", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 78, name: "纳布拉特的荣誉大厅（老手）", recLevel: "17 -", limitLevel: "15 -", openTime: "总是可选"},
+        {id: 79, name: "保护商路", recLevel: "18 - 21", limitLevel: "14 - 31", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
+        {id: 80, name: "寒冰女王", recLevel: "18 - 21", limitLevel: "15 - 32", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
+        {id: 81, name: "第一道门", recLevel: "18 - 20", limitLevel: "14 - 30", openTime: "总是可选"},
+        {id: 82, name: "沼泽中的巨石阵", recLevel: "18 - 21", limitLevel: "16 - 32", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 83, name: "银刺", recLevel: "18 - 21", limitLevel: "15 - 37", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 84, name: "发狂的炼金术士", recLevel: "18 - 21", limitLevel: "15 - 32", openTime: "总是可选"},
+        {id: 85, name: "紫色禁地", recLevel: "18 - 21", limitLevel: "14 - 32", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 86, name: "格兰斯凯巴的生命之水", recLevel: "19 - 22", limitLevel: "14 - 32", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 87, name: "小，却高！", recLevel: "20 - 23", limitLevel: "17 - 34", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 88, name: "父债子还", recLevel: "20 - 23", limitLevel: "16 - 33", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 89, name: "绿野仙踪", recLevel: "20 - 22", limitLevel: "16 - 30", openTime: "总是可选"},
+        {id: 90, name: "阴影之心", recLevel: "20 - 23", limitLevel: "17 - 32", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 91, name: "试炼之塔", recLevel: "20 - 40", limitLevel: "15 - 40", openTime: "总是可选"},
+        {id: 92, name: "挑战之塔", recLevel: "20 - 40", limitLevel: "15 - 40", openTime: "总是可选"},
+        {id: 93, name: "第二道门", recLevel: "21 - 24", limitLevel: "17 - 34", openTime: "总是可选"},
+        {id: 94, name: "护送", recLevel: "21 - 24", limitLevel: "17 - 33", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
+        {id: 95, name: "劳累一天后的夜晚", recLevel: "21 - 26", limitLevel: "19 - 27", openTime: "总是可选"},
+        {id: 96, name: "时间，星光和佛罗特旺的猎人", recLevel: "21 - 25", limitLevel: "18 - 35", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
+        {id: 97, name: "遗失的书籍", recLevel: "22 - 25", limitLevel: "18 - 33", openTime: "总是可选"},
+        {id: 98, name: "图书馆的一夜", recLevel: "22 - 25", limitLevel: "19 - 40", openTime: "总是可选"},
+        {id: 99, name: "摩-莫拉齐", recLevel: "22 - 30", limitLevel: "20 -", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
+        {id: 100, name: "脱帽，向亲王致敬！", recLevel: "22 - 25", limitLevel: "21 - 27", openTime: "总是可选"},
+        {id: 101, name: "漆黑的雨夜", recLevel: "22 - 30", limitLevel: "18 -", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 102, name: "神圣礼堂", recLevel: "23 - 26", limitLevel: "19 - 40", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 103, name: "冰冷大地", recLevel: "23 - 26", limitLevel: "19 - 40", openTime: "总是可选"},
+        {id: 104, name: "峡谷侦察", recLevel: "23 - 26", limitLevel: "20 - 40", openTime: "总是可选"},
+        {id: 105, name: "危险的知识", recLevel: "24 - 27", limitLevel: "21 - 38", openTime: "总是可选"},
+        {id: 106, name: "血腥之手", recLevel: "24 - 28", limitLevel: "21 - 40", openTime: "总是可选"},
+        {id: 107, name: "尤里佛的一天", recLevel: "25 - 28", limitLevel: "23 - 40", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 108, name: "神灵的谜题", recLevel: "25 - 40", limitLevel: "25 - 40", openTime: "2025年07月13日 06:00 - 2025年07月14日 06:00<br>每7天重复"},
+        {id: 109, name: "结局", recLevel: "25 - 28", limitLevel: "22 - 40", openTime: "总是可选"},
+        {id: 110, name: "扎卜耶纳的先知！", recLevel: "26 - 30", limitLevel: "23 - 40", openTime: "总是可选"},
+        {id: 111, name: "一场公平的决斗", recLevel: "26 - 31", limitLevel: "23 - 36", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 112, name: "笼罩提琳的阴云", recLevel: "28 - 31", limitLevel: "24 - 40", openTime: "总是可选"},
+        {id: 113, name: "血红之心", recLevel: "28 - 34", limitLevel: "24 -", openTime: "总是可选"},
+        {id: 114, name: "沃夫洛德的围攻", recLevel: "29 - 34", limitLevel: "26 - 40", openTime: "总是可选"},
+        {id: 115, name: "黄金群岛之谜", recLevel: "29 - 32", limitLevel: "25 - 40", openTime: "总是可选"},
+        {id: 116, name: "A大调上的风语", recLevel: "30 - 33", limitLevel: "27 - 40", openTime: "总是可选"},
+        {id: 117, name: "复仇，最好是一道冷菜", recLevel: "30 - 35", limitLevel: "27 - 40", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
+        {id: 118, name: "血统", recLevel: "30 - 34", limitLevel: "27 - 40", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
+        {id: 119, name: "过去的阴影", recLevel: "31 - 33", limitLevel: "24 - 40", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
+        {id: 120, name: "火焰群岛的考察", recLevel: "31 - 35", limitLevel: "27 -", openTime: "总是可选"},
+        {id: 121, name: "血之道", recLevel: "32 - 35", limitLevel: "26 - 40", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每4天重复"},
+        {id: 122, name: "异界灾祸", recLevel: "32 - 36", limitLevel: "28 - 40", openTime: "总是可选"},
+        {id: 123, name: "天空之城", recLevel: "33 - 37", limitLevel: "30 -", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
+        {id: 124, name: "古物", recLevel: "34 - 38", limitLevel: "29 - 40", openTime: "总是可选"},
+        {id: 125, name: "万恶之源", recLevel: "34 - 39", limitLevel: "31 -", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 126, name: "薇丝帕与法佩罗", recLevel: "35 - 38", limitLevel: "29 - 40", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 127, name: "没有休息的诅咒", recLevel: "35 - 39", limitLevel: "31 -", openTime: "总是可选"},
+        {id: 128, name: "巨兽讨伐战", recLevel: "35 - 38", limitLevel: "32 - 40", openTime: "总是可选"},
+        {id: 129, name: "脱帽，向亲王致敬！ II", recLevel: "35 - 38", limitLevel: "29 - 40", openTime: "总是可选"},
+        {id: 130, name: "帕沙雷的召唤", recLevel: "36 - 39", limitLevel: "30 -", openTime: "总是可选"},
+        {id: 131, name: "永恒追忆", recLevel: "36 - 41", limitLevel: "33 -", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 132, name: "第三道门", recLevel: "36 - 39", limitLevel: "32 -", openTime: "总是可选"},
+        {id: 133, name: "红色礼服迷案", recLevel: "36 - 39", limitLevel: "32 -", openTime: "总是可选"},
+        {id: 134, name: "献给云雀的花", recLevel: "37 - 41", limitLevel: "34 -", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
+        {id: 135, name: "脱帽，向亲王致敬！ III", recLevel: "37 - 40", limitLevel: "33 -", openTime: "总是可选"},
+        {id: 136, name: "乌有乡", recLevel: "38 - 42", limitLevel: "35 -", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
+        {id: 137, name: "第四道门", recLevel: "38 - 40", limitLevel: "34 -", openTime: "总是可选"},
+        {id: 138, name: "狼之乡", recLevel: "38 - 40", limitLevel: "35 -", openTime: "总是可选"}
+      ];
+    }
+    
+    // 搜索副本
+    function searchDungeons(query) {
+      if (!query) {
+        return dungeons;
+      }
+      const lowerQuery = query.toLowerCase();
+      return dungeons.filter(dungeon => 
+        dungeon.name.toLowerCase().includes(lowerQuery) || 
+        dungeon.id.toString().includes(lowerQuery)
+      );
+    }
+    
+    // 渲染搜索结果
+    function renderDungeonResults(results) {
+      const container = document.getElementById('dungeonResults');
+      container.innerHTML = '';
+      
+      if (results.length === 0) {
+        container.innerHTML = '<div class="dungeon-result-item">没有找到匹配的副本</div>';
+        container.style.display = 'block';
+        return;
+      }
+      
+      results.forEach(dungeon => {
+        const item = document.createElement('div');
+        item.className = 'dungeon-result-item';
+        item.innerHTML = `
+          <div class="dungeon-name">
+            <span class="dungeon-id">${dungeon.id}</span> ${dungeon.name}
+          </div>
+          <div class="dungeon-info">
+            <span>推荐等级: ${dungeon.recLevel}</span>
+            <span>限制等级: ${dungeon.limitLevel}</span>
+          </div>
+          <div class="dungeon-info">
+            <span>开放时间: ${dungeon.openTime}</span>
+          </div>
+        `;
+        item.addEventListener('click', () => {
+          document.getElementById('dungeonSearch').value = dungeon.name;
+          selectedDungeon = dungeon;
+          container.style.display = 'none';
+        });
+        container.appendChild(item);
+      });
+      
+      container.style.display = 'block';
+    }
+    
+    // 初始化
     function init() {
+      initDungeons();
       addPositionRow();
       addFloor();
       updateCounters();
-      fetchTactics();
       
       const savedRatings = localStorage.getItem('tacticRatings');
       if (savedRatings) {
@@ -1079,6 +1589,27 @@
       if (desktopSearchInput) {
         desktopSearchInput.addEventListener('input', handleSearchInput);
       }
+      
+      // 副本搜索事件
+      const dungeonSearch = document.getElementById('dungeonSearch');
+      dungeonSearch.addEventListener('input', function() {
+        const results = searchDungeons(this.value);
+        renderDungeonResults(results);
+      });
+      // 新增：点击输入框时立即弹出全部副本
+      dungeonSearch.addEventListener('focus', function() {
+        const results = searchDungeons(this.value);
+        renderDungeonResults(results);
+      });
+      // 点击其他地方关闭搜索结果
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dungeon-search-container')) {
+          document.getElementById('dungeonResults').style.display = 'none';
+        }
+      });
+      
+      // 加载云端战术库
+      fetchTactics();
     }
 
     function handleSearchInput(event) {
@@ -1090,7 +1621,9 @@
         const searchTerm = event.target.value.toLowerCase().trim();
         if (searchTerm) {
           const filtered = tacticsData.filter(tactic => 
-            tactic.name.toLowerCase().includes(searchTerm)
+            tactic.name.toLowerCase().includes(searchTerm) ||
+            (tactic.teamName && tactic.teamName.toLowerCase().includes(searchTerm)) ||
+            (tactic.dungeonName && tactic.dungeonName.toLowerCase().includes(searchTerm))
           );
           renderTacticsList(filtered);
           showStatus(`找到 ${filtered.length} 个匹配的战术`, 'success');
@@ -1229,6 +1762,11 @@
               inputs[index + 1].focus();
             }
           }
+          // 新增：Delete/Backspace在空时跳到前一个输入框
+          if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
+            e.preventDefault();
+            inputs[index - 1].focus();
+          }
         });
       });
       
@@ -1241,8 +1779,13 @@
     }
 
     function generateTacticsObject() {
-      const name = document.getElementById('dungeonName').value || "未命名战术";
+      const teamName = document.getElementById('teamName').value || "";
+      const dungeonName = selectedDungeon ? selectedDungeon.name : "未命名副本";
       
+      // 修改战术名称格式为"副本名称 - 团名"
+      const name = teamName ? `${dungeonName} - ${teamName}` : dungeonName;
+      
+      // 收集站位配置
       const positions = [];
       document.querySelectorAll('#positionConfig > div').forEach(row => {
         const pos = row.querySelector('select').value;
@@ -1252,15 +1795,18 @@
         }
       });
       
+      // 收集楼层配置
       const floors = [];
       document.querySelectorAll('#floorConfig > div').forEach(floor => {
         const floorId = floor.querySelector('input').value || "未命名楼层";
         
+        // 收集备注
         const comments = [];
         floor.querySelectorAll('.comment-rows textarea').forEach(textarea => {
           if (textarea.value.trim()) comments.push(textarea.value.trim());
         });
         
+        // 收集回合前行动
         const preTurn = [];
         floor.querySelectorAll('.pre-turn > div.dynamic-row').forEach(row => {
           const inputs = row.querySelectorAll('input, select');
@@ -1276,6 +1822,7 @@
           }
         });
         
+        // 收集回合中行动
         const postTurn = [];
         floor.querySelectorAll('.post-turn > div.dynamic-row').forEach(row => {
           const inputs = row.querySelectorAll('input, select');
@@ -1300,6 +1847,8 @@
       });
       
       return {
+        teamName: teamName,
+        dungeonName: dungeonName,
         name: name,
         spoiler: useSpoiler,
         positions: positions,
@@ -1312,8 +1861,10 @@
 
     function copyTactics() {
       const tactic = generateTacticsObject();
-      let output = tactic.spoiler ? `[spoiler title=${tactic.name}]\n` : `战术：${tactic.name}\n`;
+      // 修改为只使用副本名称
+      let output = tactic.spoiler ? `[spoiler title=${tactic.dungeonName}]\n` : `战术：${tactic.dungeonName}\n`;
 
+      // 站位配置
       output += `站位：\n`;
       const positions = {};
       tactic.positions.forEach(p => {
@@ -1323,6 +1874,7 @@
         output += `  ${pos}：${classes.filter(c=>c).join('、')}\n`;
       });
 
+      // 楼层配置
       tactic.floors.forEach(floor => {
         output += `${floor.name}\n`;
 
@@ -1410,8 +1962,8 @@
     async function uploadTactics() {
       const tactic = generateTacticsObject();
       
-      if (!tactic.name || tactic.name === "未命名战术") {
-        showStatus('请为您的战术命名', 'error');
+      if (!selectedDungeon) {
+        showStatus('请选择副本', 'error');
         return;
       }
       
@@ -1529,7 +2081,6 @@
                 <i class="fas fa-thumbs-up"></i>
               </button>
               <span>${tactic.likes || 0}</span>
-              <!-- 点踩按钮改为猪猪头按钮 -->
               <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="rateTactic('${tactic.name}', -1)">
                 <i class="fas fa-piggy-bank"></i>
               </button>
@@ -1686,7 +2237,11 @@
       const tactic = tacticsData[index];
       if (!tactic) return;
       
-      document.getElementById('dungeonName').value = tactic.name || "";
+      document.getElementById('teamName').value = tactic.teamName || "";
+      document.getElementById('dungeonSearch').value = tactic.dungeonName || "";
+      
+      // 查找选中的副本
+      selectedDungeon = dungeons.find(d => d.name === tactic.dungeonName) || null;
       
       useSpoiler = tactic.spoiler || false;
       const btn = document.getElementById("spoilerToggleBtn");
