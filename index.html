@@ -1213,6 +1213,118 @@
       border-radius: var(--border-radius) !important;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
     }
+    
+    /* 美化 dungeon-detail 横向滚动条 */
+    .dungeon-detail::-webkit-scrollbar,
+    .dungeon-detail table::-webkit-scrollbar,
+    .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar {
+      height: 8px;
+      background: transparent;
+    }
+    .dungeon-detail::-webkit-scrollbar-thumb,
+    .dungeon-detail table::-webkit-scrollbar-thumb,
+    .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 6px;
+      min-width: 40px;
+    }
+    .dungeon-detail::-webkit-scrollbar-track,
+    .dungeon-detail table::-webkit-scrollbar-track,
+    .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+    }
+    /* Firefox */
+    .dungeon-detail {
+      scrollbar-color: var(--secondary) rgba(255,255,255,0.05);
+      scrollbar-width: thin;
+    }
+    /* 编辑弹窗样式 */
+    .modal-mask {
+      position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.35); z-index: 99999; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-edit {
+      background: #232b3a; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.25); padding: 24px 24px 18px 24px; min-width: 340px; max-width: 96vw; max-height: 90vh; overflow-y: auto; color: #fff; position: relative;
+    }
+    .modal-edit h2 { color: #6d9eeb; font-size: 1.2rem; margin-bottom: 10px; }
+    .modal-edit label { font-weight: 600; margin-top: 10px; display: block; }
+    .modal-edit textarea, .modal-edit input { width: 100%; margin: 4px 0 10px 0; border-radius: 6px; border: 1px solid #444; background: #1a2233; color: #fff; padding: 6px 10px; }
+    .modal-edit table { width: 100%; margin-bottom: 10px; background: rgba(30,40,60,0.7); border-radius: 8px; font-size: 13px; }
+    .modal-edit th, .modal-edit td { padding: 4px 6px; text-align: left; }
+    .modal-edit th { color: #b0a0cc; }
+    .modal-edit .btn { background: #6d9eeb; color: #fff; border: none; border-radius: 6px; padding: 4px 10px; margin: 0 2px; cursor: pointer; font-size: 13px; }
+    .modal-edit .btn-danger { background: #e74c3c; }
+    .modal-edit .btn-add { background: #4caf50; }
+    .modal-edit .modal-actions { text-align: right; margin-top: 10px; }
+    .modal-edit .close-btn { position: absolute; right: 12px; top: 10px; background: none; color: #aaa; font-size: 20px; border: none; cursor: pointer; }
+    
+    /* 统一竖向滚动条美化 */
+    body::-webkit-scrollbar,
+    .dungeon-detail::-webkit-scrollbar,
+    .dungeon-detail table::-webkit-scrollbar,
+    .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar,
+    .dungeon-detail div[style*='overflow-y']::-webkit-scrollbar,
+    .modal-edit::-webkit-scrollbar,
+    .modal-edit table::-webkit-scrollbar,
+    .modal-edit div[style*='overflow-x']::-webkit-scrollbar,
+    .modal-edit div[style*='overflow-y']::-webkit-scrollbar,
+    .dungeon-results::-webkit-scrollbar,
+    .tactics-list::-webkit-scrollbar,
+    .cloud-section::-webkit-scrollbar,
+    table::-webkit-scrollbar,
+    div[style*='overflow-y']::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background: transparent;
+    }
+    body::-webkit-scrollbar-thumb,
+    .dungeon-detail::-webkit-scrollbar-thumb,
+    .dungeon-detail table::-webkit-scrollbar-thumb,
+    .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar-thumb,
+    .dungeon-detail div[style*='overflow-y']::-webkit-scrollbar-thumb,
+    .modal-edit::-webkit-scrollbar-thumb,
+    .modal-edit table::-webkit-scrollbar-thumb,
+    .modal-edit div[style*='overflow-x']::-webkit-scrollbar-thumb,
+    .modal-edit div[style*='overflow-y']::-webkit-scrollbar-thumb,
+    .dungeon-results::-webkit-scrollbar-thumb,
+    .tactics-list::-webkit-scrollbar-thumb,
+    .cloud-section::-webkit-scrollbar-thumb,
+    table::-webkit-scrollbar-thumb,
+    div[style*='overflow-y']::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 6px;
+      min-height: 40px;
+      min-width: 8px;
+    }
+    body::-webkit-scrollbar-track,
+    .dungeon-detail::-webkit-scrollbar-track,
+    .dungeon-detail table::-webkit-scrollbar-track,
+    .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar-track,
+    .dungeon-detail div[style*='overflow-y']::-webkit-scrollbar-track,
+    .modal-edit::-webkit-scrollbar-track,
+    .modal-edit table::-webkit-scrollbar-track,
+    .modal-edit div[style*='overflow-x']::-webkit-scrollbar-track,
+    .modal-edit div[style*='overflow-y']::-webkit-scrollbar-track,
+    .dungeon-results::-webkit-scrollbar-track,
+    .tactics-list::-webkit-scrollbar-track,
+    .cloud-section::-webkit-scrollbar-track,
+    table::-webkit-scrollbar-track,
+    div[style*='overflow-y']::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+    }
+    /* Firefox */
+    body,
+    .dungeon-detail,
+    .modal-edit,
+    .dungeon-results,
+    .tactics-list,
+    .cloud-section,
+    table,
+    div[style*='overflow-y'] {
+      scrollbar-color: var(--secondary) rgba(255,255,255,0.05);
+      scrollbar-width: thin;
+    }
   </style>
 </head>
 <body>
@@ -1233,10 +1345,11 @@
       <div class="dungeon-search-section">
         <h2><i class="fas fa-search"></i> 副本搜索</h2>
         <div class="dungeon-search-container">
-          <input type="text" id="dungeonSearch" class="dungeon-search-input" placeholder="副本名称（输入以搜索）">
+          <input type="text" id="dungeonSearch" class="dungeon-search-input" placeholder="副本名称（输入ID/名称搜索）">
           <i class="fas fa-search dungeon-search-icon"></i>
           <div id="dungeonResults" class="dungeon-results"></div>
         </div>
+        <div id="dungeonDetail" class="dungeon-detail"></div>
       </div>
     </div>
     <!-- 中间：战术配置和战术库合并 -->
@@ -1321,11 +1434,16 @@
     <i class="fas fa-redo"></i> 重置配置
   </button>
 
+  <div style="width:100%;text-align:center;color:#b0a0cc;font-size:14px;margin:40px 0 10px 0;letter-spacing:2px;opacity:0.7;">[player:Blank] x DeepSeek Ai</div>
   <script>
     // 配置您的API密钥（直接嵌入）
     const BIN_ID = "686bdc348a456b7966bcdf3a";
     const X_MASTER_KEY = "$2a$10$Bz3gYeqxopB31a/nY3cyyuSXp9hNVKZeVTTsBy.tVFIBhcNDW1JIO";
     const API_URL = "https://api.jsonbin.io/v3/b/" + BIN_ID;
+    
+    // 新增：地城数据云端Bin
+    const DUNGEON_BIN_ID = "686d94a8dfff172fa657be86"; // TODO: 替换为你的新Bin ID
+    const DUNGEON_API_URL = "https://api.jsonbin.io/v3/b/" + DUNGEON_BIN_ID;
     
     let useSpoiler = false;
     let positionCount = 0;
@@ -1403,7 +1521,54 @@
         {id: 9, name: "酒吧底下的地精洞穴", recLevel: "2 - 4", limitLevel: "2 - 6", openTime: "总是可选"},
         {id: 10, name: "藏宝图", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
         {id: 11, name: "港口的仓库", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "总是可选"},
-        {id: 12, name: "乡间漫步", recLevel: "2 - 4", limitLevel: "2 - 7", openTime: "总是可选"},
+        {id: 12, name: "乡间漫步", recLevel: "2 - 4", limitLevel: "2 - 7", openTime: "总是可选",
+          note: "携带XXX触发挑战",
+          units: [
+            { name: "老鼠", hp: 5, mp: "/", race: "动物", initiative: 13, move: 1, melee: "15/—", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
+            { name: "狗", hp: 10, mp: "/", race: "动物", initiative: 5, move: 1, melee: "10", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
+            { name: "流浪汉", hp: 7, mp: "/", race: "人类", initiative: 5, move: 1, melee: "15", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
+            { name: "蝙蝠", hp: 18, mp: "/", race: "动物", initiative: 14, move: 1, melee: "18", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
+            { name: "恶作剧鬼", hp: 19, mp: 15, race: "亡灵", initiative: 12, move: 2, melee: "20/45", ranged: "0/45", magic: "/", mind: "/", order: "近战", special: "/" }
+          ],
+          floors: [
+            { name: "F1R1", positions: {
+                "前排": [{ name: "老鼠", count: 10 }],
+                "左翼": [{ name: "老鼠", count: 5 }],
+                "右翼": [{ name: "老鼠", count: 5 }],
+                "中间": [],
+                "后排": [],
+                "队后": []
+              }
+            },
+            { name: "F2R1", positions: {
+                "前排": [{ name: "狗", count: 1 }, { name: "流浪汉", count: 1 }],
+                "左翼": [{ name: "流浪汉", count: 1 }],
+                "右翼": [{ name: "流浪汉", count: 1 }],
+                "中间": [],
+                "后排": [],
+                "队后": []
+              }
+            },
+            { name: "F3R1", positions: {
+                "前排": [],
+                "左翼": [{ name: "蝙蝠", count: 12 }],
+                "右翼": [{ name: "蝙蝠", count: 13 }],
+                "中间": [],
+                "后排": [],
+                "队后": []
+              }
+            },
+            { name: "F4R1", positions: {
+                "前排": [],
+                "左翼": [{ name: "恶作剧鬼", count: 1 }],
+                "右翼": [],
+                "中间": [],
+                "后排": [],
+                "队后": []
+              }
+            }
+          ]
+        },
         {id: 13, name: "小题大做", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "今天 06:00 - 明天 06:00<br>每5天重复"},
         {id: 14, name: "圣诞节的白雾林", recLevel: "2 - 40", limitLevel: "2 - 40", openTime: "2025年12月21日 06:00 - 2025年12月28日 06:00<br>每年12月21日"},
         {id: 15, name: "乌鸦之田", recLevel: "3 - 5", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
@@ -1575,6 +1740,7 @@
           document.getElementById('dungeonSearch').value = dungeon.name;
           selectedDungeon = dungeon;
           container.style.display = 'none';
+          renderDungeonDetail(dungeon);
         });
         container.appendChild(item);
       });
@@ -1620,6 +1786,8 @@
       dungeonSearch.addEventListener('focus', function() {
         const results = searchDungeons(this.value);
         renderDungeonResults(results);
+        if (selectedDungeon) renderDungeonDetail(selectedDungeon);
+        else document.getElementById('dungeonDetail').innerHTML = '';
       });
       // 点击其他地方关闭搜索结果
       document.addEventListener('click', function(e) {
@@ -2446,6 +2614,50 @@
     window.addEventListener('DOMContentLoaded', setCloudSectionHeight);
     // 关键操作后也触发
     setTimeout(setCloudSectionHeight, 500);
+
+    // 新增渲染地城详细信息函数
+    function renderDungeonDetail(dungeon) {
+      const detail = document.getElementById('dungeonDetail');
+      if (!dungeon) {
+        detail.innerHTML = '';
+        return;
+      }
+      let html = '';
+      // 始终预留单位属性标题位置，便于插入按钮
+      if (dungeon.units && dungeon.units.length) {
+        let updateStr = dungeon.updatedAt ? `<span style='color:#aaa;font-size:12px;margin-left:10px;'>(更新时间: ${dungeon.updatedAt ? dungeon.updatedAt.replace('T',' ').slice(0,16) : ''})</span>` : '';
+        html += `<h3 style=\"margin:10px 0 4px 0;color:#6d9eeb;display:inline-block;\"><i class='fas fa-dna'></i> 单位属性${updateStr}</h3>`;
+        html += `<div style=\"overflow-x:auto;\"><table style=\"min-width:1000px;width:100%;font-size:13px;background:rgba(30,40,60,0.7);border-radius:8px;\">`;
+        html += `<tr style=\"color:#b0a0cc;text-align:left;\"><th>单位名</th><th>体力</th><th>法力</th><th>种族</th><th>先攻</th><th>动数</th><th>近战命中/闪避</th><th>远程命中/闪避</th><th>魔法命中/闪避</th><th>心理命中/闪避</th><th>攻击顺序</th><th>特殊机制</th></tr>`;
+        dungeon.units.forEach(u => {
+          html += `<tr style=\"color:#fff;\"><td>${u.name}</td><td>${u.hp}</td><td>${u.mp}</td><td>${u.race}</td><td>${u.initiative}</td><td>${u.move}</td><td>${u.melee}</td><td>${u.ranged}</td><td>${u.magic}</td><td>${u.mind}</td><td>${u.order}</td><td>${u.special}</td></tr>`;
+        });
+        html += `</table></div>`;
+      }
+      if (dungeon.floors && dungeon.floors.length) {
+        html += `<h3 style="margin:12px 0 4px 0;color:#6d9eeb;"><i class='fas fa-layer-group'></i> 楼层部署</h3>`;
+        dungeon.floors.forEach(floor => {
+          html += `<div style='margin-bottom:8px;'><b>${floor.name}</b><table style="width:100%;font-size:13px;background:rgba(30,40,60,0.5);border-radius:8px;margin-top:2px;table-layout:fixed;">
+            <tr style="color:#b0a0cc;text-align:left;"><th style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>位置</th><th style='white-space:nowrap;vertical-align:middle;padding-left:8px;'>单位/数量</th></tr>`;
+          Object.entries(floor.positions).forEach(([pos, arr]) => {
+            html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>${pos}</td><td style='white-space:nowrap;vertical-align:middle;padding-left:8px;'>` + (arr.length ? arr.map(e=>`${e.name}×${e.count}`).join('、') : '-') + `</td></tr>`;
+          });
+          html += `</table></div>`;
+        });
+      }
+      // 显示地城备注（如有）
+      if (dungeon.note) {
+        html += `<div style="margin:10px 0 14px 0;background:rgba(30,40,60,0.8);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.10);padding:0 0 0 0;border:1px solid rgba(109,158,235,0.18);">
+          <div style='padding:12px 18px 6px 18px;display:flex;align-items:center;gap:8px;'>
+            <i class='fas fa-info-circle' style='color:#6d9eeb;'></i>
+            <span style='color:#6d9eeb;font-size:1.1rem;font-weight:600;'>地城备注</span>
+          </div>
+          <div style='padding:0 18px 14px 48px;color:#ffeebb;font-size:14px;'>${dungeon.note}</div>
+        </div>`;
+      }
+      detail.innerHTML = html;
+    }
+
   </script>
 </body>
 </html>
