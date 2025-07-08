@@ -849,7 +849,7 @@
       }
       
       body {
-        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor)) calc(35px * var(--scale-factor));
+        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor)) calc(6px * var(--scale-factor));
         max-width: 100%;
       }
       
@@ -2121,20 +2121,41 @@
         });
         
         if (!response.ok) {
-          throw new Error('获取战术数据失败: ' + response.status);
+          if (response.status === 404) {
+            // 如果Bin不存在，创建一个空的Bin
+            showStatus('正在初始化云端存储...', 'info');
+            const initResponse = await fetch(API_URL, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': X_MASTER_KEY
+              },
+              body: JSON.stringify({ tactics: [] })
+            });
+            
+            if (initResponse.ok) {
+              tacticsData = [];
+              renderTacticsList(tacticsData);
+              showStatus('云端存储已初始化，可以开始上传战术', 'success');
+            } else {
+              throw new Error('初始化云端存储失败: ' + initResponse.status);
+            }
+          } else {
+            throw new Error('获取战术数据失败: ' + response.status);
+          }
+        } else {
+          const data = await response.json();
+          tacticsData = data.tactics || [];
+          
+          tacticsData.sort((a, b) => {
+            const aScore = (a.likes || 0) - (a.dislikes || 0);
+            const bScore = (b.likes || 0) - (b.dislikes || 0);
+            return bScore - aScore;
+          });
+          
+          renderTacticsList(tacticsData);
+          showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
         }
-        
-        const data = await response.json();
-        tacticsData = data.tactics || [];
-        
-        tacticsData.sort((a, b) => {
-          const aScore = (a.likes || 0) - (a.dislikes || 0);
-          const bScore = (b.likes || 0) - (b.dislikes || 0);
-          return bScore - aScore;
-        });
-        
-        renderTacticsList(tacticsData);
-        showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
         
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const desktopSearchInput = document.getElementById('desktopSearchInput');
@@ -2144,6 +2165,9 @@
       } catch (error) {
         console.error('获取战术数据时出错:', error);
         showStatus('加载战术失败: ' + error.message, 'error');
+        // 显示空列表而不是错误状态
+        tacticsData = [];
+        renderTacticsList(tacticsData);
       }
     }
     
