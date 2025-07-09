@@ -849,7 +849,7 @@
       }
       
       body {
-        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor)) calc(6px * var(--scale-factor));
+        padding: calc(15px * var(--scale-factor)) calc(6px * var(--scale-factor)) calc(60px * var(--scale-factor)) calc(35px * var(--scale-factor));
         max-width: 100%;
       }
       
@@ -1156,8 +1156,9 @@
       }
       .tactics-list {
         flex: 1 1 auto;
-        min-height: 120px;
-        max-height: none;
+        min-height: 500px;
+        max-height: 800px;
+        overflow-y: auto;
       }
     }
     
@@ -1272,10 +1273,37 @@
     .tactics-list::-webkit-scrollbar,
     .cloud-section::-webkit-scrollbar,
     table::-webkit-scrollbar,
-    div[style*='overflow-y']::-webkit-scrollbar {
+    div[style*='overflow-y']::-webkit-scrollbar,
+    .rooms-container::-webkit-scrollbar {
       width: 8px;
       height: 8px;
       background: transparent;
+    }
+    
+    /* 房间容器横向滚动条美化 */
+    .rooms-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 4px 0;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .rooms-container::-webkit-scrollbar {
+      height: 8px;
+      width: auto;
+    }
+    
+    .rooms-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 6px;
+      min-width: 40px;
+    }
+    
+    .rooms-container::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
     }
     body::-webkit-scrollbar-thumb,
     .dungeon-detail::-webkit-scrollbar-thumb,
@@ -1290,7 +1318,8 @@
     .tactics-list::-webkit-scrollbar-thumb,
     .cloud-section::-webkit-scrollbar-thumb,
     table::-webkit-scrollbar-thumb,
-    div[style*='overflow-y']::-webkit-scrollbar-thumb {
+    div[style*='overflow-y']::-webkit-scrollbar-thumb,
+    .rooms-container::-webkit-scrollbar-thumb {
       background: linear-gradient(90deg, var(--primary), var(--secondary));
       border-radius: 6px;
       min-height: 40px;
@@ -1309,7 +1338,8 @@
     .tactics-list::-webkit-scrollbar-track,
     .cloud-section::-webkit-scrollbar-track,
     table::-webkit-scrollbar-track,
-    div[style*='overflow-y']::-webkit-scrollbar-track {
+    div[style*='overflow-y']::-webkit-scrollbar-track,
+    .rooms-container::-webkit-scrollbar-track {
       background: rgba(255,255,255,0.05);
       border-radius: 6px;
     }
@@ -1321,7 +1351,8 @@
     .tactics-list,
     .cloud-section,
     table,
-    div[style*='overflow-y'] {
+    div[style*='overflow-y'],
+    .rooms-container {
       scrollbar-color: var(--secondary) rgba(255,255,255,0.05);
       scrollbar-width: thin;
     }
@@ -1507,195 +1538,38 @@
       showStatus('配置已重置', 'success');
     }
 
-    // 初始化副本数据
-    function initDungeons() {
-      dungeons = [
-        {id: 1, name: "泰伦索尔的奇异物品商店", recLevel: "-", limitLevel: "10 - 40", openTime: "总是可选"},
-        {id: 2, name: "喧嚷的酒吧", recLevel: "1 - 3", limitLevel: "1 - 4", openTime: "总是可选"},
-        {id: 3, name: "林中强盗", recLevel: "1 - 1", limitLevel: "1 - 1", openTime: "总是可选"},
-        {id: 4, name: "前往米勒巴赫的旅程", recLevel: "1 - 1", limitLevel: "1 - 3", openTime: "总是可选"},
-        {id: 5, name: "第一次冒险：抵达德拉斯堡", recLevel: "1 - 1", limitLevel: "1 - 1", openTime: "总是可选"},
-        {id: 6, name: "铁匠铺", recLevel: "1 - 10", limitLevel: "1 - 40", openTime: "总是可选"},
-        {id: 7, name: "深岩城广场", recLevel: "1 - 1", limitLevel: "1 - 40", openTime: "总是可选"},
-        {id: 8, name: "第一份工作", recLevel: "2 - 4", limitLevel: "2 - 7", openTime: "总是可选"},
-        {id: 9, name: "酒吧底下的地精洞穴", recLevel: "2 - 4", limitLevel: "2 - 6", openTime: "总是可选"},
-        {id: 10, name: "藏宝图", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 11, name: "港口的仓库", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "总是可选"},
-        {id: 12, name: "乡间漫步", recLevel: "2 - 4", limitLevel: "2 - 7", openTime: "总是可选",
-          note: "携带XXX触发挑战",
-          units: [
-            { name: "老鼠", hp: 5, mp: "/", race: "动物", initiative: 13, move: 1, melee: "15/—", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
-            { name: "狗", hp: 10, mp: "/", race: "动物", initiative: 5, move: 1, melee: "10", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
-            { name: "流浪汉", hp: 7, mp: "/", race: "人类", initiative: 5, move: 1, melee: "15", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
-            { name: "蝙蝠", hp: 18, mp: "/", race: "动物", initiative: 14, move: 1, melee: "18", ranged: "/", magic: "/", mind: "/", order: "近战", special: "/" },
-            { name: "恶作剧鬼", hp: 19, mp: 15, race: "亡灵", initiative: 12, move: 2, melee: "20/45", ranged: "0/45", magic: "/", mind: "/", order: "近战", special: "/" }
-          ],
-          floors: [
-            { name: "F1R1", positions: {
-                "前排": [{ name: "老鼠", count: 10 }],
-                "左翼": [{ name: "老鼠", count: 5 }],
-                "右翼": [{ name: "老鼠", count: 5 }],
-                "中间": [],
-                "后排": [],
-                "队后": []
-              }
-            },
-            { name: "F2R1", positions: {
-                "前排": [{ name: "狗", count: 1 }, { name: "流浪汉", count: 1 }],
-                "左翼": [{ name: "流浪汉", count: 1 }],
-                "右翼": [{ name: "流浪汉", count: 1 }],
-                "中间": [],
-                "后排": [],
-                "队后": []
-              }
-            },
-            { name: "F3R1", positions: {
-                "前排": [],
-                "左翼": [{ name: "蝙蝠", count: 12 }],
-                "右翼": [{ name: "蝙蝠", count: 13 }],
-                "中间": [],
-                "后排": [],
-                "队后": []
-              }
-            },
-            { name: "F4R1", positions: {
-                "前排": [],
-                "左翼": [{ name: "恶作剧鬼", count: 1 }],
-                "右翼": [],
-                "中间": [],
-                "后排": [],
-                "队后": []
-              }
-            }
-          ]
-        },
-        {id: 13, name: "小题大做", recLevel: "2 - 3", limitLevel: "2 - 5", openTime: "今天 06:00 - 明天 06:00<br>每5天重复"},
-        {id: 14, name: "圣诞节的白雾林", recLevel: "2 - 40", limitLevel: "2 - 40", openTime: "2025年12月21日 06:00 - 2025年12月28日 06:00<br>每年12月21日"},
-        {id: 15, name: "乌鸦之田", recLevel: "3 - 5", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 16, name: "爬虫的侵袭", recLevel: "3 - 6", limitLevel: "3 - 9", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
-        {id: 17, name: "盗贼公会", recLevel: "3 - 6", limitLevel: "3 - 9", openTime: "总是可选"},
-        {id: 18, name: "药材铺", recLevel: "3 - 5", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
-        {id: 19, name: "克伦切的兽人洞", recLevel: "4 - 6", limitLevel: "4 - 13", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
-        {id: 20, name: "阴森的树林", recLevel: "4 - 6", limitLevel: "4 - 10", openTime: "总是可选"},
-        {id: 21, name: "先人的骸骨", recLevel: "4 - 7", limitLevel: "4 - 10", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 22, name: "莫里斯王墓", recLevel: "4 - 6", limitLevel: "3 - 9", openTime: "总是可选"},
-        {id: 23, name: "兵工厂内的幽灵", recLevel: "4 - 6", limitLevel: "4 - 10", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
-        {id: 24, name: "远古恶魔", recLevel: "4 - 6", limitLevel: "3 - 10", openTime: "总是可选"},
-        {id: 25, name: "静水深流", recLevel: "4 - 7", limitLevel: "3 - 10", openTime: "总是可选"},
-        {id: 26, name: "戒指", recLevel: "4 - 6", limitLevel: "3 - 8", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
-        {id: 27, name: "山脉中的古老高塔", recLevel: "5 - 7", limitLevel: "4 - 10", openTime: "总是可选"},
-        {id: 28, name: "狩猎狼群", recLevel: "5 - 7", limitLevel: "4 - 11", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 29, name: "危急的祖舒亚", recLevel: "5 - 7", limitLevel: "4 - 11", openTime: "总是可选"},
-        {id: 30, name: "法师与怪物", recLevel: "5 - 7", limitLevel: "4 - 12", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 31, name: "竖琴", recLevel: "5 - 7", limitLevel: "4 - 11", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 32, name: "献祭", recLevel: "5 - 7", limitLevel: "4 - 12", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 33, name: "纳布拉特的荣誉大厅（新手）", recLevel: "5 -", limitLevel: "4 -", openTime: "总是可选"},
-        {id: 34, name: "渡鸦堡的集市", recLevel: "5 - 7", limitLevel: "4 - 10", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
-        {id: 35, name: "泽瑞希尔的战斗学院", recLevel: "5 - 7", limitLevel: "4 - 8", openTime: "总是可选"},
-        {id: 36, name: "巨魔难题", recLevel: "6 - 8", limitLevel: "4 - 12", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 37, name: "德雷索尼亚的阴影", recLevel: "6 - 9", limitLevel: "5 - 12", openTime: "总是可选"},
-        {id: 38, name: "觉醒", recLevel: "6 - 9", limitLevel: "5 - 12", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 39, name: "深岩城的迎春烟火", recLevel: "6 - 12", limitLevel: "5 - 40", openTime: "2026年02月01日 06:00 - 2026年03月03日 06:00<br>每年02月01日"},
-        {id: 40, name: "沼泽龙蜥的狩猎之旅", recLevel: "7 - 9", limitLevel: "6 - 13", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每7天重复"},
-        {id: 41, name: "塔博塔博的亡灵巫师", recLevel: "7 - 9", limitLevel: "5 - 15", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 42, name: "在无人山谷中的制造厂", recLevel: "7 - 11", limitLevel: "5 - 14", openTime: "总是可选"},
-        {id: 43, name: "跳舞木偶夜总会", recLevel: "7 - 9", limitLevel: "5 - 13", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 44, name: "瑞俄伯的女巫", recLevel: "7 - 9", limitLevel: "5 - 13", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 45, name: "艰辛的面试或是第十三个勇士", recLevel: "7 - 10", limitLevel: "6 - 15", openTime: "2025年07月11日 06:00 - 2025年07月12日 06:00<br>每5天重复"},
-        {id: 46, name: "黑石头", recLevel: "7 - 10", limitLevel: "6 - 15", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 47, name: "盗墓贼", recLevel: "7 - 9", limitLevel: "6 - 12", openTime: "总是可选"},
-        {id: 48, name: "老旧矿井", recLevel: "8 - 11", limitLevel: "6 - 14", openTime: "总是可选"},
-        {id: 49, name: "受诅咒的遗迹", recLevel: "8 - 11", limitLevel: "5 - 16", openTime: "总是可选"},
-        {id: 50, name: "伍登格罗谜案", recLevel: "8 - 11", limitLevel: "6 - 15", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 51, name: "南瓜镇大冒险", recLevel: "8 - 12", limitLevel: "5 - 40", openTime: "2025年10月31日 06:00 - 2025年11月30日 06:00<br>每年10月31日"},
-        {id: 52, name: "通往故乡的漫长旅程", recLevel: "9 - 12", limitLevel: "6 - 15", openTime: "总是可选"},
-        {id: 53, name: "捉迷藏", recLevel: "9 - 11", limitLevel: "6 - 15", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 54, name: "追逐战！洋葱节的意外冒险", recLevel: "9 - 16", limitLevel: "6 - 40", openTime: "2025年06月15日 06:00 - 2025年07月15日 06:00<br>每年06月15日"},
-        {id: 55, name: "风车节的梦和骑士的传说", recLevel: "9 - 15", limitLevel: "7 - 40", openTime: "2025年06月15日 06:00 - 2025年07月15日 06:00<br>每年06月15日"},
-        {id: 56, name: "齐鲁玛邪教的秘密", recLevel: "10 - 13", limitLevel: "7 - 16", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
-        {id: 57, name: "马戏团失踪的孩子", recLevel: "10 - 13", limitLevel: "7 - 16", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 58, name: "纳布拉特的荣誉大厅（进阶）", recLevel: "10 - 20", limitLevel: "8 -", openTime: "总是可选"},
-        {id: 59, name: "猪王城传说", recLevel: "10 - 16", limitLevel: "8 - 40", openTime: "2025年11月05日 06:00 - 2025年12月05日 06:00<br>每年11月05日"},
-        {id: 60, name: "诅咒农场的调查", recLevel: "11 - 13", limitLevel: "7 - 16", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 61, name: "复仇之夜", recLevel: "11 - 13", limitLevel: "7 - 19", openTime: "总是可选"},
-        {id: 62, name: "阿克贝斯之泪", recLevel: "11 - 13", limitLevel: "8 - 20", openTime: "总是可选"},
-        {id: 63, name: "霰弹枪工厂的阴谋", recLevel: "12 - 14", limitLevel: "8 - 19", openTime: "总是可选"},
-        {id: 64, name: "庄园", recLevel: "12 - 14", limitLevel: "9 - 20", openTime: "总是可选"},
-        {id: 65, name: "夏日庆典", recLevel: "12 - 16", limitLevel: "8 - 40", openTime: "2025年06月15日 06:00 - 2025年07月15日 06:00<br>每年06月15日"},
-        {id: 66, name: "山中的假日", recLevel: "13 - 16", limitLevel: "10 - 21", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 67, name: "英雄的坟墓", recLevel: "14 - 16", limitLevel: "10 - 21", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
-        {id: 68, name: "凛冬将至", recLevel: "14 - 20", limitLevel: "12 - 40", openTime: "总是可选"},
-        {id: 69, name: "矮人阶梯", recLevel: "15 - 18", limitLevel: "10 - 28", openTime: "总是可选"},
-        {id: 70, name: "米勒巴赫的袭击", recLevel: "15 - 17", limitLevel: "10 - 22", openTime: "总是可选"},
-        {id: 71, name: "彩虹尽头", recLevel: "15 - 18", limitLevel: "10 - 20", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每4天重复"},
-        {id: 72, name: "塔罗斯山脉", recLevel: "15 - 25", limitLevel: "10 - 40", openTime: "总是可选"},
-        {id: 73, name: "琥珀的秘密", recLevel: "16 - 19", limitLevel: "11 - 28", openTime: "总是可选"},
-        {id: 74, name: "竞技比赛的前夜", recLevel: "16 - 19", limitLevel: "13 - 30", openTime: "总是可选"},
-        {id: 75, name: "驱逐米勒巴赫的兽人", recLevel: "16 - 19", limitLevel: "10 - 29", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 76, name: "神秘信息", recLevel: "16 - 19", limitLevel: "11 - 25", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 77, name: "亡灵巫师塔博塔博的回归", recLevel: "17 - 20", limitLevel: "13 - 30", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 78, name: "纳布拉特的荣誉大厅（老手）", recLevel: "17 -", limitLevel: "15 -", openTime: "总是可选"},
-        {id: 79, name: "保护商路", recLevel: "18 - 21", limitLevel: "14 - 31", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
-        {id: 80, name: "寒冰女王", recLevel: "18 - 21", limitLevel: "15 - 32", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
-        {id: 81, name: "第一道门", recLevel: "18 - 20", limitLevel: "14 - 30", openTime: "总是可选"},
-        {id: 82, name: "沼泽中的巨石阵", recLevel: "18 - 21", limitLevel: "16 - 32", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 83, name: "银刺", recLevel: "18 - 21", limitLevel: "15 - 37", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 84, name: "发狂的炼金术士", recLevel: "18 - 21", limitLevel: "15 - 32", openTime: "总是可选"},
-        {id: 85, name: "紫色禁地", recLevel: "18 - 21", limitLevel: "14 - 32", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 86, name: "格兰斯凯巴的生命之水", recLevel: "19 - 22", limitLevel: "14 - 32", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 87, name: "小，却高！", recLevel: "20 - 23", limitLevel: "17 - 34", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 88, name: "父债子还", recLevel: "20 - 23", limitLevel: "16 - 33", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 89, name: "绿野仙踪", recLevel: "20 - 22", limitLevel: "16 - 30", openTime: "总是可选"},
-        {id: 90, name: "阴影之心", recLevel: "20 - 23", limitLevel: "17 - 32", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 91, name: "试炼之塔", recLevel: "20 - 40", limitLevel: "15 - 40", openTime: "总是可选"},
-        {id: 92, name: "挑战之塔", recLevel: "20 - 40", limitLevel: "15 - 40", openTime: "总是可选"},
-        {id: 93, name: "第二道门", recLevel: "21 - 24", limitLevel: "17 - 34", openTime: "总是可选"},
-        {id: 94, name: "护送", recLevel: "21 - 24", limitLevel: "17 - 33", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
-        {id: 95, name: "劳累一天后的夜晚", recLevel: "21 - 26", limitLevel: "19 - 27", openTime: "总是可选"},
-        {id: 96, name: "时间，星光和佛罗特旺的猎人", recLevel: "21 - 25", limitLevel: "18 - 35", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每4天重复"},
-        {id: 97, name: "遗失的书籍", recLevel: "22 - 25", limitLevel: "18 - 33", openTime: "总是可选"},
-        {id: 98, name: "图书馆的一夜", recLevel: "22 - 25", limitLevel: "19 - 40", openTime: "总是可选"},
-        {id: 99, name: "摩-莫拉齐", recLevel: "22 - 30", limitLevel: "20 -", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
-        {id: 100, name: "脱帽，向亲王致敬！", recLevel: "22 - 25", limitLevel: "21 - 27", openTime: "总是可选"},
-        {id: 101, name: "漆黑的雨夜", recLevel: "22 - 30", limitLevel: "18 -", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 102, name: "神圣礼堂", recLevel: "23 - 26", limitLevel: "19 - 40", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 103, name: "冰冷大地", recLevel: "23 - 26", limitLevel: "19 - 40", openTime: "总是可选"},
-        {id: 104, name: "峡谷侦察", recLevel: "23 - 26", limitLevel: "20 - 40", openTime: "总是可选"},
-        {id: 105, name: "危险的知识", recLevel: "24 - 27", limitLevel: "21 - 38", openTime: "总是可选"},
-        {id: 106, name: "血腥之手", recLevel: "24 - 28", limitLevel: "21 - 40", openTime: "总是可选"},
-        {id: 107, name: "尤里佛的一天", recLevel: "25 - 28", limitLevel: "23 - 40", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 108, name: "神灵的谜题", recLevel: "25 - 40", limitLevel: "25 - 40", openTime: "2025年07月13日 06:00 - 2025年07月14日 06:00<br>每7天重复"},
-        {id: 109, name: "结局", recLevel: "25 - 28", limitLevel: "22 - 40", openTime: "总是可选"},
-        {id: 110, name: "扎卜耶纳的先知！", recLevel: "26 - 30", limitLevel: "23 - 40", openTime: "总是可选"},
-        {id: 111, name: "一场公平的决斗", recLevel: "26 - 31", limitLevel: "23 - 36", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 112, name: "笼罩提琳的阴云", recLevel: "28 - 31", limitLevel: "24 - 40", openTime: "总是可选"},
-        {id: 113, name: "血红之心", recLevel: "28 - 34", limitLevel: "24 -", openTime: "总是可选"},
-        {id: 114, name: "沃夫洛德的围攻", recLevel: "29 - 34", limitLevel: "26 - 40", openTime: "总是可选"},
-        {id: 115, name: "黄金群岛之谜", recLevel: "29 - 32", limitLevel: "25 - 40", openTime: "总是可选"},
-        {id: 116, name: "A大调上的风语", recLevel: "30 - 33", limitLevel: "27 - 40", openTime: "总是可选"},
-        {id: 117, name: "复仇，最好是一道冷菜", recLevel: "30 - 35", limitLevel: "27 - 40", openTime: "今天 06:00 - 明天 06:00<br>每2天重复"},
-        {id: 118, name: "血统", recLevel: "30 - 34", limitLevel: "27 - 40", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每2天重复"},
-        {id: 119, name: "过去的阴影", recLevel: "31 - 33", limitLevel: "24 - 40", openTime: "今天 06:00 - 明天 06:00<br>每4天重复"},
-        {id: 120, name: "火焰群岛的考察", recLevel: "31 - 35", limitLevel: "27 -", openTime: "总是可选"},
-        {id: 121, name: "血之道", recLevel: "32 - 35", limitLevel: "26 - 40", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每4天重复"},
-        {id: 122, name: "异界灾祸", recLevel: "32 - 36", limitLevel: "28 - 40", openTime: "总是可选"},
-        {id: 123, name: "天空之城", recLevel: "33 - 37", limitLevel: "30 -", openTime: "今天 06:00 - 明天 06:00<br>每3天重复"},
-        {id: 124, name: "古物", recLevel: "34 - 38", limitLevel: "29 - 40", openTime: "总是可选"},
-        {id: 125, name: "万恶之源", recLevel: "34 - 39", limitLevel: "31 -", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 126, name: "薇丝帕与法佩罗", recLevel: "35 - 38", limitLevel: "29 - 40", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 127, name: "没有休息的诅咒", recLevel: "35 - 39", limitLevel: "31 -", openTime: "总是可选"},
-        {id: 128, name: "巨兽讨伐战", recLevel: "35 - 38", limitLevel: "32 - 40", openTime: "总是可选"},
-        {id: 129, name: "脱帽，向亲王致敬！ II", recLevel: "35 - 38", limitLevel: "29 - 40", openTime: "总是可选"},
-        {id: 130, name: "帕沙雷的召唤", recLevel: "36 - 39", limitLevel: "30 -", openTime: "总是可选"},
-        {id: 131, name: "永恒追忆", recLevel: "36 - 41", limitLevel: "33 -", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 132, name: "第三道门", recLevel: "36 - 39", limitLevel: "32 -", openTime: "总是可选"},
-        {id: 133, name: "红色礼服迷案", recLevel: "36 - 39", limitLevel: "32 -", openTime: "总是可选"},
-        {id: 134, name: "献给云雀的花", recLevel: "37 - 41", limitLevel: "34 -", openTime: "2025年07月10日 06:00 - 2025年07月11日 06:00<br>每3天重复"},
-        {id: 135, name: "脱帽，向亲王致敬！ III", recLevel: "37 - 40", limitLevel: "33 -", openTime: "总是可选"},
-        {id: 136, name: "乌有乡", recLevel: "38 - 42", limitLevel: "35 -", openTime: "明天 06:00 - 2025年07月10日 06:00<br>每3天重复"},
-        {id: 137, name: "第四道门", recLevel: "38 - 40", limitLevel: "34 -", openTime: "总是可选"},
-        {id: 138, name: "狼之乡", recLevel: "38 - 40", limitLevel: "35 -", openTime: "总是可选"}
-      ];
+    // 初始化副本数据 - 从云端加载
+    async function initDungeons() {
+      try {
+        console.log('正在从云端加载地城数据...');
+        const response = await fetch(DUNGEON_API_URL + "/latest", {
+          method: 'GET',
+          headers: {
+            'X-Master-Key': X_MASTER_KEY,
+            'X-Bin-Meta': 'false'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('获取地城数据失败: ' + response.status);
+        }
+        
+        const data = await response.json();
+        dungeons = data.dungeons || [];
+        
+        console.log(`成功加载 ${dungeons.length} 个地城数据`);
+        
+        // 如果没有数据，显示提示信息
+        if (dungeons.length === 0) {
+          console.log('没有找到地城数据');
+          dungeons = [];
+        }
+        
+      } catch (error) {
+        console.error('加载地城数据时出错:', error);
+        // 如果加载失败，使用空数组
+        dungeons = [];
+      }
     }
     
     // 搜索副本
@@ -1749,8 +1623,8 @@
     }
     
     // 初始化
-    function init() {
-      initDungeons();
+    async function init() {
+      await initDungeons();
       addPositionRow();
       addFloor();
       updateCounters();
@@ -1798,6 +1672,28 @@
       
       // 加载云端战术库
       fetchTactics();
+    }
+    
+    // 更新Bin中的地城数据
+    async function updateDungeonBinData() {
+      try {
+        const response = await fetch(DUNGEON_API_URL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': X_MASTER_KEY
+          },
+          body: JSON.stringify({ dungeons })
+        });
+        
+        if (!response.ok) {
+          throw new Error('更新地城数据失败: ' + response.status);
+        }
+        
+        console.log('地城数据已成功更新到Bin');
+      } catch (error) {
+        console.error('更新地城数据时出错:', error);
+      }
     }
 
     function handleSearchInput(event) {
@@ -2121,41 +2017,20 @@
         });
         
         if (!response.ok) {
-          if (response.status === 404) {
-            // 如果Bin不存在，创建一个空的Bin
-            showStatus('正在初始化云端存储...', 'info');
-            const initResponse = await fetch(API_URL, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': X_MASTER_KEY
-              },
-              body: JSON.stringify({ tactics: [] })
-            });
-            
-            if (initResponse.ok) {
-              tacticsData = [];
-              renderTacticsList(tacticsData);
-              showStatus('云端存储已初始化，可以开始上传战术', 'success');
-            } else {
-              throw new Error('初始化云端存储失败: ' + initResponse.status);
-            }
-          } else {
-            throw new Error('获取战术数据失败: ' + response.status);
-          }
-        } else {
-          const data = await response.json();
-          tacticsData = data.tactics || [];
-          
-          tacticsData.sort((a, b) => {
-            const aScore = (a.likes || 0) - (a.dislikes || 0);
-            const bScore = (b.likes || 0) - (b.dislikes || 0);
-            return bScore - aScore;
-          });
-          
-          renderTacticsList(tacticsData);
-          showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
+          throw new Error('获取战术数据失败: ' + response.status);
         }
+        
+        const data = await response.json();
+        tacticsData = data.tactics || [];
+        
+        tacticsData.sort((a, b) => {
+          const aScore = (a.likes || 0) - (a.dislikes || 0);
+          const bScore = (b.likes || 0) - (b.dislikes || 0);
+          return bScore - aScore;
+        });
+        
+        renderTacticsList(tacticsData);
+        showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
         
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const desktopSearchInput = document.getElementById('desktopSearchInput');
@@ -2165,9 +2040,6 @@
       } catch (error) {
         console.error('获取战术数据时出错:', error);
         showStatus('加载战术失败: ' + error.message, 'error');
-        // 显示空列表而不是错误状态
-        tacticsData = [];
-        renderTacticsList(tacticsData);
       }
     }
     
@@ -2632,7 +2504,9 @@
         const style = window.getComputedStyle(block);
         total += block.offsetHeight + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
       });
-      right.style.height = (total * 0.6) + 'px';
+      // 限制最大高度不超过CSS设置的800px
+      const maxHeight = Math.min(total + 310, 800);
+      right.style.height = maxHeight + 'px';
     }
     window.addEventListener('resize', setCloudSectionHeight);
     window.addEventListener('DOMContentLoaded', setCloudSectionHeight);
@@ -2648,6 +2522,7 @@
       }
       let html = '';
       // 始终预留单位属性标题位置，便于插入按钮
+      html += `<div id='unit-attr-anchor'></div>`;
       if (dungeon.units && dungeon.units.length) {
         let updateStr = dungeon.updatedAt ? `<span style='color:#aaa;font-size:12px;margin-left:10px;'>(更新时间: ${dungeon.updatedAt ? dungeon.updatedAt.replace('T',' ').slice(0,16) : ''})</span>` : '';
         html += `<h3 style=\"margin:10px 0 4px 0;color:#6d9eeb;display:inline-block;\"><i class='fas fa-dna'></i> 单位属性${updateStr}</h3>`;
@@ -2661,12 +2536,39 @@
       if (dungeon.floors && dungeon.floors.length) {
         html += `<h3 style="margin:12px 0 4px 0;color:#6d9eeb;"><i class='fas fa-layer-group'></i> 楼层部署</h3>`;
         dungeon.floors.forEach(floor => {
-          html += `<div style='margin-bottom:8px;'><b>${floor.name}</b><table style="width:100%;font-size:13px;background:rgba(30,40,60,0.5);border-radius:8px;margin-top:2px;table-layout:fixed;">
+          html += `<div style='margin-bottom:8px;'>`;
+          html += `<b>${floor.name}</b>`;
+          // 显示楼层备注
+          if (floor.note && floor.note.trim()) {
+            html += `<div style='margin:4px 0 4px 0;padding:6px 10px;background:rgba(255,238,187,0.1);border-radius:6px;border-left:3px solid #ffeebb;color:#ffeebb;font-size:12px;'>${floor.note}</div>`;
+          }
+          
+          // 显示房间信息
+          if (floor.rooms && floor.rooms.length > 0) {
+            html += `<div style='display:flex;overflow-x:auto;gap:8px;padding:4px 0;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;'>`;
+            floor.rooms.forEach(room => {
+              html += `<div style='margin:0;padding:4px 6px;background:rgba(20,30,50,0.7);border-radius:6px;border:1px solid rgba(109,158,235,0.3);min-width:200px;max-width:300px;flex-shrink:0;flex:1 0 auto;'>`;
+              if (room.name && room.name.trim()) {
+                html += `<div style='color:#6d9eeb;font-weight:bold;margin-bottom:4px;font-size:12px;'>${room.name}</div>`;
+              }
+              html += `<table style="width:100%;font-size:11px;background:rgba(30,40,60,0.5);border-radius:6px;table-layout:fixed;">
+                <tr style="color:#b0a0cc;text-align:left;"><th style='white-space:nowrap;vertical-align:middle;padding-right:4px;padding-left:4px;width:40px;font-size:10px;'>位置</th><th style='white-space:nowrap;vertical-align:middle;padding-left:4px;font-size:10px;'>单位/数量</th></tr>`;
+              Object.entries(room.positions).forEach(([pos, arr]) => {
+                html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:4px;padding-left:4px;width:40px;font-size:10px;'>${pos}</td><td style='white-space:nowrap;vertical-align:middle;padding-left:4px;font-size:10px;'>` + (arr.length ? arr.map(e=>`${e.name}×${e.count}`).join('、') : '-') + `</td></tr>`;
+              });
+              html += `</table></div>`;
+            });
+            html += `</div>`;
+          } else if (floor.positions && Object.keys(floor.positions).length > 0) {
+            // 兼容旧数据格式（直接显示positions）
+            html += `<table style="width:100%;font-size:13px;background:rgba(30,40,60,0.5);border-radius:8px;margin-top:2px;table-layout:fixed;">
             <tr style="color:#b0a0cc;text-align:left;"><th style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>位置</th><th style='white-space:nowrap;vertical-align:middle;padding-left:8px;'>单位/数量</th></tr>`;
           Object.entries(floor.positions).forEach(([pos, arr]) => {
             html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>${pos}</td><td style='white-space:nowrap;vertical-align:middle;padding-left:8px;'>` + (arr.length ? arr.map(e=>`${e.name}×${e.count}`).join('、') : '-') + `</td></tr>`;
           });
-          html += `</table></div>`;
+            html += `</table>`;
+          }
+          html += `</div>`;
         });
       }
       // 显示地城备注（如有）
@@ -2680,8 +2582,20 @@
         </div>`;
       }
       detail.innerHTML = html;
+      setTimeout(()=>insertDungeonEditBtn(dungeon), 0);
     }
 
+    // 编辑弹窗逻辑 - 大众版本已禁用
+    function openDungeonEditModal(dungeon) {
+      // 大众版本不提供编辑功能
+      alert('此版本不提供地城数据编辑功能');
+    }
+
+    // 编辑按钮插入到单位属性标题左侧，宽度略小于副本搜索宽度（无论有无数据都显示）
+    function insertDungeonEditBtn(dungeon) {
+      // 大众版本不显示编辑按钮
+      return;
+    }
   </script>
 </body>
 </html>
