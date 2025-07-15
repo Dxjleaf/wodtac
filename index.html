@@ -2713,10 +2713,11 @@
           container._sortable.destroy();
           container._sortable = null;
         }
+        const isMobile = window.innerWidth <= 768;
         container._sortable = Sortable.create(container, {
           group: 'tactics',
           animation: 150,
-          handle: '.tactic-drag-handle',
+          handle: isMobile ? '.tactic-drag-handle' : undefined, // 移动端只允许手柄，桌面端整行
           delay: 0,
           touchStartThreshold: 0,
           ghostClass: 'sortable-ghost',
@@ -2739,6 +2740,9 @@
     }
     // 页面初始化后也要执行一次
     window.onload = function() {
+      if (isOldIEorEdge()) {
+        alert('检测到您正在使用不受支持的浏览器。请使用 Chrome、Firefox、Edge(Chromium) 或 Safari 浏览器以获得最佳体验！');
+      }
       init();
       setTimeout(initSortableForAllTacticsContainers, 0);
       setTimeout(initSortableForFloors, 0);
@@ -2755,6 +2759,11 @@
         return tactics.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       }
       return tactics;
+    }
+
+    // 浏览器兼容性检测
+    function isOldIEorEdge() {
+      return /MSIE|Trident|Edge\//.test(navigator.userAgent) && !window.chrome;
     }
   </script>
 </body>
