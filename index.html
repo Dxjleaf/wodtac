@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>地城战术配置器</title>
+  <title>地城战术板</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -1436,7 +1436,7 @@
 <body>
   <div class="header">
     <div class="header-inner">
-      <h1><i class="fas fa-dungeon"></i> 地城战术配置器</h1>
+      <h1><i class="fas fa-dungeon"></i> 地城战术板</h1>
       <p>创建、分享和探索地城探险战术方案</p>
     </div>
   </div>
@@ -2266,7 +2266,10 @@
         
         item.innerHTML = `
           <div class="tactic-header">
-            <div class="tactic-name">${tactic.name}</div>
+            <div class="tactic-name">
+              <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
+              ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
+            </div>
             <div class="tactic-date">${formattedDate}</div>
           </div>
           <div class="tactic-content">${preview}</div>
@@ -2287,6 +2290,9 @@
               </button>
               <button class="copy-btn-sm" onclick="copyTacticToClipboard(${index})">
                 <i class="fas fa-copy"></i> 复制
+              </button>
+              <button class="copy-btn-sm" onclick="shareTacticLink(${index})">
+                <i class='fas fa-share-alt'></i> 分享
               </button>
               ${isMyTactic ? `<button class="delete-btn-sm" onclick="deleteTactic('${tactic.name}')">
                 <i class="fas fa-trash"></i> 删除
@@ -2767,6 +2773,26 @@
     // 浏览器兼容性检测
     function isOldIEorEdge() {
       return /MSIE|Trident|Edge\//.test(navigator.userAgent) && !window.chrome;
+    }
+
+    // 在合适位置添加 shareTacticLink 函数
+    function shareTacticLink(index) {
+      const tactic = tacticsData[index];
+      if (!tactic) return;
+      const id = encodeURIComponent(tactic.name);
+      const url = `${location.origin}/tactic.html?id=${id}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+        showStatus('分享链接已复制到剪贴板！', 'success');
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showStatus('分享链接已复制到剪贴板！', 'success');
+      }
     }
   </script>
 </body>
