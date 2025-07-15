@@ -1702,8 +1702,9 @@
       const urlParams = new URLSearchParams(window.location.search);
       const tacticId = urlParams.get('id');
       if (tacticId) {
-        await fetchTactics(); // 先拉取云端数据
-        const tactic = tacticsData.find(t => encodeURIComponent(t.name) === tacticId);
+        const tactics = await fetchTactics(); // 拉取后直接用返回值
+        const decodedId = decodeURIComponent(tacticId);
+        const tactic = tactics.find(t => t.name === decodedId);
         if (tactic) {
           loadTactic(tacticsData.indexOf(tactic));
           showStatus('已自动加载分享的战术，可直接编辑！', 'success');
@@ -2140,7 +2141,6 @@
     
     async function fetchTactics() {
       showStatus('正在加载云端战术数据...', 'info');
-      
       try {
         const response = await fetch(API_URL + "/latest", {
           method: 'GET',
@@ -2149,11 +2149,9 @@
             'X-Bin-Meta': 'false'
           }
         });
-        
         if (!response.ok) {
           throw new Error('获取战术数据失败: ' + response.status);
         }
-        
         const data = await response.json();
         tacticsData = data.tactics || [];
         renderTacticsList(tacticsData);
@@ -2162,9 +2160,11 @@
         const desktopSearchInput = document.getElementById('desktopSearchInput');
         if (mobileSearchInput) mobileSearchInput.value = '';
         if (desktopSearchInput) desktopSearchInput.value = '';
+        return tacticsData; // 新增
       } catch (error) {
         console.error('获取战术数据时出错:', error);
         showStatus('加载战术失败: ' + error.message, 'error');
+        return [];
       }
     }
     
