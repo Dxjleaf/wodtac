@@ -1698,6 +1698,20 @@
     
     // 初始化
     async function init() {
+      // 新增：如果有 id 参数，自动加载该战术
+      const urlParams = new URLSearchParams(window.location.search);
+      const tacticId = urlParams.get('id');
+      if (tacticId) {
+        await fetchTactics(); // 先拉取云端数据
+        const tactic = tacticsData.find(t => encodeURIComponent(t.name) === tacticId);
+        if (tactic) {
+          loadTactic(tacticsData.indexOf(tactic));
+          showStatus('已自动加载分享的战术，可直接编辑！', 'success');
+        } else {
+          showStatus('未找到指定战术', 'error');
+        }
+        return; // 不再执行后续默认初始化
+      }
       await initDungeons();
       addPositionRow();
       addFloor();
