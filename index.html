@@ -1421,6 +1421,9 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
+        max-height: 80vh; /* 新增，提升高度 */
+        min-height: 300px; /* 保证有初始高度，可选 */
+        overflow-y: auto;
       }
       .tactic-item {
         margin-bottom: 0 !important;
