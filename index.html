@@ -1735,18 +1735,8 @@
       // 新增：如果有 id 参数，自动加载该战术
       const urlParams = new URLSearchParams(window.location.search);
       const tacticId = urlParams.get('id');
-      if (tacticId) {
-        const tactics = await fetchTactics(); // 拉取后直接用返回值
-        const decodedId = decodeURIComponent(tacticId);
-        const tactic = tactics.find(t => t.name === decodedId);
-        if (tactic) {
-          loadTactic(tacticsData.indexOf(tactic));
-          showStatus('已自动加载分享的战术，可直接编辑！', 'success');
-        } else {
-          showStatus('未找到指定战术', 'error');
-        }
-        return; // 不再执行后续默认初始化
-      }
+      
+      // 先初始化基础功能（无论是否有id参数都需要）
       await initDungeons();
       addPositionRow();
       addFloor();
@@ -1835,7 +1825,19 @@
       });
       
       // 加载云端战术库
-      fetchTactics();
+      await fetchTactics();
+      
+      // 如果有 id 参数，自动加载该战术
+      if (tacticId) {
+        const decodedId = decodeURIComponent(tacticId);
+        const tactic = tacticsData.find(t => t.name === decodedId);
+        if (tactic) {
+          loadTactic(tacticsData.indexOf(tactic));
+          showStatus('已自动加载分享的战术，可直接编辑！', 'success');
+        } else {
+          showStatus('未找到指定战术', 'error');
+        }
+      }
     }
     
     // 更新Bin中的地城数据
@@ -2653,7 +2655,7 @@
     }
     
     // 初始化
-    window.onload = init;
+    // window.onload = init; // 删除重复定义，使用下面的统一初始化
 
     // 动态设置云端战术库高度为左侧三块总高度
     function setCloudSectionHeight() {
