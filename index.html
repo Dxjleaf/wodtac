@@ -2780,7 +2780,8 @@
       const tactic = tacticsData[index];
       if (!tactic) return;
       const id = encodeURIComponent(tactic.name);
-      const url = `${location.origin}/tactic.html?id=${id}`;
+      // 直接写死你的 GitHub Pages 域名
+      const url = `https://dxjleaf.github.io/wodtac/tactic.html?id=${id}`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(url);
         showStatus('分享链接已复制到剪贴板！', 'success');
