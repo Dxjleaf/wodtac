@@ -619,6 +619,14 @@
       margin: calc(-4px * var(--scale-factor));
       margin-bottom: calc(4px * var(--scale-factor));
     }
+
+    /* 外部链接图标悬停效果 */
+    .tactic-header .fa-external-link-alt:hover {
+      color: #a855f7 !important;
+      opacity: 1 !important;
+      transform: scale(1.2);
+      transition: all 0.2s ease;
+    }
     
     .tactic-content::after {
       content: "";
@@ -2309,7 +2317,7 @@
             <div class="tactic-name">
               <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
               ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
-              <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;"></i>
+              <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;cursor:pointer;" onclick="event.stopPropagation(); viewTacticDetailInNewWindow('${tactic.name}')" title="在新窗口打开"></i>
             </div>
             <div class="tactic-date">${formattedDate}</div>
           </div>
@@ -2839,6 +2847,13 @@
 
     // 添加查看战术详情函数
     function viewTacticDetail(tacticName) {
+      const id = encodeURIComponent(tacticName);
+      const url = `https://dxjleaf.github.io/wodtac/tactic.html?id=${id}`;
+      window.location.href = url;
+    }
+
+    // 添加在新窗口查看战术详情函数
+    function viewTacticDetailInNewWindow(tacticName) {
       const id = encodeURIComponent(tacticName);
       const url = `https://dxjleaf.github.io/wodtac/tactic.html?id=${id}`;
       window.open(url, '_blank');
