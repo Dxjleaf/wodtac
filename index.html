@@ -564,6 +564,14 @@
       margin-bottom: calc(8px * var(--scale-factor));
       border-left: 3px solid var(--cloud);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .tactic-item:hover {
+      background: rgba(55, 45, 80, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-left-color: #a855f7;
     }
     
     .tactic-header {
@@ -571,6 +579,15 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: calc(6px * var(--scale-factor));
+      transition: all 0.2s ease;
+    }
+
+    .tactic-header:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor));
+      margin: calc(-4px * var(--scale-factor));
+      margin-bottom: calc(2px * var(--scale-factor));
     }
     
     .tactic-name {
@@ -592,6 +609,15 @@
       max-height: 60px;
       overflow: hidden;
       position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .tactic-content:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor));
+      margin: calc(-4px * var(--scale-factor));
+      margin-bottom: calc(4px * var(--scale-factor));
     }
     
     .tactic-content::after {
@@ -2279,36 +2305,37 @@
         const isMyTactic = myTactics[tactic.name] || false;
         
         item.innerHTML = `
-          <div class="tactic-header">
+          <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name}')">
             <div class="tactic-name">
               <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
               ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
+              <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;"></i>
             </div>
             <div class="tactic-date">${formattedDate}</div>
           </div>
-          <div class="tactic-content">${preview}</div>
+          <div class="tactic-content" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name}')">${preview}</div>
           <div class="tactic-footer">
             <div class="rating">
-              <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="rateTactic('${tactic.name}', 1)">
+              <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name}', 1)">
                 <i class="fas fa-thumbs-up"></i>
               </button>
               <span>${tactic.likes || 0}</span>
-              <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="rateTactic('${tactic.name}', -1)">
+              <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name}', -1)">
                 <i class="fas fa-piggy-bank"></i>
               </button>
               <span>${tactic.dislikes || 0}</span>
             </div>
             <div class="actions">
-              <button class="load-btn-sm" onclick="loadTactic(${index})">
+              <button class="load-btn-sm" onclick="event.stopPropagation(); loadTactic(${index})">
                 <i class="fas fa-download"></i> 加载
               </button>
-              <button class="copy-btn-sm" onclick="copyTacticToClipboard(${index})">
+              <button class="copy-btn-sm" onclick="event.stopPropagation(); copyTacticToClipboard(${index})">
                 <i class="fas fa-copy"></i> 复制
               </button>
-              <button class="copy-btn-sm" onclick="shareTacticLink(${index})">
+              <button class="copy-btn-sm" onclick="event.stopPropagation(); shareTacticLink(${index})">
                 <i class='fas fa-share-alt'></i> 分享
               </button>
-              ${isMyTactic ? `<button class="delete-btn-sm" onclick="deleteTactic('${tactic.name}')">
+              ${isMyTactic ? `<button class="delete-btn-sm" onclick="event.stopPropagation(); deleteTactic('${tactic.name}')">
                 <i class="fas fa-trash"></i> 删除
               </button>` : ''}
             </div>
@@ -2808,6 +2835,13 @@
         document.body.removeChild(textarea);
         showStatus('分享链接已复制到剪贴板！', 'success');
       }
+    }
+
+    // 添加查看战术详情函数
+    function viewTacticDetail(tacticName) {
+      const id = encodeURIComponent(tacticName);
+      const url = `https://dxjleaf.github.io/wodtac/tactic.html?id=${id}`;
+      window.open(url, '_blank');
     }
   </script>
 </body>
