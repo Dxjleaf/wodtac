@@ -5,6 +5,7 @@
   <title>地城战术配置器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <style>
     /* 新添加的标题定位样式 */
     .header h1 {
@@ -1356,6 +1357,77 @@
       scrollbar-color: var(--secondary) rgba(255,255,255,0.05);
       scrollbar-width: thin;
     }
+    .sortable-ghost {
+      opacity: 0.5;
+      background: #6d9eeb !important;
+    }
+    .sortable-chosen {
+      background: #4a6fa5 !important;
+    }
+    .floor-drag-handle {
+      cursor: grab;
+      margin-right: 8px;
+      color: #6d9eeb;
+      font-size: 1.2em;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .tactic-drag-handle {
+      cursor: grab;
+      margin-right: 6px;
+      color: #6d9eeb;
+      font-size: 1em;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .tactic-sort-btn {
+      background: #232b3a;
+      color: #6d9eeb;
+      border: 1px solid #6d9eeb;
+      border-radius: 6px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tactic-sort-btn.active {
+      background: #6d9eeb;
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .mobile-only {
+        min-width: 72px !important;
+        max-width: 120px !important;
+        padding: 6px 0 !important;
+        font-size: 15px !important;
+        text-align: center;
+        margin: 0 auto !important;
+        display: inline-block !important;
+      }
+    }
+    @media (min-width: 769px) {
+      .mobile-only { display: none !important; }
+    }
+    .team-name-row { display: flex; align-items: center; gap: 10px; }
+    @media (max-width: 768px) {
+      .team-name-row { flex-direction: column; align-items: stretch; gap: 6px; }
+      .team-name-row .spoiler-btn { width: 100%; }
+    }
+    @media (max-width: 768px) {
+      .tactics-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .tactic-item {
+        margin-bottom: 0 !important;
+        min-width: 0;
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1388,11 +1460,9 @@
       <div class="middle-column">
         <div class="config-block">
           <h2><i class="fas fa-cog"></i> 战术配置</h2>
-          <div class="team-name-container">
-            <input type="text" id="teamName" class="team-name-input" placeholder="团队名称">
-          </div>
-          <div class="dynamic-row">
-            <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()">
+          <div class="team-name-row" style="display:flex;align-items:center;gap:10px;">
+            <input type="text" id="teamName" class="team-name-input" placeholder="团队名称" style="flex:1;">
+            <button id="spoilerToggleBtn" class="spoiler-btn inactive" onclick="toggleSpoiler()" style="white-space:nowrap;">
               <i class="fas fa-eye-slash"></i> 使用 Spoiler Title
             </button>
           </div>
@@ -1414,7 +1484,7 @@
           </div>
           <div id="floorConfig"></div>
           <div class="nav-hint">
-            <i class="fas fa-info-circle"></i> 使用 Tab 或 Enter 键在职业、技能1、技能2和位置字段间快速导航
+            <i class="fas fa-info-circle"></i> 使用 Tab/Enter 键行动行字段间快速导航，拖动左侧手柄排序
           </div>
           <button class="add-btn" onclick="addFloor()">
             <i class="fas fa-plus"></i> 添加楼层
@@ -1423,7 +1493,10 @@
       </div>
       <div class="right-column">
         <div class="cloud-section">
-          <h2><i class="fas fa-cloud"></i> 云端战术库</h2>
+          <h2 style="display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-cloud"></i> 云端战术库
+            <button id="mobileTacticSortBtn" type="button" class="tactic-sort-btn mobile-only" style="margin-left:auto;">净赞数</button>
+          </h2>
           <div class="mobile-search-container">
             <div class="search-container">
               <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
@@ -1440,6 +1513,7 @@
           <div class="desktop-search-container">
             <div class="search-container">
               <input type="text" id="desktopSearchInput" placeholder="搜索战术名称...">
+              <button id="desktopTacticSortBtn" type="button" class="tactic-sort-btn" style="margin-left:8px;">净赞数</button>
             </div>
           </div>
           <div id="statusMessage" class="status-message status-info">
@@ -1447,10 +1521,6 @@
           </div>
           <div id="tacticsList" class="tactics-list">
             <!-- 战术列表将在这里动态生成 -->
-          </div>
-          <div class="cloud-status">
-            <i class="fas fa-cloud"></i>
-            <span>已连接到 JSONBin.io 云端存储</span>
           </div>
         </div>
       </div>
@@ -1485,6 +1555,7 @@
     let searchTimer = null;
     let dungeons = [];
     let selectedDungeon = null;
+    let tacticSortType = "score"; // 默认净赞数
 
     // 默认缩放到85%
     document.documentElement.style.setProperty('--scale-factor', 0.85);
@@ -1641,6 +1712,8 @@
       
       const mobileSearchInput = document.getElementById('mobileSearchInput');
       const desktopSearchInput = document.getElementById('desktopSearchInput');
+      const mobileTacticSortBtn = document.getElementById('mobileTacticSortBtn');
+      const desktopTacticSortBtn = document.getElementById('desktopTacticSortBtn');
       
       if (mobileSearchInput) {
         mobileSearchInput.addEventListener('input', handleSearchInput);
@@ -1649,6 +1722,39 @@
       if (desktopSearchInput) {
         desktopSearchInput.addEventListener('input', handleSearchInput);
       }
+      
+      // 排序按钮事件
+      function updateSortBtnUI() {
+        if (mobileTacticSortBtn) {
+          mobileTacticSortBtn.textContent = tacticSortType === 'score' ? '净赞数' : '日期';
+          mobileTacticSortBtn.title = tacticSortType === 'score' ? '按净赞数排序' : '按日期排序';
+          mobileTacticSortBtn.classList.toggle('active', true);
+        }
+        if (desktopTacticSortBtn) {
+          desktopTacticSortBtn.textContent = tacticSortType === 'score' ? '净赞数' : '日期';
+          desktopTacticSortBtn.classList.toggle('active', true);
+        }
+      }
+      function toggleTacticSortType() {
+        tacticSortType = tacticSortType === 'score' ? 'date' : 'score';
+        updateSortBtnUI();
+        // 优先用当前有内容的搜索框
+        if (mobileSearchInput && mobileSearchInput.value) {
+          handleSearchInput({ target: mobileSearchInput });
+        } else if (desktopSearchInput && desktopSearchInput.value) {
+          handleSearchInput({ target: desktopSearchInput });
+        } else {
+          renderTacticsList(tacticsData);
+          showStatus(`显示所有战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'info');
+        }
+      }
+      if (mobileTacticSortBtn) {
+        mobileTacticSortBtn.addEventListener('click', toggleTacticSortType);
+      }
+      if (desktopTacticSortBtn) {
+        desktopTacticSortBtn.addEventListener('click', toggleTacticSortType);
+      }
+      updateSortBtnUI();
       
       // 副本搜索事件
       const dungeonSearch = document.getElementById('dungeonSearch');
@@ -1662,6 +1768,12 @@
         renderDungeonResults(results);
         if (selectedDungeon) renderDungeonDetail(selectedDungeon);
         else document.getElementById('dungeonDetail').innerHTML = '';
+      });
+      // 新增：点击时自动全选内容，便于快速删除或输入
+      dungeonSearch.addEventListener('click', function() {
+        if (this.value) {
+          this.select();
+        }
       });
       // 点击其他地方关闭搜索结果
       document.addEventListener('click', function(e) {
@@ -1710,10 +1822,10 @@
             (tactic.dungeonName && tactic.dungeonName.toLowerCase().includes(searchTerm))
           );
           renderTacticsList(filtered);
-          showStatus(`找到 ${filtered.length} 个匹配的战术`, 'success');
+          showStatus(`找到 ${filtered.length} 个匹配的战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'success');
         } else {
           renderTacticsList(tacticsData);
-          showStatus('显示所有战术', 'info');
+          showStatus(`显示所有战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'info');
         }
       }, 300);
     }
@@ -1743,10 +1855,13 @@
     function addFloor() {
       floorCount++;
       updateCounters();
-      
+      // 生成唯一id
+      const preTurnId = `pre-turn-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+      const postTurnId = `post-turn-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
       const floor = document.createElement('div');
       floor.className = 'config-block';
       floor.innerHTML = `
+        <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
         <div class="dynamic-row">
           <input placeholder="楼层（例：F1）">
           <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
@@ -1759,20 +1874,18 @@
           </button>
           <div class="comment-rows"></div>
         </div>
-        
         <div class="tactic-section">
           <h4><i class="fas fa-flag"></i> 回合前</h4>
-          <div class="tactics-container pre-turn"></div>
+          <div class="tactics-container pre-turn" id="${preTurnId}"></div>
           <div class="mobile-controls">
             <button style="background:var(--info)" onclick="addTacticRow(this, 'pre-turn')">
               <i class="fas fa-plus-circle"></i> 添加行动
             </button>
           </div>
         </div>
-        
         <div class="tactic-section">
           <h4><i class="fas fa-fist-raised"></i> 回合中</h4>
-          <div class="tactics-container post-turn"></div>
+          <div class="tactics-container post-turn" id="${postTurnId}"></div>
           <div class="mobile-controls">
             <button style="background:var(--info)" onclick="addTacticRow(this, 'post-turn')">
               <i class="fas fa-plus-circle"></i> 添加行动
@@ -1781,6 +1894,8 @@
         </div>
       `;
       document.getElementById('floorConfig').appendChild(floor);
+      setTimeout(initSortableForAllTacticsContainers, 0);
+      setTimeout(initSortableForFloors, 0);
     }
 
     function addCommentRow(btn) {
@@ -1809,6 +1924,7 @@
       const conditionPlaceholder = isMobile ? "条件" : "条件";
       
       row.innerHTML = `
+        <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
         <input placeholder="${jobPlaceholder}" class="nav-input" data-nav-group="tactic">
         <input placeholder="${skillPlaceholder1}" class="nav-input" data-nav-group="tactic">
         <input placeholder="${skillPlaceholder2}" class="nav-input" data-nav-group="tactic">
@@ -1860,6 +1976,7 @@
         row.style.flexWrap = 'nowrap';
         row.style.overflowX = 'auto';
       }
+      setTimeout(initSortableForAllTacticsContainers, 0);
     }
 
     function generateTacticsObject() {
@@ -2022,19 +2139,10 @@
         
         const data = await response.json();
         tacticsData = data.tactics || [];
-        
-        tacticsData.sort((a, b) => {
-          const aScore = (a.likes || 0) - (a.dislikes || 0);
-          const bScore = (b.likes || 0) - (b.dislikes || 0);
-          return bScore - aScore;
-        });
-        
         renderTacticsList(tacticsData);
-        showStatus(`成功加载 ${tacticsData.length} 个战术`, 'success');
-        
+        showStatus(`成功加载 ${tacticsData.length} 个战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'success');
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const desktopSearchInput = document.getElementById('desktopSearchInput');
-        
         if (mobileSearchInput) mobileSearchInput.value = '';
         if (desktopSearchInput) desktopSearchInput.value = '';
       } catch (error) {
@@ -2119,13 +2227,12 @@
     function renderTacticsList(tactics) {
       const container = document.getElementById('tacticsList');
       container.innerHTML = '';
-      
-      if (tactics.length === 0) {
+      const sorted = sortTactics(tactics);
+      if (sorted.length === 0) {
         container.innerHTML = '<div class="status-message status-info">没有找到战术</div>';
         return;
       }
-      
-      tactics.forEach((tactic, index) => {
+      sorted.forEach((tactic, index) => {
         const item = document.createElement('div');
         item.className = 'tactic-item';
         
@@ -2370,9 +2477,13 @@
       
       (tactic.floors || []).forEach(floor => {
         floorCount++;
+        // 生成唯一id
+        const preTurnId = `pre-turn-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+        const postTurnId = `post-turn-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
         const floorElement = document.createElement('div');
         floorElement.className = 'config-block';
         floorElement.innerHTML = `
+          <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
           <div class="dynamic-row">
             <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
             <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
@@ -2385,20 +2496,18 @@
             </button>
             <div class="comment-rows"></div>
           </div>
-          
           <div class="tactic-section">
             <h4><i class="fas fa-flag"></i> 回合前</h4>
-            <div class="tactics-container pre-turn"></div>
+            <div class="tactics-container pre-turn" id="${preTurnId}"></div>
             <div class="mobile-controls">
               <button style="background:var(--info)" onclick="addTacticRow(this, 'pre-turn')">
                 <i class="fas fa-plus-circle"></i> 添加行动
               </button>
             </div>
           </div>
-          
           <div class="tactic-section">
             <h4><i class="fas fa-fist-raised"></i> 回合中</h4>
-            <div class="tactics-container post-turn"></div>
+            <div class="tactics-container post-turn" id="${postTurnId}"></div>
             <div class="mobile-controls">
               <button style="background:var(--info)" onclick="addTacticRow(this, 'post-turn')">
                 <i class="fas fa-plus-circle"></i> 添加行动
@@ -2407,7 +2516,6 @@
           </div>
         `;
         floorConfig.appendChild(floorElement);
-        
         const commentContainer = floorElement.querySelector('.comment-rows');
         (floor.comments || []).forEach(comment => {
           const row = document.createElement('div');
@@ -2420,12 +2528,12 @@
           `;
           commentContainer.appendChild(row);
         });
-        
         const preTurnContainer = floorElement.querySelector('.pre-turn');
         (floor.preTurn || []).forEach(turn => {
           const row = document.createElement('div');
           row.className = 'dynamic-row';
           row.innerHTML = `
+            <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
             <input placeholder="职业" value="${turn.job || ''}">
             <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
             <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
@@ -2443,12 +2551,12 @@
           `;
           preTurnContainer.appendChild(row);
         });
-        
         const postTurnContainer = floorElement.querySelector('.post-turn');
         (floor.postTurn || []).forEach(turn => {
           const row = document.createElement('div');
           row.className = 'dynamic-row';
           row.innerHTML = `
+            <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
             <input placeholder="职业" value="${turn.job || ''}">
             <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
             <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
@@ -2467,8 +2575,9 @@
           postTurnContainer.appendChild(row);
         });
       });
-      
       updateCounters();
+      setTimeout(initSortableForAllTacticsContainers, 0);
+      setTimeout(initSortableForFloors, 0);
       showStatus(`"${tactic.name}" 已加载到编辑器`, 'success');
     }
     
@@ -2595,6 +2704,57 @@
     function insertDungeonEditBtn(dungeon) {
       // 大众版本不显示编辑按钮
       return;
+    }
+
+    // 拖拽初始化函数
+    function initSortableForAllTacticsContainers() {
+      document.querySelectorAll('.tactics-container').forEach(container => {
+        if (container._sortable) {
+          container._sortable.destroy();
+          container._sortable = null;
+        }
+        container._sortable = Sortable.create(container, {
+          group: 'tactics',
+          animation: 150,
+          handle: '.tactic-drag-handle',
+          delay: 0,
+          touchStartThreshold: 0,
+          ghostClass: 'sortable-ghost',
+          chosenClass: 'sortable-chosen',
+          dragClass: 'sortable-drag',
+        });
+      });
+    }
+    // 楼层整体拖拽初始化
+    function initSortableForFloors() {
+      const floorConfig = document.getElementById('floorConfig');
+      if (!floorConfig._sortable) {
+        floorConfig._sortable = Sortable.create(floorConfig, {
+          animation: 180,
+          handle: '.floor-drag-handle',
+          ghostClass: 'sortable-ghost',
+          chosenClass: 'sortable-chosen'
+        });
+      }
+    }
+    // 页面初始化后也要执行一次
+    window.onload = function() {
+      init();
+      setTimeout(initSortableForAllTacticsContainers, 0);
+      setTimeout(initSortableForFloors, 0);
+    };
+
+    function sortTactics(tactics) {
+      if (tacticSortType === "score") {
+        return tactics.slice().sort((a, b) => {
+          const aScore = (a.likes || 0) - (a.dislikes || 0);
+          const bScore = (b.likes || 0) - (b.dislikes || 0);
+          return bScore - aScore;
+        });
+      } else if (tacticSortType === "date") {
+        return tactics.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
+      return tactics;
     }
   </script>
 </body>
