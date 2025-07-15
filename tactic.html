@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>战术详情 - 地城战术配置器</title>
+  <title>战术详情</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -154,6 +154,9 @@
 </head>
 <body>
   <div class="container" id="mainContainer">
+    <button id="backToConfigBtn" style="position:absolute;top:18px;left:18px;z-index:10;padding:8px 18px;background:#6d9eeb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      <i class="fas fa-arrow-left"></i> 返回战术配置
+    </button>
     <div class="tactic-title" id="dungeonName">地城名称</div>
     <div class="team-name" id="teamName">团队名称</div>
     <div class="meta-info" id="metaInfo">创建时间</div>
@@ -251,6 +254,16 @@
       const tactic = await fetchTacticByName(name);
       renderTactic(tactic);
     })();
+
+    // 回到配置按钮逻辑
+    document.getElementById('backToConfigBtn').onclick = function() {
+      const id = getQueryParam('id');
+      if (id) {
+        window.location.href = `index.html?id=${id}`;
+      } else {
+        window.location.href = 'index.html';
+      }
+    };
   </script>
 </body>
 </html> 
