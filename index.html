@@ -826,6 +826,31 @@
       align-items: center;
       gap: calc(6px * var(--scale-factor));
     }
+    
+    .tags-toggle {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+    
+    .tags-toggle:hover {
+      color: #3498db;
+    }
+    
+    .toggle-icon {
+      margin-left: auto;
+      transition: transform 0.3s ease;
+    }
+    
+    .tags-content {
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      max-height: 1000px;
+    }
+    
+    .tags-content.collapsed {
+      max-height: 0;
+    }
 
     .tag-group {
       margin-bottom: calc(12px * var(--scale-factor));
@@ -1058,7 +1083,8 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      position: relative;
       padding: calc(16px * var(--scale-factor)) calc(20px * var(--scale-factor));
       background: rgba(30, 40, 60, 0.8);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -1066,12 +1092,14 @@
     .search-filter-header h3 {
       color: var(--info);
       font-size: calc(1.2rem * var(--scale-factor));
-      margin: 0;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       gap: calc(8px * var(--scale-factor));
       white-space: nowrap;
       flex: 1 1 auto;
+      justify-content: center;
+      text-align: center;
     }
     .close-btn {
       background: none;
@@ -1089,8 +1117,11 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
-      margin-left: 12px;
-      flex: 0 0 auto;
+      position: absolute;
+      right: calc(20px * var(--scale-factor));
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0;
     }
     .close-btn:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -1104,10 +1135,7 @@
         font-size: calc(1.05rem * var(--scale-factor));
       }
       .close-btn {
-        font-size: 1.2rem;
-        width: 2em;
-        height: 2em;
-        margin-left: 8px;
+        display: none !important;
       }
     }
     
@@ -2054,6 +2082,30 @@
         margin: 10px 0 6px 0;
       }
     }
+
+    @media (max-width: 768px) {
+      .tag-buttons, .filter-buttons {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: flex-start;
+      }
+      .tag-btn, .filter-btn, .tactic-filter-btn {
+        width: auto !important;
+        min-width: unset !important;
+        flex: 0 0 auto !important;
+        text-align: center;
+        font-size: 0.95em;
+        margin-bottom: 0;
+        box-sizing: border-box;
+      }
+      .tactic-filter-btn {
+        width: 100% !important;
+        align-self: center;
+        margin: 10px auto 6px auto;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2095,66 +2147,71 @@
           
           <!-- 标签配置区域 -->
           <div class="tags-section">
-            <h3><i class="fas fa-tags"></i> 战术标签</h3>
+            <h3 class="tags-toggle" onclick="toggleTagsSection()">
+              <i class="fas fa-tags"></i> 战术标签
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </h3>
             
-            <!-- 难度标签 -->
-            <div class="tag-group">
-              <label class="tag-label">难度类型：</label>
-              <div class="tag-buttons">
-                <button class="tag-btn" data-type="difficulty" data-value="默认" onclick="selectTag('difficulty', '默认')">默认</button>
-                <button class="tag-btn" data-type="difficulty" data-value="极限" onclick="selectTag('difficulty', '极限')">极限</button>
-                <button class="tag-btn" data-type="difficulty" data-value="高等" onclick="selectTag('difficulty', '高等')">高等</button>
-                <button class="tag-btn" data-type="difficulty" data-value="花活" onclick="selectTag('difficulty', '花活')">花活</button>
-                <button class="tag-btn" data-type="difficulty" data-value="猴" onclick="selectTag('difficulty', '猴')">猴</button>
-                <button class="tag-btn" data-type="difficulty" data-value="MINI" onclick="selectTag('difficulty', 'MINI')">MINI</button>
+            <div class="tags-content" id="tagsContent">
+              <!-- 难度标签 -->
+              <div class="tag-group">
+                <label class="tag-label">难度类型：</label>
+                <div class="tag-buttons">
+                  <button class="tag-btn" data-type="difficulty" data-value="默认" onclick="selectTag('difficulty', '默认')">默认</button>
+                  <button class="tag-btn" data-type="difficulty" data-value="极限" onclick="selectTag('difficulty', '极限')">极限</button>
+                  <button class="tag-btn" data-type="difficulty" data-value="高等" onclick="selectTag('difficulty', '高等')">高等</button>
+                  <button class="tag-btn" data-type="difficulty" data-value="花活" onclick="selectTag('difficulty', '花活')">花活</button>
+                  <button class="tag-btn" data-type="difficulty" data-value="猴" onclick="selectTag('difficulty', '猴')">猴</button>
+                  <button class="tag-btn" data-type="difficulty" data-value="MINI" onclick="selectTag('difficulty', 'MINI')">MINI</button>
+                </div>
               </div>
-            </div>
-            
-            <!-- 人数选择 -->
-            <div class="tag-group">
-              <label class="tag-label">团队人数：</label>
-              <select id="teamSize" class="team-size-select" onchange="updateTeamSize()">
-                <option value="1">1人</option>
-                <option value="2">2人</option>
-                <option value="3">3人</option>
-                <option value="4">4人</option>
-                <option value="5">5人</option>
-                <option value="6">6人</option>
-                <option value="7">7人</option>
-                <option value="8">8人</option>
-                <option value="9">9人</option>
-                <option value="10">10人</option>
-                <option value="11">11人</option>
-                <option value="12" selected>12人</option>
-              </select>
-            </div>
-            
-            <!-- 节日耗材 -->
-            <div class="tag-group">
-              <label class="tag-label">节日耗材：</label>
-              <div class="tag-buttons">
-                <button class="tag-btn" data-type="festival" data-value="使用" onclick="selectTag('festival', '使用')">使用节日耗材</button>
-                <button class="tag-btn" data-type="festival" data-value="不使用" onclick="selectTag('festival', '不使用')">不使用节日耗材</button>
+              
+              <!-- 人数选择 -->
+              <div class="tag-group">
+                <label class="tag-label">团队人数：</label>
+                <select id="teamSize" class="team-size-select" onchange="updateTeamSize()">
+                  <option value="1">1人</option>
+                  <option value="2">2人</option>
+                  <option value="3">3人</option>
+                  <option value="4">4人</option>
+                  <option value="5">5人</option>
+                  <option value="6">6人</option>
+                  <option value="7">7人</option>
+                  <option value="8">8人</option>
+                  <option value="9">9人</option>
+                  <option value="10">10人</option>
+                  <option value="11">11人</option>
+                  <option value="12" selected>12人</option>
+                </select>
               </div>
-            </div>
-            
-            <!-- 周目选择 -->
-            <div class="tag-group">
-              <label class="tag-label">周目类型：</label>
-              <div class="tag-buttons">
-                <button class="tag-btn" data-type="playthrough" data-value="一周目" onclick="selectTag('playthrough', '一周目')">一周目</button>
-                <button class="tag-btn" data-type="playthrough" data-value="二周目" onclick="selectTag('playthrough', '二周目')">二周目</button>
-                <button class="tag-btn" data-type="playthrough" data-value="多周目" onclick="selectTag('playthrough', '多周目')">多周目</button>
+              
+              <!-- 节日耗材 -->
+              <div class="tag-group">
+                <label class="tag-label">节日耗材：</label>
+                <div class="tag-buttons">
+                  <button class="tag-btn" data-type="festival" data-value="使用" onclick="selectTag('festival', '使用')">使用</button>
+                  <button class="tag-btn" data-type="festival" data-value="不使用" onclick="selectTag('festival', '不使用')">不使用</button>
+                </div>
               </div>
-            </div>
-            
-            <!-- BD选择 -->
-            <div class="tag-group">
-              <label class="tag-label">BD程度：</label>
-              <div class="tag-buttons">
-                <button class="tag-btn" data-type="build" data-value="富裕" onclick="selectTag('build', '富裕')">富裕</button>
-                <button class="tag-btn" data-type="build" data-value="正常" onclick="selectTag('build', '正常')">正常</button>
-                <button class="tag-btn" data-type="build" data-value="贫穷" onclick="selectTag('build', '贫穷')">贫穷</button>
+              
+              <!-- 周目选择 -->
+              <div class="tag-group">
+                <label class="tag-label">周目类型：</label>
+                <div class="tag-buttons">
+                  <button class="tag-btn" data-type="playthrough" data-value="一周目" onclick="selectTag('playthrough', '一周目')">一周目</button>
+                  <button class="tag-btn" data-type="playthrough" data-value="二周目" onclick="selectTag('playthrough', '二周目')">二周目</button>
+                  <button class="tag-btn" data-type="playthrough" data-value="多周目" onclick="selectTag('playthrough', '多周目')">多周目</button>
+                </div>
+              </div>
+              
+              <!-- BD选择 -->
+              <div class="tag-group">
+                <label class="tag-label">BD程度：</label>
+                <div class="tag-buttons">
+                  <button class="tag-btn" data-type="build" data-value="富裕" onclick="selectTag('build', '富裕')">富裕</button>
+                  <button class="tag-btn" data-type="build" data-value="正常" onclick="selectTag('build', '正常')">正常</button>
+                  <button class="tag-btn" data-type="build" data-value="贫穷" onclick="selectTag('build', '贫穷')">贫穷</button>
+                </div>
               </div>
             </div>
           </div>
@@ -2360,10 +2417,28 @@
 
     // 默认缩放到85%
     document.documentElement.style.setProperty('--scale-factor', 0.85);
+    
+    // 标签折叠状态
+    let tagsCollapsed = false;
 
     function updateCounters() {
       document.getElementById('positionCount').textContent = positionCount;
       document.getElementById('floorCount').textContent = floorCount;
+    }
+    
+    function toggleTagsSection() {
+      const content = document.getElementById('tagsContent');
+      const icon = document.querySelector('.toggle-icon');
+      
+      tagsCollapsed = !tagsCollapsed;
+      
+      if (tagsCollapsed) {
+        content.classList.add('collapsed');
+        icon.style.transform = 'rotate(-90deg)';
+      } else {
+        content.classList.remove('collapsed');
+        icon.style.transform = 'rotate(0deg)';
+      }
     }
 
     function toggleSpoiler() {
@@ -2431,19 +2506,39 @@
 
     // 初始化标签状态
     function initTags() {
-      // 设置默认选中的难度
-      document.querySelector('[data-type="difficulty"][data-value="默认"]').classList.add('selected');
-      
-      // 设置默认选中的周目
-      document.querySelector('[data-type="playthrough"][data-value="一周目"]').classList.add('selected');
-      
-      // 设置默认选中的BD
-      document.querySelector('[data-type="build"][data-value="正常"]').classList.add('selected');
-      
-      // 设置默认选中的节日耗材
-      document.querySelector('[data-type="festival"][data-value="不使用"]').classList.add('selected');
-      
-      // 设置默认团队人数
+      // 难度
+      document.querySelectorAll('[data-type="difficulty"]').forEach(btn => {
+        if (btn.getAttribute('data-value') === selectedDifficulty) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+      // 周目
+      document.querySelectorAll('[data-type="playthrough"]').forEach(btn => {
+        if (btn.getAttribute('data-value') === selectedPlaythrough) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+      // BD
+      document.querySelectorAll('[data-type="build"]').forEach(btn => {
+        if (btn.getAttribute('data-value') === selectedBuild) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+      // 节日耗材
+      document.querySelectorAll('[data-type="festival"]').forEach(btn => {
+        if ((btn.getAttribute('data-value') === '使用' && useFestivalMaterials) || (btn.getAttribute('data-value') === '不使用' && !useFestivalMaterials)) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+      // 团队人数
       document.getElementById('teamSize').value = teamSize;
     }
 
@@ -3544,6 +3639,13 @@
       
       // 查找选中的副本
       selectedDungeon = dungeons.find(d => d.name === tactic.dungeonName) || null;
+      // 自动刷新副本详情区
+      if (selectedDungeon) {
+        renderDungeonDetail(selectedDungeon);
+        document.getElementById('dungeonResults').style.display = 'none';
+      } else {
+        document.getElementById('dungeonDetail').innerHTML = '';
+      }
       
       // 加载标签信息
       if (tactic.tags) {
@@ -3710,6 +3812,13 @@
       setTimeout(initSortableForAllTacticsContainers, 0);
       setTimeout(initSortableForFloors, 0);
       showStatus(`"${tactic.name}" 已加载到编辑器`, 'success');
+      // 刷新副本数据区
+      // const dungeonInput = document.getElementById('dungeonSearch');
+      // if (dungeonInput) {
+      //   // 触发input事件，兼容自动补全/副本详情联动
+      //   const event = new Event('input', { bubbles: true });
+      //   dungeonInput.dispatchEvent(event);
+      // }
     }
     
     function showStatus(message, type) {
