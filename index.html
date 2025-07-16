@@ -877,12 +877,16 @@
       background: rgba(45, 35, 70, 0.7);
       color: #ddd;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: calc(4px * var(--scale-factor));
-      padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
-      font-size: calc(0.8rem * var(--scale-factor));
-      cursor: pointer;
+      border-radius: calc(6px * var(--scale-factor));
+      font-size: calc(0.95rem * var(--scale-factor));
+      padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor));
+      min-width: calc(72px * var(--scale-factor));
+      max-width: calc(120px * var(--scale-factor));
+      width: auto;
+      text-align: center;
+      flex: 0 0 auto;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
       transition: all 0.2s ease;
-      white-space: nowrap;
     }
 
     .tag-btn:hover {
@@ -894,12 +898,26 @@
     /* 移动端触摸优化 */
     @media (max-width: 768px) {
       .tag-btn {
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
+        font-size: calc(0.95rem * var(--scale-factor)) !important;
+        padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor)) !important;
+        border-radius: calc(6px * var(--scale-factor)) !important;
+        min-width: calc(72px * var(--scale-factor)) !important;
+        max-width: calc(120px * var(--scale-factor)) !important;
+        background: rgba(45, 35, 70, 0.7) !important;
+        color: #ddd !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+        width: auto !important;
+        text-align: center !important;
+        flex: 0 0 auto !important;
+        transition: all 0.2s ease !important;
+      }
+      /* 移除特殊的 .tag-group:nth-child(3) 和 .tag-group:first-child .tag-btn 样式 */
+      .tag-group:nth-child(3) .tag-btn,
+      .tag-group:first-child .tag-btn {
+        min-width: calc(80px * var(--scale-factor));
+        max-width: calc(120px * var(--scale-factor));
+        font-size: calc(0.75rem * var(--scale-factor));
       }
       
       .tag-btn:active {
@@ -1033,20 +1051,19 @@
       }
       
       /* 特殊处理节日耗材按钮，让它们占更多空间 */
-      .tag-group:nth-child(3) .tag-btn {
+      /* .tag-group:nth-child(3) .tag-btn {
         flex: 1;
         min-width: calc(100px * var(--scale-factor));
         max-width: calc(120px * var(--scale-factor));
         font-size: calc(0.7rem * var(--scale-factor));
-      }
-      
+      } */
       /* 难度按钮特殊处理，让它们更紧凑 */
-      .tag-group:first-child .tag-btn {
+      /* .tag-group:first-child .tag-btn {
         flex: 0 0 auto;
         min-width: calc(50px * var(--scale-factor));
         max-width: calc(60px * var(--scale-factor));
         font-size: calc(0.7rem * var(--scale-factor));
-      }
+      } */
     }
     
     /* 搜索筛选弹窗样式 */
@@ -1116,7 +1133,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      /* 去除动画 */
+      /* transition: all 0.2s ease; */
+      transition: none !important;
       position: absolute;
       right: calc(20px * var(--scale-factor));
       top: 50%;
@@ -1124,8 +1143,8 @@
       margin: 0;
     }
     .close-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+      background: none !important;
+      color: #b0a0cc !important;
     }
     @media (max-width: 768px) {
       .search-filter-header {
@@ -2291,9 +2310,6 @@
     <div class="search-filter-content">
       <div class="search-filter-header">
         <h3><i class="fas fa-filter"></i> 战术筛选</h3>
-        <button class="close-btn" onclick="closeSearchFilter()">
-          <i class="fas fa-times"></i>
-        </button>
       </div>
       
       <div class="search-filter-body">
