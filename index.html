@@ -664,6 +664,17 @@
       transition: all 0.2s ease;
     }
     
+    .tactic-tags {
+      font-size: calc(0.75rem * var(--scale-factor));
+      color: var(--info);
+      margin-bottom: calc(6px * var(--scale-factor));
+      padding: calc(2px * var(--scale-factor)) calc(6px * var(--scale-factor));
+      background: rgba(52, 152, 219, 0.1);
+      border-radius: calc(3px * var(--scale-factor));
+      border-left: 2px solid var(--info);
+      font-weight: 500;
+    }
+
     .tactic-content::after {
       content: "";
       position: absolute;
@@ -796,6 +807,480 @@
     
     .team-name-input::placeholder {
       color: #aaa;
+    }
+
+    /* 标签配置样式 */
+    .tags-section {
+      margin-top: calc(15px * var(--scale-factor));
+      padding: calc(12px * var(--scale-factor));
+      background: rgba(20, 30, 50, 0.3);
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tags-section h3 {
+      color: var(--info);
+      font-size: calc(1.1rem * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
+      display: flex;
+      align-items: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+
+    .tag-group {
+      margin-bottom: calc(12px * var(--scale-factor));
+      display: flex;
+      align-items: center;
+      gap: calc(10px * var(--scale-factor));
+    }
+
+    .tag-label {
+      color: #b0a0cc;
+      font-size: calc(0.9rem * var(--scale-factor));
+      font-weight: 600;
+      min-width: calc(80px * var(--scale-factor));
+      white-space: nowrap;
+    }
+
+    .tag-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(6px * var(--scale-factor));
+    }
+
+    .tag-btn {
+      background: rgba(45, 35, 70, 0.7);
+      color: #ddd;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
+      font-size: calc(0.8rem * var(--scale-factor));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tag-btn:hover {
+      background: rgba(55, 45, 80, 0.8);
+      border-color: var(--info);
+      transform: translateY(-1px);
+    }
+    
+    /* 移动端触摸优化 */
+    @media (max-width: 768px) {
+      .tag-btn {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+      
+      .tag-btn:active {
+        transform: scale(0.95);
+        background: rgba(65, 55, 90, 0.9);
+        transition: all 0.1s ease;
+      }
+      
+      .tag-btn.selected:active {
+        transform: scale(0.95);
+        background: var(--info);
+      }
+    }
+
+    .tag-btn.selected {
+      background: var(--info);
+      color: white;
+      border-color: var(--info);
+      box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+    }
+    
+    /* 移动端选中状态优化 */
+    @media (max-width: 768px) {
+      .tag-btn.selected {
+        box-shadow: 0 2px 6px rgba(52, 152, 219, 0.4);
+        transform: translateY(-1px);
+        border-width: 2px;
+      }
+    }
+
+    .team-size-select {
+      background: rgba(45, 35, 70, 0.7);
+      color: #ddd;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
+      font-size: calc(0.9rem * var(--scale-factor));
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .team-size-select:hover {
+      background: rgba(55, 45, 80, 0.8);
+      border-color: var(--info);
+    }
+
+    .team-size-select:focus {
+      outline: none;
+      border-color: var(--info);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    /* 移动端下拉选择器优化 */
+    @media (max-width: 768px) {
+      .team-size-select {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b0a0cc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(8px * var(--scale-factor)) center;
+        background-size: calc(12px * var(--scale-factor));
+        padding-right: calc(25px * var(--scale-factor));
+      }
+      
+      .team-size-select:active {
+        transform: scale(0.98);
+        transition: all 0.1s ease;
+      }
+    }
+
+
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+      .tags-section {
+        padding: calc(12px * var(--scale-factor));
+        margin-top: calc(10px * var(--scale-factor));
+        border-radius: calc(8px * var(--scale-factor));
+        background: rgba(20, 30, 50, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      
+      .tags-section h3 {
+        font-size: calc(1rem * var(--scale-factor));
+        margin-bottom: calc(10px * var(--scale-factor));
+      }
+      
+      .tag-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: calc(8px * var(--scale-factor));
+        margin-bottom: calc(15px * var(--scale-factor));
+      }
+      
+      .tag-label {
+        min-width: auto;
+        font-size: calc(0.85rem * var(--scale-factor));
+        margin-bottom: calc(4px * var(--scale-factor));
+        color: #c0b0dc;
+      }
+      
+      .tag-buttons {
+        width: 100%;
+        justify-content: flex-start;
+        gap: calc(4px * var(--scale-factor));
+        flex-wrap: wrap;
+      }
+      
+      .tag-btn {
+        font-size: calc(0.75rem * var(--scale-factor));
+        padding: calc(6px * var(--scale-factor)) calc(10px * var(--scale-factor));
+        border-radius: calc(6px * var(--scale-factor));
+        min-width: calc(60px * var(--scale-factor));
+        text-align: center;
+        flex: 1;
+        min-width: 0;
+        max-width: calc(80px * var(--scale-factor));
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+      }
+      
+      .team-size-select {
+        width: 100%;
+        max-width: calc(100px * var(--scale-factor));
+        font-size: calc(0.8rem * var(--scale-factor));
+        padding: calc(6px * var(--scale-factor)) calc(8px * var(--scale-factor));
+      }
+      
+      /* 特殊处理节日耗材按钮，让它们占更多空间 */
+      .tag-group:nth-child(3) .tag-btn {
+        flex: 1;
+        min-width: calc(100px * var(--scale-factor));
+        max-width: calc(120px * var(--scale-factor));
+        font-size: calc(0.7rem * var(--scale-factor));
+      }
+      
+      /* 难度按钮特殊处理，让它们更紧凑 */
+      .tag-group:first-child .tag-btn {
+        flex: 0 0 auto;
+        min-width: calc(50px * var(--scale-factor));
+        max-width: calc(60px * var(--scale-factor));
+        font-size: calc(0.7rem * var(--scale-factor));
+      }
+    }
+    
+    /* 搜索筛选弹窗样式 */
+    .search-filter-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 15000;
+      backdrop-filter: blur(5px);
+    }
+    
+    .search-filter-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      background: rgba(20, 30, 50, 0.95);
+      border-radius: calc(12px * var(--scale-factor));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .search-filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: calc(16px * var(--scale-factor)) calc(20px * var(--scale-factor));
+      background: rgba(30, 40, 60, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .search-filter-header h3 {
+      color: var(--info);
+      font-size: calc(1.2rem * var(--scale-factor));
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: calc(8px * var(--scale-factor));
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      color: #b0a0cc;
+      font-size: calc(1.2rem * var(--scale-factor));
+      cursor: pointer;
+      padding: calc(4px * var(--scale-factor));
+      border-radius: calc(4px * var(--scale-factor));
+      transition: all 0.2s ease;
+    }
+    
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .search-filter-body {
+      padding: calc(20px * var(--scale-factor));
+      overflow-y: auto;
+      flex: 1;
+    }
+    
+    .filter-section {
+      margin-bottom: calc(20px * var(--scale-factor));
+    }
+    
+    .filter-label {
+      display: block;
+      color: #c0b0dc;
+      font-size: calc(0.9rem * var(--scale-factor));
+      font-weight: 600;
+      margin-bottom: calc(8px * var(--scale-factor));
+    }
+    
+    .filter-section input[type="text"] {
+      width: 100%;
+      padding: calc(10px * var(--scale-factor)) calc(12px * var(--scale-factor));
+      background: rgba(20, 30, 50, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: calc(6px * var(--scale-factor));
+      color: white;
+      font-size: calc(0.9rem * var(--scale-factor));
+    }
+    
+    .filter-section input[type="text"]:focus {
+      outline: none;
+      border-color: var(--info);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    .filter-btn {
+      background: rgba(45, 35, 70, 0.7);
+      color: #ddd;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(6px * var(--scale-factor)) calc(10px * var(--scale-factor));
+      font-size: calc(0.8rem * var(--scale-factor));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    
+    .filter-btn:hover {
+      background: rgba(55, 45, 80, 0.8);
+      border-color: var(--info);
+    }
+    
+    .filter-btn.selected {
+      background: var(--info);
+      color: white;
+      border-color: var(--info);
+      box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+    }
+    
+    .search-filter-footer {
+      display: flex;
+      gap: calc(10px * var(--scale-factor));
+      padding: calc(16px * var(--scale-factor)) calc(20px * var(--scale-factor));
+      background: rgba(30, 40, 60, 0.8);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .clear-filters-btn, .apply-filters-btn {
+      flex: 1;
+      padding: calc(10px * var(--scale-factor)) calc(16px * var(--scale-factor));
+      border: none;
+      border-radius: calc(6px * var(--scale-factor));
+      font-size: calc(0.9rem * var(--scale-factor));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    .clear-filters-btn {
+      background: rgba(231, 76, 60, 0.8);
+      color: white;
+    }
+    
+    .clear-filters-btn:hover {
+      background: rgba(231, 76, 60, 1);
+    }
+    
+    .apply-filters-btn {
+      background: var(--info);
+      color: white;
+    }
+    
+    .apply-filters-btn:hover {
+      background: #2980b9;
+    }
+    
+    /* 移动端搜索筛选弹窗适配 */
+    @media (max-width: 768px) {
+      .search-filter-content {
+        width: 95%;
+        max-height: 95vh;
+        border-radius: calc(8px * var(--scale-factor));
+      }
+      
+      .search-filter-header {
+        padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
+      }
+      
+      .search-filter-header h3 {
+        font-size: calc(1.1rem * var(--scale-factor));
+      }
+      
+      .search-filter-body {
+        padding: calc(16px * var(--scale-factor));
+      }
+      
+      .filter-section {
+        margin-bottom: calc(16px * var(--scale-factor));
+      }
+      
+      .filter-label {
+        font-size: calc(0.85rem * var(--scale-factor));
+      }
+      
+      .filter-buttons {
+        gap: calc(4px * var(--scale-factor));
+      }
+      
+      .filter-btn {
+        font-size: calc(0.75rem * var(--scale-factor));
+        padding: calc(5px * var(--scale-factor)) calc(8px * var(--scale-factor));
+        flex: 1;
+        min-width: calc(50px * var(--scale-factor));
+        text-align: center;
+      }
+      
+      .search-filter-footer {
+        padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
+        flex-direction: column;
+      }
+      
+      .clear-filters-btn, .apply-filters-btn {
+        font-size: calc(0.85rem * var(--scale-factor));
+        padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
+      }
+    }
+
+    /* 超小屏幕适配 */
+    @media (max-width: 480px) {
+      .tags-section {
+        padding: calc(10px * var(--scale-factor));
+        margin-top: calc(8px * var(--scale-factor));
+      }
+      
+      .tags-section h3 {
+        font-size: calc(0.9rem * var(--scale-factor));
+        margin-bottom: calc(8px * var(--scale-factor));
+      }
+      
+      .tag-group {
+        margin-bottom: calc(12px * var(--scale-factor));
+        gap: calc(6px * var(--scale-factor));
+      }
+      
+      .tag-buttons {
+        gap: calc(3px * var(--scale-factor));
+      }
+      
+      .tag-btn {
+        font-size: calc(0.7rem * var(--scale-factor));
+        padding: calc(5px * var(--scale-factor)) calc(8px * var(--scale-factor));
+        min-width: calc(50px * var(--scale-factor));
+        max-width: calc(70px * var(--scale-factor));
+      }
+      
+      .tag-group:first-child .tag-btn {
+        min-width: calc(45px * var(--scale-factor));
+        max-width: calc(55px * var(--scale-factor));
+        font-size: calc(0.65rem * var(--scale-factor));
+      }
+      
+      .tag-group:nth-child(3) .tag-btn {
+        min-width: calc(90px * var(--scale-factor));
+        max-width: calc(110px * var(--scale-factor));
+        font-size: calc(0.65rem * var(--scale-factor));
+      }
     }
     
     /* 副本搜索区域 */
@@ -1539,6 +2024,72 @@
               <i class="fas fa-eye-slash"></i> 使用 Spoiler Title
             </button>
           </div>
+          
+          <!-- 标签配置区域 -->
+          <div class="tags-section">
+            <h3><i class="fas fa-tags"></i> 战术标签</h3>
+            
+            <!-- 难度标签 -->
+            <div class="tag-group">
+              <label class="tag-label">难度类型：</label>
+              <div class="tag-buttons">
+                <button class="tag-btn" data-type="difficulty" data-value="默认" onclick="selectTag('difficulty', '默认')">默认</button>
+                <button class="tag-btn" data-type="difficulty" data-value="极限" onclick="selectTag('difficulty', '极限')">极限</button>
+                <button class="tag-btn" data-type="difficulty" data-value="高等" onclick="selectTag('difficulty', '高等')">高等</button>
+                <button class="tag-btn" data-type="difficulty" data-value="花活" onclick="selectTag('difficulty', '花活')">花活</button>
+                <button class="tag-btn" data-type="difficulty" data-value="猴" onclick="selectTag('difficulty', '猴')">猴</button>
+                <button class="tag-btn" data-type="difficulty" data-value="MINI" onclick="selectTag('difficulty', 'MINI')">MINI</button>
+              </div>
+            </div>
+            
+            <!-- 人数选择 -->
+            <div class="tag-group">
+              <label class="tag-label">团队人数：</label>
+              <select id="teamSize" class="team-size-select" onchange="updateTeamSize()">
+                <option value="1">1人</option>
+                <option value="2">2人</option>
+                <option value="3">3人</option>
+                <option value="4">4人</option>
+                <option value="5">5人</option>
+                <option value="6">6人</option>
+                <option value="7">7人</option>
+                <option value="8">8人</option>
+                <option value="9">9人</option>
+                <option value="10">10人</option>
+                <option value="11">11人</option>
+                <option value="12" selected>12人</option>
+              </select>
+            </div>
+            
+            <!-- 节日耗材 -->
+            <div class="tag-group">
+              <label class="tag-label">节日耗材：</label>
+              <div class="tag-buttons">
+                <button class="tag-btn" data-type="festival" data-value="使用" onclick="selectTag('festival', '使用')">使用节日耗材</button>
+                <button class="tag-btn" data-type="festival" data-value="不使用" onclick="selectTag('festival', '不使用')">不使用节日耗材</button>
+              </div>
+            </div>
+            
+            <!-- 周目选择 -->
+            <div class="tag-group">
+              <label class="tag-label">周目类型：</label>
+              <div class="tag-buttons">
+                <button class="tag-btn" data-type="playthrough" data-value="一周目" onclick="selectTag('playthrough', '一周目')">一周目</button>
+                <button class="tag-btn" data-type="playthrough" data-value="二周目" onclick="selectTag('playthrough', '二周目')">二周目</button>
+                <button class="tag-btn" data-type="playthrough" data-value="多周目" onclick="selectTag('playthrough', '多周目')">多周目</button>
+              </div>
+            </div>
+            
+            <!-- BD选择 -->
+            <div class="tag-group">
+              <label class="tag-label">BD程度：</label>
+              <div class="tag-buttons">
+                <button class="tag-btn" data-type="build" data-value="富裕" onclick="selectTag('build', '富裕')">富裕</button>
+                <button class="tag-btn" data-type="build" data-value="正常" onclick="selectTag('build', '正常')">正常</button>
+                <button class="tag-btn" data-type="build" data-value="贫穷" onclick="selectTag('build', '贫穷')">贫穷</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="config-block">
           <div class="position-header">
@@ -1572,7 +2123,7 @@
           </h2>
           <div class="mobile-search-container">
             <div class="search-container">
-              <input type="text" id="mobileSearchInput" placeholder="搜索战术名称...">
+              <input type="text" id="mobileSearchInput" placeholder="搜索战术名称..." onclick="openSearchFilter()">
             </div>
           </div>
           <div class="cloud-actions">
@@ -1585,7 +2136,7 @@
           </div>
           <div class="desktop-search-container">
             <div class="search-container">
-              <input type="text" id="desktopSearchInput" placeholder="搜索战术名称...">
+              <input type="text" id="desktopSearchInput" placeholder="搜索战术名称..." onclick="openSearchFilter()">
               <button id="desktopTacticSortBtn" type="button" class="tactic-sort-btn" style="margin-left:8px;">净赞数</button>
             </div>
           </div>
@@ -1608,6 +2159,96 @@
     <i class="fas fa-redo"></i> 重置配置
   </button>
 
+  <!-- 搜索筛选弹窗 -->
+  <div id="searchFilterModal" class="search-filter-modal">
+    <div class="search-filter-content">
+      <div class="search-filter-header">
+        <h3><i class="fas fa-filter"></i> 战术筛选</h3>
+        <button class="close-btn" onclick="closeSearchFilter()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="search-filter-body">
+        <!-- 文本搜索 -->
+        <div class="filter-section">
+          <label class="filter-label">文本搜索：</label>
+          <input type="text" id="filterTextInput" placeholder="搜索战术名称、团队名称、副本名称..." oninput="applyFilters()">
+        </div>
+        
+        <!-- 难度筛选 -->
+        <div class="filter-section">
+          <label class="filter-label">难度类型：</label>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="difficulty" data-value="默认" onclick="toggleFilter('difficulty', '默认')">默认</button>
+            <button class="filter-btn" data-filter="difficulty" data-value="极限" onclick="toggleFilter('difficulty', '极限')">极限</button>
+            <button class="filter-btn" data-filter="difficulty" data-value="高等" onclick="toggleFilter('difficulty', '高等')">高等</button>
+            <button class="filter-btn" data-filter="difficulty" data-value="花活" onclick="toggleFilter('difficulty', '花活')">花活</button>
+            <button class="filter-btn" data-filter="difficulty" data-value="猴" onclick="toggleFilter('difficulty', '猴')">猴</button>
+            <button class="filter-btn" data-filter="difficulty" data-value="MINI" onclick="toggleFilter('difficulty', 'MINI')">MINI</button>
+          </div>
+        </div>
+        
+        <!-- 团队人数筛选 -->
+        <div class="filter-section">
+          <label class="filter-label">团队人数：</label>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="teamSize" data-value="1" onclick="toggleFilter('teamSize', '1')">1人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="2" onclick="toggleFilter('teamSize', '2')">2人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="3" onclick="toggleFilter('teamSize', '3')">3人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="4" onclick="toggleFilter('teamSize', '4')">4人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="5" onclick="toggleFilter('teamSize', '5')">5人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="6" onclick="toggleFilter('teamSize', '6')">6人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="7" onclick="toggleFilter('teamSize', '7')">7人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="8" onclick="toggleFilter('teamSize', '8')">8人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="9" onclick="toggleFilter('teamSize', '9')">9人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="10" onclick="toggleFilter('teamSize', '10')">10人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="11" onclick="toggleFilter('teamSize', '11')">11人</button>
+            <button class="filter-btn" data-filter="teamSize" data-value="12" onclick="toggleFilter('teamSize', '12')">12人</button>
+          </div>
+        </div>
+        
+        <!-- 节日耗材筛选 -->
+        <div class="filter-section">
+          <label class="filter-label">节日耗材：</label>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="festival" data-value="使用" onclick="toggleFilter('festival', '使用')">使用</button>
+            <button class="filter-btn" data-filter="festival" data-value="不使用" onclick="toggleFilter('festival', '不使用')">不使用</button>
+          </div>
+        </div>
+        
+        <!-- 周目筛选 -->
+        <div class="filter-section">
+          <label class="filter-label">周目类型：</label>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="playthrough" data-value="一周目" onclick="toggleFilter('playthrough', '一周目')">一周目</button>
+            <button class="filter-btn" data-filter="playthrough" data-value="二周目" onclick="toggleFilter('playthrough', '二周目')">二周目</button>
+            <button class="filter-btn" data-filter="playthrough" data-value="多周目" onclick="toggleFilter('playthrough', '多周目')">多周目</button>
+          </div>
+        </div>
+        
+        <!-- BD筛选 -->
+        <div class="filter-section">
+          <label class="filter-label">BD程度：</label>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="build" data-value="富裕" onclick="toggleFilter('build', '富裕')">富裕</button>
+            <button class="filter-btn" data-filter="build" data-value="正常" onclick="toggleFilter('build', '正常')">正常</button>
+            <button class="filter-btn" data-filter="build" data-value="贫穷" onclick="toggleFilter('build', '贫穷')">贫穷</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="search-filter-footer">
+        <button class="clear-filters-btn" onclick="clearAllFilters()">
+          <i class="fas fa-eraser"></i> 清除所有筛选
+        </button>
+        <button class="apply-filters-btn" onclick="closeSearchFilter()">
+          <i class="fas fa-check"></i> 应用筛选
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div style="width:100%;text-align:center;color:#b0a0cc;font-size:14px;margin:40px 0 10px 0;letter-spacing:2px;opacity:0.7;">[player:Blank] x DeepSeek Ai</div>
   <script>
     // 配置您的API密钥（直接嵌入）
@@ -1629,6 +2270,23 @@
     let dungeons = [];
     let selectedDungeon = null;
     let tacticSortType = "score"; // 默认净赞数
+    
+    // 标签相关变量
+    let selectedDifficulty = "默认"; // 默认难度
+    let teamSize = 12; // 默认12人
+    let useFestivalMaterials = false; // 默认不使用节日耗材
+    let selectedPlaythrough = "一周目"; // 默认一周目
+    let selectedBuild = "正常"; // 默认BD为正常
+    
+    // 搜索筛选相关变量
+    let activeFilters = {
+      text: '',
+      difficulty: [],
+      teamSize: [],
+      festival: [],
+      playthrough: [],
+      build: []
+    };
 
     // 默认缩放到85%
     document.documentElement.style.setProperty('--scale-factor', 0.85);
@@ -1650,6 +2308,73 @@
         btn.classList.add("inactive");
         btn.innerHTML = '<i class="fas fa-eye-slash"></i> 使用 Spoiler Title';
       }
+    }
+
+    // 标签选择函数
+    function selectTag(type, value) {
+      if (type === 'difficulty') {
+        selectedDifficulty = value;
+        // 更新难度按钮状态
+        document.querySelectorAll('[data-type="difficulty"]').forEach(btn => {
+          btn.classList.remove('selected');
+        });
+        document.querySelector(`[data-type="difficulty"][data-value="${value}"]`).classList.add('selected');
+      } else if (type === 'playthrough') {
+        selectedPlaythrough = value;
+        // 更新周目按钮状态
+        document.querySelectorAll('[data-type="playthrough"]').forEach(btn => {
+          btn.classList.remove('selected');
+        });
+        document.querySelector(`[data-type="playthrough"][data-value="${value}"]`).classList.add('selected');
+      } else if (type === 'build') {
+        selectedBuild = value;
+        // 更新BD按钮状态
+        document.querySelectorAll('[data-type="build"]').forEach(btn => {
+          btn.classList.remove('selected');
+        });
+        document.querySelector(`[data-type="build"][data-value="${value}"]`).classList.add('selected');
+      } else if (type === 'festival') {
+        useFestivalMaterials = value === '使用';
+        // 更新节日耗材按钮状态
+        document.querySelectorAll('[data-type="festival"]').forEach(btn => {
+          btn.classList.remove('selected');
+        });
+        document.querySelector(`[data-type="festival"][data-value="${value}"]`).classList.add('selected');
+      }
+      
+      let typeName = '';
+      if (type === 'difficulty') typeName = '难度';
+      else if (type === 'playthrough') typeName = '周目';
+      else if (type === 'build') typeName = 'BD';
+      else if (type === 'festival') typeName = '节日耗材';
+      
+      showStatus(`已选择${typeName}: ${value}`, 'success');
+    }
+
+    // 更新团队人数
+    function updateTeamSize() {
+      teamSize = parseInt(document.getElementById('teamSize').value);
+      showStatus(`团队人数已设置为: ${teamSize}人`, 'success');
+    }
+
+
+
+    // 初始化标签状态
+    function initTags() {
+      // 设置默认选中的难度
+      document.querySelector('[data-type="difficulty"][data-value="默认"]').classList.add('selected');
+      
+      // 设置默认选中的周目
+      document.querySelector('[data-type="playthrough"][data-value="一周目"]').classList.add('selected');
+      
+      // 设置默认选中的BD
+      document.querySelector('[data-type="build"][data-value="正常"]').classList.add('selected');
+      
+      // 设置默认选中的节日耗材
+      document.querySelector('[data-type="festival"][data-value="不使用"]').classList.add('selected');
+      
+      // 设置默认团队人数
+      document.getElementById('teamSize').value = teamSize;
     }
 
     function resetConfig() {
@@ -1678,6 +2403,14 @@
       addPositionRow();
       addFloor();
       updateCounters();
+      
+      // 重置标签
+      selectedDifficulty = "默认";
+      teamSize = 12;
+      useFestivalMaterials = false;
+      selectedPlaythrough = "一周目";
+      selectedBuild = "正常";
+      initTags();
       
       showStatus('配置已重置', 'success');
     }
@@ -1777,6 +2510,7 @@
       addPositionRow();
       addFloor();
       updateCounters();
+      initTags(); // 初始化标签状态
       
       const savedRatings = localStorage.getItem('tacticRatings');
       if (savedRatings) {
@@ -1898,6 +2632,176 @@
       }
     }
 
+    // 搜索筛选相关函数
+    function openSearchFilter() {
+      document.getElementById('searchFilterModal').style.display = 'block';
+      // 同步当前搜索框的值到筛选弹窗
+      const mobileInput = document.getElementById('mobileSearchInput');
+      const desktopInput = document.getElementById('desktopSearchInput');
+      const filterInput = document.getElementById('filterTextInput');
+      
+      if (mobileInput && mobileInput.value) {
+        filterInput.value = mobileInput.value;
+        activeFilters.text = mobileInput.value;
+      } else if (desktopInput && desktopInput.value) {
+        filterInput.value = desktopInput.value;
+        activeFilters.text = desktopInput.value;
+      }
+      
+      // 更新筛选按钮状态
+      updateFilterButtonStates();
+      
+      // 添加点击外部关闭功能
+      setTimeout(() => {
+        document.getElementById('searchFilterModal').addEventListener('click', function(e) {
+          if (e.target === this) {
+            closeSearchFilter();
+          }
+        });
+      }, 100);
+    }
+    
+    function closeSearchFilter() {
+      document.getElementById('searchFilterModal').style.display = 'none';
+    }
+    
+    // 添加ESC键关闭弹窗
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('searchFilterModal');
+        if (modal && modal.style.display === 'block') {
+          closeSearchFilter();
+        }
+      }
+    });
+    
+    function toggleFilter(type, value) {
+      const button = document.querySelector(`[data-filter="${type}"][data-value="${value}"]`);
+      
+      if (activeFilters[type].includes(value)) {
+        // 移除筛选
+        activeFilters[type] = activeFilters[type].filter(v => v !== value);
+        button.classList.remove('selected');
+      } else {
+        // 添加筛选
+        activeFilters[type].push(value);
+        button.classList.add('selected');
+      }
+      
+      applyFilters();
+    }
+    
+    function updateFilterButtonStates() {
+      // 清除所有按钮的选中状态
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      // 设置当前激活的筛选按钮
+      Object.keys(activeFilters).forEach(type => {
+        if (type !== 'text') {
+          activeFilters[type].forEach(value => {
+            const button = document.querySelector(`[data-filter="${type}"][data-value="${value}"]`);
+            if (button) {
+              button.classList.add('selected');
+            }
+          });
+        }
+      });
+    }
+    
+    function clearAllFilters() {
+      activeFilters = {
+        text: '',
+        difficulty: [],
+        teamSize: [],
+        festival: [],
+        playthrough: [],
+        build: []
+      };
+      
+      document.getElementById('filterTextInput').value = '';
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      // 清空搜索框
+      const mobileInput = document.getElementById('mobileSearchInput');
+      const desktopInput = document.getElementById('desktopSearchInput');
+      if (mobileInput) mobileInput.value = '';
+      if (desktopInput) desktopInput.value = '';
+      
+      applyFilters();
+    }
+    
+    function applyFilters() {
+      const filterText = document.getElementById('filterTextInput').value.toLowerCase().trim();
+      activeFilters.text = filterText;
+      
+      // 同步到搜索框
+      const mobileInput = document.getElementById('mobileSearchInput');
+      const desktopInput = document.getElementById('desktopSearchInput');
+      if (mobileInput) mobileInput.value = filterText;
+      if (desktopInput) desktopInput.value = filterText;
+      
+      // 应用筛选
+      const filtered = tacticsData.filter(tactic => {
+        // 文本筛选
+        if (filterText && !(
+          tactic.name.toLowerCase().includes(filterText) ||
+          (tactic.teamName && tactic.teamName.toLowerCase().includes(filterText)) ||
+          (tactic.dungeonName && tactic.dungeonName.toLowerCase().includes(filterText))
+        )) {
+          return false;
+        }
+        
+        // 标签筛选
+        if (tactic.tags) {
+          // 难度筛选
+          if (activeFilters.difficulty.length > 0 && !activeFilters.difficulty.includes(tactic.tags.difficulty)) {
+            return false;
+          }
+          
+          // 团队人数筛选
+          if (activeFilters.teamSize.length > 0 && !activeFilters.teamSize.includes(tactic.tags.teamSize?.toString())) {
+            return false;
+          }
+          
+          // 节日耗材筛选
+          if (activeFilters.festival.length > 0) {
+            const festivalValue = tactic.tags.useFestivalMaterials ? '使用' : '不使用';
+            if (!activeFilters.festival.includes(festivalValue)) {
+              return false;
+            }
+          }
+          
+          // 周目筛选
+          if (activeFilters.playthrough.length > 0 && !activeFilters.playthrough.includes(tactic.tags.playthrough)) {
+            return false;
+          }
+          
+          // BD筛选
+          if (activeFilters.build.length > 0 && !activeFilters.build.includes(tactic.tags.build)) {
+            return false;
+          }
+        }
+        
+        return true;
+      });
+      
+      renderTacticsList(filtered);
+      
+      const filterCount = Object.values(activeFilters).reduce((sum, filters) => {
+        return sum + (Array.isArray(filters) ? filters.length : (filters ? 1 : 0));
+      }, 0);
+      
+      if (filterCount > 0) {
+        showStatus(`找到 ${filtered.length} 个匹配的战术（应用了 ${filterCount} 个筛选条件）`, 'success');
+      } else {
+        showStatus(`显示所有战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`, 'info');
+      }
+    }
+    
     function handleSearchInput(event) {
       if (searchTimer) {
         clearTimeout(searchTimer);
@@ -1905,6 +2809,8 @@
       
       searchTimer = setTimeout(() => {
         const searchTerm = event.target.value.toLowerCase().trim();
+        activeFilters.text = searchTerm;
+        
         if (searchTerm) {
           const filtered = tacticsData.filter(tactic => 
             tactic.name.toLowerCase().includes(searchTerm) ||
@@ -2144,6 +3050,14 @@
         spoiler: useSpoiler,
         positions: positions,
         floors: floors,
+        // 添加标签信息
+        tags: {
+          difficulty: selectedDifficulty,
+          teamSize: teamSize,
+          useFestivalMaterials: useFestivalMaterials,
+          playthrough: selectedPlaythrough,
+          build: selectedBuild
+        },
         createdAt: new Date().toISOString(),
         likes: 0,
         dislikes: 0
@@ -2154,6 +3068,9 @@
       const tactic = generateTacticsObject();
       // 修改为只使用副本名称
       let output = tactic.spoiler ? `[spoiler title=${tactic.dungeonName}]\n` : `战术：${tactic.dungeonName}\n`;
+
+      // 添加标签信息
+      output += `标签：${selectedDifficulty} | ${teamSize}人 | ${useFestivalMaterials ? '使用节日耗材' : '不使用节日耗材'} | ${selectedPlaythrough} | BD:${selectedBuild}\n\n`;
 
       // 站位配置
       output += `站位：\n`;
@@ -2350,6 +3267,20 @@
         
         const isMyTactic = myTactics[tactic.name] || false;
         
+        // 生成标签显示
+        let tagsDisplay = '';
+        if (tactic.tags) {
+          const tags = [];
+          if (tactic.tags.difficulty) tags.push(tactic.tags.difficulty);
+          if (tactic.tags.teamSize) tags.push(`${tactic.tags.teamSize}人`);
+          if (tactic.tags.useFestivalMaterials) tags.push('节日耗材');
+          if (tactic.tags.playthrough) tags.push(tactic.tags.playthrough);
+          if (tactic.tags.build) tags.push(`BD:${tactic.tags.build}`);
+          if (tags.length > 0) {
+            tagsDisplay = `<div class="tactic-tags">${tags.join(' | ')}</div>`;
+          }
+        }
+        
         item.innerHTML = `
           <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name}')">
             <div class="tactic-name">
@@ -2359,6 +3290,7 @@
             </div>
             <div class="tactic-date">${formattedDate}</div>
           </div>
+          ${tagsDisplay}
           <div class="tactic-content" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name}')">${preview}</div>
           <div class="tactic-footer">
             <div class="rating">
@@ -2542,6 +3474,27 @@
       
       // 查找选中的副本
       selectedDungeon = dungeons.find(d => d.name === tactic.dungeonName) || null;
+      
+      // 加载标签信息
+      if (tactic.tags) {
+        selectedDifficulty = tactic.tags.difficulty || "默认";
+        teamSize = tactic.tags.teamSize || 12;
+        useFestivalMaterials = tactic.tags.useFestivalMaterials || false;
+        selectedPlaythrough = tactic.tags.playthrough || "一周目";
+        selectedBuild = tactic.tags.build || "正常";
+        
+        // 更新UI
+        initTags();
+        
+        // 手动设置节日耗材按钮状态（因为initTags只设置默认值）
+        if (tactic.tags.useFestivalMaterials !== undefined) {
+          document.querySelectorAll('[data-type="festival"]').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          const festivalValue = tactic.tags.useFestivalMaterials ? '使用' : '不使用';
+          document.querySelector(`[data-type="festival"][data-value="${festivalValue}"]`).classList.add('selected');
+        }
+      }
       
       useSpoiler = tactic.spoiler || false;
       const btn = document.getElementById("spoilerToggleBtn");
