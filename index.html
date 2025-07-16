@@ -877,16 +877,14 @@
       background: rgba(45, 35, 70, 0.7);
       color: #ddd;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: calc(6px * var(--scale-factor));
-      font-size: calc(0.95rem * var(--scale-factor));
-      padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor));
-      min-width: calc(72px * var(--scale-factor));
-      max-width: calc(120px * var(--scale-factor));
-      width: auto;
-      text-align: center;
-      flex: 0 0 auto;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(5px * var(--scale-factor)) calc(10px * var(--scale-factor)); /* 调小padding */
+      font-size: calc(0.82rem * var(--scale-factor)); /* 调小字体 */
+      cursor: pointer;
       transition: all 0.2s ease;
+      white-space: nowrap;
+      min-width: calc(70px * var(--scale-factor)); /* 调小min-width */
+      max-width: calc(110px * var(--scale-factor)); /* 调小max-width */
     }
 
     .tag-btn:hover {
@@ -898,18 +896,15 @@
     /* 移动端触摸优化 */
     @media (max-width: 768px) {
       .tag-btn {
-        font-size: calc(0.95rem * var(--scale-factor)) !important;
-        padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor)) !important;
-        border-radius: calc(6px * var(--scale-factor)) !important;
-        min-width: calc(72px * var(--scale-factor)) !important;
-        max-width: calc(120px * var(--scale-factor)) !important;
-        background: rgba(45, 35, 70, 0.7) !important;
-        color: #ddd !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+        font-size: calc(0.85rem * var(--scale-factor)) !important; /* 增大字体 */
+        padding: calc(9px * var(--scale-factor)) calc(16px * var(--scale-factor)) !important; /* 增大padding */
+        border-radius: calc(8px * var(--scale-factor)) !important;
+        min-width: calc(92px * var(--scale-factor)) !important; /* 增大min-width */
+        max-width: calc(140px * var(--scale-factor)) !important; /* 增大max-width */
         width: auto !important;
         text-align: center !important;
         flex: 0 0 auto !important;
+        box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.22) !important;
         transition: all 0.2s ease !important;
       }
       /* 移除特殊的 .tag-group:nth-child(3) 和 .tag-group:first-child .tag-btn 样式 */
