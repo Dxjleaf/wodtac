@@ -3024,7 +3024,7 @@
       document.getElementById('positionConfig').appendChild(row);
     }
 
-    function addFloor() {
+    function addFloor(afterElem) {
       floorCount++;
       updateCounters();
       // 生成唯一id
@@ -3034,8 +3034,9 @@
       floor.className = 'config-block';
       floor.innerHTML = `
         <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
-        <div class="dynamic-row">
+        <div class="dynamic-row" style="align-items:center;">
           <input placeholder="楼层（例：F1）">
+          <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
           <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
             <i class="fas fa-trash"></i>
           </button>
@@ -3065,7 +3066,11 @@
           </div>
         </div>
       `;
-      document.getElementById('floorConfig').appendChild(floor);
+      if (afterElem && afterElem.parentElement) {
+        afterElem.parentElement.insertBefore(floor, afterElem.nextSibling);
+      } else {
+        document.getElementById('floorConfig').appendChild(floor);
+      }
       setTimeout(initSortableForAllTacticsContainers, 0);
       setTimeout(initSortableForFloors, 0);
     }
@@ -3414,7 +3419,7 @@
         container.innerHTML = '<div class="status-message status-info">没有找到战术</div>';
         return;
       }
-      sorted.forEach((tactic, index) => {
+      sorted.forEach((tactic) => {
         const item = document.createElement('div');
         item.className = 'tactic-item';
         
@@ -3458,38 +3463,38 @@
         }
         
         item.innerHTML = `
-          <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name}')">
+          <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">
             <div class="tactic-name">
               <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
               ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
-              <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;cursor:pointer;" onclick="event.stopPropagation(); viewTacticDetailInNewWindow('${tactic.name}')" title="在新窗口打开"></i>
+              <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;cursor:pointer;" onclick="event.stopPropagation(); viewTacticDetailInNewWindow('${tactic.name.replace(/'/g, "\\'")}')" title="在新窗口打开"></i>
             </div>
             <div class="tactic-date">${formattedDate}</div>
           </div>
           ${tagsDisplay}
-          <div class="tactic-content" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name}')">${preview}</div>
+          <div class="tactic-content" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">${preview}</div>
           <div class="tactic-footer">
             <div class="rating">
-              <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name}', 1)">
+              <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', 1)">
                 <i class="fas fa-thumbs-up"></i>
               </button>
               <span>${tactic.likes || 0}</span>
-              <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name}', -1)">
+              <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', -1)">
                 <i class="fas fa-piggy-bank"></i>
               </button>
               <span>${tactic.dislikes || 0}</span>
             </div>
             <div class="actions">
-              <button class="load-btn-sm" onclick="event.stopPropagation(); loadTactic(${index})">
+              <button class="load-btn-sm" onclick="event.stopPropagation(); loadTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
                 <i class="fas fa-download"></i> 加载
               </button>
-              <button class="copy-btn-sm" onclick="event.stopPropagation(); copyTacticToClipboard(${index})">
+              <button class="copy-btn-sm" onclick="event.stopPropagation(); copyTacticToClipboardByName('${tactic.name.replace(/'/g, "\\'")}')">
                 <i class="fas fa-copy"></i> 复制
               </button>
-              <button class="copy-btn-sm" onclick="event.stopPropagation(); shareTacticLink(${index})">
+              <button class="copy-btn-sm" onclick="event.stopPropagation(); shareTacticLinkByName('${tactic.name.replace(/'/g, "\\'")}')">
                 <i class='fas fa-share-alt'></i> 分享
               </button>
-              ${isMyTactic ? `<button class="delete-btn-sm" onclick="event.stopPropagation(); deleteTactic('${tactic.name}')">
+              ${isMyTactic ? `<button class="delete-btn-sm" onclick="event.stopPropagation(); deleteTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
                 <i class="fas fa-trash"></i> 删除
               </button>` : ''}
             </div>
@@ -3728,8 +3733,9 @@
         floorElement.className = 'config-block';
         floorElement.innerHTML = `
           <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
-          <div class="dynamic-row">
+          <div class="dynamic-row" style="align-items:center;">
             <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
+            <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
             <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
               <i class="fas fa-trash"></i>
             </button>
@@ -4079,6 +4085,68 @@
           contentOnclick: content ? content.getAttribute('onclick') : 'none'
         });
       });
+    }
+
+    // 1. 新增通过name查找的加载函数
+    function loadTacticByName(name) {
+      const idx = tacticsData.findIndex(t => t.name === name);
+      if (idx !== -1) {
+        loadTactic(idx);
+      } else {
+        showStatus('未找到该战术', 'error');
+      }
+    }
+
+    function copyTacticToClipboardByName(name) {
+      const idx = tacticsData.findIndex(t => t.name === name);
+      if (idx !== -1) {
+        copyTacticToClipboard(idx);
+      } else {
+        showStatus('未找到该战术', 'error');
+      }
+    }
+
+    function shareTacticLinkByName(name) {
+      const idx = tacticsData.findIndex(t => t.name === name);
+      if (idx !== -1) {
+        shareTacticLink(idx);
+      } else {
+        showStatus('未找到该战术', 'error');
+      }
+    }
+
+    function deleteTacticByName(name) {
+      deleteTactic(name);
+    }
+
+    // 新增复制楼层函数
+    function copyFloorRow(btn) {
+      // 找到当前楼层div
+      const floorDiv = btn.closest('.config-block');
+      if (!floorDiv) return;
+      // 克隆节点
+      const clone = floorDiv.cloneNode(true);
+      // 清空所有输入框的焦点
+      clone.querySelectorAll('input, textarea, select').forEach(el => {
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          el.checked = el.checked;
+        } else {
+          el.value = el.value;
+        }
+      });
+      // 重新生成唯一id，避免id冲突
+      const preTurnId = `pre-turn-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+      const postTurnId = `post-turn-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+      const preTurnDiv = clone.querySelector('.pre-turn');
+      if (preTurnDiv) preTurnDiv.id = preTurnId;
+      const postTurnDiv = clone.querySelector('.post-turn');
+      if (postTurnDiv) postTurnDiv.id = postTurnId;
+      // 插入到当前楼层下方
+      floorDiv.parentElement.insertBefore(clone, floorDiv.nextSibling);
+      floorCount++;
+      updateCounters();
+      setTimeout(initSortableForAllTacticsContainers, 0);
+      setTimeout(initSortableForFloors, 0);
     }
   </script>
 </body>
