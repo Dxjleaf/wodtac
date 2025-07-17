@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>战术详情</title>
+  <title>战术详情 - 地城战术配置器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -46,27 +46,7 @@
       text-align: center;
       color: #b0a0cc;
       font-size: 0.95rem;
-      margin-bottom: 12px;
-    }
-    
-    .tactic-tags {
-      text-align: center;
       margin-bottom: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .tactic-tag {
-      background: rgba(52, 152, 219, 0.8);
-      color: white;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      border: 1px solid rgba(52, 152, 219, 0.3);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     .section {
       background: rgba(40, 50, 80, 0.85);
@@ -163,14 +143,6 @@
       .team-name {
         font-size: 1rem;
       }
-      .tactic-tags {
-        gap: 6px;
-        margin-bottom: 16px;
-      }
-      .tactic-tag {
-        font-size: 0.8rem;
-        padding: 3px 8px;
-      }
       .section {
         padding: 10px 4px 8px 4px;
       }
@@ -181,14 +153,29 @@
   </style>
 </head>
 <body>
+  <button id="backBtn" onclick="window.location.href='index.html'" style="
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+    background: rgba(30,40,60,0.92);
+    color: #ffeebb;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    font-size: 1.2rem;
+    padding: 0;
+    cursor: pointer;
+  "><i class="fas fa-arrow-left"></i></button>
   <div class="container" id="mainContainer">
-    <button id="backToConfigBtn" style="position:absolute;top:18px;left:18px;z-index:10;padding:8px 18px;background:#6d9eeb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
-      <i class="fas fa-arrow-left"></i> 返回战术配置
-    </button>
     <div class="tactic-title" id="dungeonName">地城名称</div>
     <div class="team-name" id="teamName">团队名称</div>
     <div class="meta-info" id="metaInfo">创建时间</div>
-    <div class="tactic-tags" id="tacticTags"></div>
     <div class="section" id="positionsSection">
       <div class="section-title"><i class="fas fa-users"></i> 站位配置</div>
       <table class="positions-table" id="positionsTable"></table>
@@ -237,30 +224,6 @@
       document.getElementById('dungeonName').textContent = tactic.dungeonName || '';
       document.getElementById('teamName').textContent = tactic.teamName || '';
       document.getElementById('metaInfo').textContent = '创建时间：' + (tactic.createdAt ? tactic.createdAt.replace('T',' ').slice(0,16) : '未知');
-      
-      // 渲染标签
-      const tagsContainer = document.getElementById('tacticTags');
-      if (tactic.tags) {
-        let tagsHTML = '';
-        if (tactic.tags.difficulty) {
-          tagsHTML += `<span class="tactic-tag difficulty">${tactic.tags.difficulty}</span>`;
-        }
-        if (tactic.tags.teamSize) {
-          tagsHTML += `<span class="tactic-tag team-size">${tactic.tags.teamSize}人</span>`;
-        }
-        if (tactic.tags.useFestivalMaterials) {
-          tagsHTML += `<span class="tactic-tag festival">节日耗材</span>`;
-        }
-        if (tactic.tags.playthrough) {
-          tagsHTML += `<span class="tactic-tag playthrough">${tactic.tags.playthrough}</span>`;
-        }
-        if (tactic.tags.build) {
-          tagsHTML += `<span class="tactic-tag build">BD:${tactic.tags.build}</span>`;
-        }
-        tagsContainer.innerHTML = tagsHTML;
-      } else {
-        tagsContainer.innerHTML = '';
-      }
       // 站位
       const positionsTable = document.getElementById('positionsTable');
       positionsTable.innerHTML = '<tr><th>位置</th><th>职业</th></tr>';
@@ -308,15 +271,18 @@
       renderTactic(tactic);
     })();
 
-    // 回到配置按钮逻辑
-    document.getElementById('backToConfigBtn').onclick = function() {
-      const id = getQueryParam('id');
-      if (id) {
-        window.location.href = `index.html?id=${id}`;
+    // 手机端返回按钮显示逻辑
+    function updateBackBtn() {
+      var btn = document.getElementById('backBtn');
+      if (window.innerWidth <= 600) {
+        btn.style.display = 'flex';
       } else {
-        window.location.href = 'index.html';
+        btn.style.display = 'none';
       }
-    };
+    }
+    window.addEventListener('resize', updateBackBtn);
+    window.addEventListener('DOMContentLoaded', updateBackBtn);
+    updateBackBtn();
   </script>
 </body>
 </html> 
