@@ -182,7 +182,7 @@
   </style>
 </head>
 <body>
-  <button id="backBtn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i></button>
+  <button id="backBtn"><i class="fas fa-arrow-left"></i></button>
   <div class="container" id="mainContainer">
     <div class="tactic-title" id="dungeonName">地城名称</div>
     <div class="team-name" id="teamName">团队名称</div>
@@ -280,6 +280,19 @@
       const name = decodeURIComponent(id);
       const tactic = await fetchTacticByName(name);
       renderTactic(tactic);
+    })();
+
+    // 返回按钮带参数跳转
+    (function(){
+      var btn = document.getElementById('backBtn');
+      const id = getQueryParam('id');
+      btn.onclick = function() {
+        if(id) {
+          window.location.href = 'index.html?id=' + encodeURIComponent(id);
+        } else {
+          window.location.href = 'index.html';
+        }
+      };
     })();
   </script>
 </body>
