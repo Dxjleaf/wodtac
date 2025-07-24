@@ -179,11 +179,97 @@
         padding: 8px 2px 6px 2px;
       }
     }
+    /* === Office风格主题（经典老年代） === */
+    body.office-theme {
+      background: #e5e5e5 !important;
+      color: #222 !important;
+      font-family: '微软雅黑', 'SimSun', Arial, sans-serif !important;
+    }
+    body.office-theme *,
+    body.office-theme *:before,
+    body.office-theme *:after {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+    body.office-theme .tactic-title,
+    body.office-theme .team-name {
+      color: #1a397b !important;
+    }
+    body.office-theme .container,
+    body.office-theme .section,
+    body.office-theme .floor-block {
+      background: #f5f5f5 !important;
+      color: #222 !important;
+      border: 1.5px solid #b0c4de !important;
+    }
+    body.office-theme .comment {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+      border-left: 3px solid #1a397b !important;
+    }
+    body.office-theme .positions-table th {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+    }
+    body.office-theme .positions-table td {
+      color: #222 !important;
+    }
+    body.office-theme .turn-table th {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+    }
+    body.office-theme .turn-table td {
+      color: #222 !important;
+    }
+    body.office-theme .section-title {
+      color: #1a397b !important;
+    }
+    body.office-theme input,
+    body.office-theme select,
+    body.office-theme textarea {
+      background: #fff !important;
+      color: #222 !important;
+      border: 1.5px solid #b0c4de !important;
+    }
+    body.office-theme select option {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+    }
+    body.office-theme input:focus,
+    body.office-theme select:focus,
+    body.office-theme textarea:focus {
+      border-color: #1a397b !important;
+    }
+    body.office-theme button {
+      background: linear-gradient(to bottom, #f5f5f5 60%, #e0e0e0 100%) !important;
+      color: #1a397b !important;
+      border: 1.5px solid #b0c4de !important;
+      font-weight: bold;
+    }
+    body.office-theme button:active {
+      background: #d0d0d0 !important;
+    }
+    @media (max-width: 600px) {
+      #backBtn {
+        top: 10px !important;
+        left: 10px !important;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 1.2rem !important;
+      }
+    }
   </style>
 </head>
 <body>
   <button id="backBtn"><i class="fas fa-arrow-left"></i></button>
   <div class="container" id="mainContainer">
+    <div style="margin: 18px 0 8px 0; text-align: center;">
+      <label for="jobFilter" style="font-weight:bold;color:#ffeebb;margin-right:8px;">只看职业：</label>
+      <select id="jobFilter" style="padding:4px 12px;border-radius:6px;font-size:1rem;">
+        <option value="">全部</option>
+      </select>
+    </div>
     <div class="tactic-title" id="dungeonName">地城名称</div>
     <div class="team-name" id="teamName">团队名称</div>
     <div class="meta-info" id="metaInfo">创建时间</div>
@@ -244,6 +330,8 @@
       // 楼层
       const floorsContainer = document.getElementById('floorsContainer');
       floorsContainer.innerHTML = '';
+      const jobFilter = document.getElementById('jobFilter');
+      const selectedJob = jobFilter ? jobFilter.value : '';
       (tactic.floors||[]).forEach(floor => {
         let html = `<div class='floor-block'>`;
         html += `<div class='floor-title'>${floor.name}</div>`;
@@ -252,19 +340,25 @@
         });
         // 回合前
         if ((floor.preTurn||[]).length) {
-          html += `<div class='turn-section'><div class='turn-title'><i class='fas fa-flag'></i> 回合前</div><table class='turn-table'><tr><th>职业</th><th>技能1</th><th>技能2</th><th>位置</th><th>条件</th></tr>`;
-          floor.preTurn.forEach(row => {
-            html += `<tr><td>${row.job||''}</td><td>${row.skill1||''}</td><td>${row.skill2||''}</td><td>${row.position||''}</td><td>${row.condition||''}</td></tr>`;
-          });
-          html += `</table></div>`;
+          const filteredPre = selectedJob ? floor.preTurn.filter(row => (row.job||'').split(/[,，\s]/).includes(selectedJob)) : floor.preTurn;
+          if (filteredPre.length) {
+            html += `<div class='turn-section'><div class='turn-title'><i class='fas fa-flag'></i> 回合前</div><table class='turn-table'><tr><th>职业</th><th>技能1</th><th>技能2</th><th>位置</th><th>条件</th></tr>`;
+            filteredPre.forEach(row => {
+              html += `<tr><td>${row.job||''}</td><td>${row.skill1||''}</td><td>${row.skill2||''}</td><td>${row.position||''}</td><td>${row.condition||''}</td></tr>`;
+            });
+            html += `</table></div>`;
+          }
         }
         // 回合中
         if ((floor.postTurn||[]).length) {
-          html += `<div class='turn-section'><div class='turn-title'><i class='fas fa-fist-raised'></i> 回合中</div><table class='turn-table'><tr><th>职业</th><th>技能1</th><th>技能2</th><th>位置</th><th>条件</th></tr>`;
-          floor.postTurn.forEach(row => {
-            html += `<tr><td>${row.job||''}</td><td>${row.skill1||''}</td><td>${row.skill2||''}</td><td>${row.position||''}</td><td>${row.condition||''}</td></tr>`;
-          });
-          html += `</table></div>`;
+          const filteredPost = selectedJob ? floor.postTurn.filter(row => (row.job||'').split(/[,，\s]/).includes(selectedJob)) : floor.postTurn;
+          if (filteredPost.length) {
+            html += `<div class='turn-section'><div class='turn-title'><i class='fas fa-fist-raised'></i> 回合中</div><table class='turn-table'><tr><th>职业</th><th>技能1</th><th>技能2</th><th>位置</th><th>条件</th></tr>`;
+            filteredPost.forEach(row => {
+              html += `<tr><td>${row.job||''}</td><td>${row.skill1||''}</td><td>${row.skill2||''}</td><td>${row.position||''}</td><td>${row.condition||''}</td></tr>`;
+            });
+            html += `</table></div>`;
+          }
         }
         html += `</div>`;
         floorsContainer.innerHTML += html;
@@ -279,6 +373,24 @@
       }
       const name = decodeURIComponent(id);
       const tactic = await fetchTacticByName(name);
+      // 填充职业筛选下拉
+      const jobSet = new Set();
+      if (tactic) {
+        (tactic.floors||[]).forEach(floor => {
+          (floor.preTurn||[]).forEach(row => (row.job||'').split(/[,，\s]/).forEach(j=>j&&jobSet.add(j)));
+          (floor.postTurn||[]).forEach(row => (row.job||'').split(/[,，\s]/).forEach(j=>j&&jobSet.add(j)));
+        });
+      }
+      const jobFilter = document.getElementById('jobFilter');
+      if (jobFilter) {
+        jobSet.forEach(job => {
+          const opt = document.createElement('option');
+          opt.value = job;
+          opt.textContent = job;
+          jobFilter.appendChild(opt);
+        });
+        jobFilter.onchange = () => renderTactic(tactic);
+      }
       renderTactic(tactic);
     })();
 
@@ -293,6 +405,13 @@
           window.location.href = 'index.html';
         }
       };
+    })();
+
+    // 自动应用主页主题
+    (function(){
+      if(localStorage.getItem('theme')==='office') {
+        document.body.classList.add('office-theme');
+      }
     })();
   </script>
 </body>
