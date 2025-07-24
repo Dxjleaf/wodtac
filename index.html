@@ -2190,6 +2190,10 @@
       color: #222 !important;
       border: 1.5px solid #b0c4de !important;
     }
+    body.office-theme select option {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+    }
     body.office-theme input:focus,
     body.office-theme select:focus,
     body.office-theme textarea:focus {
@@ -3455,7 +3459,7 @@
       if (afterElem && afterElem.parentElement) {
         afterElem.parentElement.insertBefore(floor, afterElem.nextSibling);
       } else {
-        document.getElementById('floorConfig').appendChild(floor);
+      document.getElementById('floorConfig').appendChild(floor);
       }
       setTimeout(initSortableForAllTacticsContainers, 0);
       setTimeout(initSortableForFloors, 0);
@@ -3770,14 +3774,14 @@
         } else {
           // 万一云端被删了，按新建处理
           tacticName = tactic.name;
-          const nameExists = existingTactics.some(t => t.name === tacticName);
-          if (nameExists) {
-            const timestamp = new Date().getTime();
-            tacticName = `${tactic.name}_${timestamp}`;
-            showStatus(`已存在同名战术，已重命名为: ${tacticName}`, 'info');
-          }
-          tactic.name = tacticName;
-          existingTactics.unshift(tactic);
+      const nameExists = existingTactics.some(t => t.name === tacticName);
+      if (nameExists) {
+        const timestamp = new Date().getTime();
+        tacticName = `${tactic.name}_${timestamp}`;
+        showStatus(`已存在同名战术，已重命名为: ${tacticName}`, 'info');
+      }
+      tactic.name = tacticName;
+      existingTactics.unshift(tactic);
         }
       } else {
         // === 新建模式 ===
@@ -3831,7 +3835,7 @@
         if (isDefaultNoShow) {
           container.innerHTML = '<div class="status-message status-info">请点击刷新加载战术库</div>';
         } else {
-          container.innerHTML = '<div class="status-message status-info">没有找到战术</div>';
+        container.innerHTML = '<div class="status-message status-info">没有找到战术</div>';
         }
         return;
       }
@@ -4396,7 +4400,7 @@
         container._sortable = Sortable.create(container, {
           group: 'tactics',
           animation: 150,
-          handle: isMobile ? '.tactic-drag-handle' : undefined, // 移动端只允许手柄，桌面端整行
+          handle: '.tactic-drag-handle', // 统一：只能通过手柄拖动
           delay: 0,
           touchStartThreshold: 0,
           ghostClass: 'sortable-ghost',
