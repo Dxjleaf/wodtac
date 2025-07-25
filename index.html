@@ -4356,9 +4356,9 @@
         let updateStr = dungeon.updatedAt ? `<span style='color:#aaa;font-size:12px;margin-left:10px;'>(更新时间: ${dungeon.updatedAt ? dungeon.updatedAt.replace('T',' ').slice(0,16) : ''})</span>` : '';
         html += `<h3 style=\"margin:10px 0 4px 0;color:#6d9eeb;display:inline-block;\"><i class='fas fa-dna'></i> 单位属性${updateStr}</h3>`;
         html += `<div style=\"overflow-x:auto;\"><table style=\"min-width:1000px;width:100%;font-size:13px;background:rgba(30,40,60,0.7);border-radius:8px;\">`;
-        html += `<tr style=\"color:#b0a0cc;text-align:left;\"><th>单位名</th><th>体力</th><th>法力</th><th>种族</th><th>先攻</th><th>动数</th><th>近战命中/闪避</th><th>远程命中/闪避</th><th>魔法命中/闪避</th><th>心理命中/闪避</th><th>攻击顺序</th><th>特殊机制</th></tr>`;
+        html += `<tr style=\"color:#b0a0cc;text-align:left;\"><th>单位名</th><th>体力</th><th>法力</th><th>种族</th><th>先攻</th><th>动数</th><th>近战命中/闪避</th><th>远程命中/闪避</th><th>魔法命中/闪避</th><th>心理命中/闪避</th><th>特种攻击/命中</th><th>攻击顺序</th><th>特殊机制</th></tr>`;
         dungeon.units.forEach(u => {
-          html += `<tr style=\"color:#fff;\"><td>${u.name}</td><td>${u.hp}</td><td>${u.mp}</td><td>${u.race}</td><td>${u.initiative}</td><td>${u.move}</td><td>${u.melee}</td><td>${u.ranged}</td><td>${u.magic}</td><td>${u.mind}</td><td>${u.order}</td><td>${u.special}</td></tr>`;
+          html += `<tr style=\"color:#fff;\"><td>${u.name}</td><td>${u.hp}</td><td>${u.mp}</td><td>${u.race}</td><td>${u.initiative}</td><td>${u.move}</td><td>${u.melee}</td><td>${u.ranged}</td><td>${u.magic}</td><td>${u.mind}</td><td>${u.specialAttack || ''}</td><td>${u.order}</td><td>${u.special}</td></tr>`;
         });
         html += `</table></div>`;
       }
