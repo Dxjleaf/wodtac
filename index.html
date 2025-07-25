@@ -2677,6 +2677,7 @@
         <div class="cloud-section">
           <h2 style="display:flex;align-items:center;gap:8px;">
             <i class="fas fa-cloud"></i> 云端战术库
+            <span id="tacticCount" style="font-size:1rem;font-weight:normal;color:#6d9eeb;margin-left:12px;"></span>
             <button id="mobileTacticSortBtn" type="button" class="tactic-sort-btn mobile-only" style="margin-left:auto;">净赞数</button>
           </h2>
           <div class="mobile-search-container">
@@ -3033,13 +3034,14 @@
     function renderDungeonResults(results) {
       const container = document.getElementById('dungeonResults');
       container.innerHTML = '';
-      
+      // 使搜索输入框、applyFilters可用
+      const desktopSearchInput = document.getElementById('desktopSearchInput');
+      const mobileSearchInput = document.getElementById('mobileSearchInput');
       if (results.length === 0) {
         container.innerHTML = '<div class="dungeon-result-item">没有找到匹配的副本</div>';
         container.style.display = 'block';
         return;
       }
-      
       results.forEach(dungeon => {
         const item = document.createElement('div');
         item.className = 'dungeon-result-item';
@@ -3060,10 +3062,16 @@
           selectedDungeon = dungeon;
           container.style.display = 'none';
           renderDungeonDetail(dungeon);
+          // 自动筛选并刷新战术库
+          const filterInput = document.getElementById('filterTextInput');
+          if (desktopSearchInput) desktopSearchInput.value = dungeon.name;
+          if (mobileSearchInput) mobileSearchInput.value = dungeon.name;
+          if (filterInput) filterInput.value = dungeon.name;
+          activeFilters.text = dungeon.name.toLowerCase();
+          applyFilters();
         });
         container.appendChild(item);
       });
-      
       container.style.display = 'block';
     }
     
@@ -3831,6 +3839,11 @@
       if (isDefaultNoShow) {
         sorted = [];
       }
+      // === 战术数量统计 ===
+      const countSpan = document.getElementById('tacticCount');
+      if (countSpan) {
+        countSpan.textContent = sorted.length > 0 ? `共 ${sorted.length} 个战术` : '';
+      }
       if (sorted.length === 0) {
         if (isDefaultNoShow) {
           container.innerHTML = '<div class="status-message status-info">请点击刷新加载战术库</div>';
@@ -3882,6 +3895,29 @@
           }
         }
         
+        // 统计战术文字量
+        function tacticTextLength(tactic) {
+          let total = 0;
+          // 名称、团队名、副本名
+          total += (tactic.name||'').length + (tactic.teamName||'').length + (tactic.dungeonName||'').length;
+          // 站位
+          (tactic.positions||[]).forEach(pos => {
+            total += (pos.position||'').length + (pos.classes||'').length;
+          });
+          // 楼层
+          (tactic.floors||[]).forEach(floor => {
+            total += (floor.name||'').length;
+            (floor.comments||[]).forEach(c => total += (c||'').length);
+            (floor.preTurn||[]).forEach(row => {
+              total += (row.job||'').length + (row.skill1||'').length + (row.skill2||'').length + (row.position||'').length + (row.condition||'').length;
+            });
+            (floor.postTurn||[]).forEach(row => {
+              total += (row.job||'').length + (row.skill1||'').length + (row.skill2||'').length + (row.position||'').length + (row.condition||'').length;
+            });
+          });
+          return total;
+        }
+        
         item.innerHTML = `
           <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">
             <div class="tactic-name">
@@ -3919,6 +3955,7 @@
                 <i class="fas fa-trash"></i> 删除
               </button>` : ''}
             </div>
+            <div style="font-size:0.92em;color:#b0a0cc;margin-top:2px;text-align:right;">字数：${tacticTextLength(tactic)}</div>
           </div>
         `;
         
