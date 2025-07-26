@@ -3038,6 +3038,38 @@
       padding: 2px 6px;
       font-size: 10px;
     }
+
+    /* 紧凑显示模式下，主信息和标签等内容允许自动换行，内容多时会到第三行显示 */
+    .tactic-item.compact-view .tactic-header,
+    .tactic-item.compact-view .tactic-footer {
+      display: flex;
+      flex-wrap: wrap;      /* 允许自动换行 */
+      align-items: center;
+      gap: 8px;
+      row-gap: 2px;
+    }
+    .tactic-item.compact-view .tactic-name,
+    .tactic-item.compact-view .tactic-tags,
+    .tactic-item.compact-view .tactic-content,
+    .tactic-item.compact-view .actions,
+    .tactic-item.compact-view .rating {
+      white-space: normal;  /* 允许换行 */
+      overflow: visible;
+      text-overflow: unset;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .tactic-item.compact-view .tactic-date {
+      white-space: nowrap;  /* 时间戳仍然不换行 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .tactic-item.compact-view .tactic-header > * {
+      flex: 1 1 0;
+      min-width: 0;
+    }
   </style>
 </head>
 <body>
@@ -6090,6 +6122,16 @@
       };
       if(localStorage.getItem('theme')==='office') setTheme('office');
     })();
+
+    // 保证全局可用
+    window.copyTactics = copyTactics;
+    window.resetConfig = resetConfig;
+    // 提升按钮层级，防止被遮挡
+    window.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.copy-btn, .reset-btn').forEach(btn => {
+        btn.style.zIndex = 99999;
+      });
+    });
   </script>
 </body>
 </html>
