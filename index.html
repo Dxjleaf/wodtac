@@ -45,6 +45,17 @@
       padding: 0;
     }
     
+    /* 性能优化：启用硬件加速 */
+    .tactic-item,
+    .tactic-header,
+    .tactic-content,
+    .scale-control,
+    .copy-btn,
+    .reset-btn {
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    
     body {
       font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
       background: linear-gradient(135deg, #1a2a6c, #2c3e50, #4a235a);
@@ -367,8 +378,8 @@
     .reset-btn {
       background: var(--danger);
       position: fixed;
-      bottom: calc(12px * var(--scale-factor));
-      left: calc(12px * var(--scale-factor));
+      bottom: calc(60px * var(--scale-factor));
+      right: calc(12px * var(--scale-factor));
       z-index: 100;
       padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
       font-size: calc(0.95rem * var(--scale-factor));
@@ -560,8 +571,8 @@
     .tactic-item {
       background: rgba(45, 35, 70, 0.7);
       border-radius: var(--border-radius);
-      padding: calc(10px * var(--scale-factor));
-      margin-bottom: calc(8px * var(--scale-factor));
+      padding: calc(16px * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
       border-left: 3px solid var(--cloud);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
@@ -576,10 +587,10 @@
 
     /* 确保悬停效果在所有情况下都能工作 */
     .tactics-list .tactic-item:hover {
-      background: rgba(55, 45, 80, 0.8) !important;
-      transform: translateY(-2px) !important;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-      border-left-color: #a855f7 !important;
+      background: rgba(55, 45, 80, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-left-color: #a855f7;
     }
 
     /* 移动端触摸悬停效果 */
@@ -596,7 +607,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: calc(6px * var(--scale-factor));
+      margin-bottom: calc(10px * var(--scale-factor));
       transition: all 0.2s ease;
     }
 
@@ -610,11 +621,11 @@
 
     /* 确保头部悬停效果在所有情况下都能工作 */
     .tactics-list .tactic-header:hover {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-radius: calc(4px * var(--scale-factor)) !important;
-      padding: calc(4px * var(--scale-factor)) !important;
-      margin: calc(-4px * var(--scale-factor)) !important;
-      margin-bottom: calc(2px * var(--scale-factor)) !important;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor));
+      margin: calc(-4px * var(--scale-factor));
+      margin-bottom: calc(2px * var(--scale-factor));
     }
     
     .tactic-name {
@@ -631,29 +642,29 @@
     .tactic-content {
       font-size: calc(0.85rem * var(--scale-factor));
       color: #ddd;
-      margin-bottom: calc(8px * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
       white-space: pre-wrap;
-      max-height: 60px;
+      max-height: 80px;
       overflow: hidden;
       position: relative;
       transition: all 0.2s ease;
     }
 
     .tactic-content:hover {
-      background: rgba(255, 255, 255, 0.03) !important;
-      border-radius: calc(4px * var(--scale-factor)) !important;
-      padding: calc(4px * var(--scale-factor)) !important;
-      margin: calc(-4px * var(--scale-factor)) !important;
-      margin-bottom: calc(4px * var(--scale-factor)) !important;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor));
+      margin: calc(-4px * var(--scale-factor));
+      margin-bottom: calc(4px * var(--scale-factor));
     }
 
     /* 确保内容悬停效果在所有情况下都能工作 */
     .tactics-list .tactic-content:hover {
-      background: rgba(255, 255, 255, 0.03) !important;
-      border-radius: calc(4px * var(--scale-factor)) !important;
-      padding: calc(4px * var(--scale-factor)) !important;
-      margin: calc(-4px * var(--scale-factor)) !important;
-      margin-bottom: calc(4px * var(--scale-factor)) !important;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: calc(4px * var(--scale-factor));
+      padding: calc(4px * var(--scale-factor));
+      margin: calc(-4px * var(--scale-factor));
+      margin-bottom: calc(4px * var(--scale-factor));
     }
 
     /* 外部链接图标悬停效果 */
@@ -689,6 +700,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: calc(8px * var(--scale-factor));
     }
     
     .rating {
@@ -1602,8 +1614,9 @@
       }
       
       .reset-btn {
-        bottom: calc(10px * var(--scale-factor));
-        left: calc(10px * var(--scale-factor));
+        bottom: calc(10px * var(--scale-factor)) !important;
+        left: calc(10px * var(--scale-factor)) !important;
+        right: auto !important;
         padding: calc(10px * var(--scale-factor)) calc(14px * var(--scale-factor));
         font-size: calc(0.85rem * var(--scale-factor));
         width: auto !important;
@@ -1730,41 +1743,65 @@
     @media (min-width: 769px) {
       .layout-container {
         display: grid;
-        grid-template-columns: 320px 1fr;
+        grid-template-columns: 420px 1fr;
         gap: 24px;
         margin-top: 10px;
         align-items: flex-start;
-        max-width: 1440px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .left-column {
-        grid-column: 1;
-        flex: 1 1 360px;
-        min-width: 320px;
-        max-width: 420px;
+        margin-left: 0;
         margin-right: 0;
-        box-sizing: border-box;
       }
+          .left-column {
+      grid-column: 1;
+      flex: 1 1 420px;
+      min-width: 380px;
+      max-width: 500px;
+      margin-right: 0;
+      box-sizing: border-box;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 420px;
+      height: calc(100vh - 40px);
+      z-index: 1000;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .left-column::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
+    }
+    
+    .left-column:hover {
+      scrollbar-width: thin;
+      -ms-overflow-style: auto;
+    }
+    
+    .left-column:hover::-webkit-scrollbar {
+      width: 8px;
+      background: transparent;
+    }
       .center-column {
         grid-column: 2;
         display: flex;
         flex-direction: row;
-        gap: 24px;
-        justify-content: center;
+        gap: 32px;
+        justify-content: flex-start;
         align-items: flex-start;
       }
       .middle-column {
-        flex: 1 1 620px;
-        min-width: 480px;
-        max-width: 720px;
+        flex: 1 1 520px;
+        min-width: 400px;
+        max-width: 600px;
         margin-right: 0;
         box-sizing: border-box;
       }
       .right-column {
-        flex: 1 1 620px;
-        min-width: 480px;
-        max-width: 720px;
+        flex: 1 1 520px;
+        min-width: 400px;
+        max-width: 600px;
         margin-left: 0;
         box-sizing: border-box;
         display: flex;
@@ -1781,6 +1818,16 @@
         min-height: 500px;
         max-height: 800px;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 8px;
+      }
+      
+      .tactics-list .tactic-item {
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
       }
     }
     
@@ -1795,12 +1842,28 @@
         width: 100%;
         max-width: 100%;
         min-width: 0;
+        position: static;
+        top: auto;
+        left: auto;
+        width: auto;
+        z-index: auto;
+        max-height: none;
+        overflow: visible;
+        scrollbar-width: auto;
+        -ms-overflow-style: auto;
+      }
+      .left-column::-webkit-scrollbar {
+        width: 8px;
+        background: transparent;
       }
       .center-column {
         order: 2;
         flex-direction: column;
         gap: 12px;
         width: 100%;
+        margin-left: 0;
+        max-width: none;
+        padding-left: 0;
       }
       .middle-column, .right-column {
         max-width: 100%;
@@ -1896,20 +1959,183 @@
     .cloud-section::-webkit-scrollbar,
     table::-webkit-scrollbar,
     div[style*='overflow-y']::-webkit-scrollbar,
-    .rooms-container::-webkit-scrollbar {
+    .rooms-container::-webkit-scrollbar,
+    .left-column::-webkit-scrollbar {
       width: 8px;
       height: 8px;
       background: transparent;
     }
     
-    /* 房间容器横向滚动条美化 */
+    /* 房间容器横向滚动条美化 - 更紧凑 */
     .rooms-container {
       display: flex;
       overflow-x: auto;
-      gap: 8px;
-      padding: 4px 0;
+      gap: 4px;
+      padding: 2px 0;
       flex-wrap: nowrap;
       -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 单位属性表格固定显示 */
+    .unit-attributes-table {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(30,40,60,0.95);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .unit-attributes-table table {
+      min-width: 1000px;
+      width: 100%;
+      font-size: 13px;
+      background: rgba(30,40,60,0.7);
+      border-radius: 8px;
+    }
+    
+    .unit-attributes-table th {
+      color: #b0a0cc;
+      text-align: left;
+      padding: 4px 5px;
+      background: rgba(40,50,70,0.8);
+      border-bottom: 1px solid rgba(109,158,235,0.3);
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+    
+    .unit-attributes-table th:hover {
+      background: rgba(74,111,165,0.6);
+    }
+    
+    /* 单位属性标题悬停效果 */
+    .dungeon-detail h3[onclick="toggleUnitAttributes()"]:hover {
+      color: #8e44ad !important;
+      text-shadow: 0 0 5px rgba(142, 68, 173, 0.3);
+    }
+    
+    .unit-attributes-table td {
+      color: #fff;
+      padding: 4px 5px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .unit-attributes-table tr:hover {
+      background: rgba(173,216,230,0.2);
+    }
+    
+    /* 单位名字链接样式 */
+    .unit-attributes-table td a {
+      transition: color 0.2s ease;
+    }
+    
+    .unit-attributes-table td a:hover {
+      color: #8e44ad !important;
+      text-decoration: underline !important;
+    }
+    
+    /* Room卡片样式优化 - 更紧凑精巧 */
+    .dungeon-detail .rooms-container > div {
+      margin: 0 2px 4px 2px;
+      padding: 2px 4px;
+      background: rgba(173,216,230,0.15);
+      border-radius: 4px;
+      border: 1px solid rgba(109,158,235,0.4);
+      min-width: 260px;
+      max-width: 380px;
+      flex-shrink: 0;
+      flex: 1 0 auto;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      border-bottom: 2px solid rgba(109,158,235,0.6);
+    }
+    
+    .dungeon-detail .rooms-container .room-name {
+      color: #6d9eeb;
+      font-weight: bold;
+      margin-bottom: 2px;
+      font-size: 14px;
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow-wrap: break-word;
+      line-height: 1.2;
+    }
+    
+    .dungeon-detail .rooms-container table {
+      width: 100%;
+      font-size: 13px;
+      background: rgba(30,40,60,0.6);
+      border-radius: 3px;
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+    
+    .dungeon-detail .rooms-container th {
+      color: #b0a0cc;
+      text-align: left;
+      white-space: nowrap;
+      vertical-align: middle;
+      padding: 2px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      border-bottom: 2px solid rgba(109,158,235,0.5);
+    }
+    
+    .dungeon-detail .rooms-container td {
+      vertical-align: top;
+      padding: 2px 4px;
+      font-size: 12px;
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow-wrap: break-word;
+      overflow: hidden;
+      line-height: 1.2;
+      border-bottom: 1px solid rgba(109,158,235,0.3);
+    }
+    
+    .dungeon-detail .rooms-container td:first-child {
+      white-space: nowrap;
+      width: 35px;
+      font-weight: 500;
+    }
+    
+    .dungeon-detail .rooms-container td:last-child {
+      max-width: 180px;
+    }
+    
+    /* 移动端Room卡片优化 - 更紧凑精巧 */
+    @media (max-width: 768px) {
+      .dungeon-detail .rooms-container > div {
+        min-width: 300px;
+        max-width: 400px;
+        padding: 3px 5px;
+        margin: 0 1px 3px 1px;
+      }
+      
+      .dungeon-detail .rooms-container .room-name {
+        font-size: 13px;
+        margin-bottom: 2px;
+      }
+      
+      .dungeon-detail .rooms-container table {
+        font-size: 12px;
+      }
+      
+      .dungeon-detail .rooms-container th,
+      .dungeon-detail .rooms-container td {
+        font-size: 11px;
+        padding: 2px 3px;
+        line-height: 1.1;
+      }
+      
+      .dungeon-detail .rooms-container td:first-child {
+        width: 40px;
+      }
+      
+      .dungeon-detail .rooms-container td:last-child {
+        max-width: 200px;
+      }
     }
     
     .rooms-container::-webkit-scrollbar {
@@ -1941,7 +2167,8 @@
     .cloud-section::-webkit-scrollbar-thumb,
     table::-webkit-scrollbar-thumb,
     div[style*='overflow-y']::-webkit-scrollbar-thumb,
-    .rooms-container::-webkit-scrollbar-thumb {
+    .rooms-container::-webkit-scrollbar-thumb,
+    .left-column::-webkit-scrollbar-thumb {
       background: linear-gradient(90deg, var(--primary), var(--secondary));
       border-radius: 6px;
       min-height: 40px;
@@ -1961,7 +2188,8 @@
     .cloud-section::-webkit-scrollbar-track,
     table::-webkit-scrollbar-track,
     div[style*='overflow-y']::-webkit-scrollbar-track,
-    .rooms-container::-webkit-scrollbar-track {
+    .rooms-container::-webkit-scrollbar-track,
+    .left-column::-webkit-scrollbar-track {
       background: rgba(255,255,255,0.05);
       border-radius: 6px;
     }
@@ -1974,7 +2202,8 @@
     .cloud-section,
     table,
     div[style*='overflow-y'],
-    .rooms-container {
+    .rooms-container,
+    .left-column {
       scrollbar-color: var(--secondary) rgba(255,255,255,0.05);
       scrollbar-width: thin;
     }
@@ -2380,6 +2609,27 @@
     body.office-theme .dungeon-detail td {
       color: #222 !important;
       border-radius: 0 !important;
+      border-bottom: 1px solid #b0c4de !important;
+    }
+    
+    /* office风格单位属性表格分隔线优化 */
+    body.office-theme .unit-attributes-table td {
+      border-bottom: 1px solid #b0c4de !important;
+    }
+    
+    body.office-theme .unit-attributes-table tr:hover {
+      background: #e3eaf2 !important;
+    }
+    
+    body.office-theme .unit-attributes-table th {
+      border-bottom: 2px solid #1a397b !important;
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+    }
+    
+    body.office-theme .unit-attributes-table th:hover {
+      background: #b0c4de !important;
+      color: #fff !important;
     }
     body.office-theme .dungeon-detail h3 {
       color: #1a397b !important;
@@ -2536,6 +2786,95 @@
       #themeToggleBtnDesktop { display: flex !important; }
       #themeToggleBtnMobile { display: none !important; }
     }
+    
+    /* 战术显示模式切换按钮 */
+    .tactic-view-toggle-btn {
+      background: rgba(109, 158, 235, 0.8);
+      color: #fff;
+      border: 1px solid rgba(109, 158, 235, 0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-left: 8px;
+    }
+    
+    /* 手机端隐藏切换按钮 */
+    @media (max-width: 768px) {
+      .tactic-view-toggle-btn {
+        display: none !important;
+      }
+    }
+    
+    .tactic-view-toggle-btn:hover {
+      background: rgba(109, 158, 235, 1);
+      box-shadow: 0 2px 8px rgba(109, 158, 235, 0.3);
+    }
+    
+    /* 两行显示模式的战术项目样式 */
+    .tactic-item.compact-view {
+      padding: 8px 12px;
+    }
+    
+    .tactic-item.compact-view .tactic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    
+    .tactic-item.compact-view .tactic-name {
+      flex: 1;
+      margin-right: 12px;
+    }
+    
+    .tactic-item.compact-view .tactic-date {
+      font-size: 12px;
+      color: #aaa;
+      white-space: nowrap;
+    }
+    
+    .tactic-item.compact-view .tactic-content {
+      display: none;
+    }
+    
+    .tactic-item.compact-view .tactic-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(109, 158, 235, 0.2);
+    }
+    
+    .tactic-item.compact-view .tactic-tags {
+      font-size: 12px;
+      margin-right: 8px;
+    }
+    
+    .tactic-item.compact-view .actions {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    
+    .tactic-item.compact-view .actions button {
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    
+    .tactic-item.compact-view .rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+    }
+    
+    .tactic-item.compact-view .rating button {
+      padding: 2px 6px;
+      font-size: 10px;
+    }
   </style>
 </head>
 <body>
@@ -2679,6 +3018,9 @@
             <i class="fas fa-cloud"></i> 云端战术库
             <span id="tacticCount" style="font-size:1rem;font-weight:normal;color:#6d9eeb;margin-left:12px;"></span>
             <button id="mobileTacticSortBtn" type="button" class="tactic-sort-btn mobile-only" style="margin-left:auto;">净赞数</button>
+            <button id="tacticViewToggleBtn" type="button" class="tactic-view-toggle-btn" onclick="toggleTacticView()" title="切换显示模式">
+              <i class="fas fa-th-large" id="tacticViewToggleIcon"></i>
+            </button>
           </h2>
           <div class="mobile-search-container">
             <div class="search-container">
@@ -2712,12 +3054,12 @@
     </div>
   </div>
 
-  <button onclick="copyTactics()" class="copy-btn">
-    <i class="fas fa-copy"></i> 复制配置
-  </button>
-  
   <button onclick="resetConfig()" class="reset-btn">
     <i class="fas fa-redo"></i> 重置配置
+  </button>
+  
+  <button onclick="copyTactics()" class="copy-btn">
+    <i class="fas fa-copy"></i> 复制配置
   </button>
 
   <!-- 搜索筛选弹窗 -->
@@ -2856,6 +3198,10 @@
     let currentEditingTacticName = null;
 
     let showAllTactics = false;
+    
+    // 战术显示模式：'normal' 为正常显示，'compact' 为两行显示
+    // 手机端强制使用 'normal' 模式
+    let tacticViewMode = 'normal';
 
     function updateCounters() {
       document.getElementById('positionCount').textContent = positionCount;
@@ -2937,6 +3283,34 @@
       teamSize = parseInt(document.getElementById('teamSize').value);
       showStatus(`团队人数已设置为: ${teamSize}人`, 'success');
     }
+    
+    // 切换战术显示模式
+    function toggleTacticView() {
+      try {
+        tacticViewMode = tacticViewMode === 'normal' ? 'compact' : 'normal';
+        
+        // 更新按钮图标
+        const toggleIcon = document.getElementById('tacticViewToggleIcon');
+        if (toggleIcon) {
+          if (tacticViewMode === 'compact') {
+            toggleIcon.className = 'fas fa-list';
+          } else {
+            toggleIcon.className = 'fas fa-th-large';
+          }
+        }
+        
+        // 重新渲染战术列表
+        renderTacticsList(tacticsData);
+        
+        // 保存设置到本地存储
+        localStorage.setItem('tacticViewMode', tacticViewMode);
+        
+        showStatus(`已切换到${tacticViewMode === 'compact' ? '紧凑' : '正常'}显示模式`, 'success');
+      } catch (error) {
+        console.error('切换显示模式时出错:', error);
+        showStatus('切换显示模式失败', 'error');
+      }
+    }
 
 
 
@@ -2987,7 +3361,6 @@
     // 初始化副本数据 - 从云端加载
     async function initDungeons() {
       try {
-        console.log('正在从云端加载地城数据...');
         const response = await fetch(DUNGEON_API_URL + "/latest", {
           method: 'GET',
           headers: {
@@ -3003,11 +3376,8 @@
         const data = await response.json();
         dungeons = data.dungeons || [];
         
-        console.log(`成功加载 ${dungeons.length} 个地城数据`);
-        
-        // 如果没有数据，显示提示信息
+        // 如果没有数据，使用空数组
         if (dungeons.length === 0) {
-          console.log('没有找到地城数据');
           dungeons = [];
         }
         
@@ -3095,6 +3465,40 @@
       if (savedMyTactics) {
         myTactics = JSON.parse(savedMyTactics);
       }
+      
+      // 加载战术显示模式设置
+      const savedViewMode = localStorage.getItem('tacticViewMode');
+      if (savedViewMode) {
+        tacticViewMode = savedViewMode;
+        // 更新按钮图标
+        const toggleIcon = document.getElementById('tacticViewToggleIcon');
+        if (toggleIcon) {
+          if (tacticViewMode === 'compact') {
+            toggleIcon.className = 'fas fa-list';
+          } else {
+            toggleIcon.className = 'fas fa-th-large';
+          }
+        }
+      }
+      
+      // 手机端强制使用正常显示模式
+      if (window.innerWidth <= 768) {
+        tacticViewMode = 'normal';
+      }
+      
+      // 监听窗口大小变化，确保手机端使用正常显示模式（添加防抖）
+      let resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+          if (window.innerWidth <= 768) {
+            if (tacticViewMode !== 'normal') {
+              tacticViewMode = 'normal';
+              renderTacticsList(tacticsData);
+            }
+          }
+        }, 250);
+      });
       
       const mobileSearchInput = document.getElementById('mobileSearchInput');
       const desktopSearchInput = document.getElementById('desktopSearchInput');
@@ -3856,6 +4260,11 @@
         const item = document.createElement('div');
         item.className = 'tactic-item';
         
+        // 根据显示模式添加CSS类
+        if (tacticViewMode === 'compact') {
+          item.classList.add('compact-view');
+        }
+        
         let preview = '';
         tactic.positions.forEach(pos => {
           preview += `${pos.position}: ${pos.classes}\n`;
@@ -3873,9 +4282,11 @@
           }
         });
         
-        const date = new Date(tactic.createdAt);
-        const formattedDate = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ` +
-          `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        // 将UTC时间转换为北京时间 (UTC+8)
+        const utcDate = new Date(tactic.createdAt);
+        const beijingDate = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000)); // 加8小时
+        const formattedDate = `${beijingDate.getFullYear()}-${(beijingDate.getMonth()+1).toString().padStart(2, '0')}-${beijingDate.getDate().toString().padStart(2, '0')} ` +
+          `${beijingDate.getHours().toString().padStart(2, '0')}:${beijingDate.getMinutes().toString().padStart(2, '0')}`;
         
         const userRating = userRatings[tactic.name] || 0;
         
@@ -3895,69 +4306,130 @@
           }
         }
         
-        // 统计战术文字量
+        // 统计战术文字量 - 优化版本
         function tacticTextLength(tactic) {
           let total = 0;
           // 名称、团队名、副本名
-          total += (tactic.name||'').length + (tactic.teamName||'').length + (tactic.dungeonName||'').length;
+          total += (tactic.name || '').length + (tactic.teamName || '').length + (tactic.dungeonName || '').length;
+          
           // 站位
-          (tactic.positions||[]).forEach(pos => {
-            total += (pos.position||'').length + (pos.classes||'').length;
-          });
+          const positions = tactic.positions || [];
+          for (let i = 0; i < positions.length; i++) {
+            const pos = positions[i];
+            total += (pos.position || '').length + (pos.classes || '').length;
+          }
+          
           // 楼层
-          (tactic.floors||[]).forEach(floor => {
-            total += (floor.name||'').length;
-            (floor.comments||[]).forEach(c => total += (c||'').length);
-            (floor.preTurn||[]).forEach(row => {
-              total += (row.job||'').length + (row.skill1||'').length + (row.skill2||'').length + (row.position||'').length + (row.condition||'').length;
-            });
-            (floor.postTurn||[]).forEach(row => {
-              total += (row.job||'').length + (row.skill1||'').length + (row.skill2||'').length + (row.position||'').length + (row.condition||'').length;
-            });
-          });
+          const floors = tactic.floors || [];
+          for (let i = 0; i < floors.length; i++) {
+            const floor = floors[i];
+            total += (floor.name || '').length;
+            
+            const comments = floor.comments || [];
+            for (let j = 0; j < comments.length; j++) {
+              total += (comments[j] || '').length;
+            }
+            
+            const preTurn = floor.preTurn || [];
+            for (let j = 0; j < preTurn.length; j++) {
+              const row = preTurn[j];
+              total += (row.job || '').length + (row.skill1 || '').length + (row.skill2 || '').length + (row.position || '').length + (row.condition || '').length;
+            }
+            
+            const postTurn = floor.postTurn || [];
+            for (let j = 0; j < postTurn.length; j++) {
+              const row = postTurn[j];
+              total += (row.job || '').length + (row.skill1 || '').length + (row.skill2 || '').length + (row.position || '').length + (row.condition || '').length;
+            }
+          }
           return total;
         }
         
-        item.innerHTML = `
-          <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">
-            <div class="tactic-name">
-              <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
-              ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
-              <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;cursor:pointer;" onclick="event.stopPropagation(); viewTacticDetailInNewWindow('${tactic.name.replace(/'/g, "\\'")}')" title="在新窗口打开"></i>
+        // 根据显示模式生成不同的HTML
+        if (tacticViewMode === 'compact') {
+          // 紧凑模式：两行显示
+          item.innerHTML = `
+            <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">
+              <div class="tactic-name">
+                <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
+                ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
+                <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;cursor:pointer;" onclick="event.stopPropagation(); viewTacticDetailInNewWindow('${tactic.name.replace(/'/g, "\\'")}')" title="在新窗口打开"></i>
+              </div>
+              <div class="tactic-date">${formattedDate}</div>
             </div>
-            <div class="tactic-date">${formattedDate}</div>
-          </div>
-          ${tagsDisplay}
-          <div class="tactic-content" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">${preview}</div>
-          <div class="tactic-footer">
-            <div class="rating">
-              <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', 1)">
-                <i class="fas fa-thumbs-up"></i>
-              </button>
-              <span>${tactic.likes || 0}</span>
-              <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', -1)">
-                <i class="fas fa-piggy-bank"></i>
-              </button>
-              <span>${tactic.dislikes || 0}</span>
+            <div class="tactic-footer">
+              <div class="rating">
+                <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', 1)">
+                  <i class="fas fa-thumbs-up"></i>
+                </button>
+                <span>${tactic.likes || 0}</span>
+                <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', -1)">
+                  <i class="fas fa-piggy-bank"></i>
+                </button>
+                <span>${tactic.dislikes || 0}</span>
+                <span style="margin-left:8px;color:#b0a0cc;">字数：${tacticTextLength(tactic)}</span>
+              </div>
+              <div class="actions">
+                ${tagsDisplay}
+                <button class="load-btn-sm" onclick="event.stopPropagation(); loadTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-download"></i> 加载
+                </button>
+                <button class="copy-btn-sm" onclick="event.stopPropagation(); copyTacticToClipboardByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-copy"></i> 复制
+                </button>
+                <button class="copy-btn-sm" onclick="event.stopPropagation(); shareTacticLinkByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class='fas fa-share-alt'></i> 分享
+                </button>
+                ${isMyTactic ? `<button class="copy-btn-sm" title="编辑" onclick="event.stopPropagation(); editTacticByName('${tactic.name.replace(/'/g, "\\'")}')"><i class='fas fa-pen'></i></button>` : ''}
+                ${isMyTactic ? `<button class="delete-btn-sm" onclick="event.stopPropagation(); deleteTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-trash"></i> 删除
+                </button>` : ''}
+              </div>
             </div>
-            <div class="actions">
-              <button class="load-btn-sm" onclick="event.stopPropagation(); loadTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
-                <i class="fas fa-download"></i> 加载
-              </button>
-              <button class="copy-btn-sm" onclick="event.stopPropagation(); copyTacticToClipboardByName('${tactic.name.replace(/'/g, "\\'")}')">
-                <i class="fas fa-copy"></i> 复制
-              </button>
-              <button class="copy-btn-sm" onclick="event.stopPropagation(); shareTacticLinkByName('${tactic.name.replace(/'/g, "\\'")}')">
-                <i class='fas fa-share-alt'></i> 分享
-              </button>
-              ${isMyTactic ? `<button class="copy-btn-sm" title="编辑" onclick="event.stopPropagation(); editTacticByName('${tactic.name.replace(/'/g, "\\'")}')"><i class='fas fa-pen'></i></button>` : ''}
-              ${isMyTactic ? `<button class="delete-btn-sm" onclick="event.stopPropagation(); deleteTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
-                <i class="fas fa-trash"></i> 删除
-              </button>` : ''}
+          `;
+        } else {
+          // 正常模式：完整显示
+          item.innerHTML = `
+            <div class="tactic-header" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">
+              <div class="tactic-name">
+                <span style="color:#ffeebb;font-weight:bold;">${tactic.dungeonName || ''}</span>
+                ${tactic.teamName ? `<span style="margin-left:8px;">${tactic.teamName}</span>` : ''}
+                <i class="fas fa-external-link-alt" style="margin-left:8px;color:#6d9eeb;font-size:0.8rem;opacity:0.7;cursor:pointer;" onclick="event.stopPropagation(); viewTacticDetailInNewWindow('${tactic.name.replace(/'/g, "\\'")}')" title="在新窗口打开"></i>
+              </div>
+              <div class="tactic-date">${formattedDate}</div>
             </div>
-            <div style="font-size:0.92em;color:#b0a0cc;margin-top:2px;text-align:right;">字数：${tacticTextLength(tactic)}</div>
-          </div>
-        `;
+            ${tagsDisplay}
+            <div class="tactic-content" style="cursor: pointer;" onclick="viewTacticDetail('${tactic.name.replace(/'/g, "\\'")}')">${preview}</div>
+            <div class="tactic-footer">
+              <div class="rating">
+                <button class="rating-btn ${userRating === 1 ? 'like' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', 1)">
+                  <i class="fas fa-thumbs-up"></i>
+                </button>
+                <span>${tactic.likes || 0}</span>
+                <button class="rating-btn ${userRating === -1 ? 'piggy' : ''}" onclick="event.stopPropagation(); rateTactic('${tactic.name.replace(/'/g, "\\'")}', -1)">
+                  <i class="fas fa-piggy-bank"></i>
+                </button>
+                <span>${tactic.dislikes || 0}</span>
+              </div>
+              <div class="actions">
+                <button class="load-btn-sm" onclick="event.stopPropagation(); loadTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-download"></i> 加载
+                </button>
+                <button class="copy-btn-sm" onclick="event.stopPropagation(); copyTacticToClipboardByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-copy"></i> 复制
+                </button>
+                <button class="copy-btn-sm" onclick="event.stopPropagation(); shareTacticLinkByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class='fas fa-share-alt'></i> 分享
+                </button>
+                ${isMyTactic ? `<button class="copy-btn-sm" title="编辑" onclick="event.stopPropagation(); editTacticByName('${tactic.name.replace(/'/g, "\\'")}')"><i class='fas fa-pen'></i></button>` : ''}
+                ${isMyTactic ? `<button class="delete-btn-sm" onclick="event.stopPropagation(); deleteTacticByName('${tactic.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-trash"></i> 删除
+                </button>` : ''}
+              </div>
+              <div style="font-size:0.92em;color:#b0a0cc;margin-top:2px;text-align:right;">字数：${tacticTextLength(tactic)}</div>
+            </div>
+          `;
+        }
         
         container.appendChild(item);
       });
@@ -3969,9 +4441,6 @@
           // 强制重新计算样式
           item.offsetHeight;
         });
-        // 调试信息
-        console.log('战术列表重新渲染完成，项目数量:', items.length);
-        debugTacticItems();
       }, 10);
     }
     
@@ -4342,6 +4811,12 @@
     // 关键操作后也触发
     setTimeout(setCloudSectionHeight, 500);
 
+    // 全局变量存储原始单位和排序状态
+    let originalUnits = [];
+    let originalDungeon = null;
+    let currentSortField = '';
+    let currentSortDirection = 'asc';
+    
     // 新增渲染地城详细信息函数
     function renderDungeonDetail(dungeon) {
       const detail = document.getElementById('dungeonDetail');
@@ -4349,19 +4824,140 @@
         detail.innerHTML = '';
         return;
       }
+      
+             // 保存原始数据
+       originalDungeon = JSON.parse(JSON.stringify(dungeon));
+       if (dungeon.units && dungeon.units.length) {
+         originalUnits = JSON.parse(JSON.stringify(dungeon.units));
+       }
+      
       let html = '';
       // 始终预留单位属性标题位置，便于插入按钮
       html += `<div id='unit-attr-anchor'></div>`;
+      // 始终显示单位属性标题
+      let updateStr = '';
+      if (dungeon.updatedAt) {
+        // 将UTC时间转换为北京时间 (UTC+8)
+        const utcDate = new Date(dungeon.updatedAt);
+        const beijingDate = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000)); // 加8小时
+        const beijingTimeStr = beijingDate.toISOString().replace('T', ' ').slice(0, 16);
+        updateStr = `<span style='color:#aaa;font-size:12px;margin-left:10px;'>(更新时间: ${beijingTimeStr})</span>`;
+      }
+      html += `<h3 onclick="toggleUnitAttributes()" style=\"margin:10px 0 4px 0;color:#6d9eeb;display:inline-block;cursor:pointer;user-select:none;\"><i class='fas fa-dna'></i>  单位属性${updateStr} <i class='fas fa-chevron-down' id='unit-attr-toggle-icon' style='margin-left:8px;font-size:12px;'></i></h3>`;
+      
       if (dungeon.units && dungeon.units.length) {
-        let updateStr = dungeon.updatedAt ? `<span style='color:#aaa;font-size:12px;margin-left:10px;'>(更新时间: ${dungeon.updatedAt ? dungeon.updatedAt.replace('T',' ').slice(0,16) : ''})</span>` : '';
-        html += `<h3 style=\"margin:10px 0 4px 0;color:#6d9eeb;display:inline-block;\"><i class='fas fa-dna'></i> 单位属性${updateStr}</h3>`;
-        html += `<div style=\"overflow-x:auto;\"><table style=\"min-width:1000px;width:100%;font-size:13px;background:rgba(30,40,60,0.7);border-radius:8px;\">`;
-        html += `<tr style=\"color:#b0a0cc;text-align:left;\"><th>单位名</th><th>体力</th><th>法力</th><th>种族</th><th>先攻</th><th>动数</th><th>近战命中/闪避</th><th>远程命中/闪避</th><th>魔法命中/闪避</th><th>心理命中/闪避</th><th>特种攻击/命中</th><th>攻击顺序</th><th>特殊机制</th></tr>`;
+        html += `<div class="unit-attributes-table" id="unit-attributes-content" style=\"overflow-x:auto;\"><table>`;
+        html += `<tr><th onclick="sortUnits('name')" style="cursor:pointer;">单位名</th><th onclick="sortUnits('hp')" style="cursor:pointer;">体力</th><th onclick="sortUnits('mp')" style="cursor:pointer;">法力</th><th onclick="sortUnits('race')" style="cursor:pointer;">种族</th><th onclick="sortUnits('initiative')" style="cursor:pointer;">先攻</th><th onclick="sortUnits('move')" style="cursor:pointer;">动数</th><th onclick="sortUnits('melee')" style="cursor:pointer;">近战命中/闪避</th><th onclick="sortUnits('ranged')" style="cursor:pointer;">远程命中/闪避</th><th onclick="sortUnits('magic')" style="cursor:pointer;">魔法命中/闪避</th><th onclick="sortUnits('mind')" style="cursor:pointer;">心理命中/闪避</th><th onclick="sortUnits('specialAttack')" style="cursor:pointer;">特种攻击/命中</th><th onclick="sortUnits('order')" style="cursor:pointer;">攻击顺序</th><th onclick="sortUnits('special')" style="cursor:pointer;">特殊机制</th></tr>`;
         dungeon.units.forEach(u => {
-          html += `<tr style=\"color:#fff;\"><td>${u.name}</td><td>${u.hp}</td><td>${u.mp}</td><td>${u.race}</td><td>${u.initiative}</td><td>${u.move}</td><td>${u.melee}</td><td>${u.ranged}</td><td>${u.magic}</td><td>${u.mind}</td><td>${u.specialAttack || ''}</td><td>${u.order}</td><td>${u.special}</td></tr>`;
+          const encodedName = encodeURIComponent(u.name);
+          const npcUrl = `https://delta.world-of-dungeons.org/wod/spiel/help/npc.php?name=${encodedName}&IS_POPUP=1&is_popup=1`;
+          html += `<tr><td><a href="${npcUrl}" target="_blank" style="color: inherit; text-decoration: none; cursor: pointer;">${u.name}</a></td><td>${u.hp}</td><td>${u.mp}</td><td>${u.race}</td><td>${u.initiative}</td><td>${u.move}</td><td>${u.melee}</td><td>${u.ranged}</td><td>${u.magic}</td><td>${u.mind}</td><td>${u.specialAttack || ''}</td><td>${u.order}</td><td>${u.special}</td></tr>`;
         });
         html += `</table></div>`;
+      } else {
+        // 如果没有单位数据，显示空的内容区域
+        html += `<div class="unit-attributes-table" id="unit-attributes-content" style=\"overflow-x:auto;display:none;\"><table><tr><td style=\"text-align:center;color:#aaa;padding:20px;\">暂无单位数据</td></tr></table></div>`;
       }
+      
+             // 添加排序函数
+       window.sortUnits = function(field) {
+         const detail = document.getElementById('dungeonDetail');
+         if (!detail || !originalUnits.length || !originalDungeon) return;
+         
+         // 保存当前滚动位置
+         const unitTableContainer = detail.querySelector('.unit-attributes-table');
+         const scrollLeft = unitTableContainer ? unitTableContainer.scrollLeft : 0;
+         
+         let units = [...originalUnits];
+         
+         // 如果点击的是单位名，重置排序
+         if (field === 'name') {
+           currentSortField = '';
+           currentSortDirection = 'asc';
+           units = [...originalUnits];
+         } else {
+           // 如果点击的是同一个字段，切换排序方向
+           if (currentSortField === field) {
+             currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+           } else {
+             currentSortField = field;
+             currentSortDirection = 'asc';
+           }
+           
+           // 排序逻辑
+           units.sort((a, b) => {
+             let aVal = a[field] || '';
+             let bVal = b[field] || '';
+             
+             // 尝试转换为数字进行比较
+             let aNum = parseFloat(aVal);
+             let bNum = parseFloat(bVal);
+             
+             if (!isNaN(aNum) && !isNaN(bNum)) {
+               // 数值比较
+               return currentSortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+             } else {
+               // 字符串比较
+               aVal = String(aVal).toLowerCase();
+               bVal = String(bVal).toLowerCase();
+               if (currentSortDirection === 'asc') {
+                 return aVal.localeCompare(bVal);
+               } else {
+                 return bVal.localeCompare(aVal);
+               }
+             }
+           });
+         }
+         
+         // 保存当前折叠状态
+         const content = detail.querySelector('#unit-attributes-content');
+         const isCollapsed = content && content.style.display === 'none';
+         
+         // 创建临时副本用于渲染
+         const tempDungeon = JSON.parse(JSON.stringify(originalDungeon));
+         tempDungeon.units = units;
+         
+         // 重新渲染完整内容
+         renderDungeonDetail(tempDungeon);
+         
+         // 恢复折叠状态
+         if (isCollapsed) {
+           setTimeout(() => {
+             const newContent = detail.querySelector('#unit-attributes-content');
+             const newIcon = detail.querySelector('#unit-attr-toggle-icon');
+             if (newContent && newIcon) {
+               newContent.style.display = 'none';
+               newIcon.className = 'fas fa-chevron-right';
+             }
+           }, 0);
+         }
+         
+         // 恢复滚动位置
+         setTimeout(() => {
+           const newUnitTableContainer = detail.querySelector('.unit-attributes-table');
+           if (newUnitTableContainer) {
+             newUnitTableContainer.scrollLeft = scrollLeft;
+           }
+         }, 0);
+       };
+       
+       // 单位属性折叠功能
+       window.toggleUnitAttributes = function() {
+         const content = document.getElementById('unit-attributes-content');
+         const icon = document.getElementById('unit-attr-toggle-icon');
+         
+         if (content && icon) {
+           if (content.style.display === 'none') {
+             content.style.display = 'block';
+             icon.className = 'fas fa-chevron-down';
+             icon.style.marginLeft = '8px';
+           } else {
+             content.style.display = 'none';
+             icon.className = 'fas fa-chevron-right';
+             icon.style.marginLeft = '8px';
+           }
+         }
+       };
       if (dungeon.floors && dungeon.floors.length) {
         html += `<h3 style="margin:12px 0 4px 0;color:#6d9eeb;"><i class='fas fa-layer-group'></i> 楼层部署</h3>`;
         dungeon.floors.forEach(floor => {
@@ -4374,16 +4970,39 @@
           
           // 显示房间信息
           if (floor.rooms && floor.rooms.length > 0) {
-            html += `<div style='display:flex;overflow-x:auto;gap:8px;padding:4px 0;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;'>`;
+            html += `<div class="rooms-container">`;
             floor.rooms.forEach(room => {
-              html += `<div style='margin:0;padding:4px 6px;background:rgba(20,30,50,0.7);border-radius:6px;border:1px solid rgba(109,158,235,0.3);min-width:200px;max-width:300px;flex-shrink:0;flex:1 0 auto;'>`;
+              html += `<div>`;
               if (room.name && room.name.trim()) {
-                html += `<div style='color:#6d9eeb;font-weight:bold;margin-bottom:4px;font-size:12px;'>${room.name}</div>`;
+                html += `<div class="room-name">${room.name}</div>`;
               }
-              html += `<table style="width:100%;font-size:11px;background:rgba(30,40,60,0.5);border-radius:6px;table-layout:fixed;">
-                <tr style="color:#b0a0cc;text-align:left;"><th style='white-space:nowrap;vertical-align:middle;padding-right:4px;padding-left:4px;width:40px;font-size:10px;'>位置</th><th style='white-space:nowrap;vertical-align:middle;padding-left:4px;font-size:10px;'>单位/数量</th></tr>`;
+              html += `<table>
+                <tr><th>位置</th><th>单位/数量</th></tr>`;
               Object.entries(room.positions).forEach(([pos, arr]) => {
-                html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:4px;padding-left:4px;width:40px;font-size:10px;'>${pos}</td><td style='white-space:nowrap;vertical-align:middle;padding-left:4px;font-size:10px;'>` + (arr.length ? arr.map(e=>`${e.name}×${e.count}`).join('、') : '-') + `</td></tr>`;
+                if (!arr.length) {
+                  html += `<tr><td>${pos}</td><td>-</td></tr>`;
+                  return;
+                }
+                
+                // 按单位名分组
+                const unitGroups = {};
+                arr.forEach(unit => {
+                  if (!unitGroups[unit.name]) {
+                    unitGroups[unit.name] = [];
+                  }
+                  unitGroups[unit.name].push(unit.count);
+                });
+                
+                // 生成显示文本
+                const unitsText = Object.entries(unitGroups).map(([name, counts]) => {
+                  if (counts.length === 1) {
+                    return `${name}×${counts[0]}`;
+                  } else {
+                    return `${name}×${counts.join(',')}`;
+                  }
+                }).join('<br>');
+                
+                html += `<tr><td>${pos}</td><td>${unitsText}</td></tr>`;
               });
               html += `</table></div>`;
             });
@@ -4393,7 +5012,30 @@
             html += `<table style="width:100%;font-size:13px;background:rgba(30,40,60,0.5);border-radius:8px;margin-top:2px;table-layout:fixed;">
             <tr style="color:#b0a0cc;text-align:left;"><th style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>位置</th><th style='white-space:nowrap;vertical-align:middle;padding-left:8px;'>单位/数量</th></tr>`;
           Object.entries(floor.positions).forEach(([pos, arr]) => {
-            html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>${pos}</td><td style='white-space:nowrap;vertical-align:middle;padding-left:8px;'>` + (arr.length ? arr.map(e=>`${e.name}×${e.count}`).join('、') : '-') + `</td></tr>`;
+            if (!arr.length) {
+              html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>${pos}</td><td style='word-wrap:break-word;word-break:break-all;vertical-align:middle;padding-left:8px;'>-</td></tr>`;
+              return;
+            }
+            
+            // 按单位名分组
+            const unitGroups = {};
+            arr.forEach(unit => {
+              if (!unitGroups[unit.name]) {
+                unitGroups[unit.name] = [];
+              }
+              unitGroups[unit.name].push(unit.count);
+            });
+            
+            // 生成显示文本
+            const unitsText = Object.entries(unitGroups).map(([name, counts]) => {
+              if (counts.length === 1) {
+                return `${name}×${counts[0]}`;
+              } else {
+                return `${name}×${counts.join(',')}`;
+              }
+            }).join('<br>');
+            
+            html += `<tr><td style='white-space:nowrap;vertical-align:middle;padding-right:8px;padding-left:8px;width:60px;'>${pos}</td><td style='word-wrap:break-word;word-break:break-all;vertical-align:middle;padding-left:8px;'>${unitsText}</td></tr>`;
           });
             html += `</table>`;
           }
@@ -4520,35 +5162,19 @@
 
     // 添加查看战术详情函数
     function viewTacticDetail(tacticName) {
-      console.log('点击战术详情:', tacticName); // 调试信息
       const id = encodeURIComponent(tacticName);
-      const url = `https://dxjleaf.github.io/wodtac/tactic.html?id=${id}`;
+      const url = `tactic.html?id=${id}`;
       window.location.href = url;
     }
 
     // 添加在新窗口查看战术详情函数
     function viewTacticDetailInNewWindow(tacticName) {
-      console.log('在新窗口打开战术详情:', tacticName); // 调试信息
       const id = encodeURIComponent(tacticName);
-      const url = `https://dxjleaf.github.io/wodtac/tactic.html?id=${id}`;
+      const url = `tactic.html?id=${id}`;
       window.open(url, '_blank');
     }
 
-    // 添加调试函数，检查战术项是否正确渲染
-    function debugTacticItems() {
-      const items = document.querySelectorAll('.tactic-item');
-      console.log('找到战术项数量:', items.length);
-      items.forEach((item, index) => {
-        const header = item.querySelector('.tactic-header');
-        const content = item.querySelector('.tactic-content');
-        console.log(`战术项 ${index}:`, {
-          hasHeader: !!header,
-          hasContent: !!content,
-          headerOnclick: header ? header.getAttribute('onclick') : 'none',
-          contentOnclick: content ? content.getAttribute('onclick') : 'none'
-        });
-      });
-    }
+    // 调试函数已移除，提升性能
 
     // 1. 新增通过name查找的加载函数
     function loadTacticByName(name) {
