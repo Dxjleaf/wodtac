@@ -2699,6 +2699,38 @@
     body.office-theme .positions-table td {
       color: #222 !important;
     }
+    
+    /* Office风格中副本搜索的单位属性和楼层部署使用像素字体 */
+    body.office-theme #dungeonDetail h3,
+    body.office-theme #dungeonDetail .unit-attributes-table,
+    body.office-theme #dungeonDetail .rooms-container,
+    body.office-theme #dungeonDetail table,
+    body.office-theme #dungeonDetail th,
+    body.office-theme #dungeonDetail td,
+    body.office-theme #dungeonDetail .room-name,
+    body.office-theme #dungeonDetail b {
+      font-family: 'Courier New', 'Consolas', 'Monaco', 'Lucida Console', 'DejaVu Sans Mono', monospace !important;
+      font-smooth: never !important;
+      -webkit-font-smoothing: none !important;
+      -moz-osx-font-smoothing: unset !important;
+      font-weight: normal !important;
+    }
+    
+    /* 确保中文字符清晰显示 */
+    body.office-theme #dungeonDetail h3,
+    body.office-theme #dungeonDetail .unit-attributes-table,
+    body.office-theme #dungeonDetail .rooms-container,
+    body.office-theme #dungeonDetail table,
+    body.office-theme #dungeonDetail th,
+    body.office-theme #dungeonDetail td,
+    body.office-theme #dungeonDetail .room-name,
+    body.office-theme #dungeonDetail b {
+      font-family: 'SimSun', 'Microsoft YaHei', 'Courier New', 'Consolas', 'Monaco', 'Lucida Console', 'DejaVu Sans Mono', monospace !important;
+      font-smooth: auto !important;
+      -webkit-font-smoothing: auto !important;
+      -moz-osx-font-smoothing: auto !important;
+    }
+    
     body.office-theme .turn-table th {
       background: #e3eaf2 !important;
       color: #1a397b !important;
