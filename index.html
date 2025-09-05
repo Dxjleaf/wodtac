@@ -1676,37 +1676,43 @@
         box-sizing: border-box;
         width: 100%;
         overflow-x: auto;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
       }
       
       .tactics-container .dynamic-row > * {
-        flex: 0 1 auto !important;
+        flex: 0 0 auto !important;
         min-width: 0 !important;
         box-sizing: border-box;
       }
       
       .tactics-container .dynamic-row input[placeholder="职业"] {
-        flex: 0 1 45px !important;
+        width: 40px !important;
         min-width: 40px !important;
-        max-width: 60px !important;
+        max-width: 40px !important;
+        flex: 0 0 auto !important;
       }
       
       .tactics-container .dynamic-row input[placeholder^="技能"] {
-        flex: 0 1 65px !important;
+        width: 55px !important;
         min-width: 55px !important;
-        max-width: 85px !important;
+        max-width: 55px !important;
+        flex: 0 0 auto !important;
       }
       
       .tactics-container .dynamic-row input[placeholder="位置"] {
-        flex: 0 1 40px !important;
+        width: 35px !important;
         min-width: 35px !important;
-        max-width: 55px !important;
+        max-width: 35px !important;
+        flex: 0 0 auto !important;
       }
       
       .tactics-container .dynamic-row select {
-        flex: 0 1 70px !important;
+        width: 60px !important;
         min-width: 60px !important;
-        max-width: 90px !important;
+        max-width: 60px !important;
+        flex: 0 0 auto !important;
       }
       
       .tactics-container .dynamic-row {
@@ -1714,9 +1720,9 @@
       }
       
       .tactics-container .dynamic-row .delete-btn {
-        width: 32px !important;
-        min-width: 32px !important;
-        max-width: 32px !important;
+        width: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
         height: 40px !important;
         padding: 0;
         display: flex;
@@ -1724,7 +1730,7 @@
         justify-content: center;
         flex: 0 0 auto !important;
         box-sizing: border-box;
-        font-size: 13px;
+        font-size: 12px;
       }
       
       .tactics-container .dynamic-row input,
