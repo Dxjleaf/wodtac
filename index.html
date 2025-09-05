@@ -1596,8 +1596,51 @@
         flex-direction: row;
         align-items: center;
         gap: calc(6px * var(--scale-factor));
-        flex-wrap: nowrap;
-        overflow-x: auto;
+        flex-wrap: wrap;
+        overflow-x: visible;
+      }
+      
+      /* 站位配置行特殊处理 */
+      #positionConfig .dynamic-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 4px;
+        align-items: center;
+        width: 100%;
+      }
+      
+      #positionConfig .dynamic-row {
+        align-items: stretch !important;
+      }
+      
+      #positionConfig .dynamic-row > * {
+        flex: 1 1 120px !important;
+        min-width: 100px !important;
+        max-width: calc(50% - 4px) !important;
+        height: 40px !important;
+        box-sizing: border-box;
+      }
+      
+      #positionConfig .dynamic-row select {
+        min-width: 80px !important;
+        height: 40px !important;
+      }
+      
+      #positionConfig .dynamic-row input {
+        min-width: 120px !important;
+        height: 40px !important;
+      }
+      
+      #positionConfig .dynamic-row .delete-btn {
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        height: 40px !important;
+        flex: 0 0 auto !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px !important;
       }
       
       .tactics-container {
@@ -1625,81 +1668,101 @@
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-        gap: 4px;
+        gap: 2px;
         padding-bottom: 8px;
         margin: 8px 0;
         align-items: center;
         max-width: 100%;
         box-sizing: border-box;
         width: 100%;
-      }
-      
-      /* 确保所有动态行都是水平布局 */
-      .dynamic-row {
-        flex-direction: row !important;
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: nowrap !important;
-      }
-      
-      /* 特别针对战术容器中的动态行 */
-      .tactics-container .dynamic-row,
-      .pre-turn .dynamic-row,
-      .post-turn .dynamic-row {
-        flex-direction: row !important;
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
       
       .tactics-container .dynamic-row > * {
-        flex: 0 0 auto !important;
-        width: auto !important;
-        min-width: auto !important;
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
       }
       
       .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 60px !important;
-        min-width: 60px !important;
+        flex: 0 1 45px !important;
+        min-width: 40px !important;
+        max-width: 60px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder^="技能"] {
-        width: 75px !important;
-        min-width: 75px !important;
+        flex: 0 1 65px !important;
+        min-width: 55px !important;
+        max-width: 85px !important;
       }
       
       .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 50px !important;
-        min-width: 50px !important;
+        flex: 0 1 40px !important;
+        min-width: 35px !important;
+        max-width: 55px !important;
       }
       
       .tactics-container .dynamic-row select {
-        width: 85px !important;
-        min-width: 85px !important;
+        flex: 0 1 70px !important;
+        min-width: 60px !important;
+        max-width: 90px !important;
+      }
+      
+      .tactics-container .dynamic-row {
+        align-items: stretch !important;
       }
       
       .tactics-container .dynamic-row .delete-btn {
-        width: 36px !important;
-        min-width: 36px !important;
-        height: 36px;
+        width: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        height: 40px !important;
         padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex: 0 0 auto !important;
+        box-sizing: border-box;
+        font-size: 13px;
       }
       
       .tactics-container .dynamic-row input,
       .tactics-container .dynamic-row select {
-        height: 36px;
-        padding: 0 8px;
-        font-size: 11px;
+        height: 40px !important;
+        padding: 0 4px;
+        font-size: 12px;
+        box-sizing: border-box;
+      }
+      
+      /* 确保键盘导航正常工作 */
+      .tactics-container .dynamic-row .nav-input {
+        order: 0;
+        tabindex: 0;
+        pointer-events: auto;
+      }
+      
+      .tactics-container .dynamic-row .tactic-drag-handle {
+        order: -1;
+        flex: 0 0 auto !important;
+        width: 12px !important;
+        min-width: 12px !important;
+        max-width: 12px !important;
+        height: 40px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1px;
+        font-size: 10px;
+      }
+      
+      .tactics-container .dynamic-row .delete-btn {
+        order: 10;
+        flex: 0 0 auto !important;
       }
       
       .tactics-container .dynamic-row ::placeholder {
-        font-size: 9px;
+        font-size: 11px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1722,9 +1785,73 @@
       
       input, select, textarea, button {
         width: 100% !important;
-        min-width: 100% !important;
+        min-width: 0 !important;
         padding: calc(10px * var(--scale-factor));
         font-size: calc(0.9rem * var(--scale-factor));
+      }
+      
+      /* 楼层标题行特殊处理 */
+      .config-block .dynamic-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 4px;
+        align-items: stretch;
+        width: 100%;
+      }
+      
+      .config-block .dynamic-row > input {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        height: 40px !important;
+        box-sizing: border-box;
+        width: 100% !important;
+      }
+      
+      .config-block .dynamic-row > button {
+        flex: 0 0 auto !important;
+        min-width: 40px !important;
+        height: 40px !important;
+        padding: 8px !important;
+        white-space: nowrap;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .config-block .dynamic-row > .copy-btn-sm {
+        min-width: 60px !important;
+        font-size: 12px !important;
+      }
+      
+      .config-block .dynamic-row > .delete-btn {
+        min-width: 40px !important;
+        background: var(--danger) !important;
+      }
+      
+      /* 楼层输入框单独占一行 */
+      .config-block .dynamic-row > input[placeholder*="楼层"] {
+        order: -1;
+        flex-basis: 100% !important;
+        margin-bottom: 4px;
+      }
+      
+      /* 按钮组在第二行 */
+      .config-block .dynamic-row > .copy-btn-sm,
+      .config-block .dynamic-row > .delete-btn {
+        order: 1;
+        margin-left: 0 !important;
+      }
+      
+      /* 按钮组容器 */
+      .config-block .dynamic-row {
+        justify-content: flex-start;
+      }
+      
+      /* 确保按钮紧挨着排列 */
+      .config-block .dynamic-row > .copy-btn-sm {
+        margin-right: 4px !important;
       }
       
       .spoiler-btn {
@@ -4416,7 +4543,7 @@
         <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
         <div class="dynamic-row" style="align-items:center;">
           <input placeholder="楼层（例：F1）">
-          <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
+          <button class="copy-btn-sm" title="复制本层" style="background:var(--info);padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
           <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
             <i class="fas fa-trash"></i>
           </button>
@@ -4468,6 +4595,8 @@
       container.appendChild(row);
     }
 
+
+
     function addTacticRow(btn, type) {
       const container = btn.parentElement.previousElementSibling;
       const row = document.createElement('div');
@@ -4499,6 +4628,7 @@
       `;
       container.appendChild(row);
       
+      // 绑定键盘导航事件
       const inputs = row.querySelectorAll('.nav-input');
       inputs.forEach((input, index) => {
         input.addEventListener('keydown', function(e) {
@@ -4506,6 +4636,7 @@
             e.preventDefault();
             
             if (index === inputs.length - 1) {
+              // 最后一个输入框，创建新行
               addTacticRow(btn, type);
               
               setTimeout(() => {
@@ -4516,10 +4647,12 @@
                 }
               }, 10);
             } else {
+              // 跳到下一个输入框
               inputs[index + 1].focus();
             }
           }
-          // 新增：Delete/Backspace在空时跳到前一个输入框
+          
+          // Backspace在空时跳到前一个输入框
           if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
             e.preventDefault();
             inputs[index - 1].focus();
@@ -5266,7 +5399,7 @@
           <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
           <div class="dynamic-row" style="align-items:center;">
             <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
-            <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
+            <button class="copy-btn-sm" title="复制本层" style="background:var(--info);padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
             <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
               <i class="fas fa-trash"></i>
             </button>
@@ -5315,11 +5448,11 @@
           row.className = 'dynamic-row';
           row.innerHTML = `
             <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-            <input placeholder="职业" value="${turn.job || ''}">
-            <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
-            <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
-            <input placeholder="位置" value="${turn.position || ''}">
-            <select>
+            <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
+            <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
+            <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
+            <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+            <select class="nav-input" data-nav-group="tactic">
               <option value="" disabled ${!turn.condition}>条件</option>
               <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
               <option ${turn.condition === '尽可能重复' ? 'selected' : ''}>尽可能重复</option>
@@ -5331,6 +5464,44 @@
             </button>
           `;
           preTurnContainer.appendChild(row);
+          
+          // 为加载的战术行添加键盘导航事件
+          const inputs = row.querySelectorAll('.nav-input');
+          inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === 'Tab') {
+                e.preventDefault();
+                
+                if (index === inputs.length - 1) {
+                  // 找到对应的添加按钮
+                  const tacticSection = row.closest('.tactic-section');
+                  if (tacticSection) {
+                    const addButton = tacticSection.querySelector('.mobile-controls button');
+                    if (addButton) {
+                      const sectionType = tacticSection.querySelector('h4').textContent.includes('回合前') ? 'pre-turn' : 'post-turn';
+                      addTacticRow(addButton, sectionType);
+                      
+                      setTimeout(() => {
+                        const container = row.parentElement;
+                        const newRow = container.lastElementChild;
+                        if (newRow) {
+                          const firstInput = newRow.querySelector('.nav-input');
+                          if (firstInput) firstInput.focus();
+                        }
+                      }, 10);
+                    }
+                  }
+                } else {
+                  inputs[index + 1].focus();
+                }
+              }
+              
+              if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
+                e.preventDefault();
+                inputs[index - 1].focus();
+              }
+            });
+          });
         });
         const postTurnContainer = floorElement.querySelector('.post-turn');
         (floor.postTurn || []).forEach(turn => {
@@ -5338,11 +5509,11 @@
           row.className = 'dynamic-row';
           row.innerHTML = `
             <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-            <input placeholder="职业" value="${turn.job || ''}">
-            <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
-            <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
-            <input placeholder="位置" value="${turn.position || ''}">
-            <select>
+            <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
+            <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
+            <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
+            <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+            <select class="nav-input" data-nav-group="tactic">
               <option value="" disabled ${!turn.condition}>条件</option>
               <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
               <option ${turn.condition === '尽可能重复' ? 'selected' : ''}>尽可能重复</option>
@@ -5354,6 +5525,44 @@
             </button>
           `;
           postTurnContainer.appendChild(row);
+          
+          // 为加载的战术行添加键盘导航事件
+          const inputs = row.querySelectorAll('.nav-input');
+          inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === 'Tab') {
+                e.preventDefault();
+                
+                if (index === inputs.length - 1) {
+                  // 找到对应的添加按钮
+                  const tacticSection = row.closest('.tactic-section');
+                  if (tacticSection) {
+                    const addButton = tacticSection.querySelector('.mobile-controls button');
+                    if (addButton) {
+                      const sectionType = tacticSection.querySelector('h4').textContent.includes('回合前') ? 'pre-turn' : 'post-turn';
+                      addTacticRow(addButton, sectionType);
+                      
+                      setTimeout(() => {
+                        const container = row.parentElement;
+                        const newRow = container.lastElementChild;
+                        if (newRow) {
+                          const firstInput = newRow.querySelector('.nav-input');
+                          if (firstInput) firstInput.focus();
+                        }
+                      }, 10);
+                    }
+                  }
+                } else {
+                  inputs[index + 1].focus();
+                }
+              }
+              
+              if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
+                e.preventDefault();
+                inputs[index - 1].focus();
+              }
+            });
+          });
         });
       });
       updateCounters();
@@ -5968,7 +6177,7 @@
             <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
             <div class="dynamic-row" style="align-items:center;">
               <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
-              <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
+              <button class="copy-btn-sm" title="复制本层" style="background:var(--info);padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
               <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
                 <i class="fas fa-trash"></i>
               </button>
@@ -6019,11 +6228,11 @@
             row.className = 'dynamic-row';
             row.innerHTML = `
               <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-              <input placeholder="职业" value="${turn.job || ''}">
-              <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
-              <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
-              <input placeholder="位置" value="${turn.position || ''}">
-              <select>
+              <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
+              <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
+              <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
+              <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+              <select class="nav-input" data-nav-group="tactic">
                 <option value="" disabled ${!turn.condition}>条件</option>
                 <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
                 <option ${turn.condition === '尽可能重复' ? 'selected' : ''}>尽可能重复</option>
@@ -6035,6 +6244,44 @@
               </button>
             `;
             preTurnContainer.appendChild(row);
+            
+            // 为恢复的战术行添加键盘导航事件
+            const inputs = row.querySelectorAll('.nav-input');
+            inputs.forEach((input, index) => {
+              input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === 'Tab') {
+                  e.preventDefault();
+                  
+                  if (index === inputs.length - 1) {
+                    // 找到对应的添加按钮
+                    const tacticSection = row.closest('.tactic-section');
+                    if (tacticSection) {
+                      const addButton = tacticSection.querySelector('.mobile-controls button');
+                      if (addButton) {
+                        const sectionType = tacticSection.querySelector('h4').textContent.includes('回合前') ? 'pre-turn' : 'post-turn';
+                        addTacticRow(addButton, sectionType);
+                        
+                        setTimeout(() => {
+                          const container = row.parentElement;
+                          const newRow = container.lastElementChild;
+                          if (newRow) {
+                            const firstInput = newRow.querySelector('.nav-input');
+                            if (firstInput) firstInput.focus();
+                          }
+                        }, 10);
+                      }
+                    }
+                  } else {
+                    inputs[index + 1].focus();
+                  }
+                }
+                
+                if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
+                  e.preventDefault();
+                  inputs[index - 1].focus();
+                }
+              });
+            });
           });
           // 回合中
           const postTurnContainer = floorElement.querySelector('.post-turn');
@@ -6043,11 +6290,11 @@
             row.className = 'dynamic-row';
             row.innerHTML = `
               <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-              <input placeholder="职业" value="${turn.job || ''}">
-              <input placeholder="技能/道具1" value="${turn.skill1 || ''}">
-              <input placeholder="技能/道具2" value="${turn.skill2 || ''}">
-              <input placeholder="位置" value="${turn.position || ''}">
-              <select>
+              <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
+              <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
+              <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
+              <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+              <select class="nav-input" data-nav-group="tactic">
                 <option value="" disabled ${!turn.condition}>条件</option>
                 <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
                 <option ${turn.condition === '尽可能重复' ? 'selected' : ''}>尽可能重复</option>
@@ -6059,6 +6306,44 @@
               </button>
             `;
             postTurnContainer.appendChild(row);
+            
+            // 为恢复的战术行添加键盘导航事件
+            const inputs = row.querySelectorAll('.nav-input');
+            inputs.forEach((input, index) => {
+              input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === 'Tab') {
+                  e.preventDefault();
+                  
+                  if (index === inputs.length - 1) {
+                    // 找到对应的添加按钮
+                    const tacticSection = row.closest('.tactic-section');
+                    if (tacticSection) {
+                      const addButton = tacticSection.querySelector('.mobile-controls button');
+                      if (addButton) {
+                        const sectionType = tacticSection.querySelector('h4').textContent.includes('回合前') ? 'pre-turn' : 'post-turn';
+                        addTacticRow(addButton, sectionType);
+                        
+                        setTimeout(() => {
+                          const container = row.parentElement;
+                          const newRow = container.lastElementChild;
+                          if (newRow) {
+                            const firstInput = newRow.querySelector('.nav-input');
+                            if (firstInput) firstInput.focus();
+                          }
+                        }, 10);
+                      }
+                    }
+                  } else {
+                    inputs[index + 1].focus();
+                  }
+                }
+                
+                if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
+                  e.preventDefault();
+                  inputs[index - 1].focus();
+                }
+              });
+            });
           });
         });
         updateCounters();
