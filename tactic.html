@@ -6,10 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #ffffff;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent-color: #6366f1;
+      --accent-hover: #4f46e5;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+      --info-color: #3b82f6;
+      --border-color: rgba(99, 102, 241, 0.2);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
     body {
       font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
-      background: linear-gradient(135deg, #1a2a6c, #2c3e50, #4a235a);
-      color: #fff;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
       margin: 0;
       padding: 0;
@@ -18,9 +35,11 @@
       align-items: center;
     }
     .container {
-      background: rgba(30, 40, 60, 0.92);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.9));
+      border: 1px solid var(--border-color);
       border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      box-shadow: 0 8px 32px var(--shadow-color);
+      backdrop-filter: blur(10px);
       margin: 32px 0 24px 0;
       padding: 32px 24px 24px 24px;
       max-width: 700px;
@@ -30,33 +49,36 @@
     .tactic-title {
       font-size: 2rem;
       font-weight: bold;
-      color: #ffeebb;
+      color: var(--accent-color);
       margin-bottom: 8px;
       text-align: center;
       word-break: break-all;
+      text-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
     }
     .team-name {
       font-size: 1.2rem;
-      color: #fff;
+      color: var(--text-primary);
       margin-bottom: 8px;
       text-align: center;
       word-break: break-all;
     }
     .meta-info {
       text-align: center;
-      color: #b0a0cc;
+      color: var(--text-muted);
       font-size: 0.95rem;
       margin-bottom: 18px;
     }
     .section {
-      background: rgba(40, 50, 80, 0.85);
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       margin-bottom: 18px;
       padding: 18px 16px 12px 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      box-shadow: 0 4px 16px var(--shadow-color);
+      backdrop-filter: blur(8px);
     }
     .section-title {
-      color: #6d9eeb;
+      color: var(--accent-color);
       font-size: 1.15rem;
       font-weight: 600;
       margin-bottom: 10px;
@@ -68,38 +90,44 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 8px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 8px;
+      overflow: hidden;
     }
     .positions-table th, .positions-table td {
-      border: 1px solid rgba(255,255,255,0.10);
-      padding: 6px 10px;
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
       text-align: left;
       font-size: 1rem;
-      color: #fff;
+      color: var(--text-primary);
     }
     .positions-table th {
-      background: #232b3a;
-      color: #ffeebb;
+      background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+      color: var(--text-primary);
       font-weight: 600;
     }
     .floor-block {
-      background: rgba(30, 40, 60, 0.92);
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       margin-bottom: 16px;
       padding: 16px 12px 10px 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      box-shadow: 0 4px 16px var(--shadow-color);
+      backdrop-filter: blur(8px);
     }
     .floor-title {
-      color: #ffeebb;
+      color: var(--accent-color);
       font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 6px;
+      text-shadow: 0 1px 2px rgba(99, 102, 241, 0.3);
     }
     .comment {
-      background: rgba(255,238,187,0.08);
-      color: #ffeebb;
-      border-left: 3px solid #ffeebb;
-      border-radius: 6px;
-      padding: 6px 12px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.05));
+      color: var(--accent-color);
+      border-left: 3px solid var(--accent-color);
+      border-radius: 8px;
+      padding: 8px 12px;
       margin-bottom: 6px;
       font-size: 0.98rem;
     }
@@ -107,7 +135,7 @@
       margin-bottom: 8px;
     }
     .turn-title {
-      color: #6d9eeb;
+      color: var(--accent-color);
       font-size: 1rem;
       font-weight: 600;
       margin-bottom: 4px;
@@ -119,17 +147,20 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 4px;
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: 8px;
+      overflow: hidden;
     }
     .turn-table th, .turn-table td {
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 4px 8px;
+      border: 1px solid var(--border-color);
+      padding: 6px 10px;
       text-align: left;
       font-size: 0.98rem;
-      color: #fff;
+      color: var(--text-primary);
     }
     .turn-table th {
-      background: #232b3a;
-      color: #b0a0cc;
+      background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+      color: var(--text-primary);
       font-weight: 600;
     }
     #backBtn {
@@ -137,20 +168,25 @@
       top: 12px;
       left: 12px;
       z-index: 9999;
-      background: rgba(30,40,60,0.92);
-      color: #ffeebb;
-      border: none;
+      background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
       border-radius: 50%;
       width: 38px;
       height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      box-shadow: 0 4px 16px var(--shadow-color);
+      backdrop-filter: blur(8px);
       font-size: 1.2rem;
       padding: 0;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
+    }
+    #backBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
     }
     @media (min-width: 601px) {
       #backBtn {
@@ -205,25 +241,43 @@
       background: #f5f5f5 !important;
       color: #222 !important;
       border: 1.5px solid #b0c4de !important;
+      backdrop-filter: none !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
     body.office-theme .comment {
       background: #e3eaf2 !important;
       color: #1a397b !important;
       border-left: 3px solid #1a397b !important;
     }
+    body.office-theme .positions-table {
+      background: #ffffff !important;
+      border: 1px solid #b0c4de !important;
+    }
     body.office-theme .positions-table th {
       background: #e3eaf2 !important;
       color: #1a397b !important;
+      border: 1px solid #b0c4de !important;
+      font-weight: 600 !important;
     }
     body.office-theme .positions-table td {
+      background: #ffffff !important;
       color: #222 !important;
+      border: 1px solid #b0c4de !important;
+    }
+    body.office-theme .turn-table {
+      background: #ffffff !important;
+      border: 1px solid #b0c4de !important;
     }
     body.office-theme .turn-table th {
       background: #e3eaf2 !important;
       color: #1a397b !important;
+      border: 1px solid #b0c4de !important;
+      font-weight: 600 !important;
     }
     body.office-theme .turn-table td {
+      background: #ffffff !important;
       color: #222 !important;
+      border: 1px solid #b0c4de !important;
     }
     body.office-theme .section-title {
       color: #1a397b !important;
@@ -234,6 +288,8 @@
       background: #fff !important;
       color: #222 !important;
       border: 1.5px solid #b0c4de !important;
+      backdrop-filter: none !important;
+      box-shadow: none !important;
     }
     body.office-theme select option {
       background: #e3eaf2 !important;
@@ -243,18 +299,70 @@
     body.office-theme select:focus,
     body.office-theme textarea:focus {
       border-color: #1a397b !important;
+      box-shadow: none !important;
+    }
+    body.office-theme #jobFilter {
+      background: #ffffff !important;
+      border: 1.5px solid #b0c4de !important;
+      color: #222 !important;
+      backdrop-filter: none !important;
+      box-shadow: none !important;
+    }
+    body.office-theme #jobFilter:focus {
+      border-color: #1a397b !important;
+      box-shadow: none !important;
+    }
+    body.office-theme #jobFilter option {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+    }
+    body.office-theme .job-filter-label {
+      color: #1a397b !important;
     }
     body.office-theme button {
       background: linear-gradient(to bottom, #f5f5f5 60%, #e0e0e0 100%) !important;
       color: #1a397b !important;
       border: 1.5px solid #b0c4de !important;
       font-weight: bold;
+      backdrop-filter: none !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
     body.office-theme button:active {
       background: #d0d0d0 !important;
     }
+    body.office-theme #backBtn {
+      background: linear-gradient(to bottom, #f5f5f5 60%, #e0e0e0 100%) !important;
+      color: #1a397b !important;
+      border: 1.5px solid #b0c4de !important;
+      backdrop-filter: none !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    body.office-theme #backBtn:hover {
+      background: linear-gradient(to bottom, #e0e0e0 60%, #d0d0d0 100%) !important;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+    }
     .job-filter-label {
-      color: #6d9eeb !important;
+      color: var(--accent-color) !important;
+      font-weight: 600;
+    }
+    #jobFilter {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      padding: 8px 12px;
+      font-size: 1rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+    #jobFilter:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+    #jobFilter option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
     }
     @media (max-width: 600px) {
       #backBtn {
@@ -271,8 +379,8 @@
   <button id="backBtn"><i class="fas fa-arrow-left"></i></button>
   <div class="container" id="mainContainer">
     <div style="margin: 18px 0 8px 0; text-align: center;">
-      <label for="jobFilter" class="job-filter-label" style="font-weight:bold;margin-right:8px;">职业筛选:</label>
-      <select id="jobFilter" style="padding:4px 12px;border-radius:6px;font-size:1rem;">
+      <label for="jobFilter" class="job-filter-label" style="margin-right:8px;">职业筛选:</label>
+      <select id="jobFilter">
         <option value="">全部</option>
       </select>
     </div>

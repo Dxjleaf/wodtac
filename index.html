@@ -6,35 +6,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <!-- 深空回响风格CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/background.css">
+  <link rel="stylesheet" href="css/dialogue.css">
+  <link rel="stylesheet" href="css/continuous-sense.css">
+  <link rel="stylesheet" href="css/bgm-controls.css">
+  <link rel="stylesheet" href="css/term.css">
+  
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    /* 新添加的标题定位样式 */
+    /* 深空回响风格覆盖样式 */
+    body {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+    
+    /* 标题样式 - 深空回响风格 */
     .header h1 {
-      position: absolute; /* 使用绝对定位 */
-      left: 50%;           /* 水平居中 */
-      transform: translateX(-50%); /* 精确居中 */
-      top: calc(40px * var(--scale-factor)); /* 与body padding-top保持一致 */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: calc(40px * var(--scale-factor));
       font-size: calc(1.8rem * var(--scale-factor));
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      z-index: 10; /* 确保在背景效果之上 */
-      white-space: nowrap; /* 防止换行 */
+      color: #6366f1 !important;
+      text-shadow: 0 0 10px rgba(99, 102, 241, 0.5) !important;
+      z-index: 10;
+      white-space: nowrap;
+      font-weight: 700;
     }
 
     :root {
-      --primary: #4a6fa5;
-      --secondary: #6d9eeb;
-      --success: #4caf50;
-      --danger: #e74c3c;
-      --warning: #f39c12;
+      /* 深空回响主题色彩 */
+      --text-color: #ffffff;
+      --text-color-rgb: 255, 255, 255;
+      --accent-color: #6366f1;
+      --accent-color-rgb: 99, 102, 241;
+      --accent-secondary: #8b5cf6;
+      --accent-secondary-rgb: 139, 92, 246;
+      --success-color: #10b981;
+      --success-color-rgb: 16, 185, 129;
+      --warning-color: #f59e0b;
+      --warning-color-rgb: 245, 158, 11;
+      --danger-color: #ef4444;
+      --danger-color-rgb: 239, 68, 68;
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --border-color: #475569;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      
+      /* 保持原有功能变量 */
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
       --info: #3498db;
       --cloud: #8e44ad;
-      --dark: #2c3e50;
-      --light: #ecf0f1;
-      --gray: #95a5a6;
+      --dark: #1e293b;
+      --light: #ffffff;
+      --gray: #64748b;
       --piggy: #ff85a2;
       --scale-factor: 1;
       --border-radius: calc(6px * var(--scale-factor));
-      --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.1);
+      --box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3);
       --transition: all 0.3s ease;
       --content-width: 1000px;
     }
@@ -45,18 +87,24 @@
       padding: 0;
     }
     
-    /* 右侧固定列 - 类似左侧列 */
+    /* 右侧固定列 - 深空回响风格 */
     .right-fixed-column {
       position: fixed;
       top: 20px;
       right: 20px;
       width: 420px;
-      height: calc(100vh - 40px);
+      height: auto;
+      max-height: calc(100vh - 40px);
       z-index: 1000;
       overflow-y: auto;
       overflow-x: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      backdrop-filter: none !important;
+      box-shadow: none !important;
     }
     
     .right-fixed-column::-webkit-scrollbar {
@@ -81,11 +129,18 @@
     
     /* 桌面端隐藏原始右侧列，显示固定列 */
     .right-column {
-      display: none;
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
     }
     
     .right-fixed-column {
-      display: block;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      height: auto !important;
     }
     
     /* 性能优化：启用硬件加速 */
@@ -285,20 +340,41 @@
     }
     
     .config-block {
-      background: rgba(30, 40, 60, 0.8);
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
+      background: rgba(15, 23, 42, 0.8) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
       margin: calc(12px * var(--scale-factor)) 0;
       padding: calc(16px * var(--scale-factor));
-      transition: var(--transition);
+      transition: all 0.3s ease !important;
       position: relative;
       font-size: calc(0.9rem * var(--scale-factor));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(5px);
+      border: 1px solid rgba(99, 102, 241, 0.3) !important;
+      backdrop-filter: blur(10px) !important;
       width: 100%;
       max-width: 1000px;
       box-sizing: border-box;
       overflow: visible;
+    }
+    
+    .center-column {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      justify-content: flex-start;
+      align-items: center;
+      max-width: 1000px;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+    }
+    
+    .middle-column {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 1000px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     .config-block:hover {
@@ -416,15 +492,93 @@
       padding: calc(10px * var(--scale-factor));
     }
     
-    .copy-btn {
-      background: var(--primary);
+    .share-image-container {
       position: fixed;
-      bottom: calc(12px * var(--scale-factor));
+      bottom: calc(120px * var(--scale-factor));
       right: calc(12px * var(--scale-factor));
-      z-index: 100;
+      z-index: 99999;
+    }
+    
+    .share-image-btn {
+      background: var(--info);
       padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
       font-size: calc(0.95rem * var(--scale-factor));
       box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3);
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: calc(8px * var(--scale-factor));
+    }
+    
+    .dropdown-arrow {
+      font-size: calc(0.8rem * var(--scale-factor));
+      transition: transform 0.3s ease;
+    }
+    
+    .share-image-container.active .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+    
+    .share-image-dropdown {
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: calc(8px * var(--scale-factor));
+      background: var(--bg-secondary);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--border-radius);
+      box-shadow: 0 calc(-4px * var(--scale-factor)) calc(16px * var(--scale-factor)) rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      min-width: 200px;
+      z-index: 9999;
+    }
+    
+    .share-image-container.active .share-image-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .share-image-container:hover .share-image-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: calc(0.9rem * var(--scale-factor));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    
+    .dropdown-item:hover {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--accent-color);
+    }
+    
+    .dropdown-item:first-child {
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+    }
+    
+    .dropdown-item:last-child {
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
     
     .reset-btn {
@@ -432,10 +586,29 @@
       position: fixed;
       bottom: calc(60px * var(--scale-factor));
       right: calc(12px * var(--scale-factor));
-      z-index: 100;
+      z-index: 99998;
       padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
       font-size: calc(0.95rem * var(--scale-factor));
       box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3);
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .copy-btn {
+      background: var(--primary);
+      position: fixed;
+      bottom: calc(12px * var(--scale-factor));
+      right: calc(12px * var(--scale-factor));
+      z-index: 99997;
+      padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
+      font-size: calc(0.95rem * var(--scale-factor));
+      box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3);
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
     
     .comment-container {
@@ -559,13 +732,13 @@
     }
     
     .cloud-section {
-      background: rgba(30, 40, 60, 0.8);
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
+      background: rgba(15, 23, 42, 0.8) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
       margin: calc(12px * var(--scale-factor)) 0;
       padding: calc(12px * var(--scale-factor));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(5px);
+      border: 1px solid rgba(99, 102, 241, 0.3) !important;
+      backdrop-filter: blur(10px) !important;
     }
     
     .cloud-section h2 {
@@ -622,37 +795,38 @@
     }
     
     .tactic-item {
-      background: rgba(45, 35, 70, 0.7);
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.8)) !important;
       border-radius: var(--border-radius);
       padding: calc(16px * var(--scale-factor));
       margin-bottom: calc(12px * var(--scale-factor));
-      border-left: 3px solid var(--cloud);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border-left: 3px solid var(--accent-color) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
       transition: all 0.3s ease;
+      color: #ffffff !important;
     }
 
     .tactic-item:hover {
-      background: rgba(55, 45, 80, 0.8) !important;
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15)) !important;
       transform: translateY(-2px) !important;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-      border-left-color: #a855f7 !important;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3) !important;
+      border-left-color: var(--accent-secondary) !important;
     }
 
     /* 确保悬停效果在所有情况下都能工作 */
     .tactics-list .tactic-item:hover {
-      background: rgba(55, 45, 80, 0.8);
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15)) !important;
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      border-left-color: #a855f7;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+      border-left-color: var(--accent-secondary);
     }
 
     /* 移动端触摸悬停效果 */
     @media (hover: none) and (pointer: coarse) {
       .tactic-item:active {
-        background: rgba(55, 45, 80, 0.8) !important;
+        background: linear-gradient(145deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15)) !important;
         transform: translateY(-1px) !important;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.3) !important;
-        border-left-color: #a855f7 !important;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3) !important;
+        border-left-color: var(--accent-secondary) !important;
       }
     }
     
@@ -1592,71 +1766,10 @@
         padding-bottom: calc(4px * var(--scale-factor));
       }
       
-      .dynamic-row {
-        flex-direction: row;
-        align-items: center;
-        gap: calc(6px * var(--scale-factor));
-        flex-wrap: wrap;
-        overflow-x: visible;
-      }
-      
-      /* 站位配置行特殊处理 */
-      #positionConfig .dynamic-row {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 4px;
-        align-items: center;
-        width: 100%;
-      }
-      
-      #positionConfig .dynamic-row {
-        align-items: stretch !important;
-      }
-      
-      #positionConfig .dynamic-row > * {
-        flex: 1 1 120px !important;
-        min-width: 100px !important;
-        max-width: calc(50% - 4px) !important;
-        height: 40px !important;
-        box-sizing: border-box;
-      }
-      
-      #positionConfig .dynamic-row select {
-        min-width: 80px !important;
-        height: 40px !important;
-      }
-      
-      #positionConfig .dynamic-row input {
-        min-width: 120px !important;
-        height: 40px !important;
-      }
-      
-      #positionConfig .dynamic-row .delete-btn {
-        width: 40px !important;
-        min-width: 40px !important;
-        max-width: 40px !important;
-        height: 40px !important;
-        flex: 0 0 auto !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 8px !important;
-      }
-      
-      .tactics-container {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-        overflow: visible;
-      }
-    
-      .pre-turn, .post-turn {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-        overflow: visible;
-      }
-    
+      /* 移动端布局优化 */
+      .tactics-container,
+      .pre-turn, 
+      .post-turn,
       #floorConfig {
         width: 100% !important;
         max-width: 100% !important;
@@ -1664,87 +1777,80 @@
         overflow: visible;
       }
     
-      .tactics-container .dynamic-row {
+      /* 移动端动态行统一布局 - 自适应宽度 */
+      .dynamic-row,
+      .tactics-container .dynamic-row,
+      .pre-turn .dynamic-row,
+      .post-turn .dynamic-row {
         display: flex !important;
         flex-direction: row !important;
+        align-items: center !important;
         flex-wrap: nowrap !important;
-        gap: 2px;
+        overflow-x: visible !important;
+        gap: 3px !important;
         padding-bottom: 8px;
         margin: 8px 0;
-        align-items: center;
         max-width: 100%;
         box-sizing: border-box;
         width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
       }
       
-      .tactics-container .dynamic-row > * {
-        flex: 0 0 auto !important;
+      .tactics-container .dynamic-row > *,
+      .pre-turn .dynamic-row > *,
+      .post-turn .dynamic-row > * {
+        flex: 1 1 0 !important;
         min-width: 0 !important;
-        box-sizing: border-box;
+        max-width: none !important;
       }
       
-      .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 40px !important;
-        min-width: 40px !important;
-        max-width: 40px !important;
+      .tactics-container .dynamic-row input[placeholder="职业"],
+      .pre-turn .dynamic-row input[placeholder="职业"],
+      .post-turn .dynamic-row input[placeholder="职业"] {
+        flex: 0.8 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder^="技能"],
+      .pre-turn .dynamic-row input[placeholder^="技能"],
+      .post-turn .dynamic-row input[placeholder^="技能"] {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="位置"],
+      .pre-turn .dynamic-row input[placeholder="位置"],
+      .post-turn .dynamic-row input[placeholder="位置"] {
+        flex: 0.6 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+      
+      .tactics-container .dynamic-row select,
+      .pre-turn .dynamic-row select,
+      .post-turn .dynamic-row select {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+      
+      .tactics-container .dynamic-row .delete-btn,
+      .pre-turn .dynamic-row .delete-btn,
+      .post-turn .dynamic-row .delete-btn {
         flex: 0 0 auto !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder^="技能"] {
-        width: 55px !important;
-        min-width: 55px !important;
-        max-width: 55px !important;
-        flex: 0 0 auto !important;
-      }
-      
-      .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 35px !important;
-        min-width: 35px !important;
-        max-width: 35px !important;
-        flex: 0 0 auto !important;
-      }
-      
-      .tactics-container .dynamic-row select {
-        width: 60px !important;
-        min-width: 60px !important;
-        max-width: 60px !important;
-        flex: 0 0 auto !important;
-      }
-      
-      .tactics-container .dynamic-row {
-        align-items: stretch !important;
-      }
-      
-      .tactics-container .dynamic-row .delete-btn {
-        width: 30px !important;
-        min-width: 30px !important;
-        max-width: 30px !important;
-        height: 40px !important;
+        width: 32px !important;
+        min-width: 32px !important;
+        height: 32px;
         padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex: 0 0 auto !important;
-        box-sizing: border-box;
-        font-size: 12px;
-      }
-      
-      .tactics-container .dynamic-row input,
-      .tactics-container .dynamic-row select {
-        height: 40px !important;
-        padding: 0 4px;
-        font-size: 12px;
-        box-sizing: border-box;
       }
       
       /* 确保键盘导航正常工作 */
       .tactics-container .dynamic-row .nav-input {
         order: 0;
-        tabindex: 0;
         pointer-events: auto;
       }
       
@@ -1762,13 +1868,127 @@
         font-size: 10px;
       }
       
-      .tactics-container .dynamic-row .delete-btn {
-        order: 10;
+      /* 楼层配置的移动端优化 */
+      .config-block .dynamic-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        overflow-x: visible !important;
+        gap: 4px !important;
+        padding-bottom: 8px;
+        margin: 8px 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        width: 100%;
+      }
+      
+      .config-block .dynamic-row input[placeholder*="楼层"] {
+        flex: 1.2 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 36px !important;
+        padding: 0 8px !important;
+        font-size: 11px !important;
+        border-radius: 6px !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+        color: #fff !important;
+      }
+      
+      .config-block .dynamic-row .copy-btn-sm {
         flex: 0 0 auto !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: var(--info) !important;
+        border: 1px solid rgba(52, 152, 219, 0.3) !important;
+      }
+      
+      .config-block .dynamic-row .delete-btn {
+        flex: 0 0 auto !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: var(--danger-color) !important;
+        border: 1px solid rgba(239, 68, 68, 0.3) !important;
+      }
+      
+      /* 站位配置的移动端优化 */
+      #positionConfig .dynamic-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        overflow-x: visible !important;
+        gap: 4px !important;
+        padding-bottom: 8px;
+        margin: 8px 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        width: 100%;
+      }
+      
+      #positionConfig .dynamic-row select {
+        flex: 0.8 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 36px !important;
+        padding: 0 8px !important;
+        font-size: 11px !important;
+        border-radius: 6px !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+        color: #fff !important;
+      }
+      
+      #positionConfig .dynamic-row input[placeholder*="职业"] {
+        flex: 1.5 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 36px !important;
+        padding: 0 8px !important;
+        font-size: 11px !important;
+        border-radius: 6px !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+        color: #fff !important;
+      }
+      
+      #positionConfig .dynamic-row .delete-btn {
+        flex: 0 0 auto !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: var(--danger-color) !important;
+        border: 1px solid rgba(239, 68, 68, 0.3) !important;
+      }
+      
+      .tactics-container .dynamic-row input,
+      .tactics-container .dynamic-row select {
+        height: 36px;
+        padding: 0 8px;
+        font-size: 11px;
       }
       
       .tactics-container .dynamic-row ::placeholder {
-        font-size: 11px;
+        font-size: 9px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1791,73 +2011,9 @@
       
       input, select, textarea, button {
         width: 100% !important;
-        min-width: 0 !important;
+        min-width: 100% !important;
         padding: calc(10px * var(--scale-factor));
         font-size: calc(0.9rem * var(--scale-factor));
-      }
-      
-      /* 楼层标题行特殊处理 */
-      .config-block .dynamic-row {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 4px;
-        align-items: stretch;
-        width: 100%;
-      }
-      
-      .config-block .dynamic-row > input {
-        flex: 1 1 auto !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
-        height: 40px !important;
-        box-sizing: border-box;
-        width: 100% !important;
-      }
-      
-      .config-block .dynamic-row > button {
-        flex: 0 0 auto !important;
-        min-width: 40px !important;
-        height: 40px !important;
-        padding: 8px !important;
-        white-space: nowrap;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .config-block .dynamic-row > .copy-btn-sm {
-        min-width: 60px !important;
-        font-size: 12px !important;
-      }
-      
-      .config-block .dynamic-row > .delete-btn {
-        min-width: 40px !important;
-        background: var(--danger) !important;
-      }
-      
-      /* 楼层输入框单独占一行 */
-      .config-block .dynamic-row > input[placeholder*="楼层"] {
-        order: -1;
-        flex-basis: 100% !important;
-        margin-bottom: 4px;
-      }
-      
-      /* 按钮组在第二行 */
-      .config-block .dynamic-row > .copy-btn-sm,
-      .config-block .dynamic-row > .delete-btn {
-        order: 1;
-        margin-left: 0 !important;
-      }
-      
-      /* 按钮组容器 */
-      .config-block .dynamic-row {
-        justify-content: flex-start;
-      }
-      
-      /* 确保按钮紧挨着排列 */
-      .config-block .dynamic-row > .copy-btn-sm {
-        margin-right: 4px !important;
       }
       
       .spoiler-btn {
@@ -1870,16 +2026,6 @@
         padding: calc(10px * var(--scale-factor));
       }
       
-      .copy-btn {
-        bottom: calc(8px * var(--scale-factor));
-        right: calc(8px * var(--scale-factor));
-        padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
-        font-size: calc(0.8rem * var(--scale-factor));
-        width: auto !important;
-        min-width: unset !important;
-        white-space: nowrap;
-      }
-      
       .reset-btn {
         bottom: calc(8px * var(--scale-factor)) !important;
         left: calc(8px * var(--scale-factor)) !important;
@@ -1889,6 +2035,52 @@
         width: auto !important;
         min-width: unset !important;
         white-space: nowrap;
+        border-radius: var(--border-radius) !important;
+        box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3) !important;
+        z-index: 99998 !important;
+      }
+      
+      .copy-btn {
+        bottom: calc(8px * var(--scale-factor));
+        right: calc(8px * var(--scale-factor));
+        padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
+        font-size: calc(0.8rem * var(--scale-factor));
+        width: auto !important;
+        min-width: unset !important;
+        white-space: nowrap;
+        border-radius: var(--border-radius) !important;
+        box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3) !important;
+        z-index: 99999 !important;
+      }
+      
+      .share-image-container {
+        bottom: calc(8px * var(--scale-factor));
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 99999 !important;
+      }
+      
+      .share-image-btn {
+        padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
+        font-size: calc(0.8rem * var(--scale-factor));
+        width: auto !important;
+        min-width: unset !important;
+        white-space: nowrap;
+        border-radius: var(--border-radius) !important;
+        box-shadow: 0 calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(0,0,0,0.3) !important;
+      }
+      
+      .share-image-dropdown {
+        min-width: 160px;
+        right: 0;
+        bottom: 100%;
+        margin-bottom: calc(8px * var(--scale-factor));
+        z-index: 99999;
+      }
+      
+      .dropdown-item {
+        padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
+        font-size: calc(0.75rem * var(--scale-factor));
       }
       
       .mobile-controls {
@@ -1966,40 +2158,134 @@
       .mobile-search-container {
         display: none;
       }
+      
+      /* 桌面端战术行输入框宽度限制 */
+      .tactics-container .dynamic-row input,
+      .pre-turn .dynamic-row input,
+      .post-turn .dynamic-row input,
+      .tactics-container .dynamic-row select,
+      .pre-turn .dynamic-row select,
+      .post-turn .dynamic-row select {
+        max-width: 120px !important;
+        min-width: 0 !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="职业"],
+      .pre-turn .dynamic-row input[placeholder="职业"],
+      .post-turn .dynamic-row input[placeholder="职业"] {
+        max-width: 100px !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder^="技能"],
+      .pre-turn .dynamic-row input[placeholder^="技能"],
+      .post-turn .dynamic-row input[placeholder^="技能"] {
+        max-width: 150px !important;
+      }
+      
+      .tactics-container .dynamic-row input[placeholder="位置"],
+      .pre-turn .dynamic-row input[placeholder="位置"],
+      .post-turn .dynamic-row input[placeholder="位置"] {
+        max-width: 80px !important;
+      }
+      
+      .tactics-container .dynamic-row select,
+      .pre-turn .dynamic-row select,
+      .post-turn .dynamic-row select {
+        max-width: 120px !important;
+      }
     }
     
     @media (max-width: 400px) {
       .tactics-container .dynamic-row input,
-      .tactics-container .dynamic-row select {
-        height: 36px;
-        font-size: 11px;
+      .tactics-container .dynamic-row select,
+      .pre-turn .dynamic-row input,
+      .pre-turn .dynamic-row select,
+      .post-turn .dynamic-row input,
+      .post-turn .dynamic-row select {
+        height: 32px;
+        font-size: 10px;
+        padding: 0 4px;
       }
       
-      .tactics-container .dynamic-row input[placeholder="职业"] {
-        width: 60px !important;
-        min-width: 60px !important;
-        max-width: 60px !important;
+      .tactics-container .dynamic-row input[placeholder="职业"],
+      .pre-turn .dynamic-row input[placeholder="职业"],
+      .post-turn .dynamic-row input[placeholder="职业"] {
+        flex: 0.7 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
       }
       
-      .tactics-container .dynamic-row input[placeholder^="技能"] {
-        width: 80px !important;
-        min-width: 80px !important;
+      .tactics-container .dynamic-row input[placeholder^="技能"],
+      .pre-turn .dynamic-row input[placeholder^="技能"],
+      .post-turn .dynamic-row input[placeholder^="技能"] {
+        flex: 0.9 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
       }
       
-      .tactics-container .dynamic-row input[placeholder="位置"] {
-        width: 50px !important;
-        min-width: 50px !important;
+      .tactics-container .dynamic-row input[placeholder="位置"],
+      .pre-turn .dynamic-row input[placeholder="位置"],
+      .post-turn .dynamic-row input[placeholder="位置"] {
+        flex: 0.5 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
       }
       
-      .tactics-container .dynamic-row select {
-        width: 90px !important;
-        min-width: 90px !important;
+      .tactics-container .dynamic-row select,
+      .pre-turn .dynamic-row select,
+      .post-turn .dynamic-row select {
+        flex: 0.9 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
       }
       
-      .tactics-container .dynamic-row .delete-btn {
-        width: 36px !important;
-        min-width: 36px !important;
-        height: 36px;
+      .tactics-container .dynamic-row .delete-btn,
+      .pre-turn .dynamic-row .delete-btn,
+      .post-turn .dynamic-row .delete-btn {
+        width: 28px !important;
+        min-width: 28px !important;
+        height: 28px;
+      }
+      
+      /* 小屏幕楼层配置优化 */
+      .config-block .dynamic-row input[placeholder*="楼层"] {
+        flex: 1.1 1 0 !important;
+        height: 32px !important;
+        font-size: 10px !important;
+        padding: 0 4px !important;
+      }
+      
+      .config-block .dynamic-row .copy-btn-sm {
+        width: 32px !important;
+        min-width: 32px !important;
+        height: 32px !important;
+      }
+      
+      .config-block .dynamic-row .delete-btn {
+        width: 32px !important;
+        min-width: 32px !important;
+        height: 32px !important;
+      }
+      
+      /* 小屏幕站位配置优化 */
+      #positionConfig .dynamic-row select {
+        flex: 0.7 1 0 !important;
+        height: 32px !important;
+        font-size: 10px !important;
+        padding: 0 4px !important;
+      }
+      
+      #positionConfig .dynamic-row input[placeholder*="职业"] {
+        flex: 1.3 1 0 !important;
+        height: 32px !important;
+        font-size: 10px !important;
+        padding: 0 4px !important;
+      }
+      
+      #positionConfig .dynamic-row .delete-btn {
+        width: 32px !important;
+        min-width: 32px !important;
+        height: 32px !important;
       }
       
       .mobile-hint {
@@ -2073,13 +2359,13 @@
         flex: 1 1 auto;
         display: flex;
         flex-direction: column;
-      height: auto;
-      background: rgba(30, 40, 60, 0.8);
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      padding: calc(12px * var(--scale-factor));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(5px);
+        height: auto;
+        background: rgba(15, 23, 42, 0.8) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+        padding: calc(12px * var(--scale-factor));
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        backdrop-filter: blur(10px) !important;
       }
       .tactics-list {
         flex: 1 1 auto;
@@ -2149,6 +2435,11 @@
         min-width: 0;
         width: 100%;
         margin-top: 20px;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: static !important;
+        left: auto !important;
       }
       
       .mobile-only {
@@ -2157,6 +2448,8 @@
       
       .right-fixed-column {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
       }
       
       .right-column {
@@ -2172,8 +2465,8 @@
       }
       
       .cloud-section {
-        background: rgba(40, 30, 60, 0.8) !important;
-        border: 1px solid rgba(142, 68, 173, 0.4) !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
         height: auto !important;
       }
       
@@ -2183,35 +2476,36 @@
       }
       
       /* 移动端标签字体优化 */
-      .tactic-tags {
-        font-size: calc(0.8rem * var(--scale-factor)) !important;
-        padding: calc(3px * var(--scale-factor)) calc(8px * var(--scale-factor)) !important;
+      .tactic-tags,
+      .tactic-item.compact-view .tactic-tags {
         line-height: 1.3 !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         max-width: 100% !important;
+      }
+      
+      .tactic-tags {
+        font-size: calc(0.8rem * var(--scale-factor)) !important;
+        padding: calc(3px * var(--scale-factor)) calc(8px * var(--scale-factor)) !important;
       }
       
       .tactic-item.compact-view .tactic-tags {
         font-size: 11px !important;
-        line-height: 1.3 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        max-width: 100% !important;
       }
       
       /* 移动端战术名称布局优化 */
-      .tactic-name {
+      .tactic-name,
+      .tactic-item.compact-view .tactic-name {
         display: flex !important;
         flex-direction: column !important;
+      }
+      
+      .tactic-name {
         gap: calc(3px * var(--scale-factor)) !important;
       }
       
       .tactic-item.compact-view .tactic-name {
-        display: flex !important;
-        flex-direction: column !important;
         gap: 3px !important;
       }
       
@@ -2250,7 +2544,7 @@
       animation: fadeIn 0.3s ease-out;
     }
     
-    .scale-control, .copy-btn, .reset-btn {
+    .scale-control, .copy-btn, .reset-btn, .share-image-btn {
       --scale-factor: 1 !important;
     }
     .scale-control label,
@@ -2258,7 +2552,7 @@
     .scale-value {
       font-size: 13px !important;
     }
-    .copy-btn, .reset-btn {
+    .copy-btn, .reset-btn, .share-image-btn {
       font-size: 0.95rem !important;
       padding: 12px 16px !important;
       border-radius: var(--border-radius) !important;
@@ -2295,17 +2589,68 @@
       position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.35); z-index: 99999; display: flex; align-items: center; justify-content: center;
     }
     .modal-edit {
-      background: #232b3a; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.25); padding: 24px 24px 18px 24px; min-width: 340px; max-width: 96vw; max-height: 90vh; overflow-y: auto; color: #fff; position: relative;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.9)) !important; 
+      border-radius: 12px !important; 
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important; 
+      padding: 24px 24px 18px 24px !important; 
+      min-width: 340px !important; 
+      max-width: 96vw !important; 
+      max-height: 90vh !important; 
+      overflow-y: auto !important; 
+      color: #fff !important; 
+      position: relative !important;
+      border: 1px solid rgba(99, 102, 241, 0.3) !important;
+      backdrop-filter: blur(10px) !important;
     }
-    .modal-edit h2 { color: #6d9eeb; font-size: 1.2rem; margin-bottom: 10px; }
+    .modal-edit h2 { color: var(--accent-color) !important; font-size: 1.2rem; margin-bottom: 10px; text-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
     .modal-edit label { font-weight: 600; margin-top: 10px; display: block; }
-    .modal-edit textarea, .modal-edit input { width: 100%; margin: 4px 0 10px 0; border-radius: 6px; border: 1px solid #444; background: #1a2233; color: #fff; padding: 6px 10px; }
-    .modal-edit table { width: 100%; margin-bottom: 10px; background: rgba(30,40,60,0.7); border-radius: 8px; font-size: 13px; }
+    .modal-edit textarea, .modal-edit input { 
+      width: 100% !important; 
+      margin: 4px 0 10px 0 !important; 
+      border-radius: 6px !important; 
+      border: 1px solid rgba(99, 102, 241, 0.3) !important; 
+      background: rgba(15, 23, 42, 0.8) !important; 
+      color: #fff !important; 
+      padding: 6px 10px !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .modal-edit textarea:focus, .modal-edit input:focus {
+      border-color: var(--accent-color) !important;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+      outline: none !important;
+    }
+    .modal-edit table { 
+      width: 100% !important; 
+      margin-bottom: 10px !important; 
+      background: rgba(15, 23, 42, 0.6) !important; 
+      border-radius: 8px !important; 
+      font-size: 13px !important;
+      border: 1px solid rgba(99, 102, 241, 0.2) !important;
+    }
     .modal-edit th, .modal-edit td { padding: 4px 6px; text-align: left; }
-    .modal-edit th { color: #b0a0cc; }
-    .modal-edit .btn { background: #6d9eeb; color: #fff; border: none; border-radius: 6px; padding: 4px 10px; margin: 0 2px; cursor: pointer; font-size: 13px; }
-    .modal-edit .btn-danger { background: #e74c3c; }
-    .modal-edit .btn-add { background: #4caf50; }
+    .modal-edit th { color: var(--accent-color) !important; }
+    .modal-edit .btn { 
+      background: var(--accent-color) !important; 
+      color: #fff !important; 
+      border: none !important; 
+      border-radius: 6px !important; 
+      padding: 4px 10px !important; 
+      margin: 0 2px !important; 
+      cursor: pointer !important; 
+      font-size: 13px !important;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    .modal-edit .btn:hover {
+      background: var(--accent-secondary) !important;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4) !important;
+      transform: translateY(-1px) !important;
+    }
+    
+    .modal-edit .btn-danger { background: var(--danger-color) !important; }
+    .modal-edit .btn-add { background: var(--success-color) !important; }
     .modal-edit .modal-actions { text-align: right; margin-top: 10px; }
     .modal-edit .close-btn { position: absolute; right: 12px; top: 10px; background: none; color: #aaa; font-size: 20px; border: none; cursor: pointer; }
     
@@ -2721,6 +3066,8 @@
       background: #e5e5e5 !important;
       color: #222 !important;
       font-family: '微软雅黑', 'SimSun', Arial, sans-serif !important;
+      --primary: #1a397b !important;
+      --secondary: #4a6fa5 !important;
     }
     body.office-theme *,
     body.office-theme *:before,
@@ -2797,7 +3144,8 @@
     body.office-theme button,
     body.office-theme .add-btn,
     body.office-theme .copy-btn,
-    body.office-theme .reset-btn {
+    body.office-theme .reset-btn,
+    body.office-theme .share-image-btn {
       background: linear-gradient(to bottom, #f5f5f5 60%, #e0e0e0 100%) !important;
       color: #1a397b !important;
       border: 1.5px solid #b0c4de !important;
@@ -2806,7 +3154,8 @@
     body.office-theme button:active,
     body.office-theme .add-btn:active,
     body.office-theme .copy-btn:active,
-    body.office-theme .reset-btn:active {
+    body.office-theme .reset-btn:active,
+    body.office-theme .share-image-btn:active {
       background: #d0d0d0 !important;
     }
     body.office-theme .delete-btn,
@@ -2919,6 +3268,35 @@
     }
     body.office-theme .modal-edit .close-btn {
       color: #1a397b !important;
+    }
+    
+    /* 修复office主题中残留的紫色元素 */
+    body.office-theme .modal-edit h2 {
+      color: #1a397b !important;
+      text-shadow: none !important;
+    }
+    body.office-theme .modal-edit th {
+      color: #1a397b !important;
+    }
+    body.office-theme .modal-edit .btn {
+      background: #1a397b !important;
+      box-shadow: 0 2px 8px rgba(26, 57, 123, 0.3) !important;
+    }
+    body.office-theme .modal-edit .btn:hover {
+      background: #2c5aa0 !important;
+      box-shadow: 0 4px 12px rgba(26, 57, 123, 0.4) !important;
+    }
+    body.office-theme .modal-edit textarea:focus,
+    body.office-theme .modal-edit input:focus {
+      border-color: #1a397b !important;
+      box-shadow: 0 0 0 2px rgba(26, 57, 123, 0.2) !important;
+    }
+    body.office-theme .modal-edit table {
+      border: 1px solid rgba(26, 57, 123, 0.2) !important;
+    }
+    body.office-theme .modal-edit textarea,
+    body.office-theme .modal-edit input {
+      border: 1px solid rgba(26, 57, 123, 0.3) !important;
     }
     @media (max-width: 600px) {
       #themeToggleBtn {
@@ -3190,6 +3568,49 @@
     body.office-theme .tags-section {
       background: #fff !important;
     }
+    
+    /* Office主题滑动条设置 */
+    body.office-theme::-webkit-scrollbar-thumb,
+    body.office-theme .dungeon-detail::-webkit-scrollbar-thumb,
+    body.office-theme .dungeon-detail table::-webkit-scrollbar-thumb,
+    body.office-theme .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar-thumb,
+    body.office-theme .dungeon-detail div[style*='overflow-y']::-webkit-scrollbar-thumb,
+    body.office-theme .modal-edit::-webkit-scrollbar-thumb,
+    body.office-theme .modal-edit table::-webkit-scrollbar-thumb,
+    body.office-theme .modal-edit div[style*='overflow-x']::-webkit-scrollbar-thumb,
+    body.office-theme .modal-edit div[style*='overflow-y']::-webkit-scrollbar-thumb,
+    body.office-theme .dungeon-results::-webkit-scrollbar-thumb,
+    body.office-theme .tactics-list::-webkit-scrollbar-thumb,
+    body.office-theme .cloud-section::-webkit-scrollbar-thumb,
+    body.office-theme table::-webkit-scrollbar-thumb,
+    body.office-theme div[style*='overflow-y']::-webkit-scrollbar-thumb,
+    body.office-theme .rooms-container::-webkit-scrollbar-thumb,
+    body.office-theme .left-column::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, #1a397b, #4a6fa5) !important;
+      border-radius: 6px;
+      min-height: 40px;
+      min-width: 8px;
+    }
+    
+    body.office-theme::-webkit-scrollbar-track,
+    body.office-theme .dungeon-detail::-webkit-scrollbar-track,
+    body.office-theme .dungeon-detail table::-webkit-scrollbar-track,
+    body.office-theme .dungeon-detail div[style*='overflow-x']::-webkit-scrollbar-track,
+    body.office-theme .dungeon-detail div[style*='overflow-y']::-webkit-scrollbar-track,
+    body.office-theme .modal-edit::-webkit-scrollbar-track,
+    body.office-theme .modal-edit table::-webkit-scrollbar-track,
+    body.office-theme .modal-edit div[style*='overflow-x']::-webkit-scrollbar-track,
+    body.office-theme .modal-edit div[style*='overflow-y']::-webkit-scrollbar-track,
+    body.office-theme .dungeon-results::-webkit-scrollbar-track,
+    body.office-theme .tactics-list::-webkit-scrollbar-track,
+    body.office-theme .cloud-section::-webkit-scrollbar-track,
+    body.office-theme table::-webkit-scrollbar-track,
+    body.office-theme div[style*='overflow-y']::-webkit-scrollbar-track,
+    body.office-theme .rooms-container::-webkit-scrollbar-track,
+    body.office-theme .left-column::-webkit-scrollbar-track {
+      background: #f0f4f8 !important;
+      border-radius: 6px;
+    }
     @media (max-width: 600px) {
       #themeToggleBtnDesktop { display: none !important; }
       #themeToggleBtnMobile { display: inline-flex !important; }
@@ -3318,8 +3739,6 @@
       line-height: 1.3;
     }
     
-
-    
     .tactic-item.compact-view .actions button {
       padding: 4px 8px;
       font-size: 11px;
@@ -3337,14 +3756,6 @@
       align-items: center;
       gap: 8px;
       row-gap: 2px;
-    }
-    
-    /* 确保info-row贴左侧显示 */
-    .tactic-item.compact-view .info-row {
-      justify-content: flex-start !important;
-      display: flex !important;
-      align-items: center !important;
-      width: 100% !important;
     }
     .tactic-item.compact-view .tactic-name,
     .tactic-item.compact-view .tactic-tags,
@@ -3611,6 +4022,21 @@
   <button onclick="copyTactics()" class="copy-btn">
     <i class="fas fa-copy"></i> 复制配置
   </button>
+  
+        <div class="share-image-container">
+          <button onclick="toggleShareDropdown()" class="share-image-btn">
+            <i class="fas fa-image"></i> 生成分享图
+            <i class="fas fa-chevron-down dropdown-arrow"></i>
+          </button>
+          <div class="share-image-dropdown" id="shareDropdown">
+            <button onclick="generateShareImage('clipboard'); hideShareDropdown();" class="dropdown-item">
+              <i class="fas fa-clipboard"></i> 复制到剪贴板
+            </button>
+            <button onclick="generateShareImage('download'); hideShareDropdown();" class="dropdown-item">
+              <i class="fas fa-download"></i> 下载文件
+            </button>
+          </div>
+        </div>
 
   <!-- 搜索筛选弹窗 -->
   <div id="searchFilterModal" class="search-filter-modal">
@@ -4549,7 +4975,7 @@
         <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
         <div class="dynamic-row" style="align-items:center;">
           <input placeholder="楼层（例：F1）">
-          <button class="copy-btn-sm" title="复制本层" style="background:var(--info);padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
+          <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
           <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
             <i class="fas fa-trash"></i>
           </button>
@@ -4600,7 +5026,6 @@
       `;
       container.appendChild(row);
     }
-
 
 
     function addTacticRow(btn, type) {
@@ -4838,6 +5263,12 @@
         }
         const data = await response.json();
         tacticsData = data.tactics || [];
+        
+        // 自动加载时强制显示所有战术
+        if (!forceAll) {
+          showAllTactics = true;
+        }
+        
         renderTacticsList(tacticsData);
         showStatus(`成功加载 ${tacticsData.length} 个战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'success');
         const mobileSearchInput = document.getElementById('mobileSearchInput');
@@ -5405,7 +5836,7 @@
           <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
           <div class="dynamic-row" style="align-items:center;">
             <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
-            <button class="copy-btn-sm" title="复制本层" style="background:var(--info);padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
+            <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
             <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
               <i class="fas fa-trash"></i>
             </button>
@@ -5454,10 +5885,10 @@
           row.className = 'dynamic-row';
           row.innerHTML = `
             <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-            <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
-            <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
-            <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
-            <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+            <input placeholder="职业" value="${turn.job || ''}" class="nav-input" data-nav-group="tactic">
+            <input placeholder="技能/道具1" value="${turn.skill1 || ''}" class="nav-input" data-nav-group="tactic">
+            <input placeholder="技能/道具2" value="${turn.skill2 || ''}" class="nav-input" data-nav-group="tactic">
+            <input placeholder="位置" value="${turn.position || ''}" class="nav-input" data-nav-group="tactic">
             <select class="nav-input" data-nav-group="tactic">
               <option value="" disabled ${!turn.condition}>条件</option>
               <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
@@ -5515,10 +5946,10 @@
           row.className = 'dynamic-row';
           row.innerHTML = `
             <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-            <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
-            <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
-            <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
-            <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+            <input placeholder="职业" value="${turn.job || ''}" class="nav-input" data-nav-group="tactic">
+            <input placeholder="技能/道具1" value="${turn.skill1 || ''}" class="nav-input" data-nav-group="tactic">
+            <input placeholder="技能/道具2" value="${turn.skill2 || ''}" class="nav-input" data-nav-group="tactic">
+            <input placeholder="位置" value="${turn.position || ''}" class="nav-input" data-nav-group="tactic">
             <select class="nav-input" data-nav-group="tactic">
               <option value="" disabled ${!turn.condition}>条件</option>
               <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
@@ -5620,8 +6051,8 @@
         return;
       }
       const middle = document.querySelector('.middle-column');
-      const right = document.querySelector('.right-column');
-      if (!middle || !right) return;
+      const rightFixed = document.querySelector('.right-fixed-column');
+      if (!middle || !rightFixed) return;
       // 只取三块config-block高度+margin
       const blocks = middle.querySelectorAll('.config-block');
       let total = 0;
@@ -5631,10 +6062,9 @@
       });
       // 限制最大高度不超过CSS设置的800px
       const maxHeight = Math.min(total + 310, 800);
-      right.style.height = maxHeight + 'px';
+      rightFixed.style.height = maxHeight + 'px';
     }
     window.addEventListener('resize', setCloudSectionHeight);
-    window.addEventListener('DOMContentLoaded', setCloudSectionHeight);
     // 关键操作后也触发
     setTimeout(setCloudSectionHeight, 500);
     
@@ -5930,11 +6360,18 @@
       }
     }
     // 页面初始化后也要执行一次
-    window.onload = function() {
+    window.onload = async function() {
       if (isOldIEorEdge()) {
         alert('检测到您正在使用不受支持的浏览器。请使用 Chrome、Firefox、Edge(Chromium) 或 Safari 浏览器以获得最佳体验！');
       }
-      init();
+      
+      try {
+        await init();
+        console.log('战术库自动加载完成');
+      } catch (error) {
+        console.error('战术库自动加载失败:', error);
+      }
+      
       setTimeout(initSortableForAllTacticsContainers, 0);
       setTimeout(initSortableForFloors, 0);
       
@@ -6183,7 +6620,7 @@
             <span class="floor-drag-handle"><i class="fas fa-grip-vertical"></i></span>
             <div class="dynamic-row" style="align-items:center;">
               <input placeholder="楼层（例：F1）" value="${floor.name || ''}">
-              <button class="copy-btn-sm" title="复制本层" style="background:var(--info);padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
+              <button class="copy-btn-sm" title="复制本层" style="background:var(--info);margin-left:6px;padding:6px 10px;min-width:unset;" onclick="copyFloorRow(this)"><i class='fas fa-copy'></i></button>
               <button class="delete-btn" onclick="this.parentElement.parentElement.remove(); floorCount--; updateCounters()">
                 <i class="fas fa-trash"></i>
               </button>
@@ -6234,10 +6671,10 @@
             row.className = 'dynamic-row';
             row.innerHTML = `
               <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-              <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
-              <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
-              <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
-              <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+              <input placeholder="职业" value="${turn.job || ''}" class="nav-input" data-nav-group="tactic">
+              <input placeholder="技能/道具1" value="${turn.skill1 || ''}" class="nav-input" data-nav-group="tactic">
+              <input placeholder="技能/道具2" value="${turn.skill2 || ''}" class="nav-input" data-nav-group="tactic">
+              <input placeholder="位置" value="${turn.position || ''}" class="nav-input" data-nav-group="tactic">
               <select class="nav-input" data-nav-group="tactic">
                 <option value="" disabled ${!turn.condition}>条件</option>
                 <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
@@ -6282,6 +6719,7 @@
                   }
                 }
                 
+                // Backspace在空时跳到前一个输入框
                 if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
                   e.preventDefault();
                   inputs[index - 1].focus();
@@ -6296,10 +6734,10 @@
             row.className = 'dynamic-row';
             row.innerHTML = `
               <span class="tactic-drag-handle"><i class="fas fa-grip-lines"></i></span>
-              <input placeholder="职业" class="nav-input" data-nav-group="tactic" value="${turn.job || ''}">
-              <input placeholder="技能/道具1" class="nav-input" data-nav-group="tactic" value="${turn.skill1 || ''}">
-              <input placeholder="技能/道具2" class="nav-input" data-nav-group="tactic" value="${turn.skill2 || ''}">
-              <input placeholder="位置" class="nav-input" data-nav-group="tactic" value="${turn.position || ''}">
+              <input placeholder="职业" value="${turn.job || ''}" class="nav-input" data-nav-group="tactic">
+              <input placeholder="技能/道具1" value="${turn.skill1 || ''}" class="nav-input" data-nav-group="tactic">
+              <input placeholder="技能/道具2" value="${turn.skill2 || ''}" class="nav-input" data-nav-group="tactic">
+              <input placeholder="位置" value="${turn.position || ''}" class="nav-input" data-nav-group="tactic">
               <select class="nav-input" data-nav-group="tactic">
                 <option value="" disabled ${!turn.condition}>条件</option>
                 <option ${turn.condition === '默认' ? 'selected' : ''}>默认</option>
@@ -6344,6 +6782,7 @@
                   }
                 }
                 
+                // Backspace在空时跳到前一个输入框
                 if ((e.key === 'Backspace' || e.key === 'Delete') && this.value === '' && index > 0) {
                   e.preventDefault();
                   inputs[index - 1].focus();
@@ -6380,15 +6819,7 @@
       observer.observe(document.getElementById('floorConfig'), { childList: true, subtree: true });
     }
     // === 页面初始化时自动恢复 ===
-    window.addEventListener('DOMContentLoaded', function() {
-      if (localStorage.getItem(getDraftKey())) {
-        loadDraftFromLocal();
-      } else {
-        addPositionRow();
-        addFloor();
-      }
-      bindDraftAutoSave();
-    });
+    // 将在统一的DOMContentLoaded事件中处理
     // === 重置时清除缓存 ===
     window.oldResetConfig = window.resetConfig;
     window.resetConfig = function() {
@@ -6548,14 +6979,105 @@
 
     // JS绑定两个按钮
     (function(){
-      function setTheme(theme) {
-        if(theme === 'office') {
-          document.body.classList.add('office-theme');
-          localStorage.setItem('theme','office');
-        } else {
-          document.body.classList.remove('office-theme');
-          localStorage.setItem('theme','dark');
+      function setTheme(theme, skipAnimation = false) {
+        // 如果跳过动画，直接设置主题
+        if (skipAnimation) {
+          if(theme === 'office') {
+            document.body.classList.add('office-theme');
+            localStorage.setItem('theme','office');
+          } else {
+            document.body.classList.remove('office-theme');
+            localStorage.setItem('theme','dark');
+          }
+          return;
         }
+        
+        // 获取当前主题状态
+        const isCurrentlyOffice = document.body.classList.contains('office-theme');
+        const isSwitchingToOffice = theme === 'office';
+        
+        // 创建渐变遮罩层
+        const overlay = document.createElement('div');
+        
+        // 使用更平滑的渐变效果
+        let gradientColors;
+        if (isSwitchingToOffice) {
+          // 切换到办公主题：平滑的白色渐变
+          gradientColors = `
+            linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.95) 0%, 
+              rgba(255, 255, 255, 0.8) 30%, 
+              rgba(255, 255, 255, 0.6) 60%, 
+              rgba(255, 255, 255, 0.3) 80%, 
+              rgba(255, 255, 255, 0.1) 100%)`;
+        } else {
+          // 切换到深色主题：平滑的黑色渐变
+          gradientColors = `
+            linear-gradient(135deg, 
+              rgba(0, 0, 0, 0.95) 0%, 
+              rgba(0, 0, 0, 0.8) 30%, 
+              rgba(0, 0, 0, 0.6) 60%, 
+              rgba(0, 0, 0, 0.3) 80%, 
+              rgba(0, 0, 0, 0.1) 100%)`;
+        }
+        
+        overlay.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: ${gradientColors};
+          z-index: 999999;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          will-change: opacity;
+          transform: translateZ(0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          -webkit-transform: translateZ(0);
+        `;
+        document.body.appendChild(overlay);
+        
+        // 使用双重requestAnimationFrame确保最佳性能
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            overlay.style.opacity = '1';
+          });
+        });
+        
+        // 更慢但更平滑的切换时机
+        setTimeout(() => {
+          if(theme === 'office') {
+            document.body.classList.add('office-theme');
+            localStorage.setItem('theme','office');
+          } else {
+            document.body.classList.remove('office-theme');
+            localStorage.setItem('theme','dark');
+          }
+        }, 300);
+        
+        // 优化动画结束，使用更平滑的淡出
+        setTimeout(() => {
+          // 添加淡出动画的transition
+          overlay.style.transition = 'opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          
+          // 使用requestAnimationFrame确保在下一帧开始淡出
+          requestAnimationFrame(() => {
+            overlay.style.opacity = '0';
+            
+            // 等待淡出动画完成后再移除元素
+            setTimeout(() => {
+              // 使用requestAnimationFrame确保在渲染完成后移除
+              requestAnimationFrame(() => {
+                if (overlay.parentNode) {
+                  overlay.parentNode.removeChild(overlay);
+                }
+              });
+            }, 400);
+          });
+        }, 600);
       }
       var btnDesktop = document.getElementById('themeToggleBtnDesktop');
       var btnMobile = document.getElementById('themeToggleBtnMobile');
@@ -6568,17 +7090,345 @@
         if(document.body.classList.contains('office-theme')) setTheme('dark');
         else setTheme('office');
       };
-      if(localStorage.getItem('theme')==='office') setTheme('office');
+      if(localStorage.getItem('theme')==='office') setTheme('office', true);
     })();
+
+    // 控制分享图片下拉菜单
+    function toggleShareDropdown() {
+      const container = document.querySelector('.share-image-container');
+      const dropdown = document.getElementById('shareDropdown');
+      
+      if (container.classList.contains('active')) {
+        hideShareDropdown();
+      } else {
+        showShareDropdown();
+      }
+    }
+    
+    function showShareDropdown() {
+      const container = document.querySelector('.share-image-container');
+      container.classList.add('active');
+      
+      // 点击其他地方关闭下拉菜单
+      setTimeout(() => {
+        document.addEventListener('click', hideShareDropdownOnClick);
+      }, 100);
+    }
+    
+    function hideShareDropdown() {
+      const container = document.querySelector('.share-image-container');
+      container.classList.remove('active');
+      document.removeEventListener('click', hideShareDropdownOnClick);
+    }
+    
+    function hideShareDropdownOnClick(event) {
+      const container = document.querySelector('.share-image-container');
+      if (!container.contains(event.target)) {
+        hideShareDropdown();
+      }
+    }
+
+    // 生成分享图片功能
+    async function generateShareImage(mode = 'clipboard') {
+      const tactic = generateTacticsObject();
+      
+      if (!selectedDungeon) {
+        showStatus('请选择副本', 'error');
+        return;
+      }
+      
+      if (tactic.floors.length === 0) {
+        showStatus('请至少添加一个楼层配置', 'error');
+        return;
+      }
+      
+      showStatus('正在生成分享图片...', 'info');
+      
+      try {
+        // 根据当前主题选择颜色
+        const isOfficeTheme = document.body.classList.contains('office-theme');
+        console.log('Office theme detected:', isOfficeTheme);
+        console.log('Primary color:', isOfficeTheme ? '#1a397b' : '#6366f1');
+        console.log('Background gradient:', isOfficeTheme ? '#ffffff' : '#0f172a');
+        const primaryColor = isOfficeTheme ? '#1a397b' : '#6366f1';
+        const primaryColorRgb = isOfficeTheme ? '26, 57, 123' : '99, 102, 241';
+        const bgGradient = isOfficeTheme ? 
+          '#ffffff' : 
+          '#0f172a';
+        const textColor = isOfficeTheme ? '#000000' : '#ffffff';
+        const borderColor = isOfficeTheme ? 
+          'rgba(26, 57, 123, 0.2)' : 
+          'rgba(99, 102, 241, 0.2)';
+        const sectionBg = isOfficeTheme ?
+          '#ffffff' :
+          'rgba(30, 41, 59, 0.8)';
+        
+        // 创建临时容器来渲染战术内容
+        const tempContainer = document.createElement('div');
+        tempContainer.style.cssText = `
+          position: fixed;
+          top: -9999px;
+          left: -9999px;
+          width: 800px;
+          background: ${bgGradient};
+          color: ${textColor};
+          font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+          padding: 40px;
+          border-radius: ${isOfficeTheme ? '0' : '16px'};
+          box-shadow: ${isOfficeTheme ? 'none' : '0 8px 32px rgba(0, 0, 0, 0.3)'};
+          border: 1px solid ${borderColor};
+        `;
+        
+        // 生成战术内容HTML
+        let html = `
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: ${primaryColor}; font-size: 2.5rem; margin: 0 0 10px 0; text-shadow: ${isOfficeTheme ? 'none' : `0 2px 4px rgba(${primaryColorRgb}, 0.3)`};">${tactic.dungeonName || '未命名地城'}</h1>
+            <p style="color: ${textColor}; font-size: 1.3rem; margin: 0 0 20px 0;">${tactic.teamName || '未命名团队'}</p>
+            <div style="color: ${isOfficeTheme ? '#666' : '#94a3b8'}; font-size: 1rem; margin-bottom: 30px;">
+              标签：${selectedDifficulty} | ${teamSize}人 | ${useFestivalMaterials ? '使用' : '不使用'}节日耗材 | ${selectedPlaythrough} | BD:${selectedBuild}
+            </div>
+          </div>
+        `;
+        
+        // 站位配置
+        if (tactic.positions && tactic.positions.length > 0) {
+          html += `
+            <div style="margin-bottom: 30px;">
+              <h2 style="color: ${primaryColor}; font-size: 1.5rem; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-users"></i> 站位配置
+              </h2>
+              <div style="background: ${sectionBg}; border: 1px solid ${borderColor}; border-radius: ${isOfficeTheme ? '0' : '12px'}; padding: 20px;">
+          `;
+          
+          tactic.positions.forEach(pos => {
+            html += `<div style="margin-bottom: 8px; font-size: 1.1rem;"><strong>${pos.position}：</strong>${pos.classes}</div>`;
+          });
+          
+          html += `</div></div>`;
+        }
+        
+        // 楼层配置
+        html += `
+          <div style="margin-bottom: 30px;">
+            <h2 style="color: ${primaryColor}; font-size: 1.5rem; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-layer-group"></i> 楼层配置
+            </h2>
+        `;
+        
+        tactic.floors.forEach(floor => {
+          html += `
+            <div style="background: ${sectionBg}; border: 1px solid ${borderColor}; border-radius: ${isOfficeTheme ? '0' : '12px'}; margin-bottom: 20px; padding: 20px;">
+              <h3 style="color: ${primaryColor}; font-size: 1.3rem; margin: 0 0 15px 0;">${floor.name}</h3>
+          `;
+          
+          // 备注
+          if (floor.comments && floor.comments.length > 0) {
+            floor.comments.forEach(comment => {
+              html += `
+                <div style="background: ${isOfficeTheme ? '#ffffff' : 'rgba(99, 102, 241, 0.1)'}; 
+                  color: ${primaryColor}; 
+                  border-left: 3px solid ${primaryColor}; 
+                  border-radius: ${isOfficeTheme ? '0' : '8px'}; 
+                  padding: 10px 15px; 
+                  margin-bottom: 10px; 
+                  font-size: 1rem;">
+                  ${comment}
+                </div>
+              `;
+            });
+          }
+          
+          // 回合前
+          if (floor.preTurn && floor.preTurn.length > 0) {
+            html += `
+              <div style="margin-bottom: 15px;">
+                <h4 style="color: ${primaryColor}; font-size: 1.2rem; margin: 0 0 10px 0; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-flag"></i> 回合前
+                </h4>
+                <div style="background: ${isOfficeTheme ? 'transparent' : 'rgba(15, 23, 42, 0.4)'} !important; border-radius: ${isOfficeTheme ? '0' : '8px'}; overflow: hidden;">
+                  <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr style="background: ${isOfficeTheme ? '#1a397b' : '#6366f1'};">
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">职业</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">技能1</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">技能2</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">位置</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">条件</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            floor.preTurn.forEach(row => {
+              html += `
+                <tr style="background: transparent !important;">
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: transparent !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.job || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.skill1 || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.skill2 || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.position || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.condition || ''}</td>
+                </tr>
+              `;
+            });
+            
+            html += `</tbody></table></div></div>`;
+          }
+          
+          // 回合中
+          if (floor.postTurn && floor.postTurn.length > 0) {
+            html += `
+              <div style="margin-bottom: 15px;">
+                <h4 style="color: ${primaryColor}; font-size: 1.2rem; margin: 0 0 10px 0; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-fist-raised"></i> 回合中
+                </h4>
+                <div style="background: ${isOfficeTheme ? 'transparent' : 'rgba(15, 23, 42, 0.4)'} !important; border-radius: ${isOfficeTheme ? '0' : '8px'}; overflow: hidden;">
+                  <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr style="background: ${isOfficeTheme ? '#1a397b' : '#6366f1'};">
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">职业</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">技能1</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">技能2</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">位置</th>
+                        <th style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 8px 12px; text-align: left; font-size: 1rem; color: #ffffff; font-weight: 600; background: ${isOfficeTheme ? '#1a397b' : '#6366f1'} !important;">条件</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            floor.postTurn.forEach(row => {
+              html += `
+                <tr style="background: transparent !important;">
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: transparent !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.job || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.skill1 || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.skill2 || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.position || ''}</td>
+                  <td style="border: 1px solid ${isOfficeTheme ? '#b0c4de' : 'rgba(99, 102, 241, 0.2)'}; padding: 6px 10px; font-size: 0.98rem; color: ${isOfficeTheme ? '#000000' : '#ffffff'}; background: ${isOfficeTheme ? '#ffffff' : 'transparent'} !important; font-weight: ${isOfficeTheme ? '600' : 'normal'};">${row.condition || ''}</td>
+                </tr>
+              `;
+            });
+            
+            html += `</tbody></table></div></div>`;
+          }
+          
+          html += `</div>`;
+        });
+        
+        html += `</div>`;
+        
+        // 添加网站信息
+        html += `
+          <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid ${borderColor};">
+            <p style="color: ${isOfficeTheme ? '#666' : '#94a3b8'}; font-size: 1rem; margin: 0;">
+              由 <strong style="color: ${primaryColor};">地城战术配置器</strong> 生成
+            </p>
+            <p style="color: ${primaryColor}; font-size: 1.1rem; margin: 10px 0 0 0; font-weight: 600;">
+              https://dxjleaf.github.io/wodtac/
+            </p>
+          </div>
+        `;
+        
+        tempContainer.innerHTML = html;
+        document.body.appendChild(tempContainer);
+        
+        // 使用html2canvas生成图片
+        const canvas = await html2canvas(tempContainer, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          width: 800,
+          height: tempContainer.scrollHeight
+        });
+        
+        // 移除临时容器
+        document.body.removeChild(tempContainer);
+        
+        // 测试：在页面上显示HTML内容
+        console.log('Generated HTML:', html);
+        
+        // 生成文件名
+        const fileName = `${tactic.dungeonName || '战术'}_${tactic.teamName || '团队'}_${new Date().toISOString().slice(0,10)}.png`;
+        
+        // 根据模式选择操作
+        if (mode === 'download') {
+          // 直接下载
+          const link = document.createElement('a');
+          link.download = fileName;
+          link.href = canvas.toDataURL();
+          link.click();
+          showStatus(`分享图片已下载！文件名：${fileName}`, 'success');
+        } else {
+          // 复制到剪贴板
+          canvas.toBlob(async (blob) => {
+            try {
+              if (navigator.clipboard && window.ClipboardItem) {
+                // 尝试创建File对象并设置文件名
+                try {
+                  const file = new File([blob], fileName, { type: 'image/png' });
+                  const item = new ClipboardItem({
+                    'image/png': file
+                  });
+                  await navigator.clipboard.write([item]);
+                  showStatus(`分享图片已复制到剪贴板！文件名：${fileName}`, 'success');
+                } catch (fileError) {
+                  console.log('File API方法失败，使用标准方法:', fileError);
+                  
+                  // 标准方法
+                  const item = new ClipboardItem({
+                    'image/png': blob
+                  });
+                  await navigator.clipboard.write([item]);
+                  showStatus(`分享图片已复制到剪贴板！\n注意：文件名可能显示为随机ID\n建议文件名：${fileName}`, 'success');
+                }
+              } else {
+                // 降级方案：创建下载链接
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = canvas.toDataURL();
+                link.click();
+                showStatus('浏览器不支持剪贴板API，已自动下载图片', 'info');
+              }
+            } catch (error) {
+              console.error('复制到剪贴板失败:', error);
+              // 降级方案：下载图片
+              const link = document.createElement('a');
+              link.download = fileName;
+              link.href = canvas.toDataURL();
+              link.click();
+              showStatus('复制失败，已自动下载图片', 'warning');
+            }
+          }, 'image/png');
+        }
+        
+      } catch (error) {
+        console.error('生成分享图片失败:', error);
+        showStatus('生成分享图片失败: ' + error.message, 'error');
+      }
+    }
 
     // 保证全局可用
     window.copyTactics = copyTactics;
     window.resetConfig = resetConfig;
-    // 提升按钮层级，防止被遮挡
+    window.generateShareImage = generateShareImage;
+    
+    // 统一的页面初始化事件
     window.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.copy-btn, .reset-btn').forEach(btn => {
+      // 提升按钮层级，防止被遮挡
+      document.querySelectorAll('.copy-btn, .reset-btn, .share-image-btn').forEach(btn => {
         btn.style.zIndex = 99999;
       });
+      
+      // 设置云区域高度
+      setCloudSectionHeight();
+      
+      // 页面初始化时自动恢复
+      if (localStorage.getItem(getDraftKey())) {
+        loadDraftFromLocal();
+      } else {
+        addPositionRow();
+        addFloor();
+      }
+      bindDraftAutoSave();
     });
   </script>
 </body>
