@@ -2181,6 +2181,31 @@
       z-index: 1;
     }
     
+    /* 全屏时的样式 */
+    .zip-content-viewer:fullscreen {
+      margin: 0;
+      border-radius: 0;
+      background: rgba(20, 30, 50, 0.95);
+    }
+    
+    .zip-content-viewer:-webkit-full-screen {
+      margin: 0;
+      border-radius: 0;
+      background: rgba(20, 30, 50, 0.95);
+    }
+    
+    .zip-content-viewer:-moz-full-screen {
+      margin: 0;
+      border-radius: 0;
+      background: rgba(20, 30, 50, 0.95);
+    }
+    
+    .zip-content-viewer:-ms-fullscreen {
+      margin: 0;
+      border-radius: 0;
+      background: rgba(20, 30, 50, 0.95);
+    }
+    
     .viewer-header {
       display: flex;
       justify-content: space-between;
@@ -2220,6 +2245,27 @@
       border: none;
       background: white;
       overflow: auto;
+    }
+    
+    /* 全屏时iframe的样式 */
+    .zip-content-viewer:fullscreen .content-iframe {
+      height: calc(100vh - 60px);
+      width: 100%;
+    }
+    
+    .zip-content-viewer:-webkit-full-screen .content-iframe {
+      height: calc(100vh - 60px);
+      width: 100%;
+    }
+    
+    .zip-content-viewer:-moz-full-screen .content-iframe {
+      height: calc(100vh - 60px);
+      width: 100%;
+    }
+    
+    .zip-content-viewer:-ms-fullscreen .content-iframe {
+      height: calc(100vh - 60px);
+      width: 100%;
     }
     
     @media (max-width: 768px) {
@@ -4731,7 +4777,7 @@
     // GitHub配置
      const GITHUB_OWNER = "Dxjleaf";
      const GITHUB_REPO = "wodtac";
-     const GITHUB_TOKEN = "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"; // GitHub Personal Access Token
+      const GITHUB_TOKEN = "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"; // GitHub Personal Access Token
      const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
      const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main`;
     
@@ -10223,52 +10269,85 @@
     let isFullscreen = false;
     
     // 切换全屏显示
-    function toggleFullscreen() {
+    async function toggleFullscreen() {
       const viewer = document.getElementById('zipContentViewer');
       const iframe = document.getElementById('contentFrame');
       const button = document.querySelector('.close-viewer-btn');
       const icon = button.querySelector('i');
       
-      if (!isFullscreen) {
-        // 进入全屏模式
-        viewer.style.position = 'fixed';
-        viewer.style.top = '0';
-        viewer.style.left = '0';
-        viewer.style.width = '100vw';
-        viewer.style.height = '100vh';
-        viewer.style.zIndex = '9999';
-        viewer.style.borderRadius = '0';
-        viewer.style.margin = '0';
-        
-        // 调整iframe高度
-        iframe.style.height = 'calc(100vh - 60px)';
-        
-        // 更新按钮图标和提示
-        icon.className = 'fas fa-compress';
-        button.title = '退出全屏';
-        
-        isFullscreen = true;
-        console.log('进入全屏模式');
-      } else {
-        // 退出全屏模式
-        viewer.style.position = '';
-        viewer.style.top = '';
-        viewer.style.left = '';
-        viewer.style.width = '';
-        viewer.style.height = '';
-        viewer.style.zIndex = '';
-        viewer.style.borderRadius = '';
-        viewer.style.margin = '';
-        
-        // 恢复iframe高度
-        iframe.style.height = '';
-        
-        // 更新按钮图标和提示
-        icon.className = 'fas fa-expand';
-        button.title = '全屏显示';
-        
-        isFullscreen = false;
-        console.log('退出全屏模式');
+      try {
+        if (!isFullscreen) {
+          // 进入全屏模式
+          if (viewer.requestFullscreen) {
+            await viewer.requestFullscreen();
+          } else if (viewer.webkitRequestFullscreen) {
+            await viewer.webkitRequestFullscreen();
+          } else if (viewer.mozRequestFullScreen) {
+            await viewer.mozRequestFullScreen();
+          } else if (viewer.msRequestFullscreen) {
+            await viewer.msRequestFullscreen();
+          } else {
+            // 如果不支持全屏API，使用CSS全屏作为后备
+            viewer.style.position = 'fixed';
+            viewer.style.top = '0';
+            viewer.style.left = '0';
+            viewer.style.width = '100vw';
+            viewer.style.height = '100vh';
+            viewer.style.zIndex = '9999';
+            viewer.style.borderRadius = '0';
+            viewer.style.margin = '0';
+            iframe.style.height = 'calc(100vh - 60px)';
+          }
+          
+          // 确保iframe在全屏时占满可用空间
+          iframe.style.width = '100%';
+          iframe.style.height = 'calc(100vh - 60px)';
+          iframe.style.border = 'none';
+          
+          // 更新按钮图标和提示
+          icon.className = 'fas fa-compress';
+          button.title = '退出全屏';
+          
+          isFullscreen = true;
+          console.log('进入全屏模式');
+        } else {
+          // 退出全屏模式
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            await document.webkitExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            await document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            await document.msExitFullscreen();
+          } else {
+            // 如果不支持全屏API，恢复CSS样式
+            viewer.style.position = '';
+            viewer.style.top = '';
+            viewer.style.left = '';
+            viewer.style.width = '';
+            viewer.style.height = '';
+            viewer.style.zIndex = '';
+            viewer.style.borderRadius = '';
+            viewer.style.margin = '';
+            iframe.style.height = '';
+          }
+          
+          // 恢复iframe的原始样式
+          iframe.style.width = '';
+          iframe.style.height = '';
+          iframe.style.border = '';
+          
+          // 更新按钮图标和提示
+          icon.className = 'fas fa-expand';
+          button.title = '全屏显示';
+          
+          isFullscreen = false;
+          console.log('退出全屏模式');
+        }
+      } catch (error) {
+        console.error('全屏操作失败:', error);
+        alert('全屏操作失败: ' + error.message);
       }
     }
     
@@ -10278,6 +10357,30 @@
         toggleFullscreen();
       }
     });
+    
+    // 监听全屏状态变化
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    
+    function handleFullscreenChange() {
+      const isCurrentlyFullscreen = !!(document.fullscreenElement || 
+                                      document.webkitFullscreenElement || 
+                                      document.mozFullScreenElement || 
+                                      document.msFullscreenElement);
+      
+      if (!isCurrentlyFullscreen && isFullscreen) {
+        // 用户通过其他方式（如F11键）退出了全屏
+        const button = document.querySelector('.close-viewer-btn');
+        const icon = button.querySelector('i');
+        
+        icon.className = 'fas fa-expand';
+        button.title = '全屏显示';
+        isFullscreen = false;
+        console.log('检测到全屏状态变化，已退出全屏');
+      }
+    }
     
     // 加载GitHub战报列表
     async function loadCloudWodLogs(forceRefresh = false) {
