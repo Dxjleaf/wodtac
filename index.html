@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   
   <!-- 深空回响风格CSS -->
   <link rel="stylesheet" href="css/main.css">
@@ -1603,6 +1604,7 @@
       font-size: calc(0.9rem * var(--scale-factor));
       border: 1px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(5px);
+      z-index: 10000;
     }
     
     .dungeon-search-section h2 {
@@ -1710,6 +1712,136 @@
       border-bottom: none;
     }
     
+    .dungeon-result-item.wodlog-dungeon {
+      background: rgba(255, 193, 7, 0.1);
+      border-left: 3px solid #ffc107;
+    }
+    
+    .dungeon-result-item.wodlog-dungeon:hover {
+      background: rgba(255, 193, 7, 0.2);
+    }
+    
+    .wodlog-tag {
+      background: #ffc107;
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.8em;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    
+    .wodlog-count {
+      background: #28a745;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.75em;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    
+    .clear-filter-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background-color 0.2s;
+    }
+    
+    .clear-filter-btn:hover {
+      background: #c82333;
+    }
+    
+    /* 战报用户标识样式 */
+    .own-wodlog-icon {
+      color: #28a745;
+      margin-right: 6px;
+    }
+    
+    .other-wodlog-icon {
+      color: #6c757d;
+      margin-right: 6px;
+    }
+    
+    .own-wodlog {
+      border-left: 3px solid #28a745;
+    }
+    
+    .other-wodlog {
+      border-left: 3px solid #6c757d;
+    }
+    
+    .own-wodlog .wodlog-item-name {
+      color: #28a745;
+      font-weight: bold;
+    }
+    
+    .other-wodlog .wodlog-item-name {
+      color: #6c757d;
+    }
+    
+    /* 战报过滤控制样式 */
+    .wodlog-filter-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .filter-toggle-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .filter-toggle-btn:hover {
+      background: #0056b3;
+    }
+    
+    .cloud-wodlog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    /* 确保旋转动画正常工作 */
+    .fa-spin {
+      animation: fa-spin 1s infinite linear;
+    }
+    
+    @keyframes fa-spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /* 备用旋转动画类 */
+    .spinner-rotate {
+      animation: spinner-rotate 1s infinite linear;
+    }
+    
+    @keyframes spinner-rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
     .dungeon-name {
       font-weight: bold;
       font-size: calc(1rem * var(--scale-factor));
@@ -1730,6 +1862,370 @@
       padding: 0 calc(5px * var(--scale-factor));
       border-radius: calc(3px * var(--scale-factor));
       margin-right: calc(5px * var(--scale-factor));
+    }
+    
+    /* 文件上传区域样式 */
+    .file-upload-section {
+      background: rgba(30, 40, 60, 0.8);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin: calc(12px * var(--scale-factor)) 0;
+      padding: calc(12px * var(--scale-factor));
+      position: relative;
+      font-size: calc(0.9rem * var(--scale-factor));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+    
+    .file-upload-section h2 {
+      color: #9b59b6;
+      font-size: calc(1.3rem * var(--scale-factor));
+      margin-bottom: calc(12px * var(--scale-factor));
+      padding-bottom: calc(6px * var(--scale-factor));
+      border-bottom: calc(1px * var(--scale-factor)) solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    .file-upload-section h2 i {
+      background: #9b59b6;
+      color: white;
+      width: calc(28px * var(--scale-factor));
+      height: calc(28px * var(--scale-factor));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(0.9rem * var(--scale-factor));
+    }
+    
+    .file-upload-container {
+      margin-bottom: calc(12px * var(--scale-factor));
+    }
+    
+    .file-upload-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: calc(20px * var(--scale-factor));
+      background: rgba(20, 30, 50, 0.5);
+      border: 2px dashed rgba(155, 89, 182, 0.5);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      gap: calc(8px * var(--scale-factor));
+    }
+    
+    .file-upload-label:hover {
+      background: rgba(155, 89, 182, 0.2);
+      border-color: #9b59b6;
+      transform: translateY(-2px);
+    }
+    
+    .file-upload-label i {
+      font-size: calc(2rem * var(--scale-factor));
+      color: #9b59b6;
+    }
+    
+    .file-upload-label span {
+      color: #ccc;
+      font-size: calc(0.95rem * var(--scale-factor));
+    }
+    
+    .file-info {
+      padding: calc(10px * var(--scale-factor));
+      background: rgba(155, 89, 182, 0.2);
+      border-radius: var(--border-radius);
+      margin-top: calc(10px * var(--scale-factor));
+      color: #fff;
+      font-size: calc(0.9rem * var(--scale-factor));
+    }
+    
+    .wodlog-actions {
+      margin-top: calc(10px * var(--scale-factor));
+    }
+    
+    .upload-to-cloud-btn {
+      width: 100%;
+      padding: calc(10px * var(--scale-factor));
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: calc(0.95rem * var(--scale-factor));
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(8px * var(--scale-factor));
+    }
+    
+    .upload-to-cloud-btn:hover {
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .upload-to-cloud-btn:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .github-token-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #28a745;
+    }
+    
+    .github-token-section h3 {
+      margin: 0 0 10px 0;
+      color: #28a745;
+      font-size: 16px;
+    }
+    
+    .token-info {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .token-info p {
+      margin: 0 0 10px 0;
+    }
+    
+    .token-info ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .token-info a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    
+    .token-info a:hover {
+      text-decoration: underline;
+    }
+    
+    .token-info code {
+      background: #e9ecef;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    /* 云端战报列表样式 */
+    .cloud-wodlog-section {
+      margin-bottom: calc(15px * var(--scale-factor));
+    }
+    
+    .cloud-wodlog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: calc(10px * var(--scale-factor));
+    }
+    
+    .cloud-wodlog-header h3 {
+      margin: 0;
+      color: #6d9eeb;
+      font-size: calc(1.1rem * var(--scale-factor));
+      display: flex;
+      align-items: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    
+    .cloud-wodlog-list {
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(20, 30, 50, 0.5);
+      border-radius: var(--border-radius);
+      padding: calc(8px * var(--scale-factor));
+    }
+    
+    .wodlog-item {
+      background: rgba(30, 40, 60, 0.7);
+      padding: calc(8px * var(--scale-factor));
+      margin-bottom: calc(6px * var(--scale-factor));
+      border-radius: var(--border-radius);
+      border-left: 3px solid #6d9eeb;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: calc(50px * var(--scale-factor));
+      overflow: hidden;
+    }
+    
+    .wodlog-item-content {
+      flex: 1;
+      cursor: pointer;
+      min-width: 0;
+      padding-right: calc(8px * var(--scale-factor));
+    }
+    
+    .wodlog-item-content:hover {
+      background: rgba(74, 111, 165, 0.3);
+      border-radius: var(--border-radius);
+      padding: calc(3px * var(--scale-factor));
+      margin: calc(-3px * var(--scale-factor));
+    }
+    
+    .wodlog-item-actions {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    
+    .wodlog-delete-btn {
+      background: rgba(231, 76, 60, 0.8);
+      border: none;
+      color: white;
+      padding: calc(4px * var(--scale-factor)) calc(6px * var(--scale-factor));
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: calc(0.75rem * var(--scale-factor));
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: calc(24px * var(--scale-factor));
+      height: calc(24px * var(--scale-factor));
+    }
+    
+    .wodlog-delete-btn:hover {
+      background: rgba(231, 76, 60, 1);
+      transform: scale(1.05);
+    }
+    
+    .wodlog-delete-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .wodlog-item-name {
+      color: #6d9eeb;
+      font-weight: bold;
+      font-size: calc(0.9rem * var(--scale-factor));
+      margin-bottom: calc(3px * var(--scale-factor));
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .wodlog-item-info {
+      font-size: calc(0.75rem * var(--scale-factor));
+      color: #aaa;
+      display: flex;
+      gap: calc(8px * var(--scale-factor));
+      flex-wrap: wrap;
+    }
+    
+    .wodlog-item-info span {
+      white-space: nowrap;
+    }
+    
+    .loading-message {
+      text-align: center;
+      color: #888;
+      padding: calc(20px * var(--scale-factor));
+      font-style: italic;
+    }
+    
+    .local-upload-section {
+      margin-top: calc(15px * var(--scale-factor));
+      padding-top: calc(15px * var(--scale-factor));
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .local-upload-section h3 {
+      margin: 0 0 calc(10px * var(--scale-factor)) 0;
+      color: #9b59b6;
+      font-size: calc(1.1rem * var(--scale-factor));
+      display: flex;
+      align-items: center;
+      gap: calc(6px * var(--scale-factor));
+    }
+    
+    .clear-file-btn {
+      width: 100%;
+      padding: calc(8px * var(--scale-factor));
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: calc(0.9rem * var(--scale-factor));
+      margin-top: calc(10px * var(--scale-factor));
+      transition: all 0.2s ease;
+    }
+    
+    .clear-file-btn:hover {
+      background: #c0392b;
+      transform: translateY(-1px);
+    }
+    
+    .zip-content-viewer {
+      margin-top: calc(15px * var(--scale-factor));
+      background: rgba(20, 30, 50, 0.7);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      border: 1px solid rgba(155, 89, 182, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .viewer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: calc(10px * var(--scale-factor));
+      background: rgba(155, 89, 182, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .viewer-header h3 {
+      margin: 0;
+      color: #9b59b6;
+      font-size: calc(1.1rem * var(--scale-factor));
+      display: flex;
+      align-items: center;
+      gap: calc(8px * var(--scale-factor));
+    }
+    
+    .close-viewer-btn {
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      padding: calc(6px * var(--scale-factor)) calc(12px * var(--scale-factor));
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: calc(0.85rem * var(--scale-factor));
+      transition: all 0.2s ease;
+    }
+    
+    .close-viewer-btn:hover {
+      background: #c0392b;
+    }
+    
+    .content-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      background: white;
+      overflow: auto;
+    }
+    
+    @media (max-width: 768px) {
+      .content-iframe {
+        height: 400px;
+      }
     }
     
     /* 响应式设计 - 移动端 */
@@ -3084,6 +3580,7 @@
     body.office-theme .config-block,
     body.office-theme .cloud-section,
     body.office-theme .dungeon-search-section,
+    body.office-theme .file-upload-section,
     body.office-theme .section,
     body.office-theme .floor-block {
       background: #f5f5f5 !important;
@@ -3329,10 +3826,12 @@
       color: #1a397b;
     }
     body.office-theme .dungeon-search-section,
+    body.office-theme .file-upload-section,
     body.office-theme .cloud-section,
     body.office-theme .dungeon-results,
     body.office-theme .dungeon-detail,
-    body.office-theme .dungeon-result-item {
+    body.office-theme .dungeon-result-item,
+    body.office-theme .zip-content-viewer {
       background: #f5f5f5 !important;
       color: #1a397b !important;
       border: 1.5px solid #b0c4de !important;
@@ -3353,6 +3852,41 @@
       border-bottom: 1px solid #b0c4de !important;
       border-radius: 0 !important;
       box-shadow: none !important;
+    }
+    body.office-theme .file-upload-label {
+      background: #fff !important;
+      border: 2px dashed #1a397b !important;
+      border-radius: 0 !important;
+      color: #1a397b !important;
+    }
+    body.office-theme .file-upload-label:hover {
+      background: #e3eaf2 !important;
+      border-color: #4a6fa5 !important;
+    }
+    body.office-theme .file-upload-label i,
+    body.office-theme .file-upload-section h2 i {
+      background: #1a397b !important;
+      color: white !important;
+      border-radius: 0 !important;
+    }
+    body.office-theme .file-info {
+      background: #e3eaf2 !important;
+      color: #1a397b !important;
+      border: 1px solid #b0c4de !important;
+      border-radius: 0 !important;
+    }
+    body.office-theme .upload-to-cloud-btn {
+      background: #1a397b !important;
+      border-radius: 0 !important;
+    }
+    body.office-theme .upload-to-cloud-btn:hover {
+      background: #4a6fa5 !important;
+      box-shadow: none !important;
+    }
+    body.office-theme .viewer-header {
+      background: #1a397b !important;
+      color: white !important;
+      border-radius: 0 !important;
     }
     body.office-theme .dungeon-result-item:hover {
       background: #b0c4de !important;
@@ -3818,6 +4352,63 @@
         </div>
         <div id="dungeonDetail" class="dungeon-detail"></div>
       </div>
+      
+      <!-- 文件上传区域 -->
+      <div class="file-upload-section">
+        <h2>
+          <i class="fas fa-share-alt"></i> 战报分享平台
+          <button id="clearDungeonFilterBtn" class="clear-filter-btn" onclick="clearDungeonFilter()" style="display: none;">
+            <i class="fas fa-times"></i> 清除筛选
+          </button>
+        </h2>
+        
+        <!-- GitHub战报列表 -->
+        <div class="cloud-wodlog-section">
+        <div class="cloud-wodlog-header">
+          <h3><i class="fas fa-list"></i> 战报列表</h3>
+          <div class="wodlog-filter-controls">
+            <button id="toggleWodLogFilter" class="filter-toggle-btn" onclick="toggleWodLogFilter()">
+              <i class="fas fa-filter"></i> 显示所有战报
+            </button>
+          </div>
+        </div>
+          <div id="cloudWodLogList" class="cloud-wodlog-list">
+            <div class="loading-message">正在加载战报列表...</div>
+          </div>
+        </div>
+        
+        <!-- 本地文件上传 -->
+        <div class="local-upload-section">
+          <h3><i class="fas fa-upload"></i> 分享新战报</h3>
+          <div class="file-upload-container">
+            <label for="zipFileUpload" class="file-upload-label">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>选择 ZIP 文件 (wodlog_[开头)</span>
+              <input type="file" id="zipFileUpload" accept=".zip,.rar,.7z" style="display: none;">
+            </label>
+            <div id="fileInfo" class="file-info" style="display: none;"></div>
+            <div class="wodlog-actions" id="wodlogActions" style="display: none;">
+            <button class="upload-to-cloud-btn" onclick="uploadWodLogToCloud()">
+              <i class="fab fa-github"></i> 上传到GitHub
+            </button>
+            </div>
+            <button id="clearFileBtn" class="clear-file-btn" onclick="clearUploadedFile()" style="display: none;">
+              <i class="fas fa-times"></i> 清除文件
+            </button>
+          </div>
+        </div>
+        
+        <!-- 内容查看器 -->
+        <div id="zipContentViewer" class="zip-content-viewer" style="display: none;">
+          <div class="viewer-header">
+            <h3><i class="fas fa-folder-open"></i> 文件内容</h3>
+            <button class="close-viewer-btn" onclick="toggleFullscreen()" title="全屏显示">
+              <i class="fas fa-expand"></i>
+            </button>
+          </div>
+          <iframe id="contentFrame" class="content-iframe"></iframe>
+        </div>
+      </div>
     </div>
     <!-- 中间：战术配置和战术库合并 -->
     <div class="center-column">
@@ -4133,13 +4724,158 @@
     const API_URL = "https://api.jsonbin.io/v3/b/" + BIN_ID;
     
     // 新增：地城数据云端Bin
-    const DUNGEON_BIN_ID = "686d94a8dfff172fa657be86"; // TODO: 替换为你的新Bin ID
+    const DUNGEON_BIN_ID = "686d94a8dfff172fa657be86";
     const DUNGEON_API_URL = "https://api.jsonbin.io/v3/b/" + DUNGEON_BIN_ID;
+    
+    // 战报数据云端Bin（使用专用的Access Key）
+    // GitHub配置
+     const GITHUB_OWNER = "Dxjleaf";
+     const GITHUB_REPO = "wodtac";
+     const GITHUB_TOKEN = "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"; // GitHub Personal Access Token
+     const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
+     const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main`;
     
     let useSpoiler = false;
     let positionCount = 0;
     let floorCount = 0;
     let tacticsData = [];
+    let extraStatsLoaded = false; // 跟踪Extra Statistics插件是否已加载
+    let extraStatsInjectionInProgress = false; // 跟踪插件注入是否正在进行中
+    let currentWodLogId = null; // 跟踪当前加载的战报ID
+    
+    // 重置Extra Statistics插件状态
+    function resetExtraStatsState() {
+      extraStatsLoaded = false;
+      extraStatsInjectionInProgress = false;
+      currentWodLogId = null;
+    }
+    
+    // 显示删除确认对话框
+    function showDeleteConfirmDialog(fileName) {
+      return new Promise((resolve) => {
+        // 创建遮罩层
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `;
+        
+        // 创建对话框
+        const dialog = document.createElement('div');
+        dialog.style.cssText = `
+          background: linear-gradient(135deg, #2c3e50, #34495e);
+          border-radius: 12px;
+          padding: 24px;
+          max-width: 400px;
+          width: 90%;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+          border: 1px solid #34495e;
+          text-align: center;
+          animation: dialogSlideIn 0.3s ease-out;
+        `;
+        
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes dialogSlideIn {
+            from {
+              opacity: 0;
+              transform: scale(0.8) translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+          }
+        `;
+        document.head.appendChild(style);
+        
+        // 简化文件名显示
+        const shortFileName = fileName.length > 30 ? 
+          fileName.substring(0, 30) + '...' : 
+          fileName;
+        
+        dialog.innerHTML = `
+          <div style="color: #e74c3c; font-size: 24px; margin-bottom: 16px;">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3 style="color: #ecf0f1; margin: 0 0 12px 0; font-size: 18px;">确认删除战报</h3>
+          <p style="color: #bdc3c7; margin: 0 0 20px 0; line-height: 1.4;">
+            确定要删除战报<br>
+            <strong style="color: #3498db;">"${shortFileName}"</strong><br>
+            吗？
+          </p>
+          <p style="color: #e74c3c; font-size: 14px; margin: 0 0 20px 0;">
+            ⚠️ 此操作不可撤销！
+          </p>
+          <div style="display: flex; gap: 12px; justify-content: center;">
+            <button id="cancelDelete" style="
+              background: #7f8c8d;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 14px;
+              transition: all 0.2s ease;
+            ">取消</button>
+            <button id="confirmDelete" style="
+              background: #e74c3c;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 14px;
+              transition: all 0.2s ease;
+            ">确认删除</button>
+          </div>
+        `;
+        
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+        
+        // 添加按钮事件
+        document.getElementById('cancelDelete').onclick = () => {
+          document.body.removeChild(overlay);
+          document.head.removeChild(style);
+          resolve(false);
+        };
+        
+        document.getElementById('confirmDelete').onclick = () => {
+          document.body.removeChild(overlay);
+          document.head.removeChild(style);
+          resolve(true);
+        };
+        
+        // 点击遮罩层关闭
+        overlay.onclick = (e) => {
+          if (e.target === overlay) {
+            document.body.removeChild(overlay);
+            document.head.removeChild(style);
+            resolve(false);
+          }
+        };
+        
+        // 添加按钮悬停效果
+        const cancelBtn = document.getElementById('cancelDelete');
+        const confirmBtn = document.getElementById('confirmDelete');
+        
+        cancelBtn.onmouseover = () => cancelBtn.style.background = '#95a5a6';
+        cancelBtn.onmouseout = () => cancelBtn.style.background = '#7f8c8d';
+        
+        confirmBtn.onmouseover = () => confirmBtn.style.background = '#c0392b';
+        confirmBtn.onmouseout = () => confirmBtn.style.background = '#e74c3c';
+      });
+    }
     let userRatings = {};
     let myTactics = {}; 
     let searchTimer = null;
@@ -4174,6 +4910,48 @@
     let currentEditingTacticName = null;
 
     let showAllTactics = false;
+    
+    // 耗材道具数据
+    const consumableItems = [
+      {id: "basic_heal", name: "基础治疗药水", type: "consumable", rarity: "common"},
+      {id: "basic_mana", name: "基础法力药水", type: "consumable", rarity: "common"},
+      {id: "basic_stamina", name: "基础体力药水", type: "consumable", rarity: "common"},
+      {id: "medium_heal", name: "中级治疗药水", type: "consumable", rarity: "uncommon"},
+      {id: "medium_mana", name: "中级法力药水", type: "consumable", rarity: "uncommon"},
+      {id: "medium_stamina", name: "中级体力药水", type: "consumable", rarity: "uncommon"},
+      {id: "advanced_heal", name: "高级治疗药水", type: "consumable", rarity: "rare"},
+      {id: "advanced_mana", name: "高级法力药水", type: "consumable", rarity: "rare"},
+      {id: "advanced_stamina", name: "高级体力药水", type: "consumable", rarity: "rare"},
+      {id: "elixir_strength", name: "力量药剂", type: "consumable", rarity: "rare"},
+      {id: "elixir_agility", name: "敏捷药剂", type: "consumable", rarity: "rare"},
+      {id: "elixir_intelligence", name: "智力药剂", type: "consumable", rarity: "rare"},
+      {id: "elixir_vitality", name: "活力药剂", type: "consumable", rarity: "rare"},
+      {id: "festival_cake", name: "节日蛋糕", type: "consumable", rarity: "epic"},
+      {id: "festival_wine", name: "节日美酒", type: "consumable", rarity: "epic"},
+      {id: "festival_candy", name: "节日糖果", type: "consumable", rarity: "epic"},
+      {id: "battle_bandage", name: "战斗绷带", type: "consumable", rarity: "common"},
+      {id: "battle_antidote", name: "解毒剂", type: "consumable", rarity: "uncommon"},
+      {id: "battle_stimulant", name: "战斗兴奋剂", type: "consumable", rarity: "rare"},
+      {id: "magic_scroll", name: "魔法卷轴", type: "consumable", rarity: "uncommon"},
+      {id: "magic_crystal", name: "魔法水晶", type: "consumable", rarity: "rare"},
+      {id: "magic_powder", name: "魔法粉末", type: "consumable", rarity: "common"},
+      {id: "herb_healing", name: "治疗草药", type: "material", rarity: "common"},
+      {id: "herb_mana", name: "法力草药", type: "material", rarity: "common"},
+      {id: "mineral_iron", name: "铁矿石", type: "material", rarity: "common"},
+      {id: "mineral_gold", name: "金矿石", type: "material", rarity: "uncommon"},
+      {id: "gem_ruby", name: "红宝石", type: "material", rarity: "rare"},
+      {id: "gem_sapphire", name: "蓝宝石", type: "material", rarity: "rare"},
+      {id: "gem_emerald", name: "绿宝石", type: "material", rarity: "rare"},
+      {id: "bread", name: "面包", type: "food", rarity: "common"},
+      {id: "cheese", name: "奶酪", type: "food", rarity: "common"},
+      {id: "apple", name: "苹果", type: "food", rarity: "common"},
+      {id: "meat", name: "肉类", type: "food", rarity: "uncommon"},
+      {id: "fish", name: "鱼类", type: "food", rarity: "uncommon"},
+      {id: "rope", name: "绳索", type: "tool", rarity: "common"},
+      {id: "torch", name: "火把", type: "tool", rarity: "common"},
+      {id: "lockpick", name: "开锁器", type: "tool", rarity: "uncommon"},
+      {id: "compass", name: "指南针", type: "tool", rarity: "rare"}
+    ];
     
     // 战术显示模式：'normal' 为正常显示，'compact' 为两行显示
     // 手机端强制使用 'normal' 模式
@@ -4374,36 +5152,379 @@
       }
     }
     
-    // 搜索副本 - 优化版本
+    // 从战报中提取地城名称
+    let extractedDungeonNames = new Set();
+    
+    // 战报-地城映射关系 {logId: [dungeonNames]}
+    let wodLogDungeonMap = new Map();
+    
+    // 当前用户标识（基于浏览器指纹或用户设置）
+    let currentUserId = null;
+    
+    // 是否只显示自己的战报
+    let showOnlyOwnWodLogs = true;
+    
+    // 本地记录自己上传的战报ID
+    let ownWodLogIds = new Set();
+    
+    // 生成用户ID（基于浏览器指纹）
+    function generateUserId() {
+      if (currentUserId) return currentUserId;
+      
+      // 尝试从localStorage获取已保存的用户ID
+      let savedUserId = localStorage.getItem('wodtac_user_id');
+      if (savedUserId) {
+        currentUserId = savedUserId;
+        return currentUserId;
+      }
+      
+      // 生成新的用户ID（基于浏览器特征）
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillText('WodTac User ID', 2, 2);
+      
+      const fingerprint = [
+        navigator.userAgent,
+        navigator.language,
+        screen.width + 'x' + screen.height,
+        new Date().getTimezoneOffset(),
+        canvas.toDataURL()
+      ].join('|');
+      
+      // 生成简单的hash
+      let hash = 0;
+      for (let i = 0; i < fingerprint.length; i++) {
+        const char = fingerprint.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // 转换为32位整数
+      }
+      
+      currentUserId = 'user_' + Math.abs(hash).toString(36);
+      localStorage.setItem('wodtac_user_id', currentUserId);
+      
+      console.log('生成用户ID:', currentUserId);
+      return currentUserId;
+    }
+    
+    // 保存本地战报记录
+    function saveOwnWodLogIds() {
+      const data = Array.from(ownWodLogIds);
+      localStorage.setItem('wodtac_own_wodlog_ids', JSON.stringify(data));
+    }
+    
+    // 加载本地战报记录
+    function loadOwnWodLogIds() {
+      const saved = localStorage.getItem('wodtac_own_wodlog_ids');
+      console.log('从localStorage读取的战报记录:', saved);
+      
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          ownWodLogIds = new Set(data);
+          console.log('成功加载本地战报记录:', Array.from(ownWodLogIds));
+        } catch (error) {
+          console.error('加载本地战报记录失败:', error);
+          ownWodLogIds = new Set();
+        }
+      } else {
+        // 如果没有保存的记录，初始化为空Set
+        ownWodLogIds = new Set();
+        console.log('没有找到本地战报记录，初始化为空');
+      }
+    }
+    
+    // 添加战报到本地记录
+    function addOwnWodLogId(logId) {
+      ownWodLogIds.add(logId);
+      saveOwnWodLogIds();
+      console.log('添加战报到本地记录:', logId);
+    }
+    
+    // 从本地记录中移除战报
+    function removeOwnWodLogId(logId) {
+      ownWodLogIds.delete(logId);
+      saveOwnWodLogIds();
+      console.log('从本地记录中移除战报:', logId);
+    }
+    
+    // 从元数据中恢复战报归属
+    async function recoverWodLogOwnership(wodLogs) {
+      const currentUser = generateUserId();
+      let recoveredCount = 0;
+      
+      for (const log of wodLogs) {
+        // 如果本地记录中没有，但元数据中有uploaderId且匹配当前用户
+        if (!ownWodLogIds.has(log.id) && log.uploaderId === currentUser) {
+          console.log(`从元数据恢复战报归属: ${log.id}`);
+          addOwnWodLogId(log.id);
+          recoveredCount++;
+        }
+      }
+      
+      if (recoveredCount > 0) {
+        console.log(`成功恢复 ${recoveredCount} 个战报的归属记录`);
+      }
+    }
+    
+    // 检查战报是否为自己上传
+    function isOwnWodLog(logId) {
+      // 首先检查本地记录
+      if (ownWodLogIds.has(logId)) {
+        console.log(`检查战报归属: ${logId} -> 自己的 (本地记录)`);
+        return true;
+      }
+      
+      // 如果本地记录中没有，尝试从元数据中恢复
+      // 这里可以添加从GitHub元数据中检查uploaderId的逻辑
+      // 但目前先返回false，因为元数据检查需要异步操作
+      console.log(`检查战报归属: ${logId} -> 他人的 (本地记录中未找到)`);
+      return false;
+    }
+    
+    // 提取地城名称的函数
+    function extractDungeonNamesFromWodLogs() {
+      extractedDungeonNames.clear();
+      
+      // 从所有战报中提取地城名称
+      const cloudWodLogList = document.getElementById('cloudWodLogList');
+      if (cloudWodLogList) {
+        const wodLogItems = cloudWodLogList.querySelectorAll('.wodlog-item');
+        wodLogItems.forEach(item => {
+          const logId = item.querySelector('.wodlog-item-content').onclick.toString().match(/'([^']+)'/);
+          if (logId) {
+            extractDungeonNamesFromWodLog(logId[1]);
+          }
+        });
+      }
+      
+      console.log('提取到的地城名称:', Array.from(extractedDungeonNames));
+    }
+    
+    // 从单个战报中提取地城名称
+    async function extractDungeonNamesFromWodLog(logId) {
+      try {
+        // 获取战报的index.html内容
+        const indexPath = `wodlogs/${logId}/index.html`;
+        const indexHtml = await getGitHubFileContent(indexPath);
+        
+        if (indexHtml) {
+          // 创建临时DOM来解析HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(indexHtml, 'text/html');
+          
+          // 查找所有地城名称（在指定的XPath位置）
+          const rows = doc.querySelectorAll('table tbody tr');
+          const dungeonNames = new Set();
+          
+          rows.forEach(row => {
+            const dungeonCell = row.querySelector('td:nth-child(2) span');
+            if (dungeonCell) {
+              const dungeonName = dungeonCell.textContent.trim();
+              if (dungeonName && dungeonName !== '') {
+                extractedDungeonNames.add(dungeonName);
+                dungeonNames.add(dungeonName);
+              }
+            }
+          });
+          
+          // 建立战报-地城映射关系
+          wodLogDungeonMap.set(logId, Array.from(dungeonNames));
+        }
+      } catch (error) {
+        console.error('提取地城名称失败:', logId, error);
+      }
+    }
+    
+    // 获取地城的战报数量
+    function getDungeonWodLogCount(dungeonName) {
+      if (!dungeonName) return 0;
+      
+      let count = 0;
+      
+      // 遍历战报-地城映射关系，计算包含此地城的战报数量
+      for (const [logId, dungeonNames] of wodLogDungeonMap) {
+        if (dungeonNames.includes(dungeonName)) {
+          count++;
+        }
+      }
+      
+      return count;
+    }
+    
+    // 检查战报是否包含指定地城
+    function checkWodLogContainsDungeon(logId, dungeonName) {
+      const dungeonNames = wodLogDungeonMap.get(logId);
+      return dungeonNames ? dungeonNames.includes(dungeonName) : false;
+    }
+    
+    // 根据地城名称筛选战报
+    function filterWodLogsByDungeon(dungeonName) {
+      const cloudWodLogList = document.getElementById('cloudWodLogList');
+      if (!cloudWodLogList) return;
+      
+      const wodLogItems = cloudWodLogList.querySelectorAll('.wodlog-item');
+      let visibleCount = 0;
+      
+      wodLogItems.forEach(item => {
+        const logId = item.querySelector('.wodlog-item-content').onclick.toString().match(/'([^']+)'/);
+        let shouldShow = false;
+        
+        if (logId) {
+          // 检查该战报是否包含此地城
+          shouldShow = checkWodLogContainsDungeon(logId[1], dungeonName);
+        }
+        
+        if (shouldShow) {
+          item.style.display = 'flex';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // 更新战报列表标题
+      const titleElement = cloudWodLogList.previousElementSibling;
+      if (titleElement && titleElement.tagName === 'H3') {
+        if (visibleCount > 0) {
+          titleElement.innerHTML = `战报分享平台 <span style="color: #28a745; font-size: 0.8em;">(${visibleCount}个战报 - 地城: ${dungeonName})</span>`;
+        } else {
+          titleElement.innerHTML = `战报分享平台 <span style="color: #dc3545; font-size: 0.8em;">(无相关战报 - 地城: ${dungeonName})</span>`;
+        }
+      }
+      
+      // 显示清除筛选按钮
+      const clearBtn = document.getElementById('clearDungeonFilterBtn');
+      if (clearBtn) {
+        clearBtn.style.display = 'inline-block';
+      }
+      
+      console.log(`筛选地城 "${dungeonName}" 的战报，显示 ${visibleCount} 个`);
+    }
+    
+    // 清除地城筛选
+    function clearDungeonFilter() {
+      const cloudWodLogList = document.getElementById('cloudWodLogList');
+      if (!cloudWodLogList) return;
+      
+      const wodLogItems = cloudWodLogList.querySelectorAll('.wodlog-item');
+      wodLogItems.forEach(item => {
+        item.style.display = 'flex';
+      });
+      
+      // 恢复战报列表标题
+      const titleElement = cloudWodLogList.previousElementSibling;
+      if (titleElement && titleElement.tagName === 'H3') {
+        titleElement.innerHTML = '战报分享平台';
+      }
+      
+      // 隐藏清除筛选按钮
+      const clearBtn = document.getElementById('clearDungeonFilterBtn');
+      if (clearBtn) {
+        clearBtn.style.display = 'none';
+      }
+      
+      console.log('已清除地城筛选');
+    }
+    
+    // 切换战报过滤模式
+    function toggleWodLogFilter() {
+      showOnlyOwnWodLogs = !showOnlyOwnWodLogs;
+      
+      const toggleBtn = document.getElementById('toggleWodLogFilter');
+      if (toggleBtn) {
+        if (showOnlyOwnWodLogs) {
+          toggleBtn.innerHTML = '<i class="fas fa-filter"></i> 只显示我的战报';
+          toggleBtn.title = '当前只显示自己的战报，点击显示所有战报';
+        } else {
+          toggleBtn.innerHTML = '<i class="fas fa-user"></i> 显示所有战报';
+          toggleBtn.title = '当前显示所有战报，点击只显示自己的战报';
+        }
+      }
+      
+      // 重新加载战报列表
+      loadCloudWodLogs(true);
+      
+      console.log('切换战报过滤模式:', showOnlyOwnWodLogs ? '只显示自己的' : '显示所有');
+    }
+    
+    // 搜索副本 - 优化版本（支持模糊搜索和战报数量显示）
     function searchDungeons(query) {
       if (!query || !query.trim()) {
-        return dungeons; // 显示所有副本
+        // 如果没有查询，显示所有副本
+        return dungeons.map(dungeon => ({
+          ...dungeon,
+          wodLogCount: getDungeonWodLogCount(dungeon.name)
+        }));
       }
       
       const lowerQuery = query.toLowerCase().trim();
       const results = [];
       
-      // 优先匹配ID（精确匹配）
+      // 1. 优先匹配副本列表中的地城（ID精确匹配）
       const idMatches = dungeons.filter(dungeon => 
         dungeon.id.toString() === lowerQuery
-      );
+      ).map(dungeon => ({
+        ...dungeon,
+        wodLogCount: getDungeonWodLogCount(dungeon.name),
+        matchType: 'id-exact'
+      }));
       results.push(...idMatches);
       
-      // 然后匹配名称（包含匹配）
+      // 2. 匹配副本列表中的地城名称（包含匹配）
       const nameMatches = dungeons.filter(dungeon => 
         dungeon.name.toLowerCase().includes(lowerQuery) && 
-        !idMatches.includes(dungeon)
-      );
+        !idMatches.some(match => match.id === dungeon.id)
+      ).map(dungeon => ({
+        ...dungeon,
+        wodLogCount: getDungeonWodLogCount(dungeon.name),
+        matchType: 'name-contains'
+      }));
       results.push(...nameMatches);
       
-      // 最后匹配ID包含（模糊匹配）
+      // 3. 匹配副本列表中的ID包含（模糊匹配）
       const idContains = dungeons.filter(dungeon => 
         dungeon.id.toString().includes(lowerQuery) && 
-        !results.includes(dungeon)
-      );
+        !results.some(match => match.id === dungeon.id)
+      ).map(dungeon => ({
+        ...dungeon,
+        wodLogCount: getDungeonWodLogCount(dungeon.name),
+        matchType: 'id-contains'
+      }));
       results.push(...idContains);
       
-      return results; // 显示所有匹配结果
+      // 4. 检查战报中的地城名称（模糊匹配）
+      const matchingDungeonNames = Array.from(extractedDungeonNames).filter(name => 
+        name.toLowerCase().includes(lowerQuery)
+      );
+      
+      // 为战报中的地城创建结果
+      matchingDungeonNames.forEach(name => {
+        // 检查是否已经在副本列表中
+        const existingDungeon = dungeons.find(d => d.name === name);
+        if (existingDungeon) {
+          // 如果副本列表中已有，更新战报数量
+          const existingResult = results.find(r => r.id === existingDungeon.id);
+          if (existingResult) {
+            existingResult.wodLogCount = getDungeonWodLogCount(name);
+            existingResult.matchType = existingResult.matchType || 'name-contains';
+          }
+        } else {
+          // 如果副本列表中没有，创建虚拟地城对象
+          results.push({
+            id: '战报',
+            name: name,
+            tags: ['战报中的地城'],
+            description: '此地城名称来自战报数据',
+            isFromWodLog: true,
+            wodLogCount: getDungeonWodLogCount(name),
+            matchType: 'wodlog-only'
+          });
+        }
+      });
+      
+      return results;
     }
     
     // 渲染搜索结果 - 优化版本
@@ -4437,9 +5558,24 @@
           highlightedName = dungeon.name.replace(regex, '<mark>$1</mark>');
         }
         
+        // 为来自战报的地城添加特殊样式
+        if (dungeon.isFromWodLog) {
+          item.classList.add('wodlog-dungeon');
         item.innerHTML = `
           <div class="dungeon-name">
             <span class="dungeon-id">${dungeon.id}</span> ${highlightedName}
+              <span class="wodlog-tag">[战报]</span>
+              ${dungeon.wodLogCount > 0 ? `<span class="wodlog-count">${dungeon.wodLogCount}个战报</span>` : ''}
+            </div>
+            <div class="dungeon-info">
+              <span>${dungeon.description}</span>
+            </div>
+          `;
+        } else {
+          item.innerHTML = `
+            <div class="dungeon-name">
+              <span class="dungeon-id">${dungeon.id}</span> ${highlightedName}
+              ${dungeon.wodLogCount > 0 ? `<span class="wodlog-count">${dungeon.wodLogCount}个战报</span>` : ''}
           </div>
           <div class="dungeon-info">
             <span>推荐等级: ${dungeon.recLevel}</span>
@@ -4449,6 +5585,7 @@
             <span>开放时间: ${dungeon.openTime}</span>
           </div>
         `;
+        }
         
         // 点击选择副本
         item.addEventListener('click', () => {
@@ -4475,8 +5612,11 @@
           applyFilters();
           }
           
+          // 更新战报分享平台 - 筛选包含此地城的战报
+          filterWodLogsByDungeon(dungeon.name);
+          
           // 显示选择成功提示
-          showStatus(`已选择副本: ${dungeon.name}`, 'success');
+          showStatus(`已选择副本: ${dungeon.name}${dungeon.wodLogCount > 0 ? ` (${dungeon.wodLogCount}个战报)` : ''}`, 'success');
         });
         
         container.appendChild(item);
@@ -6084,6 +7224,30 @@
         return;
       }
       
+      // 如果是来自战报的地城，显示特殊信息
+      if (dungeon.isFromWodLog) {
+        detail.innerHTML = `
+          <div class="wodlog-dungeon-detail">
+            <h3 style="color: #ffc107; margin-bottom: 10px;">
+              <i class="fas fa-file-alt"></i> ${dungeon.name}
+              <span class="wodlog-tag">[战报]</span>
+            </h3>
+            <div class="dungeon-info" style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 5px; border-left: 3px solid #ffc107;">
+              <p><strong>地城来源：</strong>战报数据</p>
+              <p><strong>说明：</strong>此地城名称来自已上传的战报，可能不在标准副本列表中</p>
+              <p><strong>相关战报：</strong>包含此地城的战报将显示在下方</p>
+            </div>
+            <div style="margin-top: 15px;">
+              <p style="color: #666; font-size: 14px;">
+                <i class="fas fa-info-circle"></i> 
+                选择此地城将筛选出包含该地城名称的所有战报
+              </p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
              // 保存原始数据
        originalDungeon = JSON.parse(JSON.stringify(dungeon));
        if (dungeon.units && dungeon.units.length) {
@@ -7411,6 +8575,178 @@
     window.resetConfig = resetConfig;
     window.generateShareImage = generateShareImage;
     
+    // 检查并处理未完成的删除任务
+    async function checkPendingDeleteTask() {
+      try {
+        const pendingTask = localStorage.getItem('pendingDeleteTask');
+        if (!pendingTask) {
+          return;
+        }
+        
+        const task = JSON.parse(pendingTask);
+        console.log('发现未完成的删除任务:', task);
+        
+        if (task.status === 'pending') {
+          // 直接继续删除任务，不询问用户
+          console.log(`发现未完成的删除任务，自动继续执行：\n` +
+            `战报: ${task.fileName}\n` +
+            `开始时间: ${new Date(task.startTime).toLocaleString()}`);
+          
+          // 禁用UI并继续删除任务
+          disableAllUI();
+          await executeDeleteTask(task);
+        } else if (task.status === 'completed') {
+          // 静默处理已完成的删除任务
+          console.log(`之前的删除任务已完成：\n` +
+            `战报: ${task.fileName}\n` +
+            `成功删除: ${task.result.filesDeleted} 个文件\n` +
+            `失败: ${task.result.filesFailed} 个文件`);
+          
+          // 清除已完成的任务
+          localStorage.removeItem('pendingDeleteTask');
+          
+          // 强制刷新战报列表
+          await loadCloudWodLogs(true);
+        }
+      } catch (error) {
+        console.error('检查未完成删除任务时出错:', error);
+        // 清除可能损坏的任务数据
+        localStorage.removeItem('pendingDeleteTask');
+      }
+    }
+    
+    // 执行删除任务
+    async function executeDeleteTask(task) {
+      try {
+        console.log('继续执行删除任务:', task.logId);
+        
+        // 更新任务状态为进行中
+        task.status = 'in_progress';
+        localStorage.setItem('pendingDeleteTask', JSON.stringify(task));
+        
+        // 获取战报目录下的所有文件
+        const response = await fetch(`${GITHUB_API_URL}/contents/wodlogs/${task.logId}`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('无法获取战报文件列表');
+        }
+        
+        const files = await response.json();
+        console.log('找到文件:', files.map(f => f.name));
+        
+        // 顺序删除所有文件和子目录（避免并发冲突）
+        const deleteResults = [];
+        for (const file of files) {
+          const filePath = `wodlogs/${task.logId}/${file.name}`;
+          
+          if (file.type === 'dir') {
+            // 如果是目录，先删除目录内的所有文件
+            console.log(`发现子目录: ${file.name}，开始删除目录内容...`);
+            const result = await deleteDirectoryContents(filePath, file.name);
+            deleteResults.push(result);
+          } else {
+            // 如果是文件，直接删除
+            const result = await deleteGitHubFile(filePath, `Delete wodlog file: ${file.name}`);
+            deleteResults.push(result);
+          }
+          
+          // 添加短暂延迟，避免API限制
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+        
+        // 统计删除结果
+        const successCount = deleteResults.filter(result => result.success).length;
+        const failCount = deleteResults.filter(result => !result.success).length;
+        
+        // 计算实际删除的文件数量（包括目录内的文件）
+        let totalFilesDeleted = 0;
+        let totalFilesFailed = 0;
+        
+        deleteResults.forEach(result => {
+          if (result.details) {
+            // 这是目录删除结果
+            const dirSuccess = result.details.filter(detail => detail.success).length;
+            const dirFail = result.details.filter(detail => !detail.success).length;
+            totalFilesDeleted += dirSuccess;
+            totalFilesFailed += dirFail;
+          } else if (result.success) {
+            // 这是文件删除结果
+            totalFilesDeleted += 1;
+          } else {
+            totalFilesFailed += 1;
+          }
+        });
+        
+        console.log(`删除结果: 成功 ${successCount} 个项目, 失败 ${failCount} 个项目`);
+        console.log(`实际删除文件: ${totalFilesDeleted} 个, 失败: ${totalFilesFailed} 个`);
+        
+        // 删除目录本身（通过删除README文件）
+        const readmeResult = await deleteGitHubFile(`wodlogs/${task.logId}/README.md`, `Delete wodlog directory: ${task.logId}`);
+        if (readmeResult.success) {
+          console.log('README文件删除成功');
+        } else {
+          console.log('README文件删除失败或不存在:', readmeResult.message);
+        }
+        
+        // 更新删除任务状态
+        task.status = 'completed';
+        task.endTime = Date.now();
+        task.result = {
+          success: totalFilesDeleted > 0,
+          filesDeleted: totalFilesDeleted,
+          filesFailed: totalFilesFailed
+        };
+        localStorage.setItem('pendingDeleteTask', JSON.stringify(task));
+        
+        // 静默删除完成，不显示弹窗
+        console.log(`战报删除完成！成功删除 ${totalFilesDeleted} 个文件${totalFilesFailed > 0 ? `，${totalFilesFailed} 个文件删除失败` : ''}`);
+        
+        // 清除localStorage中的删除任务
+        localStorage.removeItem('pendingDeleteTask');
+        
+        // 立即从列表中移除已删除的战报
+        const listContainer = document.getElementById('cloudWodLogList');
+        if (listContainer) {
+          const items = listContainer.querySelectorAll('.wodlog-item');
+          items.forEach(item => {
+            const deleteBtn = item.querySelector('.wodlog-delete-btn');
+            if (deleteBtn && deleteBtn.onclick.toString().includes(task.logId)) {
+              item.remove();
+              console.log('已从列表中移除战报:', task.logId);
+            }
+          });
+        }
+        
+        // 等待GitHub API同步，然后强制刷新战报列表
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await loadCloudWodLogs(true);
+        
+        // 再次延迟刷新，确保完全同步
+        setTimeout(async () => {
+          await loadCloudWodLogs(true);
+        }, 2000);
+        
+      } catch (error) {
+        console.error('执行删除任务失败:', error);
+        
+        // 更新任务状态为失败
+        task.status = 'failed';
+        task.error = error.message;
+        task.endTime = Date.now();
+        localStorage.setItem('pendingDeleteTask', JSON.stringify(task));
+        
+        alert('删除战报失败: ' + error.message);
+      } finally {
+        // 确保无论成功还是失败都恢复UI
+        enableAllUI();
+      }
+    }
+    
     // 统一的页面初始化事件
     window.addEventListener('DOMContentLoaded', function() {
       // 提升按钮层级，防止被遮挡
@@ -7421,6 +8757,33 @@
       // 设置云区域高度
       setCloudSectionHeight();
       
+      // 检查未完成的删除任务
+      checkPendingDeleteTask();
+      
+      // 检查未完成的上传任务
+      checkPendingUploadTask();
+      
+      // 初始化用户ID
+      generateUserId();
+      
+      // 加载本地战报记录
+      loadOwnWodLogIds();
+      
+      // 初始化过滤按钮状态
+      const toggleBtn = document.getElementById('toggleWodLogFilter');
+      if (toggleBtn) {
+        if (showOnlyOwnWodLogs) {
+          toggleBtn.innerHTML = '<i class="fas fa-filter"></i> 显示所有战报';
+          toggleBtn.title = '当前只显示自己的战报，点击显示所有战报';
+        } else {
+          toggleBtn.innerHTML = '<i class="fas fa-user"></i> 只显示我的战报';
+          toggleBtn.title = '当前显示所有战报，点击只显示自己的战报';
+        }
+      }
+      
+      // 自动加载战报列表
+      loadCloudWodLogs();
+      
       // 页面初始化时自动恢复
       if (localStorage.getItem(getDraftKey())) {
         loadDraftFromLocal();
@@ -7430,6 +8793,2152 @@
       }
       bindDraftAutoSave();
     });
+    
+    // ============ 文件上传和解析功能（纯前端方案）============
+    let uploadedZipFiles = {}; // 存储压缩包内的所有文件
+    let currentWodLogData = null; // 当前战报数据
+    
+    // 监听文件选择并自动处理
+    document.getElementById('zipFileUpload').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      // 检查文件名是否以wodlog_[开头
+      if (!file.name.startsWith('wodlog_[')) {
+        alert('文件名必须以 "wodlog_[" 开头');
+        e.target.value = ''; // 清空文件选择
+        return;
+      }
+      
+      const fileInfo = document.getElementById('fileInfo');
+      const clearBtn = document.getElementById('clearFileBtn');
+      
+      fileInfo.style.display = 'block';
+      clearBtn.style.display = 'block';
+      fileInfo.innerHTML = `
+        <i class="fas fa-spinner fa-spin spinner-rotate"></i> 
+        <strong>${file.name}</strong> 
+        (${(file.size / 1024 / 1024).toFixed(2)} MB)
+        <br><small>正在解析...</small>
+      `;
+      
+      try {
+        // 检查文件扩展名，JSZip主要支持ZIP格式
+        const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+        if (fileExt === '.rar' || fileExt === '.7z') {
+          alert('当前版本仅支持ZIP格式文件。请将RAR/7Z文件解压后重新压缩为ZIP格式。');
+          e.target.value = ''; // 清空文件选择
+          fileInfo.style.display = 'none';
+          clearBtn.style.display = 'none';
+          return;
+        }
+        
+        // 使用JSZip解析压缩包
+        const zip = await JSZip.loadAsync(file);
+        uploadedZipFiles = {};
+        
+        // 提取所有文件
+        for (const [filename, zipEntry] of Object.entries(zip.files)) {
+          if (!zipEntry.dir) {
+            const content = await zipEntry.async('blob');
+            uploadedZipFiles[filename] = content;
+          }
+        }
+        
+        fileInfo.innerHTML = `
+          <i class="fas fa-check-circle"></i> 
+          <strong>${file.name}</strong> 
+          (${(file.size / 1024 / 1024).toFixed(2)} MB)
+          <br><small>已成功解析 ${Object.keys(uploadedZipFiles).length} 个文件</small>
+        `;
+        
+        // 查找index.html文件并显示
+        const indexFile = Object.keys(uploadedZipFiles).find(name => {
+          const lowerName = name.toLowerCase();
+          return lowerName.endsWith('index.html') || 
+                 lowerName.endsWith('index.htm') ||
+                 lowerName === 'index.html' ||
+                 lowerName === 'index.htm';
+        });
+        
+        if (indexFile) {
+          // 保存当前战报数据（保存所有HTML文件）
+          currentWodLogData = {
+            fileName: file.name,
+            uploadTime: new Date().toISOString(),
+            fileSize: file.size,
+            fileCount: Object.keys(uploadedZipFiles).length,
+            htmlFiles: {}, // 保存所有HTML文件
+            metadata: {
+              hasIndex: true,
+              indexFile: indexFile,
+              allFiles: Object.keys(uploadedZipFiles)
+            }
+          };
+          
+          // 保存所有HTML文件的内容
+          for (const [filename, blob] of Object.entries(uploadedZipFiles)) {
+            const lowerName = filename.toLowerCase();
+            if (lowerName.endsWith('.html') || lowerName.endsWith('.htm')) {
+              try {
+                const textContent = await blob.text();
+                currentWodLogData.htmlFiles[filename] = textContent;
+              } catch (error) {
+                console.error('读取文件失败:', filename, error);
+              }
+            }
+          }
+          
+          // 显示HTML文件统计
+          const htmlFileCount = Object.keys(currentWodLogData.htmlFiles).length;
+          fileInfo.innerHTML += `<br><small style="color: #27ae60;">已提取 ${htmlFileCount} 个HTML文件</small>`;
+          
+          // 隐藏内容查看器，只显示基本信息
+          const viewer = document.getElementById('zipContentViewer');
+          if (viewer) {
+            viewer.style.display = 'none';
+          }
+          
+          // 显示上传到云端按钮
+          document.getElementById('wodlogActions').style.display = 'block';
+        } else {
+          fileInfo.innerHTML += '<br><small style="color: #e74c3c;">未找到index.html文件</small>';
+        }
+      } catch (error) {
+        console.error('解析ZIP文件失败:', error);
+        fileInfo.innerHTML = `
+          <i class="fas fa-exclamation-circle"></i> 
+          <strong>解析失败</strong>
+          <br><small style="color: #e74c3c;">${error.message}</small>
+        `;
+      }
+    });
+    
+    // 显示压缩包内容（完全在前端实现）
+    async function displayZipContent(indexFileName) {
+      const viewer = document.getElementById('zipContentViewer');
+      const iframe = document.getElementById('contentFrame');
+      
+      viewer.style.display = 'block';
+      
+      try {
+        // 读取index.html内容
+        const indexBlob = uploadedZipFiles[indexFileName];
+        const indexText = await indexBlob.text();
+        
+        // 处理HTML中的资源引用，转换为Data URL
+        const processedHtml = await processHtmlWithDataURL(indexText, indexFileName);
+        
+        // 使用srcdoc设置内容（添加验证）
+        iframe.srcdoc = validateAndFixHtml(processedHtml);
+        
+      } catch (error) {
+        console.error('显示内容失败:', error);
+        alert('显示文件内容失败: ' + error.message);
+      }
+    }
+    
+    // 处理HTML中的资源引用（转换为Data URL）
+    async function processHtmlWithDataURL(html, basePath) {
+      const baseDir = basePath.includes('/') ? basePath.substring(0, basePath.lastIndexOf('/') + 1) : '';
+      
+      // 辅助函数：查找文件
+      const findFile = (relativePath) => {
+        let cleanPath = relativePath.replace(/^\.\//, '').replace(/\\/g, '/');
+        
+        const possiblePaths = [
+          cleanPath,
+          baseDir + cleanPath,
+          cleanPath.replace(/^\//, ''),
+          (baseDir + cleanPath).replace(/^\//, ''),
+        ];
+        
+        const firstFile = Object.keys(uploadedZipFiles)[0];
+        if (firstFile && firstFile.includes('/')) {
+          const rootFolder = firstFile.split('/')[0] + '/';
+          possiblePaths.push(rootFolder + cleanPath);
+          possiblePaths.push(rootFolder + cleanPath.replace(/^\//, ''));
+        }
+        
+        for (const path of possiblePaths) {
+          if (uploadedZipFiles[path]) {
+            return uploadedZipFiles[path];
+          }
+        }
+        return null;
+      };
+      
+      // Blob转Data URL
+      const blobToDataURL = (blob) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      };
+      
+      // 收集所有需要替换的资源
+      const replacements = new Map();
+      
+      // 处理所有可能的资源引用
+      const patterns = [
+        { regex: /src=["'](?!http|data:)([^"']+)["']/gi, attr: 'src' },
+        { regex: /href=["'](?!http|#|javascript:|data:)([^"']+)["']/gi, attr: 'href' },
+        { regex: /url\(["']?(?!http|data:)([^"')]+)["']?\)/gi, attr: 'url' }
+      ];
+      
+      for (const { regex, attr } of patterns) {
+        let match;
+        regex.lastIndex = 0;
+        
+        while ((match = regex.exec(html)) !== null) {
+          const path = match[1];
+          const blob = findFile(path);
+          
+          if (blob && !replacements.has(match[0])) {
+            const dataUrl = await blobToDataURL(blob);
+            const replacement = attr === 'url' ? `url("${dataUrl}")` : `${attr}="${dataUrl}"`;
+            replacements.set(match[0], replacement);
+          }
+        }
+      }
+      
+      // 应用所有替换
+      let processed = html;
+      for (const [original, replacement] of replacements) {
+        processed = processed.replace(original, replacement);
+      }
+      
+      return processed;
+    }
+    
+    // Blob转Base64
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    }
+    
+    // GitHub API相关函数（恢复SHA检查避免409冲突）
+    async function uploadFileToGitHub(filePath, content, message) {
+      if (!GITHUB_TOKEN) {
+        throw new Error('请先设置GitHub Personal Access Token');
+      }
+      
+      // 首先检查文件是否已存在，获取SHA
+      let sha = null;
+      try {
+        const checkResponse = await fetch(`${GITHUB_API_URL}/contents/${filePath}`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (checkResponse.ok) {
+          const fileData = await checkResponse.json();
+          sha = fileData.sha;
+        }
+        // 404错误是正常的，表示文件不存在，将创建新文件
+      } catch (error) {
+        // 静默处理所有检查错误，继续上传
+      }
+      
+      const requestBody = {
+        message: message,
+        content: btoa(unescape(encodeURIComponent(content))), // Base64编码
+        branch: 'main'
+      };
+      
+      // 如果文件已存在，添加SHA值
+      if (sha) {
+        requestBody.sha = sha;
+      }
+      
+      const response = await fetch(`${GITHUB_API_URL}/contents/${filePath}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      });
+      
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`GitHub上传失败: ${response.status} - ${error}`);
+      }
+      
+      return await response.json();
+    }
+    
+    async function getGitHubFileList(forceRefresh = false) {
+      try {
+        // 如果强制刷新，添加时间戳避免缓存
+        const url = forceRefresh ? 
+          `${GITHUB_API_URL}/contents/wodlogs?t=${Date.now()}` : 
+          `${GITHUB_API_URL}/contents/wodlogs`;
+          
+        const response = await fetch(url, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+         
+         if (response.ok) {
+           const files = await response.json();
+           // 返回目录列表，过滤出wodlog_开头的目录
+           return files.filter(file => file.type === 'dir' && file.name.startsWith('wodlog_'));
+         } else if (response.status === 403) {
+           console.error('GitHub API访问被拒绝，请检查Token权限');
+           alert('GitHub API访问被拒绝，请检查Token权限设置');
+           return [];
+         } else if (response.status === 401) {
+           console.error('GitHub Token无效或已过期');
+           alert('GitHub Token无效或已过期，请重新设置');
+           return [];
+         }
+         return [];
+       } catch (error) {
+         console.error('获取GitHub文件列表失败:', error);
+         return [];
+       }
+     }
+    
+    async function getGitHubFileContent(filePath) {
+      try {
+        const response = await fetch(`${GITHUB_RAW_URL}/${filePath}`);
+        if (response.ok) {
+          return await response.text();
+        }
+        return null;
+      } catch (error) {
+        console.error('获取GitHub文件内容失败:', error);
+        return null;
+      }
+    }
+    
+    // 删除GitHub文件（带重试机制）
+    async function deleteGitHubFile(filePath, message, retryCount = 0) {
+      if (!GITHUB_TOKEN) {
+        throw new Error('请先设置GitHub Personal Access Token');
+      }
+      
+      const maxRetries = 3;
+      
+      try {
+        // 首先获取文件的SHA值
+        const checkResponse = await fetch(`${GITHUB_API_URL}/contents/${filePath}`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (!checkResponse.ok) {
+          if (checkResponse.status === 404) {
+            console.log(`文件不存在，跳过删除: ${filePath}`);
+            return { success: true, message: '文件不存在' };
+          }
+          const errorText = await checkResponse.text();
+          console.warn(`获取文件信息失败: ${filePath}, 状态: ${checkResponse.status}, 错误: ${errorText}`);
+          return { success: false, message: `获取文件信息失败: ${checkResponse.status}` };
+        }
+        
+        const fileData = await checkResponse.json();
+        
+        if (!fileData.sha) {
+          console.warn(`文件没有SHA值，跳过删除: ${filePath}`);
+          return { success: false, message: '文件没有SHA值' };
+        }
+        
+        // 删除文件
+        const response = await fetch(`${GITHUB_API_URL}/contents/${filePath}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: message,
+            sha: fileData.sha,
+            branch: 'main'
+          })
+        });
+        
+        if (!response.ok) {
+          if (response.status === 409 && retryCount < maxRetries) {
+            // 409冲突，等待后重试
+            console.log(`删除文件冲突，等待后重试 (${retryCount + 1}/${maxRetries}): ${filePath}`);
+            await new Promise(resolve => setTimeout(resolve, 500 * (retryCount + 1)));
+            return await deleteGitHubFile(filePath, message, retryCount + 1);
+          }
+          
+          const error = await response.text();
+          console.error(`删除文件失败: ${filePath}, 状态: ${response.status}, 错误: ${error}`);
+          return { success: false, message: `删除失败: ${response.status} - ${error}` };
+        }
+        
+        console.log(`成功删除文件: ${filePath}`);
+        return { success: true, data: await response.json() };
+        
+      } catch (error) {
+        console.error(`删除文件时发生错误: ${filePath}`, error);
+        return { success: false, message: error.message };
+      }
+    }
+    
+    // 删除目录内容
+    async function deleteDirectoryContents(dirPath, dirName) {
+      try {
+        console.log(`开始删除目录内容: ${dirPath}`);
+        
+        // 获取目录内的所有文件
+        const response = await fetch(`${GITHUB_API_URL}/contents/${dirPath}`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (!response.ok) {
+          console.warn(`无法获取目录内容: ${dirPath}, 状态: ${response.status}`);
+          return { success: false, message: `无法获取目录内容: ${response.status}` };
+        }
+        
+        const dirFiles = await response.json();
+        console.log(`目录 ${dirName} 包含 ${dirFiles.length} 个文件/目录`);
+        
+        // 快速批量删除目录内的所有文件和子目录
+        const results = [];
+        
+        // 分离文件和子目录
+        const filesToDelete = dirFiles.filter(item => item.type !== 'dir');
+        const subdirsToDelete = dirFiles.filter(item => item.type === 'dir');
+        
+        // 顺序删除所有文件（避免409冲突）
+        if (filesToDelete.length > 0) {
+          console.log(`顺序删除目录内 ${filesToDelete.length} 个文件...`);
+          for (const item of filesToDelete) {
+            const itemPath = `${dirPath}/${item.name}`;
+            const result = await deleteGitHubFile(itemPath, `Delete from dir: ${item.name}`);
+            results.push(result);
+            
+            // 文件间短暂延迟，避免API限制
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+        }
+        
+        // 顺序删除所有子目录（避免409冲突）
+        if (subdirsToDelete.length > 0) {
+          console.log(`顺序删除 ${subdirsToDelete.length} 个子目录...`);
+          for (const item of subdirsToDelete) {
+            const itemPath = `${dirPath}/${item.name}`;
+            const result = await deleteDirectoryContents(itemPath, item.name);
+            results.push(result);
+            
+            // 子目录间短暂延迟，避免API限制
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+        }
+        
+        // 统计结果
+        const successCount = results.filter(result => result.success).length;
+        const failCount = results.filter(result => !result.success).length;
+        
+        console.log(`目录 ${dirName} 删除结果: 成功 ${successCount} 个, 失败 ${failCount} 个`);
+        
+        return {
+          success: successCount > 0,
+          message: `目录 ${dirName}: 成功 ${successCount} 个, 失败 ${failCount} 个`,
+          details: results
+        };
+        
+      } catch (error) {
+        console.error(`删除目录内容失败: ${dirPath}`, error);
+        return { success: false, message: error.message };
+      }
+    }
+    
+    // 上传任务管理
+    let currentUploadTask = null;
+    let uploadAbortController = null;
+    
+    // 撤回上传任务
+    async function abortUploadTask() {
+      if (currentUploadTask && currentUploadTask.status === 'uploading') {
+        try {
+          console.log('开始撤回上传任务...');
+          
+          // 取消所有正在进行的请求
+          if (uploadAbortController) {
+            uploadAbortController.abort();
+          }
+          
+          // 删除已上传的文件
+          if (currentUploadTask && currentUploadTask.wodLogId) {
+            await deleteCloudWodLog(currentUploadTask.wodLogId, currentUploadTask.fileName);
+          }
+          
+          // 更新任务状态
+          if (currentUploadTask) {
+            currentUploadTask.status = 'aborted';
+            currentUploadTask.endTime = Date.now();
+            localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+          }
+          
+          console.log('上传任务已撤回');
+          
+          // 清除任务
+          currentUploadTask = null;
+          localStorage.removeItem('pendingUploadTask');
+          
+          // 强制刷新战报列表
+          await loadCloudWodLogs(true);
+          
+        } catch (error) {
+          console.error('撤回上传任务失败:', error);
+        } finally {
+          // 确保无论成功失败都恢复UI
+          enableAllUI();
+        }
+      }
+    }
+    
+    // 禁用所有用户操作
+    function disableAllUI() {
+      // 禁用所有按钮
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+      });
+      
+      // 禁用所有输入框
+      const inputs = document.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        input.disabled = true;
+        input.style.opacity = '0.5';
+        input.style.cursor = 'not-allowed';
+      });
+      
+      // 禁用所有可点击元素
+      const clickableElements = document.querySelectorAll('[onclick], .clickable');
+      clickableElements.forEach(element => {
+        element.style.pointerEvents = 'none';
+        element.style.opacity = '0.5';
+        element.style.cursor = 'not-allowed';
+      });
+      
+      // 添加全局遮罩层
+      const overlay = document.createElement('div');
+      overlay.id = 'delete-overlay';
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+      `;
+      overlay.innerHTML = `
+        <div style="text-align: center;">
+          <i class="fas fa-spinner fa-spin spinner-rotate" style="font-size: 24px; margin-bottom: 10px;"></i>
+          <div>正在处理战报，请稍候...</div>
+          <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">请勿进行其他操作</div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      
+      console.log('UI已禁用，防止用户操作');
+    }
+    
+    // 恢复所有用户操作
+    function enableAllUI() {
+      // 恢复所有按钮
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.opacity = '';
+        btn.style.cursor = '';
+      });
+      
+      // 恢复所有输入框
+      const inputs = document.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        input.disabled = false;
+        input.style.opacity = '';
+        input.style.cursor = '';
+      });
+      
+      // 恢复所有可点击元素
+      const clickableElements = document.querySelectorAll('[onclick], .clickable');
+      clickableElements.forEach(element => {
+        element.style.pointerEvents = '';
+        element.style.opacity = '';
+        element.style.cursor = '';
+      });
+      
+      // 移除全局遮罩层
+      const overlay = document.getElementById('delete-overlay');
+      if (overlay) {
+        overlay.remove();
+      }
+      
+      console.log('UI已恢复，用户可以正常操作');
+    }
+    
+    // 创建战报列表项HTML
+    function createWodLogItemHTML(log) {
+      const uploadDate = new Date(log.uploadTime).toLocaleString('zh-CN');
+      const fileSize = Math.round(log.fileSize / 1024);
+      const htmlFileCount = log.metadata ? log.metadata.files.filter(f => f.endsWith('.html')).length : 0;
+      const logNumber = log.id.replace('wodlog_', '');
+      const shortFileName = log.fileName.length > 20 ? 
+        log.fileName.substring(0, 20) + '...' : 
+        log.fileName;
+      
+      return `
+        <div class="wodlog-item">
+          <div class="wodlog-item-content" onclick="viewCloudWodLog('${log.id}')">
+            <div class="wodlog-item-name" title="${log.fileName}">${logNumber} - ${shortFileName}</div>
+            <div class="wodlog-item-info">
+              <span><i class="fas fa-clock"></i> ${uploadDate}</span>
+              <span><i class="fas fa-file"></i> ${fileSize} KB</span>
+              <span><i class="fas fa-code"></i> ${htmlFileCount} HTML</span>
+            </div>
+          </div>
+          <div class="wodlog-item-actions">
+            <button class="wodlog-delete-btn" onclick="deleteCloudWodLog('${log.id}', '${log.fileName}')" title="删除战报">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+    
+    // 顺序上传文件（避免409冲突）
+    async function batchUploadFiles(files, uploadBtn) {
+      const results = [];
+      const totalFiles = files.length;
+      let completedFiles = 0;
+      
+      console.log(`开始顺序上传 ${totalFiles} 个文件...`);
+      
+      for (let i = 0; i < files.length; i++) {
+        // 检查是否被取消
+        if (uploadAbortController && uploadAbortController.signal.aborted) {
+          throw new Error('上传已取消');
+        }
+        
+        const file = files[i];
+        try {
+          const result = await uploadFileToGitHub(file.path, file.content, file.message);
+          completedFiles++;
+          const progress = Math.round((completedFiles / totalFiles) * 100);
+          uploadBtn.innerHTML = `<i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在上传... ${progress}%`;
+          console.log(`成功上传: ${file.path}`);
+          results.push({ success: true, result: result, file: file.path });
+        } catch (error) {
+          console.error(`上传失败: ${file.path}`, error);
+          results.push({ success: false, error: error.message, file: file.path });
+        }
+        
+        // 文件间添加短暂延迟，避免API限制
+        if (i < files.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+      }
+      
+      console.log(`顺序上传完成，处理了 ${results.length} 个文件`);
+      return results;
+    }
+    
+    // 页面关闭时自动撤回上传任务
+    window.addEventListener('beforeunload', function(event) {
+      if (currentUploadTask && currentUploadTask.status === 'uploading') {
+        console.log('检测到页面即将关闭，自动撤回上传任务...');
+        
+        // 取消所有正在进行的请求
+        if (uploadAbortController) {
+          uploadAbortController.abort();
+        }
+        
+        // 标记任务为已撤回，页面重新加载时会自动处理
+        if (currentUploadTask) {
+          currentUploadTask.status = 'aborted';
+          currentUploadTask.endTime = Date.now();
+          localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+        }
+        
+        console.log('上传任务已标记为撤回');
+      }
+    });
+    
+    // 检查并处理未完成的上传任务
+    async function checkPendingUploadTask() {
+      try {
+        const pendingTask = localStorage.getItem('pendingUploadTask');
+        if (!pendingTask) {
+          return;
+        }
+        
+        const task = JSON.parse(pendingTask);
+        console.log('发现未完成的上传任务:', task);
+        
+        if (task.status === 'uploading') {
+          // 自动撤回未完成的上传任务
+          console.log('发现未完成的上传任务，自动撤回...');
+          currentUploadTask = task;
+          await abortUploadTask();
+        } else if (task.status === 'aborted') {
+          // 处理已撤回的上传任务
+          console.log(`发现已撤回的上传任务：\n` +
+            `战报: ${task.fileName}\n` +
+            `战报ID: ${task.wodLogId}\n` +
+            `撤回时间: ${new Date(task.endTime).toLocaleString()}`);
+          
+          // 清除已撤回的任务
+          localStorage.removeItem('pendingUploadTask');
+        } else if (task.status === 'completed') {
+          // 静默处理已完成的上传任务
+          console.log(`之前的上传任务已完成：\n` +
+            `战报: ${task.fileName}\n` +
+            `战报ID: ${task.wodLogId}`);
+          
+          // 清除已完成的任务
+          localStorage.removeItem('pendingUploadTask');
+        }
+      } catch (error) {
+        console.error('检查未完成上传任务时出错:', error);
+        // 清除可能损坏的任务数据
+        localStorage.removeItem('pendingUploadTask');
+      }
+    }
+    
+    // 快速删除整个战报目录（使用GitHub Tree API）
+    async function deleteCloudWodLog(logId, fileName) {
+      // 显示自定义确认对话框
+      const confirmed = await showDeleteConfirmDialog(fileName);
+      if (!confirmed) {
+        return;
+      }
+      
+      // 立即禁用所有UI操作
+      disableAllUI();
+      
+      // 将删除任务保存到localStorage，确保即使页面关闭也能继续
+      const deleteTask = {
+        logId: logId,
+        fileName: fileName,
+        startTime: Date.now(),
+        status: 'pending'
+      };
+      
+      localStorage.setItem('pendingDeleteTask', JSON.stringify(deleteTask));
+      console.log('删除任务已保存到localStorage:', deleteTask);
+      
+      try {
+        console.log('开始快速删除战报:', logId);
+        
+        // 使用GitHub Tree API获取所有文件（包括子目录中的文件）
+        console.log('删除战报，logId:', logId);
+        const treeResponse = await fetch(`${GITHUB_API_URL}/git/trees/wodlogs/${logId}?recursive=1`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (treeResponse.ok) {
+          const treeData = await treeResponse.json();
+          const allFiles = treeData.tree.filter(item => item.type === 'blob');
+          console.log(`找到 ${allFiles.length} 个文件，开始批量删除...`);
+          
+          // 批量删除所有文件
+          const deleteResults = await batchDeleteFiles(allFiles, logId);
+          
+          // 统计结果
+          const successCount = deleteResults.filter(result => result.success).length;
+          const failCount = deleteResults.filter(result => !result.success).length;
+          
+          console.log(`批量删除结果: 成功 ${successCount} 个文件, 失败 ${failCount} 个文件`);
+          
+          // 更新删除任务状态
+          deleteTask.status = 'completed';
+          deleteTask.endTime = Date.now();
+          deleteTask.result = {
+            success: successCount > 0,
+            filesDeleted: successCount,
+            filesFailed: failCount
+          };
+          localStorage.setItem('pendingDeleteTask', JSON.stringify(deleteTask));
+          
+          // 静默删除完成，不显示弹窗
+          console.log(`战报删除完成！成功删除 ${successCount} 个文件${failCount > 0 ? `，${failCount} 个文件删除失败` : ''}`);
+          
+          // 从本地记录中移除战报
+          removeOwnWodLogId(logId);
+          
+          // 清除localStorage中的删除任务
+          localStorage.removeItem('pendingDeleteTask');
+          
+          // 立即从列表中移除已删除的战报
+          const listContainer = document.getElementById('cloudWodLogList');
+          if (listContainer) {
+            const items = listContainer.querySelectorAll('.wodlog-item');
+            items.forEach(item => {
+              const deleteBtn = item.querySelector('.wodlog-delete-btn');
+              if (deleteBtn && deleteBtn.onclick.toString().includes(logId)) {
+                item.remove();
+                console.log('已从列表中移除战报:', logId);
+              }
+            });
+          }
+          
+          // 等待GitHub API同步，然后强制刷新战报列表
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          await loadCloudWodLogs(true);
+          
+          // 再次延迟刷新，确保完全同步
+          setTimeout(async () => {
+            await loadCloudWodLogs(true);
+          }, 2000);
+          
+          // 恢复UI操作
+          enableAllUI();
+          return;
+        }
+      } catch (error) {
+        console.error('快速删除失败，回退到传统删除方式:', error);
+      }
+      
+      // 如果快速删除失败，回退到传统方式
+      try {
+        await traditionalDelete(logId, fileName, deleteTask);
+      } finally {
+        // 确保无论成功还是失败都恢复UI
+        enableAllUI();
+      }
+    }
+    
+    // 超高速批量删除文件（大幅提升删除速度）
+    async function batchDeleteFiles(files, logId) {
+      console.log(`开始超高速删除 ${files.length} 个文件...`);
+      
+      // 创建所有删除任务
+      const deletePromises = files.map(async (file) => {
+        const filePath = `wodlogs/${logId}/${file.path}`;
+        return await deleteGitHubFile(filePath, `Fast batch delete: ${file.path}`);
+      });
+      
+      // 减少并发数量，避免409冲突
+      const batchSize = 3; // 每批处理3个文件（减少并发）
+      const results = [];
+      
+      for (let i = 0; i < deletePromises.length; i += batchSize) {
+        const batch = deletePromises.slice(i, i + batchSize);
+        const batchResults = await Promise.all(batch);
+        results.push(...batchResults);
+        
+        // 增加批次间延迟，避免API限制
+        if (i + batchSize < deletePromises.length) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+      }
+      
+      console.log(`超高速删除完成，处理了 ${results.length} 个文件`);
+      return results;
+    }
+    
+    // 传统删除方式（作为备用）
+    async function traditionalDelete(logId, fileName, deleteTask) {
+      try {
+        console.log('使用传统方式删除战报:', logId);
+        
+        // 获取战报目录下的所有文件
+        const response = await fetch(`${GITHUB_API_URL}/contents/wodlogs/${logId}`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('无法获取战报文件列表');
+        }
+        
+        const files = await response.json();
+        console.log('找到文件:', files.map(f => f.name));
+        
+        // 快速批量删除所有文件和子目录
+        const deleteResults = [];
+        
+        // 分离文件和目录
+        const filesToDelete = files.filter(file => file.type !== 'dir');
+        const dirsToDelete = files.filter(file => file.type === 'dir');
+        
+        // 顺序删除所有文件（避免409冲突）
+        if (filesToDelete.length > 0) {
+          console.log(`顺序删除 ${filesToDelete.length} 个文件...`);
+          for (const file of filesToDelete) {
+            const filePath = `wodlogs/${logId}/${file.name}`;
+            const result = await deleteGitHubFile(filePath, `Delete file: ${file.name}`);
+            deleteResults.push(result);
+            
+            // 文件间短暂延迟，避免API限制
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+        }
+        
+        // 顺序删除所有目录（避免409冲突）
+        if (dirsToDelete.length > 0) {
+          console.log(`顺序删除 ${dirsToDelete.length} 个目录...`);
+          for (const dir of dirsToDelete) {
+            const dirPath = `wodlogs/${logId}/${dir.name}`;
+            const result = await deleteDirectoryContents(dirPath, dir.name);
+            deleteResults.push(result);
+            
+            // 目录间短暂延迟，避免API限制
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
+        }
+        
+        // 统计删除结果
+        const successCount = deleteResults.filter(result => result.success).length;
+        const failCount = deleteResults.filter(result => !result.success).length;
+        
+        // 计算实际删除的文件数量（包括目录内的文件）
+        let totalFilesDeleted = 0;
+        let totalFilesFailed = 0;
+        
+        deleteResults.forEach(result => {
+          if (result.details) {
+            // 这是目录删除结果
+            const dirSuccess = result.details.filter(detail => detail.success).length;
+            const dirFail = result.details.filter(detail => !detail.success).length;
+            totalFilesDeleted += dirSuccess;
+            totalFilesFailed += dirFail;
+          } else if (result.success) {
+            // 这是文件删除结果
+            totalFilesDeleted += 1;
+          } else {
+            totalFilesFailed += 1;
+          }
+        });
+        
+        console.log(`删除结果: 成功 ${successCount} 个项目, 失败 ${failCount} 个项目`);
+        console.log(`实际删除文件: ${totalFilesDeleted} 个, 失败: ${totalFilesFailed} 个`);
+        
+        // 删除目录本身（通过删除README文件）
+        const readmeResult = await deleteGitHubFile(`wodlogs/${logId}/README.md`, `Delete wodlog directory: ${logId}`);
+        if (readmeResult.success) {
+          console.log('README文件删除成功');
+        } else {
+          console.log('README文件删除失败或不存在:', readmeResult.message);
+        }
+        
+        // 更新删除任务状态
+        deleteTask.status = 'completed';
+        deleteTask.endTime = Date.now();
+        deleteTask.result = {
+          success: totalFilesDeleted > 0,
+          filesDeleted: totalFilesDeleted,
+          filesFailed: totalFilesFailed
+        };
+        localStorage.setItem('pendingDeleteTask', JSON.stringify(deleteTask));
+        
+        // 静默删除完成，不显示弹窗
+        console.log(`战报删除完成！成功删除 ${totalFilesDeleted} 个文件${totalFilesFailed > 0 ? `，${totalFilesFailed} 个文件删除失败` : ''}`);
+        
+        // 清除localStorage中的删除任务
+        localStorage.removeItem('pendingDeleteTask');
+        
+        // 立即从列表中移除已删除的战报
+        const listContainer = document.getElementById('cloudWodLogList');
+        if (listContainer) {
+          const items = listContainer.querySelectorAll('.wodlog-item');
+          items.forEach(item => {
+            const deleteBtn = item.querySelector('.wodlog-delete-btn');
+            if (deleteBtn && deleteBtn.onclick.toString().includes(logId)) {
+              item.remove();
+              console.log('已从列表中移除战报:', logId);
+            }
+          });
+        }
+        
+        // 等待GitHub API同步，然后强制刷新战报列表
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await loadCloudWodLogs(true);
+        
+        // 再次延迟刷新，确保完全同步
+        setTimeout(async () => {
+          await loadCloudWodLogs(true);
+        }, 2000);
+        
+      } catch (error) {
+        console.error('删除战报失败:', error);
+        
+        // 更新任务状态为失败
+        deleteTask.status = 'failed';
+        deleteTask.error = error.message;
+        deleteTask.endTime = Date.now();
+        localStorage.setItem('pendingDeleteTask', JSON.stringify(deleteTask));
+        
+        alert('删除战报失败: ' + error.message);
+      } finally {
+        // 确保无论成功还是失败都恢复UI
+        enableAllUI();
+      }
+    }
+    
+    // 确保wodlogs目录存在
+    async function ensureWodLogsDirectory() {
+      try {
+        // 检查wodlogs目录是否存在
+        const response = await fetch(`${GITHUB_API_URL}/contents/wodlogs`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (response.ok) {
+          console.log('wodlogs目录已存在');
+          return;
+        }
+        
+        if (response.status === 404) {
+          // 创建wodlogs目录（通过创建一个README文件）
+          console.log('创建wodlogs目录...');
+          const readmeContent = `# WOD战报存储目录
+
+这个目录用于存储WOD（World of Dungeons）战报文件。
+
+## 目录结构
+- \`wodlog_N/\` - 第N个战报的目录
+  - \`metadata.json\` - 战报元数据
+  - \`index.html\` - 战报主页面
+  - \`其他HTML文件\` - 战报的各个页面
+
+## 使用说明
+请通过WOD战报查看器上传和管理战报文件。`;
+          
+          const readmeData = {
+            message: 'Create wodlogs directory',
+            content: btoa(unescape(encodeURIComponent(readmeContent))),
+            branch: 'main'
+          };
+          
+          const createResponse = await fetch(`${GITHUB_API_URL}/contents/wodlogs/README.md`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${GITHUB_TOKEN}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(readmeData)
+          });
+          
+          if (createResponse.ok) {
+            console.log('wodlogs目录创建成功');
+          } else {
+            const error = await createResponse.text();
+            console.error('创建wodlogs目录失败:', error);
+            throw new Error(`创建wodlogs目录失败: ${createResponse.status}`);
+          }
+        } else {
+          throw new Error(`检查wodlogs目录失败: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('确保wodlogs目录存在时出错:', error);
+        throw error;
+      }
+    }
+    
+    // 获取下一个战报编号
+    async function getNextLogNumber() {
+      try {
+        const files = await getGitHubFileList();
+        let maxNumber = 0;
+        
+        for (const file of files) {
+          const match = file.name.match(/^wodlog_(\d+)$/);
+          if (match) {
+            const number = parseInt(match[1]);
+            if (number > maxNumber) {
+              maxNumber = number;
+            }
+          }
+        }
+        
+        return maxNumber + 1;
+      } catch (error) {
+        console.error('获取战报编号失败:', error);
+        return 1; // 默认从1开始
+      }
+    }
+    
+    // HTML内容验证和修复函数
+    function validateAndFixHtml(html) {
+      if (!html || typeof html !== 'string') {
+        console.error('无效的HTML内容:', html);
+        return '<html><head><meta charset="utf-8"></head><body><h1>HTML内容无效</h1></body></html>';
+      }
+      
+      try {
+        // 确保HTML有基本结构
+        let fixedHtml = html.trim();
+        
+        // 如果HTML不完整，添加基本结构
+        if (!fixedHtml.includes('<html>')) {
+          fixedHtml = `<html><head><meta charset="utf-8"></head><body>${fixedHtml}</body></html>`;
+        }
+        
+        // 检查是否有未闭合的标签
+        const openTags = fixedHtml.match(/<[^/][^>]*>/g) || [];
+        const closeTags = fixedHtml.match(/<\/[^>]*>/g) || [];
+        
+        // 简单的标签平衡检查
+        if (openTags.length > closeTags.length) {
+          console.warn('HTML可能有未闭合的标签，尝试修复...');
+        }
+        
+        return fixedHtml;
+      } catch (error) {
+        console.error('HTML验证失败:', error);
+        return `<html><head><meta charset="utf-8"></head><body><h1>HTML处理错误</h1><p>${error.message}</p></body></html>`;
+      }
+    }
+    
+    // 测试GitHub连接
+    async function testGitHubConnection() {
+      console.log('=== 开始测试JSONBin连接 ===');
+      console.log('Bin ID:', WODLOG_BIN_ID);
+      console.log('API URL:', WODLOG_API_URL);
+      console.log('Access Key:', WODLOG_ACCESS_KEY.substring(0, 20) + '...');
+      
+      try {
+        const response = await fetch(WODLOG_API_URL + "/latest", {
+          method: 'GET',
+          headers: {
+            'X-Access-Key': WODLOG_ACCESS_KEY,
+            'X-Bin-Meta': 'false'
+          }
+        });
+        
+        console.log('响应状态:', response.status);
+        console.log('响应头:', [...response.headers.entries()]);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('✅ 连接成功！');
+          console.log('数据:', data);
+          return true;
+        } else {
+          const text = await response.text();
+          console.error('❌ 请求失败');
+          console.error('状态码:', response.status);
+          console.error('响应:', text);
+          return false;
+        }
+      } catch (error) {
+        console.error('❌ 连接失败');
+        console.error('错误:', error);
+        console.error('错误类型:', error.name);
+        console.error('错误信息:', error.message);
+        return false;
+      }
+    }
+    
+    // 上传战报到GitHub
+    async function uploadWodLogToCloud() {
+      if (!currentWodLogData) {
+        alert('请先选择并解析ZIP文件');
+        return;
+      }
+      
+      if (!GITHUB_TOKEN) {
+        alert('请先设置GitHub Personal Access Token\n\n1. 访问 https://github.com/settings/tokens\n2. 创建新的Personal Access Token\n3. 在代码中设置GITHUB_TOKEN变量');
+        return;
+      }
+      
+      // 检查是否有正在进行的上传任务
+      if (currentUploadTask && currentUploadTask.status === 'uploading') {
+        const abort = confirm('检测到正在进行的上传任务，是否撤回并重新开始？');
+        if (abort) {
+          await abortUploadTask();
+        } else {
+          return;
+        }
+      }
+      
+      // 立即保存必要的数据，防止在上传过程中被清空
+      const savedWodLogData = {
+        fileName: currentWodLogData.fileName,
+        fileSize: currentWodLogData.fileSize,
+        fileCount: currentWodLogData.fileCount,
+        indexHtml: currentWodLogData.indexHtml,
+        metadata: currentWodLogData.metadata,
+        htmlFiles: currentWodLogData.htmlFiles || {}
+      };
+      
+      // 立即禁用所有UI操作
+      disableAllUI();
+      
+      const uploadBtn = document.querySelector('.upload-to-cloud-btn');
+      const originalText = uploadBtn.innerHTML;
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在上传到GitHub...';
+      
+      // 创建AbortController用于取消请求
+      uploadAbortController = new AbortController();
+      
+      try {
+         // 获取下一个战报编号
+         const nextLogNumber = await getNextLogNumber();
+         const wodLogId = `wodlog_${nextLogNumber}`;
+         const wodLogDir = `wodlogs/${wodLogId}`;
+         
+         // 创建上传任务
+         currentUploadTask = {
+           wodLogId: wodLogId,
+           fileName: savedWodLogData.fileName,
+           startTime: Date.now(),
+           status: 'uploading',
+           uploadedFiles: []
+         };
+         localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+         
+         // 确保wodlogs目录存在
+         await ensureWodLogsDirectory();
+        
+        // 快速批量上传文件
+        console.log('开始快速上传战报...');
+        
+        // 准备所有要上传的文件
+        const filesToUpload = [];
+        
+        // 添加元数据文件
+        const metadata = {
+          id: wodLogId,
+          fileName: savedWodLogData.fileName,
+          uploadTime: new Date().toISOString(),
+          fileSize: savedWodLogData.fileSize,
+          fileCount: savedWodLogData.fileCount,
+          metadata: savedWodLogData.metadata,
+          htmlFiles: Object.keys(savedWodLogData.htmlFiles),
+          uploaderId: generateUserId() // 添加上传者ID
+        };
+        
+        filesToUpload.push({
+          path: `${wodLogDir}/metadata.json`,
+          content: JSON.stringify(metadata, null, 2),
+          message: `Add wodlog metadata: ${savedWodLogData.fileName}`
+        });
+        
+        // 添加HTML文件
+        for (const [filename, content] of Object.entries(savedWodLogData.htmlFiles)) {
+          filesToUpload.push({
+            path: `${wodLogDir}/${filename}`,
+            content: content,
+            message: `Add wodlog file: ${filename}`
+          });
+        }
+        
+        // 顺序上传文件（避免409冲突）
+        const uploadResults = await batchUploadFiles(filesToUpload, uploadBtn);
+        
+        // 统计上传结果
+        const successCount = uploadResults.filter(result => result.success).length;
+        const failCount = uploadResults.filter(result => !result.success).length;
+        
+        console.log(`上传结果: 成功 ${successCount} 个文件, 失败 ${failCount} 个文件`);
+        
+        // 检查是否有重要文件上传失败
+        const failedFiles = uploadResults.filter(result => !result.success);
+        if (failedFiles.length > 0) {
+          console.warn('以下文件上传失败:', failedFiles.map(f => f.file));
+          
+          // 如果有重要文件失败，尝试重新上传
+          const importantFiles = failedFiles.filter(f => 
+            f.file.includes('index.html') || f.file.includes('metadata.json')
+          );
+          
+          if (importantFiles.length > 0) {
+            console.log('重新上传重要文件...');
+            for (const failedFile of importantFiles) {
+              const file = filesToUpload.find(f => f.path === failedFile.file);
+              if (file) {
+                try {
+                  await uploadFileToGitHub(file.path, file.content, file.message + ' (retry)');
+                  console.log(`重新上传成功: ${file.path}`);
+                } catch (error) {
+                  console.error(`重新上传失败: ${file.path}`, error);
+                }
+              }
+            }
+          }
+        }
+        
+        // 更新上传任务状态
+        currentUploadTask.status = 'completed';
+        currentUploadTask.endTime = Date.now();
+        currentUploadTask.uploadedFiles = filesToUpload.map(f => f.path);
+        currentUploadTask.uploadResults = uploadResults;
+        localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+        
+        // 静默上传成功，不显示提示
+        uploadBtn.innerHTML = originalText;
+        uploadBtn.style.background = '';
+        uploadBtn.disabled = false;
+        
+        // 清除上传任务
+        currentUploadTask = null;
+        localStorage.removeItem('pendingUploadTask');
+        
+        // 静默上传完成，不显示弹窗
+        console.log('战报上传完成:', wodLogId);
+        
+        // 添加到本地记录
+        addOwnWodLogId(wodLogId);
+        
+        // 立即添加新战报到列表（避免等待GitHub API同步）
+        // 使用上传任务中保存的数据，避免currentWodLogData被清空
+        const newWodLog = {
+          id: wodLogId,
+          fileName: savedWodLogData.fileName,
+          uploadTime: new Date().toISOString(),
+          fileSize: metadata.fileSize,
+          fileCount: metadata.fileCount,
+          indexHtml: metadata.htmlFiles ? metadata.htmlFiles[0] : '',
+          metadata: metadata,
+          uploaderId: generateUserId(), // 添加上传者ID
+          isOwn: true // 标记为自己的战报
+        };
+        
+        // 添加到战报列表顶部
+        const cloudWodLogsList = document.getElementById('cloudWodLogsList');
+        if (cloudWodLogsList) {
+          const newItem = createWodLogItemHTML(newWodLog);
+          cloudWodLogsList.insertAdjacentHTML('afterbegin', newItem);
+          console.log('新战报已添加到列表顶部');
+        }
+        
+        // 延迟刷新以确保GitHub API同步（避免重复显示）
+        setTimeout(async () => {
+          await loadCloudWodLogs(true);
+          // 刷新后重新提取地城名称
+          setTimeout(() => {
+            extractDungeonNamesFromWodLogs();
+          }, 1000);
+        }, 3000);
+        
+        // 恢复UI操作
+        enableAllUI();
+        
+      } catch (error) {
+        console.error('上传战报失败:', error);
+        
+        // 更新上传任务状态为失败
+        if (currentUploadTask) {
+          currentUploadTask.status = 'failed';
+          currentUploadTask.error = error.message;
+          currentUploadTask.endTime = Date.now();
+          localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+        }
+        
+        uploadBtn.innerHTML = originalText;
+        uploadBtn.disabled = false;
+        
+        let errorMessage = '上传失败: ' + error.message;
+        
+        if (error.message === 'Failed to fetch') {
+          if (window.location.protocol === 'file:') {
+            errorMessage = '上传失败：CORS错误\n\n您正在使用本地文件（file://），浏览器阻止了API调用。\n\n解决方案：\n1. 使用HTTP服务器打开文件\n2. 或者将文件上传到在线服务器\n\n当前环境: ' + window.location.href;
+          } else {
+            errorMessage = '上传失败：无法连接到GitHub服务器\n\n可能的原因：\n' +
+              '1. 网络连接问题 - 请检查网络\n' +
+              '2. GitHub服务不可用 - 请稍后重试\n' +
+              '3. Token无效 - 请检查GitHub Personal Access Token\n' +
+              '4. 仓库权限问题 - 请确认Token有写入权限\n\n' +
+              '建议：\n' +
+              '- 检查浏览器控制台(F12)查看详细错误\n' +
+              '- 确认GitHub Token是否有效\n' +
+              '- 尝试访问：https://github.com';
+          }
+        }
+        
+        alert(errorMessage);
+        
+        // 恢复UI操作
+        enableAllUI();
+      }
+    }
+    
+    // 清除上传的文件
+    function clearUploadedFile() {
+      // 检查是否有正在进行的上传任务
+      if (currentUploadTask && currentUploadTask.status === 'uploading') {
+        const confirmClear = confirm('检测到正在进行的上传任务，确定要清除文件吗？\n\n这将中断当前上传并清除已选择的文件。');
+        if (!confirmClear) {
+          return;
+        }
+        // 中断上传任务
+        if (uploadAbortController) {
+          uploadAbortController.abort();
+        }
+      }
+      
+      uploadedZipFiles = {};
+      currentWodLogData = null;
+      document.getElementById('zipFileUpload').value = '';
+      document.getElementById('fileInfo').style.display = 'none';
+      document.getElementById('clearFileBtn').style.display = 'none';
+      document.getElementById('wodlogActions').style.display = 'none';
+      closeViewer();
+    }
+    
+    // 关闭查看器
+    function closeViewer() {
+      const viewer = document.getElementById('zipContentViewer');
+      const iframe = document.getElementById('contentFrame');
+      viewer.style.display = 'none';
+      iframe.srcdoc = '';
+    }
+    
+    // 全屏状态跟踪
+    let isFullscreen = false;
+    
+    // 切换全屏显示
+    function toggleFullscreen() {
+      const viewer = document.getElementById('zipContentViewer');
+      const iframe = document.getElementById('contentFrame');
+      const button = document.querySelector('.close-viewer-btn');
+      const icon = button.querySelector('i');
+      
+      if (!isFullscreen) {
+        // 进入全屏模式
+        viewer.style.position = 'fixed';
+        viewer.style.top = '0';
+        viewer.style.left = '0';
+        viewer.style.width = '100vw';
+        viewer.style.height = '100vh';
+        viewer.style.zIndex = '9999';
+        viewer.style.borderRadius = '0';
+        viewer.style.margin = '0';
+        
+        // 调整iframe高度
+        iframe.style.height = 'calc(100vh - 60px)';
+        
+        // 更新按钮图标和提示
+        icon.className = 'fas fa-compress';
+        button.title = '退出全屏';
+        
+        isFullscreen = true;
+        console.log('进入全屏模式');
+      } else {
+        // 退出全屏模式
+        viewer.style.position = '';
+        viewer.style.top = '';
+        viewer.style.left = '';
+        viewer.style.width = '';
+        viewer.style.height = '';
+        viewer.style.zIndex = '';
+        viewer.style.borderRadius = '';
+        viewer.style.margin = '';
+        
+        // 恢复iframe高度
+        iframe.style.height = '';
+        
+        // 更新按钮图标和提示
+        icon.className = 'fas fa-expand';
+        button.title = '全屏显示';
+        
+        isFullscreen = false;
+        console.log('退出全屏模式');
+      }
+    }
+    
+    // 添加键盘事件监听器，ESC键退出全屏
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && isFullscreen) {
+        toggleFullscreen();
+      }
+    });
+    
+    // 加载GitHub战报列表
+    async function loadCloudWodLogs(forceRefresh = false) {
+      const listContainer = document.getElementById('cloudWodLogList');
+      listContainer.innerHTML = '<div class="loading-message"><i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在加载...</div>';
+      
+      // 确保本地记录已加载
+      if (ownWodLogIds.size === 0) {
+        loadOwnWodLogIds();
+      }
+      
+      try {
+        // 如果强制刷新，添加时间戳避免缓存
+        const files = await getGitHubFileList(forceRefresh);
+        
+        if (files.length === 0) {
+          listContainer.innerHTML = '<div class="loading-message">暂无战报</div>';
+          return;
+        }
+        
+         // 加载所有元数据文件
+         const wodLogs = [];
+         for (const dir of files) {
+           try {
+             const metadataPath = `wodlogs/${dir.name}/metadata.json`;
+             const content = await getGitHubFileContent(metadataPath);
+             if (content) {
+               const metadata = JSON.parse(content);
+               // 验证元数据是否有效
+               if (metadata.id && metadata.fileName) {
+                 wodLogs.push(metadata);
+               } else {
+                 console.warn('无效的元数据，跳过:', dir.name);
+               }
+             } else {
+               console.warn('无法获取元数据，跳过:', dir.name);
+             }
+           } catch (error) {
+             console.error('解析元数据失败:', dir.name, error);
+           }
+         }
+        
+        // 按上传时间排序
+        wodLogs.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+        
+        // 去重：基于ID去重，保留最新的
+        const uniqueWodLogs = [];
+        const seenIds = new Set();
+        console.log('当前本地记录的战报ID:', Array.from(ownWodLogIds));
+        
+        // 尝试从元数据中恢复战报归属
+        await recoverWodLogOwnership(wodLogs);
+        
+        for (const log of wodLogs) {
+          if (!seenIds.has(log.id)) {
+            seenIds.add(log.id);
+            // 使用本地记录判断战报归属
+            log.isOwn = isOwnWodLog(log.id);
+            console.log(`战报 ${log.id} 归属判断: ${log.isOwn ? '自己的' : '他人的'}`);
+            uniqueWodLogs.push(log);
+          }
+        }
+        
+        // 根据设置过滤战报
+        let filteredWodLogs = uniqueWodLogs;
+        if (showOnlyOwnWodLogs) {
+          filteredWodLogs = uniqueWodLogs.filter(log => log.isOwn);
+        }
+        
+        listContainer.innerHTML = filteredWodLogs.map(log => {
+          const uploadDate = new Date(log.uploadTime).toLocaleString('zh-CN');
+          const fileSize = (log.fileSize / 1024).toFixed(2);
+          const htmlFileCount = log.htmlFiles ? log.htmlFiles.length : 0;
+          const logNumber = log.id || '未知';
+          
+          // 简化文件名显示，超过20个字符就用...省略
+          const shortFileName = log.fileName.length > 20 ? 
+            log.fileName.substring(0, 20) + '...' : 
+            log.fileName;
+          
+          // 用户标识图标
+          const userIcon = log.isOwn ? 
+            '<i class="fas fa-user-circle own-wodlog-icon" title="我的战报"></i>' : 
+            '<i class="fas fa-user other-wodlog-icon" title="他人战报"></i>';
+          
+          return `
+            <div class="wodlog-item ${log.isOwn ? 'own-wodlog' : 'other-wodlog'}">
+              <div class="wodlog-item-content" onclick="viewCloudWodLog('${log.id}')">
+                <div class="wodlog-item-name" title="${log.fileName}">
+                  ${userIcon} ${logNumber} - ${shortFileName}
+                </div>
+                <div class="wodlog-item-info">
+                  <span><i class="fas fa-clock"></i> ${uploadDate}</span>
+                  <span><i class="fas fa-file"></i> ${fileSize} KB</span>
+                  <span><i class="fas fa-code"></i> ${htmlFileCount} HTML</span>
+                </div>
+              </div>
+              <div class="wodlog-item-actions">
+                ${log.isOwn ? `
+                  <button class="wodlog-delete-btn" onclick="deleteCloudWodLog('${log.id}', '${log.fileName}')" title="删除战报">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        // 战报列表加载完成后，提取地城名称
+        setTimeout(() => {
+          extractDungeonNamesFromWodLogs();
+        }, 1000);
+        
+      } catch (error) {
+        console.error('加载GitHub战报失败:', error);
+        listContainer.innerHTML = '<div class="loading-message" style="color: #e74c3c;">加载失败: ' + error.message + '</div>';
+      }
+    }
+    
+    // 查看GitHub战报
+    async function viewCloudWodLog(logId) {
+      try {
+        console.log('开始查看战报:', logId);
+        
+        // 检查是否切换到新战报
+        if (currentWodLogId !== logId) {
+          console.log('切换到新战报，重置插件状态');
+          resetExtraStatsState();
+          currentWodLogId = logId;
+        } else {
+          console.log('同一战报，重置插件状态以确保重新注入');
+          resetExtraStatsState();
+          currentWodLogId = logId;
+        }
+        
+         // 从GitHub加载元数据
+         const metadataPath = `wodlogs/${logId}/metadata.json`;
+         const metadataContent = await getGitHubFileContent(metadataPath);
+        
+        if (!metadataContent) {
+          alert('无法找到战报元数据');
+          return;
+        }
+        
+        const log = JSON.parse(metadataContent);
+        console.log('战报元数据:', log);
+        
+         // 加载index.html
+         const indexPath = `wodlogs/${logId}/index.html`;
+         const indexHtml = await getGitHubFileContent(indexPath);
+        
+        if (!indexHtml) {
+          alert('无法找到index.html文件');
+          return;
+        }
+        
+        console.log('成功加载index.html');
+        
+        const viewer = document.getElementById('zipContentViewer');
+        const iframe = document.getElementById('contentFrame');
+        
+        // 确保内容查看器可见
+        viewer.style.display = 'block';
+        
+        // 处理HTML中的链接，使其能够跳转到其他HTML文件
+        const processedHtml = processGitHubWodLogLinks(indexHtml, logId);
+        
+        iframe.srcdoc = validateAndFixHtml(processedHtml);
+        
+        // 添加iframe安全设置，防止意外跳转
+        iframe.sandbox = 'allow-scripts allow-same-origin allow-forms';
+        
+        // 在iframe加载完成后注入Extra Statistics插件
+        iframe.addEventListener('load', function() {
+          try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            if (iframeDoc) {
+              // 检查是否已经注入了Extra Statistics插件
+              if (iframeDoc.querySelector('script[src*="Extra Statistics.user.js"]') || 
+                  iframeDoc.querySelector('[id*="stat_all"]') ||
+                  iframeDoc.querySelector('[class*="extra-stat"]')) {
+                console.log('Extra Statistics插件已存在，跳过重复注入');
+                return;
+              }
+              
+              // 如果正在注入中，跳过
+              if (extraStatsInjectionInProgress) {
+                console.log('插件注入正在进行中，跳过');
+                return;
+              }
+              
+              extraStatsInjectionInProgress = true;
+              console.log('开始注入Extra Statistics插件...');
+              console.log('当前iframe文档:', iframeDoc);
+              console.log('iframe head:', iframeDoc.head);
+              
+              // 注入jQuery
+              const jqueryScript = iframeDoc.createElement('script');
+              jqueryScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+              iframeDoc.head.appendChild(jqueryScript);
+              console.log('jQuery脚本已添加到head');
+              
+              // 等待jQuery加载完成后注入Extra Statistics
+              jqueryScript.onload = function() {
+                console.log('jQuery加载完成，开始注入Extra Statistics插件');
+                const extraStatsScript = iframeDoc.createElement('script');
+                extraStatsScript.src = 'ExtraStats/Extra Statistics.user.js';
+                extraStatsScript.onload = function() {
+                  console.log('Extra Statistics插件脚本加载完成');
+                };
+                extraStatsScript.onerror = function() {
+                  console.error('Extra Statistics插件脚本加载失败');
+                };
+                iframeDoc.head.appendChild(extraStatsScript);
+                extraStatsLoaded = true;
+                extraStatsInjectionInProgress = false;
+                console.log('Extra Statistics插件已注入到iframe中');
+              };
+              
+              jqueryScript.onerror = function() {
+                console.error('jQuery加载失败');
+                extraStatsInjectionInProgress = false;
+              };
+            }
+          } catch (error) {
+            console.log('无法访问iframe内容（跨域限制）');
+            extraStatsInjectionInProgress = false;
+          }
+        });
+        
+        // 添加额外的安全措施，防止iframe导航
+        iframe.addEventListener('load', function() {
+          try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            if (iframeDoc) {
+              // 阻止所有导航
+              iframeDoc.addEventListener('beforeunload', function(e) {
+                e.preventDefault();
+                return false;
+              });
+              
+              // 阻止所有链接点击
+              iframeDoc.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.tagName === 'A') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const href = target.getAttribute('href');
+                  if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
+                    if (parent && parent.loadGitHubWodLogHtmlFile) {
+                      parent.loadGitHubWodLogHtmlFile(href, logId);
+                    }
+                  }
+                  return false;
+                }
+              });
+            }
+          } catch (error) {
+            console.log('无法访问iframe内容（跨域限制）');
+          }
+        });
+        
+        // 保存当前查看的战报信息，供iframe内部链接使用
+        window.currentViewingLogId = logId;
+        
+        console.log('战报查看器已显示，logId:', logId);
+        
+      } catch (error) {
+        console.error('查看战报失败:', error);
+        alert('查看战报失败: ' + error.message);
+      }
+    }
+    
+    // 处理GitHub战报中的HTML链接
+    function processGitHubWodLogLinks(html, logId) {
+      if (!html || typeof html !== 'string') {
+        console.error('无效的HTML内容:', html);
+        return '<html><body><h1>HTML内容无效</h1></body></html>';
+      }
+      
+      try {
+        // 将HTML文件链接转换为JavaScript调用
+        let processed = html;
+        
+        // 确保HTML有基本的结构
+        if (!processed.includes('<html>')) {
+          processed = `<html><head><meta charset="utf-8"></head><body>${processed}</body></html>`;
+        }
+        
+        // 注入最小化样式，保持原始颜色
+        const websiteStyles = `
+          <style>
+            /* 最小化样式，不改变原始颜色 */
+            body {
+              margin: 0;
+              padding: 10px;
+              line-height: 1.4;
+            }
+            
+            /* 确保内容完整显示 */
+            .content_table td {
+              word-wrap: break-word;
+              overflow-wrap: break-word;
+            }
+            
+            /* 表格内容区域 */
+            .content_table td.content_table {
+              padding: 0;
+              border: none;
+            }
+            
+            /* 响应式设计 */
+            @media (max-width: 768px) {
+              body {
+                padding: 5px;
+              }
+            }
+          </style>
+        `;
+        
+        // 将样式注入到HTML的head部分
+        if (processed.includes('<head>')) {
+          processed = processed.replace('<head>', '<head>' + websiteStyles);
+        } else if (processed.includes('<html>')) {
+          processed = processed.replace('<html>', '<html><head>' + websiteStyles + '</head>');
+        } else {
+          processed = '<head>' + websiteStyles + '</head>' + processed;
+        }
+        
+        // Extra Statistics插件将通过iframe的src属性加载
+        
+        // Extra Statistics插件将通过iframe的src属性加载
+        
+        // 处理各种类型的链接，确保所有HTML文件都能互相访问
+        
+        // 1. 处理onclick中的document.location.href
+        processed = processed.replace(
+          /onclick="document\.location\.href='([^']+\.html?)';"/gi,
+          (match, filepath) => {
+            console.log('处理onclick链接:', filepath);
+            return `onclick="parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}'); return false;"`;
+          }
+        );
+        
+        // 2. 处理普通的href链接
+        processed = processed.replace(
+          /href="([^"]+)"/gi,
+          (match, filepath) => {
+            // 外部链接（http/https）在新窗口打开
+            if (filepath.startsWith('http://') || filepath.startsWith('https://')) {
+              console.log('处理外部链接:', filepath);
+              return `href="${filepath}" target="_blank" rel="noopener noreferrer"`;
+            }
+            // 内部HTML文件链接
+            else if (filepath.endsWith('.html') || filepath.endsWith('.htm')) {
+              console.log('处理内部HTML链接:', filepath);
+              return `href="#" onclick="parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}'); return false;"`;
+            }
+            // 其他链接（锚点、javascript等）保持原样
+            else if (filepath.startsWith('#') || filepath.startsWith('javascript:') || filepath.startsWith('mailto:') || filepath.startsWith('tel:')) {
+              return match;
+            }
+            // 其他相对路径，尝试作为内部HTML文件处理
+            else {
+              console.log('处理相对路径链接:', filepath);
+              return `href="#" onclick="parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}'); return false;"`;
+            }
+          }
+        );
+        
+        // 3. 处理window.location.href
+        processed = processed.replace(
+          /window\.location\.href\s*=\s*['"]([^'"]+)['"]/gi,
+          (match, filepath) => {
+            // 外部链接在新窗口打开
+            if (filepath.startsWith('http://') || filepath.startsWith('https://')) {
+              console.log('处理外部window.location.href:', filepath);
+              return `window.open('${filepath}', '_blank', 'noopener,noreferrer');`;
+            }
+            // 内部HTML文件
+            else if (filepath.endsWith('.html') || filepath.endsWith('.htm')) {
+              console.log('处理内部window.location.href:', filepath);
+              return `parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}');`;
+            }
+            return match;
+          }
+        );
+        
+        // 4. 处理location.href
+        processed = processed.replace(
+          /location\.href\s*=\s*['"]([^'"]+)['"]/gi,
+          (match, filepath) => {
+            // 外部链接在新窗口打开
+            if (filepath.startsWith('http://') || filepath.startsWith('https://')) {
+              console.log('处理外部location.href:', filepath);
+              return `window.open('${filepath}', '_blank', 'noopener,noreferrer');`;
+            }
+            // 内部HTML文件
+            else if (filepath.endsWith('.html') || filepath.endsWith('.htm')) {
+              console.log('处理内部location.href:', filepath);
+              return `parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}');`;
+            }
+            return match;
+          }
+        );
+        
+        // 5. 处理window.open
+        processed = processed.replace(
+          /window\.open\(['"]([^'"]+)['"]/gi,
+          (match, filepath) => {
+            // 外部链接在新窗口打开
+            if (filepath.startsWith('http://') || filepath.startsWith('https://')) {
+              console.log('处理外部window.open:', filepath);
+              return `window.open('${filepath}', '_blank', 'noopener,noreferrer')`;
+            }
+            // 内部HTML文件
+            else if (filepath.endsWith('.html') || filepath.endsWith('.htm')) {
+              console.log('处理内部window.open:', filepath);
+              return `parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}')`;
+            }
+            return match;
+          }
+        );
+        
+        // 6. 处理相对路径的href（没有.html扩展名但可能是HTML文件）
+        processed = processed.replace(
+          /href="([^"]+)"(?![^>]*\.(css|js|png|jpg|jpeg|gif|svg|ico))/gi,
+          (match, filepath) => {
+            if (!filepath.startsWith('http') && !filepath.startsWith('#') && !filepath.startsWith('javascript:') && !filepath.includes('.')) {
+              console.log('处理可能的HTML文件链接:', filepath);
+              return `href="#" onclick="parent.loadGitHubWodLogHtmlFile('${filepath}.html', '${logId}'); return false;"`;
+            }
+            return match;
+          }
+        );
+        
+        // 7. 处理所有其他可能的链接，防止跳转到主网站
+        processed = processed.replace(
+          /href="([^"]+)"/gi,
+          (match, filepath) => {
+            // 如果链接不是外部链接、锚点或JavaScript，且不是已经处理过的
+            if (!filepath.startsWith('http') && 
+                !filepath.startsWith('#') && 
+                !filepath.startsWith('javascript:') &&
+                !filepath.startsWith('mailto:') &&
+                !filepath.startsWith('tel:') &&
+                !match.includes('onclick=')) {
+              console.log('拦截可能的跳转链接:', filepath);
+              return `href="#" onclick="parent.loadGitHubWodLogHtmlFile('${filepath}', '${logId}'); return false;"`;
+            }
+            return match;
+          }
+        );
+        
+        // 8. 全局点击事件监听已通过前面的链接处理实现
+        
+        // 验证HTML语法
+        if (processed.includes('</html>') && !processed.includes('<html>')) {
+          processed = `<html><head><meta charset="utf-8"></head><body>${processed}</body></html>`;
+        }
+        
+        // 导航脚本已通过processGitHubWodLogLinks函数中的链接处理实现
+        
+        return processed;
+      } catch (error) {
+        console.error('处理HTML链接时出错:', error);
+        return `<html><head><meta charset="utf-8"></head><body><h1>HTML处理错误</h1><p>${error.message}</p></body></html>`;
+      }
+    }
+    
+    // 在iframe中加载GitHub战报的其他HTML文件
+    async function loadGitHubWodLogHtmlFile(filepath, logId) {
+      try {
+        console.log('尝试加载文件:', filepath, 'logId:', logId);
+        
+         // 首先获取元数据，了解实际的文件结构
+         let subdirs = [];
+         try {
+           const metadataPath = `wodlogs/${logId}/metadata.json`;
+           const metadataContent = await getGitHubFileContent(metadataPath);
+          if (metadataContent) {
+            const metadata = JSON.parse(metadataContent);
+            if (metadata.htmlFiles) {
+              // 从HTML文件列表中提取子目录
+              const dirs = new Set();
+              metadata.htmlFiles.forEach(file => {
+                const parts = file.split('/');
+                if (parts.length > 1) {
+                  dirs.add(parts[0]);
+                }
+              });
+              subdirs = Array.from(dirs);
+              console.log('从元数据发现的子目录:', subdirs);
+            }
+          }
+        } catch (error) {
+          console.log('无法获取元数据，尝试动态发现子目录');
+        }
+        
+         // 如果没有从元数据获取到子目录，尝试通过GitHub API获取目录列表
+         if (subdirs.length === 0) {
+           try {
+             const response = await fetch(`${GITHUB_API_URL}/contents/wodlogs/${logId}`, {
+               headers: {
+                 'Authorization': `token ${GITHUB_TOKEN}`,
+                 'Accept': 'application/vnd.github.v3+json'
+               }
+             });
+            
+            if (response.ok) {
+              const files = await response.json();
+              const dirs = files
+                .filter(file => file.type === 'dir')
+                .map(file => file.name)
+                .filter(name => /^\d+$/.test(name)); // 只保留纯数字的目录名
+              
+              subdirs = dirs;
+              console.log('通过GitHub API发现的数字子目录:', subdirs);
+            }
+          } catch (error) {
+            console.log('无法通过GitHub API获取子目录:', error);
+          }
+        }
+        
+        // 如果仍然没有找到子目录，使用空数组（只尝试根目录）
+        if (subdirs.length === 0) {
+          console.log('未发现子目录，将只在根目录中查找文件');
+        }
+        
+         // 构建可能的文件路径
+         const possiblePaths = [
+           `wodlogs/${logId}/${filepath}`,
+           `wodlogs/${logId}/${filepath.replace(/^\//, '')}`,
+           `wodlogs/${logId}/${filepath.replace(/^\.\//, '')}`,
+           `wodlogs/${logId}/${filepath.replace(/^\.\.\//, '')}`
+         ];
+         
+         // 为每个子目录添加路径
+         subdirs.forEach(subdir => {
+           possiblePaths.push(
+             `wodlogs/${logId}/${subdir}/${filepath}`,
+             `wodlogs/${logId}/${subdir}/${filepath.replace(/^\//, '')}`,
+             `wodlogs/${logId}/${subdir}/${filepath.replace(/^\.\//, '')}`,
+             `wodlogs/${logId}/${subdir}/${filepath.replace(/^\.\.\//, '')}`
+           );
+         });
+        
+        let htmlContent = null;
+        let actualPath = null;
+        
+        for (const path of possiblePaths) {
+          try {
+            console.log('尝试路径:', path);
+            const content = await getGitHubFileContent(path);
+            if (content) {
+              htmlContent = content;
+              actualPath = path;
+              console.log('成功加载文件:', path);
+              break;
+            }
+          } catch (error) {
+            console.log('路径失败:', path, error.message);
+          }
+        }
+        
+        if (htmlContent) {
+          const iframe = document.getElementById('contentFrame');
+          const processedHtml = processGitHubWodLogLinks(htmlContent, logId);
+          
+          iframe.srcdoc = validateAndFixHtml(processedHtml);
+          
+          // 添加iframe安全设置，防止意外跳转
+          iframe.sandbox = 'allow-scripts allow-same-origin allow-forms';
+          
+          // 在iframe加载完成后注入Extra Statistics插件（只在切换到新战报时注入）
+          iframe.addEventListener('load', function() {
+            try {
+              const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+              if (iframeDoc && !extraStatsLoaded && !extraStatsInjectionInProgress) {
+                // 检查是否已经注入了Extra Statistics插件
+                if (iframeDoc.querySelector('script[src*="Extra Statistics.user.js"]') || 
+                    iframeDoc.querySelector('[id*="stat_all"]') ||
+                    iframeDoc.querySelector('[class*="extra-stat"]')) {
+                  console.log('Extra Statistics插件已存在，跳过重复注入');
+                  extraStatsLoaded = true;
+                  return;
+                }
+                
+                extraStatsInjectionInProgress = true;
+                console.log('开始注入Extra Statistics插件到新战报...');
+                
+                // 注入jQuery
+                const jqueryScript = iframeDoc.createElement('script');
+                jqueryScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+                iframeDoc.head.appendChild(jqueryScript);
+                
+                // 等待jQuery加载完成后注入Extra Statistics
+                jqueryScript.onload = function() {
+                  const extraStatsScript = iframeDoc.createElement('script');
+                  extraStatsScript.src = 'ExtraStats/Extra Statistics.user.js';
+                  iframeDoc.head.appendChild(extraStatsScript);
+                  extraStatsLoaded = true;
+                  extraStatsInjectionInProgress = false;
+                  console.log('Extra Statistics插件已注入到iframe中');
+                };
+                
+                jqueryScript.onerror = function() {
+                  console.error('jQuery加载失败');
+                  extraStatsInjectionInProgress = false;
+                };
+              } else if (extraStatsLoaded) {
+                console.log('Extra Statistics插件已加载，跳过注入');
+              }
+            } catch (error) {
+              console.log('无法访问iframe内容（跨域限制）');
+              extraStatsInjectionInProgress = false;
+            }
+          });
+          
+          // 添加额外的安全措施，防止iframe导航
+          iframe.addEventListener('load', function() {
+            try {
+              const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+              if (iframeDoc) {
+                // 阻止所有导航
+                iframeDoc.addEventListener('beforeunload', function(e) {
+                  e.preventDefault();
+                  return false;
+                });
+                
+                // 阻止所有链接点击
+                iframeDoc.addEventListener('click', function(e) {
+                  const target = e.target;
+                  if (target.tagName === 'A') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const href = target.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
+                      if (parent && parent.loadGitHubWodLogHtmlFile) {
+                        parent.loadGitHubWodLogHtmlFile(href, logId);
+                      }
+                    }
+                    return false;
+                  }
+                });
+              }
+            } catch (error) {
+              console.log('无法访问iframe内容（跨域限制）');
+            }
+          });
+          
+          console.log('文件已显示在iframe中');
+        } else {
+          console.error('所有路径都失败，尝试的文件路径:', possiblePaths);
+          alert('文件未找到: ' + filepath + '\n尝试的路径: ' + possiblePaths.join(', '));
+        }
+      } catch (error) {
+        console.error('加载GitHub文件失败:', error);
+        alert('加载文件失败: ' + error.message);
+      }
+    }
   </script>
 </body>
 </html>
