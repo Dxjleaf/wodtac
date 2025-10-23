@@ -1645,6 +1645,13 @@
       color: white;
     }
     
+    .dungeon-search-input:disabled {
+      background: rgba(20, 30, 50, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #888;
+      cursor: not-allowed;
+    }
+    
     .dungeon-search-icon {
       position: absolute;
       right: calc(8px * var(--scale-factor));
@@ -1731,6 +1738,42 @@
       margin-left: 8px;
     }
     
+    /* 地城来源信息样式 */
+    .dungeon-source-info {
+      margin-top: 8px;
+      padding: 8px;
+      background: rgba(255, 193, 7, 0.05);
+      border-radius: 4px;
+      border-left: 2px solid #ffc107;
+    }
+    
+    .source-label {
+      font-weight: bold;
+      color: #ffc107;
+      margin-bottom: 4px;
+    }
+    
+    .source-value {
+      color: #fff;
+      background: #ffc107;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    
+    .source-description {
+      font-size: 0.85em;
+      color: #ccc;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    
+    .source-note {
+      font-size: 0.8em;
+      color: #999;
+      font-style: italic;
+    }
+    
     .wodlog-count {
       background: #28a745;
       color: #fff;
@@ -1739,6 +1782,15 @@
       font-size: 0.75em;
       font-weight: bold;
       margin-left: 8px;
+    }
+    
+    /* 搜索高亮样式 */
+    .dungeon-result-item mark {
+      background: #ffc107;
+      color: #000;
+      padding: 1px 3px;
+      border-radius: 2px;
+      font-weight: bold;
     }
     
     .clear-filter-btn {
@@ -5419,19 +5471,24 @@
     }
     
     // 提取地城名称的函数
-    function extractDungeonNamesFromWodLogs() {
+    async function extractDungeonNamesFromWodLogs() {
       extractedDungeonNames.clear();
       
       // 从所有战报中提取地城名称
       const cloudWodLogList = document.getElementById('cloudWodLogList');
       if (cloudWodLogList) {
         const wodLogItems = cloudWodLogList.querySelectorAll('.wodlog-item');
+        const extractionPromises = [];
+        
         wodLogItems.forEach(item => {
           const logId = item.querySelector('.wodlog-item-content').onclick.toString().match(/'([^']+)'/);
           if (logId) {
-            extractDungeonNamesFromWodLog(logId[1]);
+            extractionPromises.push(extractDungeonNamesFromWodLog(logId[1]));
           }
         });
+        
+        // 等待所有提取操作完成
+        await Promise.all(extractionPromises);
       }
       
       console.log('提取到的地城名称:', Array.from(extractedDungeonNames));
@@ -5479,6 +5536,22 @@
       let count = 0;
       
       // 遍历战报-地城映射关系，计算包含此地城的战报数量
+      for (const [logId, dungeonNames] of wodLogDungeonMap) {
+        if (dungeonNames.includes(dungeonName)) {
+          count++;
+        }
+      }
+      
+      return count;
+    }
+    
+    // 获取所有战报中地城的数量（不受过滤状态影响，用于搜索显示）
+    function getAllDungeonWodLogCount(dungeonName) {
+      if (!dungeonName) return 0;
+      
+      let count = 0;
+      
+      // 遍历所有战报-地城映射关系，计算包含此地城的战报数量
       for (const [logId, dungeonNames] of wodLogDungeonMap) {
         if (dungeonNames.includes(dungeonName)) {
           count++;
@@ -5585,13 +5658,23 @@
     }
     
     // 搜索副本 - 优化版本（支持模糊搜索和战报数量显示）
-    function searchDungeons(query) {
+    async function searchDungeons(query) {
       if (!query || !query.trim()) {
         // 如果没有查询，显示所有副本
         return dungeons.map(dungeon => ({
           ...dungeon,
-          wodLogCount: getDungeonWodLogCount(dungeon.name)
+          wodLogCount: getAllDungeonWodLogCount(dungeon.name) // 使用所有战报的数量
         }));
+      }
+      
+      // 确保地城名称已经提取完成
+      if (extractedDungeonNames.size === 0) {
+        console.log('地城名称尚未提取完成，开始提取...');
+        await extractDungeonNamesFromWodLogs();
+        // 如果提取后仍然为空，返回空结果
+        if (extractedDungeonNames.size === 0) {
+          return [];
+        }
       }
       
       const lowerQuery = query.toLowerCase().trim();
@@ -5602,7 +5685,7 @@
         dungeon.id.toString() === lowerQuery
       ).map(dungeon => ({
         ...dungeon,
-        wodLogCount: getDungeonWodLogCount(dungeon.name),
+        wodLogCount: getAllDungeonWodLogCount(dungeon.name), // 使用所有战报的数量
         matchType: 'id-exact'
       }));
       results.push(...idMatches);
@@ -5613,7 +5696,7 @@
         !idMatches.some(match => match.id === dungeon.id)
       ).map(dungeon => ({
         ...dungeon,
-        wodLogCount: getDungeonWodLogCount(dungeon.name),
+        wodLogCount: getAllDungeonWodLogCount(dungeon.name), // 使用所有战报的数量
         matchType: 'name-contains'
       }));
       results.push(...nameMatches);
@@ -5624,7 +5707,7 @@
         !results.some(match => match.id === dungeon.id)
       ).map(dungeon => ({
         ...dungeon,
-        wodLogCount: getDungeonWodLogCount(dungeon.name),
+        wodLogCount: getAllDungeonWodLogCount(dungeon.name), // 使用所有战报的数量
         matchType: 'id-contains'
       }));
       results.push(...idContains);
@@ -5642,7 +5725,7 @@
           // 如果副本列表中已有，更新战报数量
           const existingResult = results.find(r => r.id === existingDungeon.id);
           if (existingResult) {
-            existingResult.wodLogCount = getDungeonWodLogCount(name);
+            existingResult.wodLogCount = getAllDungeonWodLogCount(name); // 使用所有战报的数量
             existingResult.matchType = existingResult.matchType || 'name-contains';
           }
         } else {
@@ -5653,7 +5736,7 @@
             tags: ['战报中的地城'],
             description: '此地城名称来自战报数据',
             isFromWodLog: true,
-            wodLogCount: getDungeonWodLogCount(name),
+            wodLogCount: getAllDungeonWodLogCount(name), // 使用所有战报的数量
             matchType: 'wodlog-only'
           });
         }
@@ -5702,8 +5785,10 @@
               <span class="wodlog-tag">[战报]</span>
               ${dungeon.wodLogCount > 0 ? `<span class="wodlog-count">${dungeon.wodLogCount}个战报</span>` : ''}
             </div>
-            <div class="dungeon-info">
-              <span>${dungeon.description}</span>
+            <div class="dungeon-source-info">
+              <div class="source-label">地城来源：<span class="source-value">战报数据</span></div>
+              <div class="source-description">说明：此地城名称来自已上传的战报，可能不在标准副本列表中</div>
+              <div class="source-note">相关战报：包含此地城的战报将显示在下方</div>
             </div>
           `;
         } else {
@@ -5902,18 +5987,76 @@
       if (dungeonSearch) {
         // 输入搜索
       dungeonSearch.addEventListener('input', function() {
+          // 如果搜索功能被禁用，直接返回
+          if (this.disabled) {
+            return;
+          }
+          
           const query = this.value.trim();
-          const results = searchDungeons(query);
+          
+          // 如果有搜索内容，自动切换到显示所有战报状态
+          if (query && showOnlyOwnWodLogs) {
+            showOnlyOwnWodLogs = false;
+            const toggleBtn = document.getElementById('toggleWodLogFilter');
+            if (toggleBtn) {
+              toggleBtn.innerHTML = '<i class="fas fa-user"></i> 显示所有战报';
+              toggleBtn.title = '当前显示所有战报，点击只显示自己的战报';
+            }
+            // 重新加载战报列表
+            loadCloudWodLogs(true);
+          }
+          
+          // 确保地城名称已经提取完成后再搜索
+          if (query && extractedDungeonNames.size === 0) {
+            console.log('搜索时发现地城名称未提取，开始提取...');
+            extractDungeonNamesFromWodLogs().then(() => {
+              searchDungeons(query).then(results => {
         renderDungeonResults(results);
+              });
+            });
+          } else {
+            searchDungeons(query).then(results => {
+              renderDungeonResults(results);
+            });
+          }
           
 
       });
         
         // 聚焦时显示搜索结果
       dungeonSearch.addEventListener('focus', function() {
+          // 如果搜索功能被禁用，直接返回
+          if (this.disabled) {
+            return;
+          }
+          
           const query = this.value.trim();
-          const results = searchDungeons(query);
+          
+          // 如果有搜索内容，自动切换到显示所有战报状态
+          if (query && showOnlyOwnWodLogs) {
+            showOnlyOwnWodLogs = false;
+            const toggleBtn = document.getElementById('toggleWodLogFilter');
+            if (toggleBtn) {
+              toggleBtn.innerHTML = '<i class="fas fa-user"></i> 显示所有战报';
+              toggleBtn.title = '当前显示所有战报，点击只显示自己的战报';
+            }
+            // 重新加载战报列表
+            loadCloudWodLogs(true);
+          }
+          
+          // 确保地城名称已经提取完成后再搜索
+          if (query && extractedDungeonNames.size === 0) {
+            console.log('聚焦时发现地城名称未提取，开始提取...');
+            extractDungeonNamesFromWodLogs().then(() => {
+              searchDungeons(query).then(results => {
         renderDungeonResults(results);
+              });
+            });
+          } else {
+            searchDungeons(query).then(results => {
+              renderDungeonResults(results);
+            });
+          }
           
           // 显示当前选中的副本详情
           if (selectedDungeon) {
@@ -8917,6 +9060,12 @@
         }
       }
       
+      // 确保地城结果列表初始隐藏
+      const dungeonResults = document.getElementById('dungeonResults');
+      if (dungeonResults) {
+        dungeonResults.style.display = 'none';
+      }
+      
       // 自动加载战报列表
       loadCloudWodLogs();
       
@@ -10477,6 +10626,13 @@
       const listContainer = document.getElementById('cloudWodLogList');
       listContainer.innerHTML = '<div class="loading-message"><i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在加载...</div>';
       
+      // 禁用搜索功能
+      const dungeonSearch = document.getElementById('dungeonSearch');
+      if (dungeonSearch) {
+        dungeonSearch.disabled = true;
+        dungeonSearch.placeholder = '正在加载战报，请稍候...';
+      }
+      
       // 确保本地记录已加载
       if (ownWodLogIds.size === 0) {
         loadOwnWodLogIds();
@@ -10579,14 +10735,24 @@
           `;
         }).join('');
         
-        // 战报列表加载完成后，提取地城名称
-        setTimeout(() => {
-          extractDungeonNamesFromWodLogs();
-        }, 1000);
+        // 战报列表加载完成后，立即提取地城名称
+        await extractDungeonNamesFromWodLogs();
+        
+        // 启用搜索功能
+        if (dungeonSearch) {
+          dungeonSearch.disabled = false;
+          dungeonSearch.placeholder = '副本名称（输入ID/名称搜索）';
+        }
         
       } catch (error) {
         console.error('加载GitHub战报失败:', error);
         listContainer.innerHTML = '<div class="loading-message" style="color: #e74c3c;">加载失败: ' + error.message + '</div>';
+        
+        // 即使加载失败也要启用搜索功能
+        if (dungeonSearch) {
+          dungeonSearch.disabled = false;
+          dungeonSearch.placeholder = '副本名称（输入ID/名称搜索）';
+        }
       }
     }
     
@@ -10676,18 +10842,91 @@
               // 等待jQuery加载完成后注入Extra Statistics
               jqueryScript.onload = function() {
                 console.log('jQuery加载完成，开始注入Extra Statistics插件');
-                const extraStatsScript = iframeDoc.createElement('script');
-                extraStatsScript.src = 'ExtraStats/Extra Statistics.user.js';
-                extraStatsScript.onload = function() {
-                  console.log('Extra Statistics插件脚本加载完成');
-                };
-                extraStatsScript.onerror = function() {
-                  console.error('Extra Statistics插件脚本加载失败');
-                };
-                iframeDoc.head.appendChild(extraStatsScript);
-                extraStatsLoaded = true;
-                extraStatsInjectionInProgress = false;
-                console.log('Extra Statistics插件已注入到iframe中');
+                
+                // 延迟注入插件，确保页面DOM完全加载
+                setTimeout(() => {
+                  const extraStatsScript = iframeDoc.createElement('script');
+                  extraStatsScript.src = 'ExtraStats/Extra Statistics.user.js';
+                  extraStatsScript.onload = function() {
+                    console.log('Extra Statistics插件脚本加载完成');
+                    
+                    // 再次延迟，确保插件完全初始化
+                    setTimeout(() => {
+                      // 重写XMLHttpRequest以处理CORS问题
+                      const originalXHR = iframeDoc.defaultView.XMLHttpRequest;
+                      iframeDoc.defaultView.XMLHttpRequest = function() {
+                        const xhr = new originalXHR();
+                        const originalOpen = xhr.open;
+                        
+                        xhr.open = function(method, url, ...args) {
+                          console.log('XMLHttpRequest尝试访问:', url);
+                          
+                          // 检查是否是游戏服务器的请求
+                          if (url.includes('wod/spiel/dungeon/report.php') || url.includes('wod/spiel/tournament/duell.php')) {
+                            // 解析URL获取参数
+                            const urlObj = new URL(url, 'http://dummy.com');
+                            const curRepId = urlObj.searchParams.get('cur_rep_id');
+                            const currentLevel = urlObj.searchParams.get('current_level');
+                            
+                            if (curRepId && currentLevel) {
+                              // 重定向到我们的GitHub文件
+                              // 根据我们已知的文件结构，楼层文件通常在子目录中
+                              // 尝试常见的子目录模式
+                              const possiblePaths = [
+                                `wodlogs/${curRepId}/${curRepId}/level${currentLevel}.html`,
+                                `wodlogs/${curRepId}/level${currentLevel}.html`,
+                                `wodlogs/${curRepId}/level${currentLevel}/level${currentLevel}.html`
+                              ];
+                              
+                              // 使用第一个可能的路径（最常见的模式）
+                              const newUrl = possiblePaths[0];
+                              console.log('重定向请求到:', newUrl);
+                              return originalOpen.call(this, method, newUrl, ...args);
+                            }
+                          }
+                          
+                          return originalOpen.call(this, method, url, ...args);
+                        };
+                        
+                        return xhr;
+                      };
+                      
+                      // 检查插件是否成功创建了全局统计按钮
+                      const statAllElement = iframeDoc.getElementById('stat_all');
+                      if (statAllElement) {
+                        console.log('Extra Statistics插件全局统计功能已就绪');
+                        
+                        // 重新绑定点击事件，确保在iframe环境中正常工作
+                        const entireStatButtons = iframeDoc.querySelectorAll('input[value*="全城额外统计"], input[value*="Entire Extra Stat"]');
+                        entireStatButtons.forEach(button => {
+                          // 移除旧的事件监听器
+                          const newButton = button.cloneNode(true);
+                          button.parentNode.replaceChild(newButton, button);
+                          
+                          // 重新绑定点击事件
+                          newButton.addEventListener('click', function() {
+                            console.log('全城额外统计按钮被点击');
+                            // 调用插件的全局统计函数
+                            if (iframeDoc.defaultView && iframeDoc.defaultView.OnCountEntireStat) {
+                              iframeDoc.defaultView.OnCountEntireStat.call(this);
+                            }
+                          }, false);
+                        });
+                        
+                        console.log('已重新绑定全城额外统计按钮事件');
+                      } else {
+                        console.warn('Extra Statistics插件全局统计功能未找到，可能需要更多时间初始化');
+                      }
+                    }, 1000);
+                  };
+                  extraStatsScript.onerror = function() {
+                    console.error('Extra Statistics插件脚本加载失败');
+                  };
+                  iframeDoc.head.appendChild(extraStatsScript);
+                  extraStatsLoaded = true;
+                  extraStatsInjectionInProgress = false;
+                  console.log('Extra Statistics插件已注入到iframe中');
+                }, 500);
               };
               
               jqueryScript.onerror = function() {
@@ -11069,12 +11308,92 @@
                 
                 // 等待jQuery加载完成后注入Extra Statistics
                 jqueryScript.onload = function() {
-                  const extraStatsScript = iframeDoc.createElement('script');
-                  extraStatsScript.src = 'ExtraStats/Extra Statistics.user.js';
-                  iframeDoc.head.appendChild(extraStatsScript);
-                  extraStatsLoaded = true;
-                  extraStatsInjectionInProgress = false;
-                  console.log('Extra Statistics插件已注入到iframe中');
+                  console.log('jQuery加载完成，开始注入Extra Statistics插件');
+                  
+                  // 延迟注入插件，确保页面DOM完全加载
+                  setTimeout(() => {
+                    const extraStatsScript = iframeDoc.createElement('script');
+                    extraStatsScript.src = 'ExtraStats/Extra Statistics.user.js';
+                    extraStatsScript.onload = function() {
+                      console.log('Extra Statistics插件脚本加载完成');
+                      
+                      // 再次延迟，确保插件完全初始化
+                      setTimeout(() => {
+                        // 重写XMLHttpRequest以处理CORS问题
+                        const originalXHR = iframeDoc.defaultView.XMLHttpRequest;
+                        iframeDoc.defaultView.XMLHttpRequest = function() {
+                          const xhr = new originalXHR();
+                          const originalOpen = xhr.open;
+                          
+                          xhr.open = function(method, url, ...args) {
+                            console.log('XMLHttpRequest尝试访问:', url);
+                            
+                            // 检查是否是游戏服务器的请求
+                            if (url.includes('wod/spiel/dungeon/report.php') || url.includes('wod/spiel/tournament/duell.php')) {
+                              // 解析URL获取参数
+                              const urlObj = new URL(url, 'http://dummy.com');
+                              const curRepId = urlObj.searchParams.get('cur_rep_id');
+                              const currentLevel = urlObj.searchParams.get('current_level');
+                              
+                              if (curRepId && currentLevel) {
+                                // 重定向到我们的GitHub文件
+                                // 根据我们已知的文件结构，楼层文件通常在子目录中
+                                // 尝试常见的子目录模式
+                                const possiblePaths = [
+                                  `wodlogs/${curRepId}/${curRepId}/level${currentLevel}.html`,
+                                  `wodlogs/${curRepId}/level${currentLevel}.html`,
+                                  `wodlogs/${curRepId}/level${currentLevel}/level${currentLevel}.html`
+                                ];
+                                
+                                // 使用第一个可能的路径（最常见的模式）
+                                const newUrl = possiblePaths[0];
+                                console.log('重定向请求到:', newUrl);
+                                return originalOpen.call(this, method, newUrl, ...args);
+                              }
+                            }
+                            
+                            return originalOpen.call(this, method, url, ...args);
+                          };
+                          
+                          return xhr;
+                        };
+                        
+                        // 检查插件是否成功创建了全局统计按钮
+                        const statAllElement = iframeDoc.getElementById('stat_all');
+                        if (statAllElement) {
+                          console.log('Extra Statistics插件全局统计功能已就绪');
+                          
+                          // 重新绑定点击事件，确保在iframe环境中正常工作
+                          const entireStatButtons = iframeDoc.querySelectorAll('input[value*="全城额外统计"], input[value*="Entire Extra Stat"]');
+                          entireStatButtons.forEach(button => {
+                            // 移除旧的事件监听器
+                            const newButton = button.cloneNode(true);
+                            button.parentNode.replaceChild(newButton, button);
+                            
+                            // 重新绑定点击事件
+                            newButton.addEventListener('click', function() {
+                              console.log('全城额外统计按钮被点击');
+                              // 调用插件的全局统计函数
+                              if (iframeDoc.defaultView && iframeDoc.defaultView.OnCountEntireStat) {
+                                iframeDoc.defaultView.OnCountEntireStat.call(this);
+                              }
+                            }, false);
+                          });
+                          
+                          console.log('已重新绑定全城额外统计按钮事件');
+                        } else {
+                          console.warn('Extra Statistics插件全局统计功能未找到，可能需要更多时间初始化');
+                        }
+                      }, 1000);
+                    };
+                    extraStatsScript.onerror = function() {
+                      console.error('Extra Statistics插件脚本加载失败');
+                    };
+                    iframeDoc.head.appendChild(extraStatsScript);
+                    extraStatsLoaded = true;
+                    extraStatsInjectionInProgress = false;
+                    console.log('Extra Statistics插件已注入到iframe中');
+                  }, 500);
                 };
                 
                 jqueryScript.onerror = function() {
