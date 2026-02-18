@@ -4545,8 +4545,8 @@
           <div class="file-upload-container">
             <label for="zipFileUpload" class="file-upload-label">
               <i class="fas fa-cloud-upload-alt"></i>
-              <span>选择 ZIP 文件 (wodlog_[开头)</span>
-              <input type="file" id="zipFileUpload" accept=".zip,.rar,.7z" style="display: none;">
+              <span>选择一个或多个 ZIP 文件 (wodlog_[开头)</span>
+              <input type="file" id="zipFileUpload" accept=".zip,.rar,.7z" multiple style="display: none;">
             </label>
             <div id="fileInfo" class="file-info" style="display: none;"></div>
             <div class="wodlog-actions" id="wodlogActions" style="display: none;">
@@ -4895,6 +4895,9 @@
     const GITHUB_REPO = "wodtac";
     const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
     const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main`;
+    
+    // Cloudflare Worker（当前环境无法访问workers.dev，这里置空以强制使用本地直连GitHub方案）
+    const WODLOG_WORKER_ENDPOINT = "";
     
     // GitHub API配置（用于公开分享网站）
     const API_CONFIG = {
@@ -5494,11 +5497,69 @@
       console.log('提取到的地城名称:', Array.from(extractedDungeonNames));
     }
     
+    // 通用：查找战报 index.html 所在路径（支持嵌套目录与旧数据）
+    async function findWodLogIndexPath(logId) {
+      // 1. 尝试从 metadata 中读取（新上传的数据）
+      try {
+        const metadataPath = `wodlogs/${logId}/metadata.json`;
+        const metadataContent = await getGitHubFileContent(metadataPath);
+        if (metadataContent) {
+          const meta = JSON.parse(metadataContent);
+          let innerIndexPath = 'index.html';
+          
+          if (meta.metadata && meta.metadata.indexFile) {
+            innerIndexPath = meta.metadata.indexFile;
+          } else if (Array.isArray(meta.htmlFiles)) {
+            const found = meta.htmlFiles.find(name => {
+              const lower = String(name).toLowerCase();
+              return lower.endsWith('index.html') || lower.endsWith('index.htm');
+            });
+            if (found) {
+              innerIndexPath = found;
+            }
+          }
+          
+          if (innerIndexPath) {
+            return `wodlogs/${logId}/${innerIndexPath}`;
+          }
+        }
+      } catch (e) {
+        console.warn('从metadata查找index路径失败，尝试使用Git树:', e);
+      }
+      
+      // 2. 使用 Git Tree API 递归查找 index.html（兼容旧/异常数据）
+      try {
+        const treeResponse = await fetch(`${GITHUB_API_URL}/git/trees/wodlogs/${logId}?recursive=1`, {
+          headers: {
+            'Authorization': `token ${getGitHubToken()}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        
+        if (treeResponse.ok) {
+          const treeData = await treeResponse.json();
+          const candidate = treeData.tree.find(item => {
+            if (item.type !== 'blob') return false;
+            const lower = String(item.path).toLowerCase();
+            return lower.endsWith('index.html') || lower.endsWith('index.htm');
+          });
+          if (candidate) {
+            return `wodlogs/${logId}/${candidate.path}`;
+          }
+        }
+      } catch (e) {
+        console.warn('通过Git树查找index失败:', e);
+      }
+      
+      // 3. 兜底：假定在根目录
+      return `wodlogs/${logId}/index.html`;
+    }
+    
     // 从单个战报中提取地城名称
     async function extractDungeonNamesFromWodLog(logId) {
       try {
-        // 获取战报的index.html内容
-        const indexPath = `wodlogs/${logId}/index.html`;
+        // 获取战报的index.html内容（自动适配嵌套路径）
+        const indexPath = await findWodLogIndexPath(logId);
         const indexHtml = await getGitHubFileContent(indexPath);
         
         if (indexHtml) {
@@ -9080,115 +9141,152 @@
     });
     
     // ============ 文件上传和解析功能（纯前端方案）============
-    let uploadedZipFiles = {}; // 存储压缩包内的所有文件
-    let currentWodLogData = null; // 当前战报数据
+    let uploadedZipFiles = {}; // 当前预览使用的压缩包内所有文件（最后一个解析的）
+    let currentWodLogData = null; // 当前选中的战报数据（用于兼容旧逻辑）
+    let wodLogUploadQueue = []; // 多文件上传队列
     
-    // 监听文件选择并自动处理
-    document.getElementById('zipFileUpload').addEventListener('change', async function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      
+    // 解析单个ZIP战报文件，返回战报数据
+    async function parseSingleWodLogFile(file) {
       // 检查文件名是否以wodlog_[开头
       if (!file.name.startsWith('wodlog_[')) {
-        alert('文件名必须以 "wodlog_[" 开头');
-        e.target.value = ''; // 清空文件选择
-        return;
+        throw new Error(`文件 "${file.name}" 名称不合法，必须以 "wodlog_[" 开头`);
       }
+      
+      // 检查文件扩展名，JSZip主要支持ZIP格式
+      const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+      if (fileExt === '.rar' || fileExt === '.7z') {
+        throw new Error(`文件 "${file.name}" 为 ${fileExt.toUpperCase()} 格式，当前仅支持ZIP，请解压后重新压缩为ZIP。`);
+      }
+      
+      // 使用JSZip解析压缩包
+      const zip = await JSZip.loadAsync(file);
+      const localZipFiles = {};
+      
+      // 提取所有文件
+      for (const [filename, zipEntry] of Object.entries(zip.files)) {
+        if (!zipEntry.dir) {
+          const content = await zipEntry.async('blob');
+          localZipFiles[filename] = content;
+        }
+      }
+      
+      // 更新全局 uploadedZipFiles 供预览功能使用（最后一个解析的文件）
+      uploadedZipFiles = localZipFiles;
+      
+      // 查找index.html文件
+      const allFileNames = Object.keys(localZipFiles);
+      const indexFile = allFileNames.find(name => {
+        const lowerName = name.toLowerCase();
+        return lowerName.endsWith('index.html') || 
+               lowerName.endsWith('index.htm') ||
+               lowerName === 'index.html' ||
+               lowerName === 'index.htm';
+      });
+      
+      if (!indexFile) {
+        throw new Error(`文件 "${file.name}" 中未找到 index.html / index.htm`);
+      }
+      
+      // 保存当前战报数据（保存所有HTML文件）
+      const wodLogData = {
+        fileName: file.name,
+        uploadTime: new Date().toISOString(),
+        fileSize: file.size,
+        fileCount: allFileNames.length,
+        htmlFiles: {}, // 保存所有HTML文件内容
+        metadata: {
+          hasIndex: true,
+          indexFile: indexFile,
+          allFiles: allFileNames
+        }
+      };
+      
+      // 保存所有HTML文件的内容
+      for (const [filename, blob] of Object.entries(localZipFiles)) {
+        const lowerName = filename.toLowerCase();
+        if (lowerName.endsWith('.html') || lowerName.endsWith('.htm')) {
+          try {
+            const textContent = await blob.text();
+            wodLogData.htmlFiles[filename] = textContent;
+          } catch (error) {
+            console.error('读取文件失败:', filename, error);
+          }
+        }
+      }
+      
+      return wodLogData;
+    }
+    
+    // 监听文件选择并自动处理（支持多文件）
+    document.getElementById('zipFileUpload').addEventListener('change', async function(e) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
       
       const fileInfo = document.getElementById('fileInfo');
       const clearBtn = document.getElementById('clearFileBtn');
+      
+      // 重置队列
+      wodLogUploadQueue = [];
+      currentWodLogData = null;
       
       fileInfo.style.display = 'block';
       clearBtn.style.display = 'block';
       fileInfo.innerHTML = `
         <i class="fas fa-spinner fa-spin spinner-rotate"></i> 
-        <strong>${file.name}</strong> 
-        (${(file.size / 1024 / 1024).toFixed(2)} MB)
-        <br><small>正在解析...</small>
+        <strong>共选择 ${files.length} 个文件</strong>
+        <br><small>正在解析，请稍候...</small>
       `;
       
+      let successCount = 0;
+      let totalHtmlFiles = 0;
+      const errorMessages = [];
+      
       try {
-        // 检查文件扩展名，JSZip主要支持ZIP格式
-        const fileExt = '.' + file.name.split('.').pop().toLowerCase();
-        if (fileExt === '.rar' || fileExt === '.7z') {
-          alert('当前版本仅支持ZIP格式文件。请将RAR/7Z文件解压后重新压缩为ZIP格式。');
-          e.target.value = ''; // 清空文件选择
-          fileInfo.style.display = 'none';
-          clearBtn.style.display = 'none';
+        // 顺序解析每一个文件，避免占用过多内存
+        for (const file of files) {
+          try {
+            const wodLogData = await parseSingleWodLogFile(file);
+            wodLogUploadQueue.push(wodLogData);
+            successCount++;
+            totalHtmlFiles += Object.keys(wodLogData.htmlFiles).length;
+          } catch (err) {
+            console.error('解析单个战报失败:', err);
+            errorMessages.push(err.message);
+          }
+        }
+        
+        if (successCount === 0) {
+          // 全部失败
+          fileInfo.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i> 
+            <strong>解析失败</strong>
+            <br><small style="color: #e74c3c;">所有选中文件均解析失败，请检查文件名或格式。</small>
+          `;
+          document.getElementById('wodlogActions').style.display = 'none';
           return;
         }
         
-        // 使用JSZip解析压缩包
-        const zip = await JSZip.loadAsync(file);
-        uploadedZipFiles = {};
-        
-        // 提取所有文件
-        for (const [filename, zipEntry] of Object.entries(zip.files)) {
-          if (!zipEntry.dir) {
-            const content = await zipEntry.async('blob');
-            uploadedZipFiles[filename] = content;
-          }
-        }
+        // 使用队列中的第一个作为当前战报（兼容旧逻辑，例如后续查看功能）
+        currentWodLogData = wodLogUploadQueue[0];
         
         fileInfo.innerHTML = `
           <i class="fas fa-check-circle"></i> 
-          <strong>${file.name}</strong> 
-          (${(file.size / 1024 / 1024).toFixed(2)} MB)
-          <br><small>已成功解析 ${Object.keys(uploadedZipFiles).length} 个文件</small>
+          <strong>成功解析 ${successCount} 个战报</strong>
+          <br><small>共提取 ${totalHtmlFiles} 个 HTML 文件</small>
         `;
         
-        // 查找index.html文件并显示
-        const indexFile = Object.keys(uploadedZipFiles).find(name => {
-          const lowerName = name.toLowerCase();
-          return lowerName.endsWith('index.html') || 
-                 lowerName.endsWith('index.htm') ||
-                 lowerName === 'index.html' ||
-                 lowerName === 'index.htm';
-        });
-        
-        if (indexFile) {
-          // 保存当前战报数据（保存所有HTML文件）
-          currentWodLogData = {
-            fileName: file.name,
-            uploadTime: new Date().toISOString(),
-            fileSize: file.size,
-            fileCount: Object.keys(uploadedZipFiles).length,
-            htmlFiles: {}, // 保存所有HTML文件
-            metadata: {
-              hasIndex: true,
-              indexFile: indexFile,
-              allFiles: Object.keys(uploadedZipFiles)
-            }
-          };
-          
-          // 保存所有HTML文件的内容
-          for (const [filename, blob] of Object.entries(uploadedZipFiles)) {
-            const lowerName = filename.toLowerCase();
-            if (lowerName.endsWith('.html') || lowerName.endsWith('.htm')) {
-              try {
-                const textContent = await blob.text();
-                currentWodLogData.htmlFiles[filename] = textContent;
-              } catch (error) {
-                console.error('读取文件失败:', filename, error);
-              }
-            }
-          }
-          
-          // 显示HTML文件统计
-          const htmlFileCount = Object.keys(currentWodLogData.htmlFiles).length;
-          fileInfo.innerHTML += `<br><small style="color: #27ae60;">已提取 ${htmlFileCount} 个HTML文件</small>`;
-          
-          // 隐藏内容查看器，只显示基本信息
-          const viewer = document.getElementById('zipContentViewer');
-          if (viewer) {
-            viewer.style.display = 'none';
-          }
-          
-          // 显示上传到云端按钮
-          document.getElementById('wodlogActions').style.display = 'block';
-        } else {
-          fileInfo.innerHTML += '<br><small style="color: #e74c3c;">未找到index.html文件</small>';
+        if (errorMessages.length > 0) {
+          fileInfo.innerHTML += `<br><small style="color:#e67e22;">有 ${errorMessages.length} 个文件解析失败，可在控制台查看详情。</small>`;
         }
+        
+        // 隐藏内容查看器，只显示基本信息
+        const viewer = document.getElementById('zipContentViewer');
+        if (viewer) {
+          viewer.style.display = 'none';
+        }
+        
+        // 显示上传到云端按钮
+        document.getElementById('wodlogActions').style.display = 'block';
       } catch (error) {
         console.error('解析ZIP文件失败:', error);
         fileInfo.innerHTML = `
@@ -9196,6 +9294,7 @@
           <strong>解析失败</strong>
           <br><small style="color: #e74c3c;">${error.message}</small>
         `;
+        document.getElementById('wodlogActions').style.display = 'none';
       }
     });
     
@@ -9822,6 +9921,48 @@
         return;
       }
       
+      // 优先走 Worker（后台执行，提交成功后可关闭页面）
+      if (typeof WODLOG_WORKER_ENDPOINT === 'string' && WODLOG_WORKER_ENDPOINT.startsWith('https://')) {
+        disableAllUI();
+        try {
+          const res = await fetch(`${WODLOG_WORKER_ENDPOINT}/delete-wodlog`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ wodLogId: logId })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) {
+            throw new Error(data.error || `Worker返回错误: ${res.status}`);
+          }
+          
+          // 立即从列表移除（后台会继续删）
+          const listContainer = document.getElementById('cloudWodLogList');
+          if (listContainer) {
+            const items = listContainer.querySelectorAll('.wodlog-item');
+            items.forEach(item => {
+              const deleteBtn = item.querySelector('.wodlog-delete-btn');
+              if (deleteBtn && deleteBtn.onclick.toString().includes(logId)) {
+                item.remove();
+              }
+            });
+          }
+          
+          enableAllUI();
+          alert(`已提交后台删除（可关闭页面继续执行）：${logId}`);
+          
+          // 延迟刷新列表
+          setTimeout(async () => {
+            await loadCloudWodLogs(true);
+          }, 6000);
+          
+          return;
+        } catch (e) {
+          console.error('提交Worker后台删除失败，回退到前端删除:', e);
+          enableAllUI();
+          // 继续走下面原来的前端删除逻辑
+        }
+      }
+      
       // 立即禁用所有UI操作
       disableAllUI();
       
@@ -10248,10 +10389,223 @@
       }
     }
     
-    // 上传战报到GitHub
+    // 单个战报上传实现（wodLogId 由外部统一分配，避免多次读取导致编号冲突）
+    async function uploadSingleWodLog(savedWodLogData, uploadBtn, wodLogId, index, totalCount) {
+      const wodLogDir = `wodlogs/${wodLogId}`;
+      
+      // 创建上传任务
+      currentUploadTask = {
+        wodLogId: wodLogId,
+        fileName: savedWodLogData.fileName,
+        startTime: Date.now(),
+        status: 'uploading',
+        uploadedFiles: []
+      };
+      localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+      
+      // 确保wodlogs目录存在
+      await ensureWodLogsDirectory();
+     
+      // 快速批量上传文件
+      console.log(`开始上传第 ${index + 1}/${totalCount} 个战报...`);
+      
+      // 准备所有要上传的文件
+      const filesToUpload = [];
+      
+      // 添加元数据文件
+      const metadata = {
+        id: wodLogId,
+        fileName: savedWodLogData.fileName,
+        uploadTime: new Date().toISOString(),
+        fileSize: savedWodLogData.fileSize,
+        fileCount: savedWodLogData.fileCount,
+        metadata: savedWodLogData.metadata,
+        htmlFiles: Object.keys(savedWodLogData.htmlFiles),
+        uploaderId: generateUserId() // 添加上传者ID
+      };
+      
+      filesToUpload.push({
+        path: `${wodLogDir}/metadata.json`,
+        content: JSON.stringify(metadata, null, 2),
+        message: `Add wodlog metadata: ${savedWodLogData.fileName}`
+      });
+      
+      // 添加HTML文件
+      for (const [filename, content] of Object.entries(savedWodLogData.htmlFiles)) {
+        filesToUpload.push({
+          path: `${wodLogDir}/${filename}`,
+          content: content,
+          message: `Add wodlog file: ${filename}`
+        });
+      }
+      
+      // 顺序上传文件（避免409冲突）
+      const uploadResults = await batchUploadFiles(filesToUpload, uploadBtn);
+      
+      // 统计上传结果
+      const successCount = uploadResults.filter(result => result.success).length;
+      const failCount = uploadResults.filter(result => !result.success).length;
+      
+      console.log(`战报 ${wodLogId} 上传结果: 成功 ${successCount} 个文件, 失败 ${failCount} 个文件`);
+      
+      // 检查是否有重要文件上传失败
+      const failedFiles = uploadResults.filter(result => !result.success);
+      if (failedFiles.length > 0) {
+        console.warn('以下文件上传失败:', failedFiles.map(f => f.file));
+        
+        // 如果有重要文件失败，尝试重新上传
+        const importantFiles = failedFiles.filter(f => 
+          f.file.includes('index.html') || f.file.includes('metadata.json')
+        );
+        
+        if (importantFiles.length > 0) {
+          console.log('重新上传重要文件...');
+          for (const failedFile of importantFiles) {
+            const file = filesToUpload.find(f => f.path === failedFile.file);
+            if (file) {
+              try {
+                await uploadFileToGitHub(file.path, file.content, file.message + ' (retry)');
+                console.log(`重新上传成功: ${file.path}`);
+              } catch (error) {
+                console.error(`重新上传失败: ${file.path}`, error);
+              }
+            }
+          }
+        }
+      }
+      
+      // 更新上传任务状态
+      currentUploadTask.status = 'completed';
+      currentUploadTask.endTime = Date.now();
+      currentUploadTask.uploadedFiles = filesToUpload.map(f => f.path);
+      currentUploadTask.uploadResults = uploadResults;
+      localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
+      
+      // 清除上传任务
+      currentUploadTask = null;
+      localStorage.removeItem('pendingUploadTask');
+      
+      // 静默上传完成
+      console.log('战报上传完成:', wodLogId);
+      
+      // 添加到本地记录
+      addOwnWodLogId(wodLogId);
+      
+      // 立即添加新战报到列表（避免等待GitHub API同步）
+      const newWodLog = {
+        id: wodLogId,
+        fileName: savedWodLogData.fileName,
+        uploadTime: new Date().toISOString(),
+        fileSize: metadata.fileSize,
+        fileCount: metadata.fileCount,
+        indexHtml: metadata.htmlFiles ? metadata.htmlFiles[0] : '',
+        metadata: metadata,
+        uploaderId: generateUserId(), // 添加上传者ID
+        isOwn: true // 标记为自己的战报
+      };
+      
+      const cloudWodLogsList = document.getElementById('cloudWodLogsList');
+      if (cloudWodLogsList) {
+        const newItem = createWodLogItemHTML(newWodLog);
+        cloudWodLogsList.insertAdjacentHTML('afterbegin', newItem);
+        console.log('新战报已添加到列表顶部');
+      }
+    }
+    
+    // 上传战报到GitHub（支持多文件顺序上传）
     async function uploadWodLogToCloud() {
-      if (!currentWodLogData) {
-        alert('请先选择并解析ZIP文件');
+      // 优先走 Worker（后台执行，提交成功后可关闭页面）
+      if (typeof WODLOG_WORKER_ENDPOINT === 'string' && WODLOG_WORKER_ENDPOINT.startsWith('https://')) {
+        // 兼容旧逻辑：如果队列为空但已有单个战报数据，则补充到队列
+        if (!wodLogUploadQueue.length && currentWodLogData) {
+          wodLogUploadQueue = [currentWodLogData];
+        }
+        
+        if (!wodLogUploadQueue.length) {
+          alert('请先选择并解析一个或多个ZIP战报文件');
+          return;
+        }
+        
+        // 立即禁用所有UI操作
+        disableAllUI();
+        
+        const uploadBtn = document.querySelector('.upload-to-cloud-btn');
+        const originalText = uploadBtn.innerHTML;
+        uploadBtn.disabled = true;
+        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在提交到云端后台...';
+        
+        uploadAbortController = new AbortController();
+        
+        try {
+          const payload = {
+            wodlogs: wodLogUploadQueue.map(w => ({
+              fileName: w.fileName,
+              fileSize: w.fileSize,
+              fileCount: w.fileCount,
+              metadata: w.metadata,
+              htmlFiles: w.htmlFiles || {},
+              uploaderId: generateUserId()
+            }))
+          };
+          
+          const res = await fetch(`${WODLOG_WORKER_ENDPOINT}/upload-wodlogs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: uploadAbortController.signal
+          });
+          
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) {
+            throw new Error(data.error || `Worker返回错误: ${res.status}`);
+          }
+          
+          // 提交成功：后台会继续执行
+          const assigned = Array.isArray(data.assignedWodLogIds) ? data.assignedWodLogIds : [];
+          console.log('已提交Worker后台上传任务:', data);
+          
+          // 立即恢复按钮/UI（因为后台已接管）
+          uploadBtn.innerHTML = originalText;
+          uploadBtn.disabled = false;
+          enableAllUI();
+          
+          // 清空队列（避免重复提交）
+          wodLogUploadQueue = [];
+          currentWodLogData = null;
+          
+          // 友好提示：可以关闭页面
+          alert(
+            `已提交后台上传（可关闭页面继续执行）。\n` +
+            `本次提交: ${payload.wodlogs.length} 个战报\n` +
+            (assigned.length ? `分配ID: ${assigned.join(', ')}` : '')
+          );
+          
+          // 延迟刷新列表（让GitHub有时间同步）
+          setTimeout(async () => {
+            await loadCloudWodLogs(true);
+            setTimeout(() => {
+              extractDungeonNamesFromWodLogs();
+            }, 1000);
+          }, 6000);
+          
+          return;
+        } catch (error) {
+          console.error('提交Worker后台上传失败:', error);
+          uploadBtn.innerHTML = originalText;
+          uploadBtn.disabled = false;
+          enableAllUI();
+          alert('提交后台上传失败: ' + (error.message || error));
+          return;
+        }
+      }
+      
+      // 兼容旧逻辑：如果队列为空但已有单个战报数据，则补充到队列
+      if (!wodLogUploadQueue.length && currentWodLogData) {
+        wodLogUploadQueue = [currentWodLogData];
+      }
+      
+      if (!wodLogUploadQueue.length) {
+        alert('请先选择并解析一个或多个ZIP战报文件');
         return;
       }
       
@@ -10270,16 +10624,6 @@
         }
       }
       
-      // 立即保存必要的数据，防止在上传过程中被清空
-      const savedWodLogData = {
-        fileName: currentWodLogData.fileName,
-        fileSize: currentWodLogData.fileSize,
-        fileCount: currentWodLogData.fileCount,
-        indexHtml: currentWodLogData.indexHtml,
-        metadata: currentWodLogData.metadata,
-        htmlFiles: currentWodLogData.htmlFiles || {}
-      };
-      
       // 立即禁用所有UI操作
       disableAllUI();
       
@@ -10292,135 +10636,53 @@
       uploadAbortController = new AbortController();
       
       try {
-         // 获取下一个战报编号
-         const nextLogNumber = await getNextLogNumber();
-         const wodLogId = `wodlog_${nextLogNumber}`;
-         const wodLogDir = `wodlogs/${wodLogId}`;
-         
-         // 创建上传任务
-         currentUploadTask = {
-           wodLogId: wodLogId,
-           fileName: savedWodLogData.fileName,
-           startTime: Date.now(),
-           status: 'uploading',
-           uploadedFiles: []
-         };
-         localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
-         
-         // 确保wodlogs目录存在
-         await ensureWodLogsDirectory();
+        const total = wodLogUploadQueue.length;
+        // 统一计算起始编号，避免每次上传时单独调用getNextLogNumber导致目录覆盖
+        const startNumber = await getNextLogNumber();
+        let successLogs = 0;
+        const failedLogs = [];
         
-        // 快速批量上传文件
-        console.log('开始快速上传战报...');
-        
-        // 准备所有要上传的文件
-        const filesToUpload = [];
-        
-        // 添加元数据文件
-        const metadata = {
-          id: wodLogId,
-          fileName: savedWodLogData.fileName,
-          uploadTime: new Date().toISOString(),
-          fileSize: savedWodLogData.fileSize,
-          fileCount: savedWodLogData.fileCount,
-          metadata: savedWodLogData.metadata,
-          htmlFiles: Object.keys(savedWodLogData.htmlFiles),
-          uploaderId: generateUserId() // 添加上传者ID
-        };
-        
-        filesToUpload.push({
-          path: `${wodLogDir}/metadata.json`,
-          content: JSON.stringify(metadata, null, 2),
-          message: `Add wodlog metadata: ${savedWodLogData.fileName}`
-        });
-        
-        // 添加HTML文件
-        for (const [filename, content] of Object.entries(savedWodLogData.htmlFiles)) {
-          filesToUpload.push({
-            path: `${wodLogDir}/${filename}`,
-            content: content,
-            message: `Add wodlog file: ${filename}`
-          });
-        }
-        
-        // 顺序上传文件（避免409冲突）
-        const uploadResults = await batchUploadFiles(filesToUpload, uploadBtn);
-        
-        // 统计上传结果
-        const successCount = uploadResults.filter(result => result.success).length;
-        const failCount = uploadResults.filter(result => !result.success).length;
-        
-        console.log(`上传结果: 成功 ${successCount} 个文件, 失败 ${failCount} 个文件`);
-        
-        // 检查是否有重要文件上传失败
-        const failedFiles = uploadResults.filter(result => !result.success);
-        if (failedFiles.length > 0) {
-          console.warn('以下文件上传失败:', failedFiles.map(f => f.file));
+        for (let i = 0; i < total; i++) {
+          // 检查是否被取消
+          if (uploadAbortController && uploadAbortController.signal.aborted) {
+            failedLogs.push({ index: i, reason: '上传已被用户取消' });
+            break;
+          }
           
-          // 如果有重要文件失败，尝试重新上传
-          const importantFiles = failedFiles.filter(f => 
-            f.file.includes('index.html') || f.file.includes('metadata.json')
-          );
+          const wodLogData = wodLogUploadQueue[i];
           
-          if (importantFiles.length > 0) {
-            console.log('重新上传重要文件...');
-            for (const failedFile of importantFiles) {
-              const file = filesToUpload.find(f => f.path === failedFile.file);
-              if (file) {
-                try {
-                  await uploadFileToGitHub(file.path, file.content, file.message + ' (retry)');
-                  console.log(`重新上传成功: ${file.path}`);
-                } catch (error) {
-                  console.error(`重新上传失败: ${file.path}`, error);
-                }
-              }
-            }
+          const wodLogId = `wodlog_${startNumber + i}`;
+          
+          const savedWodLogData = {
+            fileName: wodLogData.fileName,
+            fileSize: wodLogData.fileSize,
+            fileCount: wodLogData.fileCount,
+            indexHtml: wodLogData.indexHtml,
+            metadata: wodLogData.metadata,
+            htmlFiles: wodLogData.htmlFiles || {}
+          };
+          
+          // 更新按钮文案，显示当前进度（第几个战报）
+          uploadBtn.innerHTML = `<i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在上传战报 ${i + 1}/${total}...`;
+          
+          // 单个战报失败时记录错误，但不中断后续上传
+          try {
+            await uploadSingleWodLog(savedWodLogData, uploadBtn, wodLogId, i, total);
+            successLogs++;
+          } catch (err) {
+            console.error(`第 ${i + 1} 个战报上传失败:`, err);
+            failedLogs.push({ index: i, name: savedWodLogData.fileName, reason: err.message || '未知错误' });
           }
         }
         
-        // 更新上传任务状态
-        currentUploadTask.status = 'completed';
-        currentUploadTask.endTime = Date.now();
-        currentUploadTask.uploadedFiles = filesToUpload.map(f => f.path);
-        currentUploadTask.uploadResults = uploadResults;
-        localStorage.setItem('pendingUploadTask', JSON.stringify(currentUploadTask));
-        
-        // 静默上传成功，不显示提示
+        // 所有战报上传流程结束后，恢复按钮
         uploadBtn.innerHTML = originalText;
         uploadBtn.style.background = '';
         uploadBtn.disabled = false;
         
-        // 清除上传任务
-        currentUploadTask = null;
-        localStorage.removeItem('pendingUploadTask');
-        
-        // 静默上传完成，不显示弹窗
-        console.log('战报上传完成:', wodLogId);
-        
-        // 添加到本地记录
-        addOwnWodLogId(wodLogId);
-        
-        // 立即添加新战报到列表（避免等待GitHub API同步）
-        // 使用上传任务中保存的数据，避免currentWodLogData被清空
-        const newWodLog = {
-          id: wodLogId,
-          fileName: savedWodLogData.fileName,
-          uploadTime: new Date().toISOString(),
-          fileSize: metadata.fileSize,
-          fileCount: metadata.fileCount,
-          indexHtml: metadata.htmlFiles ? metadata.htmlFiles[0] : '',
-          metadata: metadata,
-          uploaderId: generateUserId(), // 添加上传者ID
-          isOwn: true // 标记为自己的战报
-        };
-        
-        // 添加到战报列表顶部
-        const cloudWodLogsList = document.getElementById('cloudWodLogsList');
-        if (cloudWodLogsList) {
-          const newItem = createWodLogItemHTML(newWodLog);
-          cloudWodLogsList.insertAdjacentHTML('afterbegin', newItem);
-          console.log('新战报已添加到列表顶部');
-        }
+        // 清空队列
+        wodLogUploadQueue = [];
+        currentWodLogData = null;
         
         // 延迟刷新以确保GitHub API同步（避免重复显示）
         setTimeout(async () => {
@@ -10430,6 +10692,14 @@
             extractDungeonNamesFromWodLogs();
           }, 1000);
         }, 3000);
+        
+        // 如存在失败的战报，给出简要提示
+        if (failedLogs.length > 0) {
+          const failedNames = failedLogs
+            .map(f => f.name ? `${f.name}（原因：${f.reason}）` : `第 ${f.index + 1} 个战报（原因：${f.reason}）`)
+            .join('\n');
+          alert(`本次共上传完成 ${successLogs}/${total} 个战报。\n以下战报上传失败，可查看控制台获取更多信息：\n\n${failedNames}`);
+        }
         
         // 恢复UI操作
         enableAllUI();
@@ -10489,6 +10759,7 @@
       
       uploadedZipFiles = {};
       currentWodLogData = null;
+      wodLogUploadQueue = [];
       document.getElementById('zipFileUpload').value = '';
       document.getElementById('fileInfo').style.display = 'none';
       document.getElementById('clearFileBtn').style.display = 'none';
@@ -10784,9 +11055,9 @@
         const log = JSON.parse(metadataContent);
         console.log('战报元数据:', log);
         
-         // 加载index.html
-         const indexPath = `wodlogs/${logId}/index.html`;
-         const indexHtml = await getGitHubFileContent(indexPath);
+        // 计算index.html路径（支持嵌套目录与旧数据）
+        const indexPath = await findWodLogIndexPath(logId);
+        const indexHtml = await getGitHubFileContent(indexPath);
         
         if (!indexHtml) {
           alert('无法找到index.html文件');
