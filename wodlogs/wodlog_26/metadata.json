@@ -1,35 +1,25 @@
 {
   "id": "wodlog_26",
-  "fileName": "wodlog_[DOLLARS]「16.33级」银刺-挑战202509292316.zip",
-  "uploadTime": "2026-02-18T12:04:03.697Z",
-  "fileSize": 439752,
-  "fileCount": 10,
+  "fileName": "wodlog_[DOLLARS]「18.67级」试炼之塔1F202510162047.zip",
+  "uploadTime": "2026-02-18T12:04:30.617Z",
+  "fileSize": 269557,
+  "fileCount": 5,
   "metadata": {
     "hasIndex": true,
     "indexFile": "index.html",
     "allFiles": [
-      "4354907/level1.html",
-      "4354907/level2.html",
-      "4354907/level3.html",
-      "4354907/level4.html",
-      "4354907/level5.html",
-      "4354907/level6.html",
-      "4354907/level7.html",
-      "4354907/statistics.html",
-      "4354907/items.html",
+      "4384807/level1.html",
+      "4384807/level2.html",
+      "4384807/statistics.html",
+      "4384807/items.html",
       "index.html"
     ]
   },
   "htmlFiles": [
-    "4354907/level1.html",
-    "4354907/level2.html",
-    "4354907/level3.html",
-    "4354907/level4.html",
-    "4354907/level5.html",
-    "4354907/level6.html",
-    "4354907/level7.html",
-    "4354907/statistics.html",
-    "4354907/items.html",
+    "4384807/level1.html",
+    "4384807/level2.html",
+    "4384807/statistics.html",
+    "4384807/items.html",
     "index.html"
   ],
   "uploaderId": "user_bns775"
