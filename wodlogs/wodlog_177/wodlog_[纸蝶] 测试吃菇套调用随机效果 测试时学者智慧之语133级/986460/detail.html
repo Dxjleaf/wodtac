@@ -1,0 +1,1558 @@
+<html>
+<head><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"><link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.2/themes/humanity/jquery-ui.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+<meta http-equiv="Content-Language" content="cn">
+
+
+<link rel="SHORTCUT ICON" href="http://info.world-of-dungeons.org/wod/css/WOD.gif" type="image/gif">
+    
+    
+
+<script type="text/javascript" src="https://delta.world-of-dungeons.org/wod/javascript/wod_standard.js?1739180023"></script>
+<script type="text/javascript" src="https://delta.world-of-dungeons.org/wod/javascript/wodtooltip.js?1739180023"></script>
+
+
+
+
+
+
+
+
+	<title>[纸蝶] 测试吃菇套调用随机效果 测试时学者智慧之语133级</title>
+	<link rel="stylesheet" type="text/css" href="https://delta.world-of-dungeons.org/wod/css/layout.css?1739180023">
+
+    <link rel="stylesheet" type="text/css" href="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/skin-cn.css?1739180023">
+        <style type="text/css">
+/*<![CDATA[*/
+      .tableMinWidthRespectingContent {
+        width:1px;
+        }
+        .tableMinHeightRespectingContent {
+        height:1px;
+        }
+/*]]>*/
+    .ui-progressbar .ui-progressbar-value {transition: width 0.7s ease 0s;} #progressbar .progress-label {position: absolute; left: 48%; font-weight: bold; text-shadow: 1px 1px 0 #fff; height: 31px; display: flex; justify-content: enter; align-items: center;}@media (min-width:1px) { .ui-dialog { width: 95% !important; } } @media (min-width: 768px) { .ui-dialog { max-width:900px !important; width:95% !important; } }</style>
+  <style data-id="immersive-translate-input-injected-css">.immersive-translate-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2147483647;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.immersive-translate-attach-loading::after {
+  content: " ";
+
+  --loading-color: #f78fb6;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: block;
+  margin: 12px auto;
+  position: relative;
+  color: white;
+  left: -100px;
+  box-sizing: border-box;
+  animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-2000%, -50%);
+  z-index: 100;
+}
+
+.immersive-translate-loading-spinner {
+  vertical-align: middle !important;
+  width: 10px !important;
+  height: 10px !important;
+  display: inline-block !important;
+  margin: 0 4px !important;
+  border: 2px rgba(221, 244, 255, 0.6) solid !important;
+  border-top: 2px rgba(0, 0, 0, 0.375) solid !important;
+  border-left: 2px rgba(0, 0, 0, 0.375) solid !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  -webkit-animation: immersive-translate-loading-animation 0.6s infinite linear !important;
+  animation: immersive-translate-loading-animation 0.6s infinite linear !important;
+}
+
+@-webkit-keyframes immersive-translate-loading-animation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+
+@keyframes immersive-translate-loading-animation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.immersive-translate-input-loading {
+  --loading-color: #f78fb6;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: block;
+  margin: 12px auto;
+  position: relative;
+  color: white;
+  left: -100px;
+  box-sizing: border-box;
+  animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+}
+
+@keyframes immersiveTranslateShadowRolling {
+  0% {
+    box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  12% {
+    box-shadow: 100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  25% {
+    box-shadow: 110px 0 var(--loading-color), 100px 0 var(--loading-color),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  36% {
+    box-shadow: 120px 0 var(--loading-color), 110px 0 var(--loading-color),
+      100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  50% {
+    box-shadow: 130px 0 var(--loading-color), 120px 0 var(--loading-color),
+      110px 0 var(--loading-color), 100px 0 var(--loading-color);
+  }
+
+  62% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color),
+      120px 0 var(--loading-color), 110px 0 var(--loading-color);
+  }
+
+  75% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      130px 0 var(--loading-color), 120px 0 var(--loading-color);
+  }
+
+  87% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color);
+  }
+
+  100% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.immersive-translate-toast {
+  display: flex;
+  position: fixed;
+  z-index: 2147483647;
+  left: 0;
+  right: 0;
+  top: 1%;
+  width: fit-content;
+  padding: 12px 20px;
+  margin: auto;
+  overflow: auto;
+  background: #fef6f9;
+  box-shadow: 0px 4px 10px 0px rgba(0, 10, 30, 0.06);
+  font-size: 15px;
+  border-radius: 8px;
+  color: #333;
+}
+
+.immersive-translate-toast-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.immersive-translate-toast-hidden {
+  margin: 0 20px 0 72px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.immersive-translate-toast-close {
+  color: #666666;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .immersive-translate-toast {
+    top: 0;
+    padding: 12px 0px 0 10px;
+  }
+  .immersive-translate-toast-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .immersive-translate-toast-hidden {
+    margin: 10px auto;
+  }
+}
+
+.immersive-translate-modal {
+  display: none;
+  position: fixed;
+  z-index: 2147483647;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  font-size: 15px;
+}
+
+.immersive-translate-modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 40px 24px 24px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 270px;
+  font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
+    "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .immersive-translate-modal-content {
+    margin: 50% auto !important;
+  }
+}
+
+.immersive-translate-modal .immersive-translate-modal-content-in-input {
+  max-width: 500px;
+}
+.immersive-translate-modal-content-in-input .immersive-translate-modal-body {
+  text-align: left;
+  max-height: unset;
+}
+
+.immersive-translate-modal-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333333;
+}
+
+.immersive-translate-modal-body {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  word-break: break-all;
+  margin-top: 24px;
+}
+
+@media screen and (max-width: 768px) {
+  .immersive-translate-modal-body {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}
+
+.immersive-translate-close {
+  color: #666666;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.immersive-translate-close:hover,
+.immersive-translate-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.immersive-translate-modal-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.immersive-translate-btn {
+  width: fit-content;
+  color: #fff;
+  background-color: #ea4c89;
+  border: none;
+  font-size: 16px;
+  margin: 0 8px;
+  padding: 9px 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.immersive-translate-btn:hover {
+  background-color: #f082ac;
+}
+.immersive-translate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.immersive-translate-btn:disabled:hover {
+  background-color: #ea4c89;
+}
+
+.immersive-translate-cancel-btn {
+  /* gray color */
+  background-color: rgb(89, 107, 120);
+}
+
+.immersive-translate-cancel-btn:hover {
+  background-color: hsl(205, 20%, 32%);
+}
+
+.immersive-translate-action-btn {
+  background-color: transparent;
+  color: #ea4c89;
+  border: 1px solid #ea4c89;
+}
+
+.immersive-translate-btn svg {
+  margin-right: 5px;
+}
+
+.immersive-translate-link {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  text-decoration: none;
+  color: #007bff;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.immersive-translate-primary-link {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  text-decoration: none;
+  color: #ea4c89;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.immersive-translate-modal input[type="radio"] {
+  margin: 0 6px;
+  cursor: pointer;
+}
+
+.immersive-translate-modal label {
+  cursor: pointer;
+}
+
+.immersive-translate-close-action {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  cursor: pointer;
+}
+
+.imt-image-status {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 16px !important;
+}
+.imt-image-status img,
+.imt-image-status svg,
+.imt-img-loading {
+  width: 28px !important;
+  height: 28px !important;
+  margin: 0 0 8px 0 !important;
+  min-height: 28px !important;
+  min-width: 28px !important;
+  position: relative !important;
+}
+.imt-img-loading {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAtFBMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////oK74hAAAAPHRSTlMABBMIDyQXHwyBfFdDMSw+OjXCb+5RG51IvV/k0rOqlGRM6KKMhdvNyZBz9MaupmxpWyj437iYd/yJVNZeuUC7AAACt0lEQVRIx53T2XKiUBCA4QYOiyCbiAsuuGBcYtxiYtT3f6/pbqoYHVFO5r+iivpo6DpAWYpqeoFfr9f90DsYAuRSWkFnPO50OgR9PwiCUFcl2GEcx+N/YBh6pvKaefHlUgZd1zVe0NbYcQjGBfzrPE8Xz8aF+71D8gG6DHFPpc4a7xFiCDuhaWgKgGIJQ3d5IMGDrpS4S5KgpIm+en9f6PlAhKby4JwEIxlYJV9h5k5nee9GoxHJ2IDSNB0dwdad1NAxDJ/uXDHYmebdk4PdbkS58CIVHdYSUHTYYRWOJblWSyu2lmy3KNFVJNBhxcuGW4YBVCbYGRZwIooipHsNqjM4FbgOQqQqSKQQU9V8xmi1QlgHqQQ6DDBvRUVCDirs+EzGDGOQTCATgtYTnbCVLgsVgRE0T1QE0qHCFAht2z6dLvJQs3Lo2FQoDxWNUiBhaP4eRgwNkI+dAjVOA/kUrIDwf3CG8NfNOE0eiFotSuo+rBiq8tD9oY4Qzc6YJw99hl1wzpQvD7ef2M8QgnOGJfJw+EltQc+oX2yn907QB22WZcvlUpd143dqQu+8pCJZuGE4xCuPXJqqcs5sNpsI93Rmzym1k4Npk+oD1SH3/a3LOK/JpUBpWfqNySxWzCfNCUITuDG5dtuphrUJ1myeIE9bIsPiKrfqTai5WZxbhtNphYx6GEIHihyGFTI69lje/rxajdh0s0msZ0zYxyPLhYCb1CyHm9Qsd2H37Y3lugVwL9kNh8Ot8cha6fUNQ8nuXi5z9/ExsAO4zQrb/ev1yrCB7lGyQzgYDGuxq1toDN/JGvN+HyWNHKB7zEoK+PX11e12G431erGYzwmytAWU56fkMHY5JJnDRR2eZji3AwtIcrEV8Cojat/BdQ7XOwGV1e1hDjGGjXbdArm8uJZtCH5MbcctVX8A1WpqumJHwckAAAAASUVORK5CYII=");
+  background-size: 28px 28px;
+  animation: image-loading-rotate 1s linear infinite !important;
+}
+
+.imt-image-status span {
+  color: var(--bg-2, #fff) !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 500 !important;
+  font-family: "PingFang SC", Arial, sans-serif !important;
+}
+
+@keyframes image-loading-rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+</style><script type="text/javascript">window.onload = function(e){wodToolTipInit();wodInitialize('delta.world-of-dungeons.org','on','/wod/spiel/','/wod/ajax/','WOD','cn','/wod/css//skins/skin-8/','/wod/css/','1','1');}
+function o(t,n){ 
+ var url="https://delta.world-of-dungeons.org/wod/spiel/";
+if(t=="n"){url += "help/npc"}
+if(t=="s"){url += "hero/skill"}
+if(t=="i"){url += "hero/item"}
+return wo(url + ".php?name=" + n + "&IS_POPUP=1");}
+var CTable=function(){};
+CTable.GetNumber = function (cell) {
+        var numberPatten = /^\s?([\d]+\.?[\d]*)\s?_?\s?([\d]*\.?[\d]*)\s?$/;
+        var pairTable = cell.firstChild;
+        var numberString = cell.textContent;
+        var numbers;
+        if (pairTable && pairTable.nodeName == "TABLE") {
+            numberString = pairTable.id;
+        }
+        if (numberPatten.test(numberString)) {
+            numbers = [];
+            var numberres = numberPatten.exec(numberString);
+            if (numberres[1])
+                numbers.push(numberres[1]);
+            if (numberres[2])
+                numbers.push(numberres[2]);
+        }
+        return numbers;
+    }
+CompareString = function CompareString(a, b) {
+        a = a || "";
+        b = b || "";
+        return a.toLowerCase().localeCompare(b.toLowerCase(), "zh-CN-u-co-pinyin");
+    }
+ct = function (Id) {
+        try {
+            var Table = document.getElementById(Id);
+            if (Table.hasAttribute("hide")) {
+                Table.removeAttribute("hide");
+            } else {
+                Table.setAttribute("hide", "hide");
+            }
+        } catch (e) {
+            alert("CTable.OnClickTitle(): " + e);
+        }
+    }
+cf = function (tableId, filterRowId) {
+        try {
+            var Table = document.getElementById(tableId);
+            var filterRow = document.getElementById(filterRowId);
+            var stringfilters = [];
+            var orgstringfilters = [];
+            var numberfilters = [];
+            var filterString = "";
+            var showIds = [];
+            var refilter = 0;
+
+            var showHero_0 = document.getElementById(tableId + "_checkbox_0_0");
+            var showHero_1 = document.getElementById(tableId + "_checkbox_0_1");
+            var showHero = [showHero_0.checked, showHero_1.checked];
+
+            for (var i = 0; i < filterRow.cells.length; i++) {
+                var cell = filterRow.cells[i];
+                var stringfilter = document.getElementById(filterRow.id + "_combobox_" + i);
+                var orgstringfilter = document.getElementById('org_' + filterRow.id + "_combobox_" + i);
+                var numberfilter = document.getElementById(filterRow.id + "_textbox_" + i);
+                if (stringfilter) {
+                    stringfilters.push(stringfilter.value);
+                    refilter += stringfilter.selectedIndex > 0 ? 1 : 0;
+                }
+                else
+                    stringfilters.push(null);
+                if (orgstringfilter) {
+                    for (var ii = 0, ij = orgstringfilter.options.length; ii < ij; ++ii) {
+                        if (orgstringfilter.options[ii].value === stringfilter.value) {
+                            orgstringfilter.selectedIndex = ii;
+                            break;
+                        }
+                    }
+                    orgstringfilters.push([stringfilter, orgstringfilter]);
+                    showIds.push([]);
+                }
+                if (numberfilter)
+                    numberfilters.push(numberfilter.value);
+                else
+                    numberfilters.push(null);
+            }
+            var index = 0;
+            var patten = /([\(|\[|>|<|=|]*)\s*([\d]*\.?[\d]*)\s*-?\s*([\d]*\.?[\d]*)\s*([\)|\]|\s]?)/;
+            for (var i = 2; i < Table.rows.length; i = i + 2) {
+                var row = Table.rows[i];
+                var rowInfo = Table.rows[i + 1];
+                var rowIds = row.id.split(",");
+                var show = true;
+
+                var hero = row.cells[0].getElementsByTagName('a')[0];
+                var heroKind = hero.getAttribute("kind");
+                show = showHero[heroKind];
+                if (show) {
+                    for (var fi = 0; fi < stringfilters.length; fi++) {
+                        var sfilter = stringfilters[fi];
+                        if (!sfilter)
+                            continue;
+                        if (sfilter != fi + "_all" && sfilter != rowIds[fi]) {
+                            show = false;
+                            break;
+                        }
+                    }
+                }
+                if (show) {
+                    for (var fi = 0; fi < numberfilters.length; fi++) {
+                        var nfilter = numberfilters[fi];
+
+                        if (!nfilter)
+                            continue;
+                        else {
+                            var numbers = CTable.GetNumber(row.cells[fi]);
+                            var nfilters = nfilter.split(/\s*[,|，]\s*/);
+                            for (ni = 0; ni < numbers.length; ni++) {
+                                var theFilter = nfilters[ni];
+                                var testString = "";
+                                if (theFilter && patten.test(theFilter)) {
+                                    var op = "==";
+                                    var res = patten.exec(theFilter);
+                                    if (res[1]) {
+                                        op = res[1];
+                                        if (res[3]) {
+                                            if (op == "[") op = ">=";
+                                            if (op == "(") op = ">";
+                                            if (op == "=") op = "==";
+                                        }
+                                    }
+                                    else {
+                                        if (res[3])
+                                            op = ">=";
+                                    }
+                                    testString = numbers[ni] + op + res[2];
+                                    if (res[3]) {
+                                        op = "<=";
+                                        if (res[4]) {
+                                            op = res[4];
+                                            if (op == "]") op = "<=";
+                                            if (op == ")") op = "<";
+                                        }
+                                        testString += " && " + numbers[ni] + op + res[3];
+                                    }
+                                    show = eval(testString);
+                                    if (!show)
+                                        break;
+                                }
+                            }
+                        }
+                        if (!show)
+                            break;
+                    }
+                }
+                row.style.display = show ? '' : 'none';
+                rowInfo.style.display = show ? rowInfo.style.display : 'none';
+                if (show) {
+                    row.className = "row" + index % 2;
+                    rowInfo.className = row.className;
+                    index++;
+                    for (var fi = 0; fi < orgstringfilters.length; fi++) {
+                        var id = rowIds[fi];
+                        if (showIds[fi].indexOf(id) <= -1)
+                            showIds[fi].push(id);
+                    }
+                }
+            }
+
+            if (orgstringfilters.length - refilter > 1) {
+                for (var fi = 0; fi < orgstringfilters.length; fi++) {
+                    var sfilter = orgstringfilters[fi][0];
+                    var sfilterorg = orgstringfilters[fi][1];
+                    if (!sfilter)
+                        continue;
+                    if (refilter == 1 && sfilter.selectedIndex > 0)
+                        continue;
+                    for (var i = sfilter.options.length - 1; i > 0; i--)
+                        sfilter.remove(i);
+                    for (var i = 0; i < sfilterorg.options.length; i++) {
+                        var opt = sfilterorg.options[i];
+                        if (showIds[fi].indexOf(opt.value) > -1) {
+                            var newopt = new Option(opt.text, opt.value);
+                            newopt.selected = opt.selected;
+                            sfilter.add(newopt);
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            alert("CTable.OnChangeFilter(): " + e);
+        }
+    }
+co = function (tableId, columnIndex, numberIndex) {
+        var Table = document.getElementById(tableId);
+        var index = numberIndex;
+        var ths = Table.getElementsByTagName("th");
+        if (index === null)
+            index = 0;
+        var th = ths[columnIndex];
+        var order = th.getAttribute("order");
+        for (var i = 0; i < ths.length - 1; i++) {
+
+            var span = document.getElementById(tableId + '_orderInfo_' + i);
+            var spans = span.getElementsByTagName('span');
+            if (spans && spans.length == 2) {
+                spans[0].innerHTML = '';
+                spans[1].innerHTML = '';
+                if (i == columnIndex)
+                    spans[numberIndex].innerHTML = order > 0 ? '&#9650;' : '&#9660;';
+            }
+        }
+        for (var i = 2; i < Table.rows.length - 2; i = i + 2) {
+            for (var j = i + 2; j < Table.rows.length; j = j + 2) {
+                var row_1 = Table.rows[i];
+                var row_1_info = Table.rows[i + 1];
+                var row_2 = Table.rows[j];
+                var row_2_info = Table.rows[j + 1];
+                var cell_1 = row_1.cells[columnIndex];
+                var cell_2 = row_2.cells[columnIndex];
+
+                n1 = CTable.GetNumber(cell_1);
+                n2 = CTable.GetNumber(cell_2);
+                var change = false;
+
+                if (columnIndex == ths.length - 1) {
+                    var n11 = Number(row_1.getAttribute("oriorder"));
+                    var n12 = Number(row_2.getAttribute("oriorder"));
+                    change = n11 > n12;
+                }
+                else {
+                    var c1 = row_1.cells[0].firstChild.className.replace("my", "");
+                    var c2 = row_2.cells[0].firstChild.className.replace("my", "");
+                    var s1 = cell_1.textContent;
+                    var s2 = cell_2.textContent;
+                    var cc = CompareString(c1, c2);
+                    if (cc < 0)
+                        change = false;
+                    else if (cc > 0)
+                        change = true;
+                    else {
+                        if (n1 && n2 && n1.length > 0 && n2.length > 0) {
+                            var number_1 = n1[index] * order;
+                            var number_2 = n2[index] * order;
+                            change = number_1 > number_2;
+                        }
+                        else
+                            change = (CompareString(s1, s2) == order);
+                    }
+                }
+
+                if (change) {
+                    row_2.parentNode.insertBefore(row_2, row_1);
+                    row_2_info.parentNode.insertBefore(row_2_info, row_1);
+                }
+            }
+            Table.rows[i].className = "row" + (i / 2) % 2;
+            Table.rows[i + 1].className = Table.rows[i].className;
+        }
+        th.setAttribute("order", -1 * order);
+    }
+sd = function (rowid, activeRows) {
+        var row = document.getElementById(rowid);
+        var cell = row.cells[0];
+        var button = row.previousSibling.getElementsByTagName('input')[0];
+        activeRows = activeRows || [];
+        if (cell) {
+            if (row.style.display == '') {
+                button.value = '显示';
+                row.style.display = 'none';
+            }
+            else {
+                button.value = '隐藏';
+                row.style.display = '';
+            }
+            var table = cell.getElementsByTagName('table')[0];
+            if (table.rows.length <= 1) {
+                if (activeRows.length > 0) {
+                    var ids = activeRows[0].split('_');
+                    var level = Number(ids[1]);
+                    var ac = table.insertRow(-1).insertCell(-1);
+                    ac.colSpan = '3';
+                    ac.innerHTML = '<hr/><br />层 ' + level + '<br /><hr/>';
+                    for (var i = 0; i < activeRows.length; i++) {
+                        ids = activeRows[i].split('_');
+                        var newlevel = Number(ids[1]);
+                        if (newlevel != level) {
+                            ac = table.insertRow(-1).insertCell(-1);
+                            ac.colSpan = '3';
+                            ac.innerHTML = '<hr/><br />层 ' + newlevel + '<br /><hr/>';
+                            level = newlevel;
+                        }
+                        var theRow = document.getElementById(activeRows[i]).cloneNode(true);
+                        if (theRow) {
+                            table.appendChild(theRow);
+                            var c = table.insertRow(-1).insertCell(-1);
+                            c.colSpan = '3';
+                            c.innerHTML = '<hr/>';
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+st = function (id) {
+        var statdiv = document.getElementById('stat_all');
+        var tabs = statdiv.getAttribute('tabs').split(',');
+        var showall = false;
+        var lishowall = document.getElementById('tab_showall');
+        var lihideall = document.getElementById('tab_hideall');
+        lishowall.className = 'not_selected';
+        lihideall.className = 'not_selected';
+        for (var i = 0; i < tabs.length; i++) {
+            var tabid = tabs[i];
+            var tab = document.getElementById(tabid);
+            var li = document.getElementById('tab_' + tabid);
+            li.className = 'not_selected';
+            if (id == 'showall') {
+                lishowall.className = 'selected';
+                tab.style.display = '';
+            }
+            else if (id == 'hideall') {
+                lihideall.className = 'selected';
+                tab.style.display = 'none';
+            }
+            else {
+                if (tabid == id) {
+                    tab.style.display = '';
+                    li.className = 'selected';
+                }
+                else {
+                    tab.style.display = 'none';
+                    li.className = 'not_selected';
+                }
+            }
+
+        }
+    }
+</script><style type="text/css">div.stat_all {font-size:14px;} div.stat_header {margin:1em auto 0.5em auto;} span.stat_title {margin: auto 1em auto 0em; font-size:20px; font-weight:bold; color:#FFF;} span.clickable {cursor:pointer;} span.pair_value {width:100%; font-size:12px;} span.pair_value span {width:50%; min-width:3em; text-align:right; color:#F8A400;} span.pair_value span + span {color:#00CC00;} table.pair_hero {width:100%; font-size:12px;} table.pair_hero td {width:50%; min-width:3em; text-align:right; color:#00CC00;} table.pair_hero td + td {color:#F8A400;} table[hide] {display:none;} table.pair_value {width:100%;} table.pair_value td {width:50%; min-width:3em; text-align:right; color:#F8A400;} table.pair_value td + td {color:#00CC00;} #myProgress {position: relative; width: 100%;  height: 3px; background-color: #ddd;} #myBar { position: absolute;  width: 1%;  height: 100%;  background-color: #4CAF50;}</style>
+</head>
+<body>
+<form action="/wod/spiel/tournament/duell.php?session_hero_id=200000&amp;is_popup=1" name="the_form" accept-charset="UTF-8" method="post"> <input type="hidden" name="session_hero_id" value="200000"><input type="hidden" name="wod_post_id" value="w6neyk5swhpdmyaij02ik6ou7oeo3mc8"><input type="hidden" name="wod_post_world" value="CD"><input type="hidden" name="IS_POPUP" value="1"><input type="hidden" name="pay_from_group_cash_box" value="1">
+<input type="hidden" name="put_purchases_to" value="go_group_2">
+<input type="hidden" name="klasse_id" value="3"><input type="hidden" name="klasse_name" value="学者"><input type="hidden" name="rasse_id" value="6"><input type="hidden" name="rasse_name" value="边塞人"><input type="hidden" name="gruppe_id" value="198476"><input type="hidden" name="gruppe_name" value="纸蝶"><input type="hidden" name="clan_id" value="1015"><input type="hidden" name="clan_name" value="您的背包里已经有60件物品了。"><input type="hidden" name="stufe" value="34"><input type="hidden" name="heldenname" value="多攒点钱"><input type="hidden" name="spielername" value="huanggukai">
+
+          <input type="hidden" name="DuellId" value="986460">
+<input type="hidden" name="type" value="dk_duell_figur">
+<input type="hidden" name="formsent" value="1">
+
+<table><tbody><tr><td>
+<div id="stat_all" class="stat_all tab" tabs="stat_ini,stat_buff,stat_buffed"><ul><li id="tab_stat_ini" class="selected"><a href="#" onclick="st('stat_ini');">先攻权</a></li><li id="tab_stat_buff" class="not_selected"><a href="#" onclick="st('stat_buff');">给予增益</a></li><li id="tab_stat_buffed" class="not_selected"><a href="#" onclick="st('stat_buffed');">接受增益</a></li><li class="not_selected" id="tab_showall"><a id="show_all_a" href="#" onclick="st('showall');">全部显示</a></li><li class="not_selected" id="tab_hideall"><a id="show_all_a" href="#" onclick="st('hideall');">全部隐藏</a></li></ul><div id="stat_bar" class="bar"></div><div id="stat_ini" class="content"><div class="stat_header" style="text-align: center;"><span class="stat_title clickable" onclick="ct('table_stat_ini');">先攻权</span></div><table class="content_table" id="table_stat_ini" style="margin: 0px auto;"><tbody><tr class="content_table_header"><th class="content_table stat_order" id="th_stat_ini0" order="-1"><span id="stat_ini_col0">人物<span id="table_stat_ini_orderInfo_0" class="pair_hero"><span></span><span></span></span></span><table class="pair_hero"><tbody><tr><td><input type="checkbox" value="0" id="table_stat_ini_checkbox_0_0" onclick="cf('table_stat_ini','filter_stat_ini');" checked="">英雄</td><td><input type="checkbox" value="1" id="table_stat_ini_checkbox_0_1" onclick="cf('table_stat_ini','filter_stat_ini');" checked="">对手</td></tr></tbody></table></th><th class="content_table stat_order" id="th_stat_ini1" order="-1"><span id="stat_ini_col1" class="clickable" onclick="co('table_stat_ini',1,0);">平均值<span id="table_stat_ini_orderInfo_1"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini2" order="-1"><span id="stat_ini_col2" class="clickable" onclick="co('table_stat_ini',2,0);">次数<span id="table_stat_ini_orderInfo_2"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini3" order="-1"><span id="stat_ini_col3" class="clickable" onclick="co('table_stat_ini',3,0);">Max值<span id="table_stat_ini_orderInfo_3"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini4" order="-1"><span id="stat_ini_col4" class="clickable" onclick="co('table_stat_ini',4,0);">Min值<span id="table_stat_ini_orderInfo_4"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini5" order="-1"><span id="stat_ini_col5" class="clickable" onclick="co('table_stat_ini',5,0);">STD值<span id="table_stat_ini_orderInfo_5"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini6" order="-1"><span id="stat_ini_col6" class="clickable" onclick="co('table_stat_ini',6,0);">数值列表<span id="table_stat_ini_orderInfo_6"><span></span><span></span></span></span></th></tr><tr id="filter_stat_ini" class="content_table_filter_row"><td><select id="filter_stat_ini_combobox_0" onchange="cf('table_stat_ini','filter_stat_ini');"><option value="0_all">全部</option><option value="0_0">多攒点钱</option><option value="0_1">mafuyu</option><option value="0_2">迷星叫</option></select><select id="org_filter_stat_ini_combobox_0" onchange="cf('table_stat_ini','filter_stat_ini');" style="display: none;"><option value="0_all">全部</option><option value="0_0">多攒点钱</option><option value="0_1">mafuyu</option><option value="0_2">迷星叫</option></select></td><td><input type="text" size="6" id="filter_stat_ini_textbox_1"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_2"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_3"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_4"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_5"></td><td style="text-align: center;"><input type="button" id="filter_stat_ini_button" value="查询" class="button" onclick="cf('table_stat_ini','filter_stat_ini');"></td></tr><tr class="row0" oriorder="0" id="0_0,1_-1,2_-1,3_-1,4_-1,5_-1,6_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',200000)" kind="0" class="rep_myhero">多攒点钱</a></td><td class="content_table" style="text-align: right;">282.00</td><td class="content_table" style="text-align: right;">3</td><td class="content_table" style="text-align: right;">330</td><td class="content_table" style="text-align: right;">204</td><td class="content_table" style="text-align: right;">68.15</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_ini_0',['activeRow_1_1_0_5','activeRow_1_1_0_14','activeRow_1_1_0_25']);"></td></tr><tr class="row0" id="table_stat_ini_0" style="display: none;"><td colspan="7"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"><span>330, 312, 204</span></td></tr></tbody></table></td></tr><tr class="row1" oriorder="1" id="0_1,1_-1,2_-1,3_-1,4_-1,5_-1,6_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',203436)" kind="0" class="rep_hero">mafuyu</a></td><td class="content_table" style="text-align: right;">414.00</td><td class="content_table" style="text-align: right;">3</td><td class="content_table" style="text-align: right;">449</td><td class="content_table" style="text-align: right;">380</td><td class="content_table" style="text-align: right;">34.51</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_ini_1',['activeRow_1_1_0_2','activeRow_1_1_0_13','activeRow_1_1_0_24']);"></td></tr><tr class="row1" id="table_stat_ini_1" style="display: none;"><td colspan="7"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"><span>449, 413, 380</span></td></tr></tbody></table></td></tr><tr class="row0" oriorder="2" id="0_2,1_-1,2_-1,3_-1,4_-1,5_-1,6_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',203434)" kind="1" class="rep_monster">迷星叫</a></td><td class="content_table" style="text-align: right;">232.40</td><td class="content_table" style="text-align: right;">5</td><td class="content_table" style="text-align: right;">261</td><td class="content_table" style="text-align: right;">216</td><td class="content_table" style="text-align: right;">17.21</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_ini_2',['activeRow_1_1_0_3','activeRow_1_1_0_16','activeRow_1_1_0_27','activeRow_1_1_0_35','activeRow_1_1_0_40']);"></td></tr><tr class="row0" id="table_stat_ini_2" style="display: none;"><td colspan="7"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"><span>261, 234, 226, 225, 216</span></td></tr></tbody></table></td></tr></tbody></table></div><div id="stat_buff" class="content" style="display: none;"><div class="stat_header" style="text-align: center;"><span class="stat_title clickable" onclick="ct('table_stat_buff');">给予增益</span></div><table class="content_table" id="table_stat_buff" style="margin: 0px auto;"><tbody><tr class="content_table_header"><th class="content_table stat_order" id="th_stat_buff0" order="-1"><span id="stat_buff_col0">人物<span id="table_stat_buff_orderInfo_0" class="pair_hero"><span></span><span></span></span></span><table class="pair_hero"><tbody><tr><td><input type="checkbox" value="0" id="table_stat_buff_checkbox_0_0" onclick="cf('table_stat_buff','filter_stat_buff');" checked="">英雄</td><td><input type="checkbox" value="1" id="table_stat_buff_checkbox_0_1" onclick="cf('table_stat_buff','filter_stat_buff');" checked="">对手</td></tr></tbody></table></th><th class="content_table stat_order" id="th_stat_buff1" order="-1"><span id="stat_buff_col1" class="clickable" onclick="co('table_stat_buff',1,0);">技能<span id="table_stat_buff_orderInfo_1"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff2" order="-1"><span id="stat_buff_col2" class="clickable" onclick="co('table_stat_buff',2,0);">物品<span id="table_stat_buff_orderInfo_2"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff3" order="-1"><span id="stat_buff_col3" class="clickable" onclick="co('table_stat_buff',3,0);">增益类型<span id="table_stat_buff_orderInfo_3"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff4" order="-1"><span id="stat_buff_col4" class="clickable" onclick="co('table_stat_buff',4,0);">次数<span id="table_stat_buff_orderInfo_4"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff5" order="-1"><span id="stat_buff_col5" class="clickable" onclick="co('table_stat_buff',5,0);">详细列表<span id="table_stat_buff_orderInfo_5"><span></span><span></span></span></span></th></tr><tr id="filter_stat_buff" class="content_table_filter_row"><td><select id="filter_stat_buff_combobox_0" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="0_all">全部</option><option value="0_0">多攒点钱</option><option value="0_1">mafuyu</option><option value="0_2">迷星叫</option></select><select id="org_filter_stat_buff_combobox_0" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="0_all">全部</option><option value="0_0">多攒点钱</option><option value="0_1">mafuyu</option><option value="0_2">迷星叫</option></select></td><td><select id="filter_stat_buff_combobox_1" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="1_all">全部</option><option value="1_0">派生：草药坩埚</option><option value="1_1">启发：智慧之语</option><option value="1_2">生活：烟雾的祝福</option></select><select id="org_filter_stat_buff_combobox_1" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="1_all">全部</option><option value="1_0">派生：草药坩埚</option><option value="1_1">启发：智慧之语</option><option value="1_2">生活：烟雾的祝福</option></select></td><td><select id="filter_stat_buff_combobox_2" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="2_all">全部</option><option value="2_0">啖菇狂人的瓦罐, 一瓶树皮熬制的液体, 绒头棘皮荪</option><option value="2_1">华丽的书卷：治愈技巧</option><option value="2_2">祭典烟斗, 老昆西的烟草罐</option></select><select id="org_filter_stat_buff_combobox_2" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="2_all">全部</option><option value="2_0">啖菇狂人的瓦罐, 一瓶树皮熬制的液体, 绒头棘皮荪</option><option value="2_1">华丽的书卷：治愈技巧</option><option value="2_2">祭典烟斗, 老昆西的烟草罐</option></select></td><td><select id="filter_stat_buff_combobox_3" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select><select id="org_filter_stat_buff_combobox_3" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select></td><td><input type="text" size="6" id="filter_stat_buff_textbox_4"></td><td style="text-align: center;"><input type="button" id="filter_stat_buff_button" value="查询" class="button" onclick="cf('table_stat_buff','filter_stat_buff');"></td></tr><tr class="row0" oriorder="0" id="0_0,1_1,2_1,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',200000)" kind="0" class="rep_myhero">多攒点钱</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E5%90%AF%E5%8F%91%EF%BC%9A%E6%99%BA%E6%85%A7%E4%B9%8B%E8%AF%AD');" kind="-1">启发：智慧之语</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E5%8D%8E%E4%B8%BD%E7%9A%84%E4%B9%A6%E5%8D%B7%EF%BC%9A%E6%B2%BB%E6%84%88%E6%8A%80%E5%B7%A7');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">华丽的书卷：治愈技巧</a></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_0',['activeRow_1_1_0_5']);"></td></tr><tr class="row0" id="table_stat_buff_0" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="1" id="0_1,1_0,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',203436)" kind="0" class="rep_hero">mafuyu</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E8%8D%89%E8%8D%AF%E5%9D%A9%E5%9F%9A');" kind="-1">派生：草药坩埚</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E5%95%96%E8%8F%87%E7%8B%82%E4%BA%BA%E7%9A%84%E7%93%A6%E7%BD%90');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">啖菇狂人的瓦罐</a>, <a href="#" onclick="return o('i','%E4%B8%80%E7%93%B6%E6%A0%91%E7%9A%AE%E7%86%AC%E5%88%B6%E7%9A%84%E6%B6%B2%E4%BD%93');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">一瓶树皮熬制的液体</a>, <a href="#" onclick="return o('i','%E7%BB%92%E5%A4%B4%E6%A3%98%E7%9A%AE%E8%8D%AA');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">绒头棘皮荪</a></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_1',['activeRow_1_1_0_0']);"></td></tr><tr class="row1" id="table_stat_buff_1" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row0" oriorder="2" id="0_2,1_2,2_2,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',203434)" kind="1" class="rep_monster">迷星叫</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E7%94%9F%E6%B4%BB%EF%BC%9A%E7%83%9F%E9%9B%BE%E7%9A%84%E7%A5%9D%E7%A6%8F');" kind="-1">生活：烟雾的祝福</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E7%A5%AD%E5%85%B8%E7%83%9F%E6%96%97');" kind="-1" class="report  rep_group item_group_item">祭典烟斗</a>, <a href="#" onclick="return o('i','%E8%80%81%E6%98%86%E8%A5%BF%E7%9A%84%E7%83%9F%E8%8D%89%E7%BD%90');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">老昆西的烟草罐</a></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_2',['activeRow_1_1_0_3']);"></td></tr><tr class="row0" id="table_stat_buff_2" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr></tbody></table></div><div id="stat_buffed" class="content" style="display: none;"><div class="stat_header" style="text-align: center;"><span class="stat_title clickable" onclick="ct('table_stat_buffed');">接受增益</span></div><table class="content_table" id="table_stat_buffed" style="margin: 0px auto;"><tbody><tr class="content_table_header"><th class="content_table stat_order" id="th_stat_buffed0" order="-1"><span id="stat_buffed_col0">人物<span id="table_stat_buffed_orderInfo_0" class="pair_hero"><span></span><span></span></span></span><table class="pair_hero"><tbody><tr><td><input type="checkbox" value="0" id="table_stat_buffed_checkbox_0_0" onclick="cf('table_stat_buffed','filter_stat_buffed');" checked="">英雄</td><td><input type="checkbox" value="1" id="table_stat_buffed_checkbox_0_1" onclick="cf('table_stat_buffed','filter_stat_buffed');" checked="">对手</td></tr></tbody></table></th><th class="content_table stat_order" id="th_stat_buffed1" order="-1"><span id="stat_buffed_col1" class="clickable" onclick="co('table_stat_buffed',1,0);">技能<span id="table_stat_buffed_orderInfo_1"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed2" order="-1"><span id="stat_buffed_col2" class="clickable" onclick="co('table_stat_buffed',2,0);">物品<span id="table_stat_buffed_orderInfo_2"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed3" order="-1"><span id="stat_buffed_col3" class="clickable" onclick="co('table_stat_buffed',3,0);">增益类型<span id="table_stat_buffed_orderInfo_3"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed4" order="-1"><span id="stat_buffed_col4" class="clickable" onclick="co('table_stat_buffed',4,0);">次数<span id="table_stat_buffed_orderInfo_4"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed5" order="-1"><span id="stat_buffed_col5" class="clickable" onclick="co('table_stat_buffed',5,0);">详细列表<span id="table_stat_buffed_orderInfo_5"><span></span><span></span></span></span></th></tr><tr id="filter_stat_buffed" class="content_table_filter_row"><td><select id="filter_stat_buffed_combobox_0" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="0_all">全部</option><option value="0_0">多攒点钱</option><option value="0_1">mafuyu</option><option value="0_2">迷星叫</option></select><select id="org_filter_stat_buffed_combobox_0" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="0_all">全部</option><option value="0_0">多攒点钱</option><option value="0_1">mafuyu</option><option value="0_2">迷星叫</option></select></td><td><select id="filter_stat_buffed_combobox_1" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="1_all">全部</option><option value="1_0">派生：草药坩埚</option><option value="1_1">启发：智慧之语</option><option value="1_2">生活：烟雾的祝福</option></select><select id="org_filter_stat_buffed_combobox_1" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="1_all">全部</option><option value="1_0">派生：草药坩埚</option><option value="1_1">启发：智慧之语</option><option value="1_2">生活：烟雾的祝福</option></select></td><td><select id="filter_stat_buffed_combobox_2" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="2_all">全部</option><option value="2_0">啖菇狂人的瓦罐, 一瓶树皮熬制的液体, 绒头棘皮荪</option><option value="2_1">华丽的书卷：治愈技巧</option><option value="2_2">祭典烟斗, 老昆西的烟草罐</option></select><select id="org_filter_stat_buffed_combobox_2" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="2_all">全部</option><option value="2_0">啖菇狂人的瓦罐, 一瓶树皮熬制的液体, 绒头棘皮荪</option><option value="2_1">华丽的书卷：治愈技巧</option><option value="2_2">祭典烟斗, 老昆西的烟草罐</option></select></td><td><select id="filter_stat_buffed_combobox_3" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select><select id="org_filter_stat_buffed_combobox_3" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select></td><td><input type="text" size="6" id="filter_stat_buffed_textbox_4"></td><td style="text-align: center;"><input type="button" id="filter_stat_buffed_button" value="查询" class="button" onclick="cf('table_stat_buffed','filter_stat_buffed');"></td></tr><tr class="row0" oriorder="0" id="0_0,1_0,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',200000)" kind="0" class="rep_myhero">多攒点钱</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E8%8D%89%E8%8D%AF%E5%9D%A9%E5%9F%9A');" kind="-1">派生：草药坩埚</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E5%95%96%E8%8F%87%E7%8B%82%E4%BA%BA%E7%9A%84%E7%93%A6%E7%BD%90');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">啖菇狂人的瓦罐</a>, <a href="#" onclick="return o('i','%E4%B8%80%E7%93%B6%E6%A0%91%E7%9A%AE%E7%86%AC%E5%88%B6%E7%9A%84%E6%B6%B2%E4%BD%93');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">一瓶树皮熬制的液体</a>, <a href="#" onclick="return o('i','%E7%BB%92%E5%A4%B4%E6%A3%98%E7%9A%AE%E8%8D%AA');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">绒头棘皮荪</a></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_0',['activeRow_1_1_0_0']);"></td></tr><tr class="row0" id="table_stat_buffed_0" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="1" id="0_0,1_1,2_1,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',200000)" kind="0" class="rep_myhero">多攒点钱</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E5%90%AF%E5%8F%91%EF%BC%9A%E6%99%BA%E6%85%A7%E4%B9%8B%E8%AF%AD');" kind="-1">启发：智慧之语</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E5%8D%8E%E4%B8%BD%E7%9A%84%E4%B9%A6%E5%8D%B7%EF%BC%9A%E6%B2%BB%E6%84%88%E6%8A%80%E5%B7%A7');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">华丽的书卷：治愈技巧</a></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_1',['activeRow_1_1_0_5']);"></td></tr><tr class="row1" id="table_stat_buffed_1" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row0" oriorder="2" id="0_1,1_0,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',203436)" kind="0" class="rep_hero">mafuyu</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E8%8D%89%E8%8D%AF%E5%9D%A9%E5%9F%9A');" kind="-1">派生：草药坩埚</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E5%95%96%E8%8F%87%E7%8B%82%E4%BA%BA%E7%9A%84%E7%93%A6%E7%BD%90');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">啖菇狂人的瓦罐</a>, <a href="#" onclick="return o('i','%E4%B8%80%E7%93%B6%E6%A0%91%E7%9A%AE%E7%86%AC%E5%88%B6%E7%9A%84%E6%B6%B2%E4%BD%93');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">一瓶树皮熬制的液体</a>, <a href="#" onclick="return o('i','%E7%BB%92%E5%A4%B4%E6%A3%98%E7%9A%AE%E8%8D%AA');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">绒头棘皮荪</a></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_2',['activeRow_1_1_0_0']);"></td></tr><tr class="row0" id="table_stat_buffed_2" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="3" id="0_2,1_2,2_2,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',203434)" kind="1" class="rep_monster">迷星叫</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E7%94%9F%E6%B4%BB%EF%BC%9A%E7%83%9F%E9%9B%BE%E7%9A%84%E7%A5%9D%E7%A6%8F');" kind="-1">生活：烟雾的祝福</a></td><td class="content_table" style="text-align: left;"><span><a href="#" onclick="return o('i','%E7%A5%AD%E5%85%B8%E7%83%9F%E6%96%97');" kind="-1" class="report  rep_group item_group_item">祭典烟斗</a>, <a href="#" onclick="return o('i','%E8%80%81%E6%98%86%E8%A5%BF%E7%9A%84%E7%83%9F%E8%8D%89%E7%BD%90');" kind="-1" class="report  rep_uni item_unique rep_group item_group_item">老昆西的烟草罐</a></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_3',['activeRow_1_1_0_3']);"></td></tr><tr class="row1" id="table_stat_buffed_3" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr></tbody></table></div></div><h1>
+    <u>英雄</u>-决斗    
+                       
+</h1>
+</td><td>
+            <a href="#">编辑文字内容</a>        
+        
+    </td></tr></tbody></table>
+
+<div style="clear:both">
+
+
+
+    
+    
+
+
+
+
+
+<table>
+
+
+<tbody><tr>
+	<th width="100" align="left" nowrap="">决斗类型:</th>
+	<td nowrap="" onmouseover="return wodToolTip(this,'此决斗<b>不会</b>算入排名积分.<br />物品<b>不会</b>受损.')">表演赛<img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif">
+    		</td>
+	<td width="50">&nbsp;</td>
+	<th width="100" align="left" nowrap="">状态:</th><td><b><span class="generic_no">失败</span></b> / 最后一次更改 2025年02月18日 21:01</td>
+</tr>
+<tr>
+	<th align="left" nowrap="">发起人:</th><td><a href="#" class="hero_active">多攒点钱</a></td>
+	<td>&nbsp;</td>
+	<th align="left" nowrap="">您的角色:</th><td>挑战方</td>
+</tr>
+<tr>
+	<th nowrap="" align="left">挑战方同意:</th><td>2/2</td>
+	<td>&nbsp;</td>
+	<th nowrap="" align="left">防御方同意:</th><td>1/1</td>
+</tr>
+<tr>
+	
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	</tr>
+<tr><td colspan="5">&nbsp;</td></tr>
+<tr>
+	<td valign="top" colspan="2">
+	<div id="stat_all" class="stat_all tab"></div><h2>挑战方</h2>
+	
+				
+	
+	<table class="content_table" width="100%">
+	<tbody><tr class="header">
+		<th>&nbsp;</th>
+		<th>名称</th>
+				<th align="center">职业</th>
+				<th align="center">经验</th>
+						<th align="center">战斗设置<br>位置</th>
+						<th>状态</th>
+		<th>注释</th>
+		<th>行动</th>
+	</tr>
+		<tr class="row0">
+		<td align="right" nowrap="">1</td>
+		<td><a href="#" onmouseover="return wodToolTip(this,'<p>由 <a href=&quot;/wod/spiel/profiles/player.php?id=96470&amp;amp;session_hero_id=200000&amp;amp;is_popup=1&amp;amp;IS_POPUP=1&quot;>Prometheus</a> 代理</p>');" class="hero_active holiday_replacement">mafuyu<img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif"></a></td>
+		        <td align="right" nowrap="">炼金术士 等级34</td>
+		        <td align="right" nowrap="">1,121,046 <img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/lang/cn/ep.gif" title="经验点"></td>
+<td>
+<!-- ### RenderCombatHeroDuelConfigSelector::renderInner() BEGIN ##### -->
+<div id="CombatHeroDuelConfigSelector203436|986460">
+草药测试<br><span class="texttoken">前排</span>
+</div>
+<!-- ### RenderCombatHeroDuelConfigSelector::renderInner() END ##### -->
+</td>
+		<td>接受</td>
+				<td>
+		&nbsp;
+				</td>
+		<td align="center" nowrap="">
+						
+		            				</td>
+		
+        		
+		
+	</tr>
+		<tr class="row1">
+		<td align="right" nowrap="">2</td>
+		<td><a href="#" class="hero_active">多攒点钱</a></td>
+		        <td align="right" nowrap="">学者 等级34</td>
+		        <td align="right" nowrap="">1,138,593 <img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/lang/cn/ep.gif" title="经验点"></td>
+<td>
+<!-- ### RenderCombatHeroDuelConfigSelector::renderInner() BEGIN ##### -->
+<div id="CombatHeroDuelConfigSelector200000|986460">
+测试技能<br><span class="texttoken">中间</span>
+</div>
+<!-- ### RenderCombatHeroDuelConfigSelector::renderInner() END ##### -->
+</td>
+		<td>接受</td>
+				<td nowrap="">
+		<input type="text" name="hero_comment" maxlength="63" value="">
+		<input type="submit" name="ok" value="√" class="button clickable">				</td>
+		<td align="center" nowrap="">
+						
+		            				</td>
+		
+        		
+		
+	</tr>
+		<tr class="header">
+    	<th colspan="2" align="right" nowrap="">总数:</th>
+    	    	<th align="right" nowrap="">68</th>
+    	<th align="right" nowrap="">2,259,639 <img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/lang/cn/ep.gif" title="经验点"></th>
+    	<th>&nbsp;</th>
+    	<th>&nbsp;</th>
+    	<th>&nbsp;</th>
+            	<th>&nbsp;</th>
+            
+    </tr>
+	</tbody></table>
+	
+	</td>
+	<td>&nbsp;</td>
+	<td valign="top" colspan="2">
+	<h2>防御方</h2>
+				
+		<table class="content_table" width="100%">
+	<tbody><tr class="header">
+		<th>&nbsp;</th>
+		<th>名称</th>
+				<th align="center">职业</th>
+				<th align="center">经验</th>
+								<th>状态</th>
+		<th>注释</th>
+		<th>行动</th>
+	</tr>
+		<tr class="row0">
+		<td align="right" nowrap="">1</td>
+		<td><a href="#" class="hero_active">迷星叫</a></td>
+				<td align="right" nowrap="">角斗士 等级34</td>
+				<td align="right" nowrap="">1,130,531 <img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/lang/cn/ep.gif" title="经验点"></td>
+		<td>接受</td>
+				<td>
+		&nbsp;
+				</td>
+		<td align="center" nowrap="">
+				&nbsp;		
+				    				</td>
+	</tr>
+	
+        	
+		<tr class="header">
+	<th colspan="2" align="right" nowrap="">总数:</th>
+		<th align="right" nowrap="">34</th>
+	<th align="right" nowrap="">1,130,531 <img alt="" border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/lang/cn/ep.gif" title="经验点"></th>
+	<th>&nbsp;</th>
+	<th>&nbsp;</th>
+	<th>&nbsp;</th>
+
+	</tr>
+	</tbody></table>
+		</td>
+</tr>
+
+
+
+
+<tr>
+    <td colspan="5">
+        <h3>每个赢家得到:&nbsp;
+                <i>无</i>
+                </h3>
+    </td>
+</tr></tbody></table>
+
+<p>
+</p><hr>
+<p>
+
+  
+   <input type="submit" name="current_view[0]" value="状态" class="button clickable">    
+
+  
+   <input type="submit" name="current_view[-1]" value="物品" class="button clickable">    
+
+  
+   <input type="button" name="disabled" value="详细" class="button_disabled">    
+
+  <input type="submit" name="ok" value="刷新" class="button clickable">  <a href="#" class="button">返回</a></p>
+
+
+<table class="content_table" width="100%">
+	<tbody><tr class="row0">
+		<td valign="top">
+	<p>
+				返回
+			</p>
+	<p>
+				<a href="#2">继续</a>			</p>
+		</td><td><a name="1"></a>
+<!-- computed by wod on 2025-02-18 at 14:01:13 (combat service build time: Apr 10 2017  08:35:48) -->
+<hr>
+<p class="rep_round_headline">回合 1</p>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+</td>
+<td>34</td>
+<td class="position">前排</td>
+<td>120</td>
+<td class="resource">259 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>123</td>
+<td class="resource">296 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>252</td>
+<td class="resource">166 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<table>
+<tbody><tr id="activeRow_1_1_0_0"><td class="rep_initiative">&nbsp;</td>
+<td><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+使用<a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E8%8D%89%E8%8D%AF%E5%9D%A9%E5%9F%9A');" onmouseover="wodToolTip(this,'防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+17<span class=\'rep_decimal\'>.75</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span> (法力)<br />体力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>')">派生：草药坩埚<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">56 法力</span>/<a href="#" onclick="return o('i','%E5%95%96%E8%8F%87%E7%8B%82%E4%BA%BA%E7%9A%84%E7%93%A6%E7%BD%90');" onmouseover="return wodToolTip(this,'技能 制毒技能 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />感知 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>2回合后</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><hr />这是<b>团队物品</b>.');" class="report  rep_uni item_unique rep_group item_group_item">啖菇狂人的瓦罐<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a>,<a href="#" onclick="return o('i','%E4%B8%80%E7%93%B6%E6%A0%91%E7%9A%AE%E7%86%AC%E5%88%B6%E7%9A%84%E6%B6%B2%E4%BD%93');" onmouseover="return wodToolTip(this,'意志 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.30</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+16<span class=\'rep_decimal\'>.60</span></span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br />智力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><hr />这是<b>团队物品</b>.');" class="report  rep_uni item_unique rep_group item_group_item">一瓶树皮熬制的液体<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a>,<a href="#" onclick="return o('i','%E7%BB%92%E5%A4%B4%E6%A3%98%E7%9A%AE%E8%8D%AA');" onmouseover="return wodToolTip(this,'魅力 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 教育 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>2回合后</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />感知 <span class=\'rep_bonus bonus_positive\'>+50<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-50?</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><hr />这是<b>团队物品</b>.');" class="report  rep_uni item_unique rep_group item_group_item">绒头棘皮荪<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a>)给</td><td>自身<br><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_1"><td class="rep_initiative">&nbsp;</td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 恢复<span class="rep_gain">56</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 失去<span class="rep_loss">6</span>HP.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+使用<a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E5%B8%B8%E7%BB%BF%E4%B9%8B%E8%B7%AF');" onmouseover="wodToolTip(this,'魅力 <span class=\'rep_bonus bonus_positive\'>+28<span class=\'rep_decimal\'>.50</span></span><br />防御 偷袭 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />攻击 自然灾害 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span>')">派生：常绿之路<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">25 法力</span>): 先攻380</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+使用<a href="#" onclick="return o('s','%E8%A1%8C%E5%8A%A8%EF%BC%9A%E8%BF%90%E7%AD%B9%E5%B8%B7%E5%B9%84');">行动：运筹帷幄</a> (<span class="rep_mana_cost">23 法力</span>): 先攻204</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+使用<a href="#" onclick="return o('s','%E5%A4%A9%E8%B5%8B%EF%BC%9A%E9%97%AA%E8%BD%AC%E8%85%BE%E6%8C%AA');" onmouseover="wodToolTip(this,'防御 爆破 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />力量 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />防御 冲击 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />攻击 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />伤害 粉碎伤害 <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span> (近战)<br />效果 近战攻击 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span><br />效果 近战派生 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span>')">天赋：闪转腾挪<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">15 法力</span>): 先攻234</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_2"><td class="rep_initiative">先攻380<br><span class="rep_action">第1步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_3"><td class="rep_initiative">先攻234<br><span class="rep_action">第1步行动 / 共4步</span></td>
+<td><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+使用<a href="#" onclick="return o('s','%E7%94%9F%E6%B4%BB%EF%BC%9A%E7%83%9F%E9%9B%BE%E7%9A%84%E7%A5%9D%E7%A6%8F');">生活：烟雾的祝福</a> (<span class="rep_mana_cost">8 法力</span>/<a href="#" onclick="return o('i','%E7%A5%AD%E5%85%B8%E7%83%9F%E6%96%97');" onmouseover="return wodToolTip(this,'这是<b>团队物品</b>.');" class="report  rep_group item_group_item">祭典烟斗<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a>,<a href="#" onclick="return o('i','%E8%80%81%E6%98%86%E8%A5%BF%E7%9A%84%E7%83%9F%E8%8D%89%E7%BD%90');" onmouseover="return wodToolTip(this,'防御 病毒 <span class=\'rep_bonus bonus_positive\'>+5<span class=\'rep_decimal\'>.00</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.50</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-15<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.04</span></span> (法力) <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />体力 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.56</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+42<span class=\'rep_decimal\'>.50</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>4回合后</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>3回合后</span><hr />这是<b>团队物品</b>.');" class="report  rep_uni item_unique rep_group item_group_item">老昆西的烟草罐<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a>)给</td><td>自身</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_4"><td class="rep_initiative">先攻221<br><span class="rep_action">第2步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_5"><td class="rep_initiative">先攻204<br><span class="rep_action">第1步行动 / 共3步</span></td>
+<td><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+使用<a href="#" onclick="return o('s','%E5%90%AF%E5%8F%91%EF%BC%9A%E6%99%BA%E6%85%A7%E4%B9%8B%E8%AF%AD');">启发：智慧之语</a> (<span class="rep_mana_cost">59 法力</span>/<a href="#" onclick="return o('i','%E5%8D%8E%E4%B8%BD%E7%9A%84%E4%B9%A6%E5%8D%B7%EF%BC%9A%E6%B2%BB%E6%84%88%E6%8A%80%E5%B7%A7');" onmouseover="return wodToolTip(this,'技能 治疗技能 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span><br />技能 医疗之歌 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span><hr />这是<b>团队物品</b>.');" class="report  rep_uni item_unique rep_group item_group_item">华丽的书卷：治愈技巧<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a>)给</td><td>自身</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_6"><td class="rep_initiative">先攻146<br><span class="rep_action">第2步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_7"><td class="rep_initiative">先攻119<br><span class="rep_action">第2步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_8"><td class="rep_initiative">先攻110<br><span class="rep_action">第3步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_9"><td class="rep_initiative">先攻87<br><span class="rep_action">第3步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_10"><td class="rep_initiative">先攻59<br><span class="rep_action">第3步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_11"><td class="rep_initiative">先攻43<br><span class="rep_action">第4步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr></tbody></table>
+</td>
+	</tr>
+	<tr class="row1">
+		<td valign="top">
+	<p>
+				<a href="#1">返回</a>			</p>
+	<p>
+				<a href="#3">继续</a>			</p>
+		</td><td><a name="2"></a>
+<!-- computed by wod on 2025-02-18 at 14:01:13 (combat service build time: Apr 10 2017  08:35:48) -->
+<hr>
+<p class="rep_round_headline">回合 2</p>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>派生：草药坩埚:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+17<span class=\'rep_decimal\'>.75</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span> (法力)<br />体力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />感知 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>一回合后</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>一瓶树皮熬制的液体:</b><br />意志 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.30</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+16<span class=\'rep_decimal\'>.60</span></span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br />智力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br /><br /><b>绒头棘皮荪:</b><br />魅力 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 教育 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>一回合后</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />感知 <span class=\'rep_bonus bonus_positive\'>+50<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-50?</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>')"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">前排</td>
+<td>242</td>
+<td class="resource">243 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>派生：草药坩埚:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+17<span class=\'rep_decimal\'>.75</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span> (法力)<br />体力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />感知 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>一回合后</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>一瓶树皮熬制的液体:</b><br />意志 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.30</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+16<span class=\'rep_decimal\'>.60</span></span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br />智力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br /><br /><b>绒头棘皮荪:</b><br />魅力 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 教育 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>一回合后</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />感知 <span class=\'rep_bonus bonus_positive\'>+50<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-50?</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>华丽的书卷：治愈技巧:</b><br />技能 治疗技能 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span><br />技能 医疗之歌 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span>')"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>284</td>
+<td class="resource">215 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>老昆西的烟草罐:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+5<span class=\'rep_decimal\'>.00</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-40<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.04</span></span> (法力)<br />体力 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.56</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+42<span class=\'rep_decimal\'>.50</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>3回合后</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>2回合后</span>')"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>250</td>
+<td class="resource">143 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<table>
+<tbody><tr id="activeRow_1_1_0_12"><td class="rep_initiative">&nbsp;</td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 恢复<span class="rep_gain">25</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 恢复<span class="rep_gain">82</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 失去<span class="rep_loss">6</span>HP，恢复<span class="rep_gain">23</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+使用<a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E5%B8%B8%E7%BB%BF%E4%B9%8B%E8%B7%AF');" onmouseover="wodToolTip(this,'魅力 <span class=\'rep_bonus bonus_positive\'>+28<span class=\'rep_decimal\'>.50</span></span><br />防御 偷袭 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />攻击 自然灾害 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span>')">派生：常绿之路<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">25 法力</span>): 先攻449</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+使用<a href="#" onclick="return o('s','%E8%A1%8C%E5%8A%A8%EF%BC%9A%E8%BF%90%E7%AD%B9%E5%B8%B7%E5%B9%84');">行动：运筹帷幄</a> (<span class="rep_mana_cost">21 法力</span>): 先攻312</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+使用<a href="#" onclick="return o('s','%E5%A4%A9%E8%B5%8B%EF%BC%9A%E9%97%AA%E8%BD%AC%E8%85%BE%E6%8C%AA');" onmouseover="wodToolTip(this,'防御 爆破 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />力量 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />防御 冲击 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />攻击 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />伤害 粉碎伤害 <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span> (近战)<br />效果 近战攻击 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span><br />效果 近战派生 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span>')">天赋：闪转腾挪<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">15 法力</span>): 先攻216</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_13"><td class="rep_initiative">先攻449<br><span class="rep_action">第1步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_14"><td class="rep_initiative">先攻312<br><span class="rep_action">第1步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_15"><td class="rep_initiative">先攻261<br><span class="rep_action">第2步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_16"><td class="rep_initiative">先攻216<br><span class="rep_action">第1步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_17"><td class="rep_initiative">先攻182<br><span class="rep_action">第2步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_18"><td class="rep_initiative">先攻135<br><span class="rep_action">第2步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_19"><td class="rep_initiative">先攻130<br><span class="rep_action">第3步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_20"><td class="rep_initiative">先攻91<br><span class="rep_action">第3步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_21"><td class="rep_initiative">先攻81<br><span class="rep_action">第3步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_22"><td class="rep_initiative">先攻40<br><span class="rep_action">第4步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr></tbody></table>
+</td>
+	</tr>
+	<tr class="row0">
+		<td valign="top">
+	<p>
+				<a href="#2">返回</a>			</p>
+	<p>
+				<a href="#4">继续</a>			</p>
+		</td><td><a name="3"></a>
+<!-- computed by wod on 2025-02-18 at 14:01:13 (combat service build time: Apr 10 2017  08:35:48) -->
+<hr>
+<p class="rep_round_headline">回合 3</p>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>派生：草药坩埚:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+17<span class=\'rep_decimal\'>.75</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span> (法力)<br />体力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />感知 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>一瓶树皮熬制的液体:</b><br />意志 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.30</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+16<span class=\'rep_decimal\'>.60</span></span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br />智力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br /><br /><b>绒头棘皮荪:</b><br />魅力 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 教育 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />感知 <span class=\'rep_bonus bonus_positive\'>+50<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-50?</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>')"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">前排</td>
+<td>239</td>
+<td class="resource">222 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>派生：草药坩埚:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+17<span class=\'rep_decimal\'>.75</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span> (法力)<br />体力回复 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />感知 <span class=\'rep_bonus bonus_positive\'>+75<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>一瓶树皮熬制的液体:</b><br />意志 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.30</span></span><br />体质 <span class=\'rep_bonus bonus_positive\'>+16<span class=\'rep_decimal\'>.60</span></span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br />智力 <span class=\'rep_bonus bonus_negative\'>-4<span class=\'rep_decimal\'>.00</span></span><br /><br /><b>绒头棘皮荪:</b><br />魅力 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 教育 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_positive\'>+20<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-20?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_positive\'>+131<span class=\'rep_decimal\'>.50</span></span> <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-9<span class=\'rep_decimal\'>.25</span></span> <span class=\'rep_bonus bonus_positive\'>+25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />意志 <span class=\'rep_bonus bonus_positive\'>+25<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+40<span class=\'rep_decimal\'>.75</span></span> <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />伤害 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />伤害 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />感知 <span class=\'rep_bonus bonus_positive\'>+50<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_negative\'>-50?</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />伤害 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+10<span class=\'rep_decimal\'>.71</span></span>/<span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span>/<span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.42</span></span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />力量 <span class=\'rep_bonus bonus_positive\'>+15<span class=\'rep_decimal\'>.75</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br /><br /><b>华丽的书卷：治愈技巧:</b><br />技能 治疗技能 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span><br />技能 医疗之歌 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span>')"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>298</td>
+<td class="resource">276 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>老昆西的烟草罐:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+5<span class=\'rep_decimal\'>.00</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-40<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.04</span></span> (法力)<br />体力 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.56</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+42<span class=\'rep_decimal\'>.50</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>2回合后</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>一回合后</span>')"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>244</td>
+<td class="resource">151 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<table>
+<tbody><tr id="activeRow_1_1_0_23"><td class="rep_initiative">&nbsp;</td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 恢复<span class="rep_gain">25</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 恢复<span class="rep_gain">21</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 失去<span class="rep_loss">6</span>HP，恢复<span class="rep_gain">15</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+使用<a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E5%B8%B8%E7%BB%BF%E4%B9%8B%E8%B7%AF');" onmouseover="wodToolTip(this,'魅力 <span class=\'rep_bonus bonus_positive\'>+28<span class=\'rep_decimal\'>.50</span></span><br />防御 偷袭 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />攻击 自然灾害 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span>')">派生：常绿之路<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">25 法力</span>): 先攻413</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+使用<a href="#" onclick="return o('s','%E8%A1%8C%E5%8A%A8%EF%BC%9A%E8%BF%90%E7%AD%B9%E5%B8%B7%E5%B9%84');">行动：运筹帷幄</a> (<span class="rep_mana_cost">24 法力</span>): 先攻330</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+使用<a href="#" onclick="return o('s','%E5%A4%A9%E8%B5%8B%EF%BC%9A%E9%97%AA%E8%BD%AC%E8%85%BE%E6%8C%AA');" onmouseover="wodToolTip(this,'防御 爆破 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />力量 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />防御 冲击 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />攻击 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />伤害 粉碎伤害 <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span> (近战)<br />效果 近战攻击 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span><br />效果 近战派生 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span>')">天赋：闪转腾挪<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">15 法力</span>): 先攻226</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_24"><td class="rep_initiative">先攻413<br><span class="rep_action">第1步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_25"><td class="rep_initiative">先攻330<br><span class="rep_action">第1步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_26"><td class="rep_initiative">先攻240<br><span class="rep_action">第2步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_27"><td class="rep_initiative">先攻226<br><span class="rep_action">第1步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_28"><td class="rep_initiative">先攻192<br><span class="rep_action">第2步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_29"><td class="rep_initiative">先攻141<br><span class="rep_action">第2步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_30"><td class="rep_initiative">先攻120<br><span class="rep_action">第3步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_31"><td class="rep_initiative">先攻96<br><span class="rep_action">第3步行动 / 共3步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 不能执行任何动作。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_32"><td class="rep_initiative">先攻84<br><span class="rep_action">第3步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_33"><td class="rep_initiative">先攻42<br><span class="rep_action">第4步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr></tbody></table>
+</td>
+	</tr>
+	<tr class="row1">
+		<td valign="top">
+	<p>
+				<a href="#3">返回</a>			</p>
+	<p>
+				<a href="#5">继续</a>			</p>
+		</td><td><a name="4"></a>
+<!-- computed by wod on 2025-02-18 at 14:01:13 (combat service build time: Apr 10 2017  08:35:48) -->
+<hr>
+<p class="rep_round_headline">回合 4</p>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />感知 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br /><br /><b>绒头棘皮荪:</b><br />技能 教育 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />感知 <span class=\'rep_bonus bonus_negative\'>-50?</span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span>')"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">前排</td>
+<td>115</td>
+<td class="resource">178 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />感知 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br /><br /><b>绒头棘皮荪:</b><br />技能 教育 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />感知 <span class=\'rep_bonus bonus_negative\'>-50?</span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br /><br /><b>华丽的书卷：治愈技巧:</b><br />技能 治疗技能 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span><br />技能 医疗之歌 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span>')"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>108</td>
+<td class="resource">200 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>老昆西的烟草罐:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+5<span class=\'rep_decimal\'>.00</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-40<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.04</span></span> (法力)<br />体力 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.56</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+42<span class=\'rep_decimal\'>.50</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>一回合后</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+21<span class=\'rep_decimal\'>.00</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span>')"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>238</td>
+<td class="resource">151 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<table>
+<tbody><tr id="activeRow_1_1_0_34"><td class="rep_initiative">&nbsp;</td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 失去<span class="rep_loss">107</span>HP，失去<span class="rep_loss">60</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+ 失去<span class="rep_loss">108</span>HP，失去<span class="rep_loss">111</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 失去<span class="rep_loss">6</span>HP，恢复<span class="rep_gain">15</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+使用<a href="#" onclick="return o('s','%E6%B4%BE%E7%94%9F%EF%BC%9A%E5%B8%B8%E7%BB%BF%E4%B9%8B%E8%B7%AF');" onmouseover="wodToolTip(this,'魅力 <span class=\'rep_bonus bonus_positive\'>+28<span class=\'rep_decimal\'>.50</span></span><br />防御 偷袭 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />防御 自然灾害 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span><br />攻击 病毒 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />攻击 自然灾害 <span class=\'rep_bonus bonus_positive\'>+55<span class=\'rep_decimal\'>.00</span></span><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+110<span class=\'rep_decimal\'>.00</span></span>')">派生：常绿之路<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">25 法力</span>): 先攻204</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+使用<a href="#" onclick="return o('s','%E5%A4%A9%E8%B5%8B%EF%BC%9A%E9%97%AA%E8%BD%AC%E8%85%BE%E6%8C%AA');" onmouseover="wodToolTip(this,'防御 爆破 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />力量 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />防御 冲击 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />攻击 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />伤害 粉碎伤害 <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span> (近战)<br />效果 近战攻击 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span><br />效果 近战派生 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span>')">天赋：闪转腾挪<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">15 法力</span>): 先攻261</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_35"><td class="rep_initiative">先攻261<br><span class="rep_action">第1步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_36"><td class="rep_initiative">先攻163<br><span class="rep_action">第2步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_37"><td class="rep_initiative">先攻97<br><span class="rep_action">第3步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr id="activeRow_1_1_0_38"><td class="rep_initiative">先攻48<br><span class="rep_action">第4步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr></tbody></table>
+</td>
+	</tr>
+	<tr class="row0">
+		<td valign="top">
+	<p>
+				<a href="#4">返回</a>			</p>
+	<p>
+				继续
+			</p>
+		</td><td><a name="5"></a>
+<!-- computed by wod on 2025-02-18 at 14:01:13 (combat service build time: Apr 10 2017  08:35:48) -->
+<hr>
+<p class="rep_round_headline">回合 5</p>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />感知 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br /><br /><b>绒头棘皮荪:</b><br />技能 教育 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />感知 <span class=\'rep_bonus bonus_negative\'>-50?</span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span>')"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">前排</td>
+<td>3</td>
+<td class="resource">93 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounded_heavy">重伤</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>啖菇狂人的瓦罐:</b><br />技能 制毒技能 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />先攻 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />感知 <span class=\'rep_bonus bonus_negative\'>-75?</span><br />技能 力量祭礼 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />敏捷 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />力量 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />技能 精神集中 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br /><br /><b>绒头棘皮荪:</b><br />技能 教育 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 光环 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 神圣援助 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 战争之舞 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />技能 勇气之歌 <span class=\'rep_bonus bonus_negative\'>-20?</span><br />魅力 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 偷袭 <span class=\'rep_bonus bonus_negative\'>-15%</span><br />行动次数 <span class=\'rep_bonus bonus_negative\'>-999<span class=\'rep_decimal\'>.00</span></span><br />护甲 毒素伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span> (法力)<br />防御 诅咒 <span class=\'rep_bonus bonus_positive\'>+10%</span><br />体力回复 <span class=\'rep_bonus bonus_negative\'>-100?</span><br />攻击 远程 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />攻击 近战 <span class=\'rep_bonus bonus_negative\'>-25<span class=\'rep_decimal\'>.00</span></span><br />意志 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 自然灾害 <span class=\'rep_bonus bonus_negative\'>-25?</span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-25?</span> <span class=\'rep_bonus bonus_positive\'>+10%</span><br />护甲 心灵伤害 <span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span>/<span class=\'rep_bonus bonus_positive\'>+47<span class=\'rep_decimal\'>.25</span></span><br />护甲 酸性伤害 <span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span>/<span class=\'rep_bonus bonus_positive\'>+31<span class=\'rep_decimal\'>.50</span></span><br />感知 <span class=\'rep_bonus bonus_negative\'>-50?</span><br />敏感 心灵伤害 <span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span>/<span class=\'rep_bonus bonus_negative\'>-30%</span><br />防御 触发陷阱 <span class=\'rep_bonus bonus_negative\'>-15%</span><br /><br /><b>华丽的书卷：治愈技巧:</b><br />技能 治疗技能 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span><br />技能 医疗之歌 <span class=\'rep_bonus bonus_positive\'>+70<span class=\'rep_decimal\'>.50</span></span>')"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>0</td>
+<td class="resource">89 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_status_msg">击倒</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>老昆西的烟草罐:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+5<span class=\'rep_decimal\'>.00</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-19<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.04</span></span> (法力)<br />体力 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.56</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+42<span class=\'rep_decimal\'>.50</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span>')"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>232</td>
+<td class="resource">151 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+</tbody></table>
+
+<hr>
+<table>
+<tbody><tr id="activeRow_1_1_0_39"><td class="rep_initiative">&nbsp;</td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr><tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+ 失去<span class="rep_loss">3</span>HP，失去<span class="rep_loss">69</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 失去<span class="rep_loss">6</span>HP，恢复<span class="rep_gain">15</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+使用<a href="#" onclick="return o('s','%E5%A4%A9%E8%B5%8B%EF%BC%9A%E9%97%AA%E8%BD%AC%E8%85%BE%E6%8C%AA');" onmouseover="wodToolTip(this,'防御 爆破 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />敏捷 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />灵巧 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />力量 <span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span><br />防御 冲击 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />防御 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />攻击 远程 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span><br />攻击 近战 <span class=\'rep_bonus bonus_positive\'>+33<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span><br />伤害 粉碎伤害 <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+11<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span>/<span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span> <span class=\'rep_bonus bonus_positive\'>+5%</span> (近战)<br />效果 近战攻击 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span><br />效果 近战派生 <span class=\'rep_bonus bonus_positive\'>+22<span class=\'rep_decimal\'>.00</span></span>')">天赋：闪转腾挪<img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">15 法力</span>): 先攻225</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_1_1_0_40"><td class="rep_initiative">先攻225<br><span class="rep_action">第1步行动 / 共4步</span></td>
+<td colspan="2"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a>
+ 无聊的打量四周，等待着。</td></tr><tr><td colspan="3"><hr></td></tr></tbody></table>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><a href="#" onclick="return jump('h',203436)" class="rep_hero" x="203436">mafuyu</a>
+</td>
+<td>34</td>
+<td class="position">前排</td>
+<td>0</td>
+<td class="resource">80 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_status_msg">击倒</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><a href="#" onclick="return jump('h',200000)" class="rep_myhero">多攒点钱</a>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>0</td>
+<td class="resource">161 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_status_msg">击倒</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'<b>老昆西的烟草罐:</b><br />防御 病毒 <span class=\'rep_bonus bonus_positive\'>+5<span class=\'rep_decimal\'>.00</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_negative\'>-19<span class=\'rep_decimal\'>.50</span></span><br />法力回复 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.04</span></span> (法力)<br />体力 <span class=\'rep_bonus bonus_positive\'>+3<span class=\'rep_decimal\'>.56</span></span><br />防御 心理攻击 <span class=\'rep_bonus bonus_positive\'>+42<span class=\'rep_decimal\'>.50</span></span> <span style=\'font-size: 0.8em; font-style: italic;\'>下个回合</span>')"><a href="#" onclick="return jump('h',203434)" class="rep_monster" x="203434">迷星叫</a><img border="0" src="https://delta.world-of-dungeons.org/wod/css//skins/skin-8/images/icons/inf.gif" alt=""></span>
+</td>
+<td>34</td>
+<td class="position">中间</td>
+<td>226</td>
+<td class="resource">151 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_lightly">轻伤</td></tr>
+</tbody></table>
+
+</td>
+	</tr>
+</tbody></table>
+
+
+
+
+
+
+
+
+          
+        </div></form>
+</body>
+</html>
