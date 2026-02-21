@@ -5484,9 +5484,16 @@
         const extractionPromises = [];
         
         wodLogItems.forEach(item => {
-          const logId = item.querySelector('.wodlog-item-content').onclick.toString().match(/'([^']+)'/);
+          let logId = item.getAttribute('data-log-id');
+          if (!logId) {
+            const content = item.querySelector('.wodlog-item-content');
+            if (content && content.onclick) {
+              const m = content.onclick.toString().match(/'([^']+)'/);
+              if (m) logId = m[1];
+            }
+          }
           if (logId) {
-            extractionPromises.push(extractDungeonNamesFromWodLog(logId[1]));
+            extractionPromises.push(extractDungeonNamesFromWodLog(logId));
           }
         });
         
@@ -5555,9 +5562,29 @@
       return `wodlogs/${logId}/index.html`;
     }
     
+    // 从已获取的 index 文本中解析地城并写入映射（供 viewCloudWodLog 用，避免重复请求）
+    function addWodLogDungeonsFromHtml(logId, indexHtml) {
+      if (!indexHtml || !logId) return;
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(indexHtml, 'text/html');
+        const rows = doc.querySelectorAll('table tbody tr');
+        const dungeonNames = new Set();
+        rows.forEach(row => {
+          const dungeonCell = row.querySelector('td:nth-child(2) span');
+          if (dungeonCell) {
+            const name = dungeonCell.textContent.trim();
+            if (name) { dungeonNames.add(name); extractedDungeonNames.add(name); }
+          }
+        });
+        wodLogDungeonMap.set(logId, Array.from(dungeonNames));
+      } catch (e) { console.warn('addWodLogDungeonsFromHtml failed:', logId, e); }
+    }
+    
     // 从单个战报中提取地城名称
     async function extractDungeonNamesFromWodLog(logId) {
       try {
+        if (wodLogDungeonMap.has(logId)) return;
         // 获取战报的index.html内容（自动适配嵌套路径）
         const indexPath = await findWodLogIndexPath(logId);
         const indexHtml = await getGitHubFileContent(indexPath);
@@ -5637,12 +5664,17 @@
       let visibleCount = 0;
       
       wodLogItems.forEach(item => {
-        const logId = item.querySelector('.wodlog-item-content').onclick.toString().match(/'([^']+)'/);
+        let logId = item.getAttribute('data-log-id');
+        if (!logId) {
+          const content = item.querySelector('.wodlog-item-content');
+          if (content && content.onclick) {
+            const m = content.onclick.toString().match(/'([^']+)'/);
+            if (m) logId = m[1];
+          }
+        }
         let shouldShow = false;
-        
         if (logId) {
-          // 检查该战报是否包含此地城
-          shouldShow = checkWodLogContainsDungeon(logId[1], dungeonName);
+          shouldShow = checkWodLogContainsDungeon(logId, dungeonName);
         }
         
         if (shouldShow) {
@@ -6328,18 +6360,10 @@
       applyFilters();
     }
     
-    function applyFilters() {
-      const filterText = document.getElementById('filterTextInput').value.toLowerCase().trim();
-      activeFilters.text = filterText;
-      
-      // 同步到搜索框
-      const mobileInput = document.getElementById('mobileSearchInput');
-      const desktopInput = document.getElementById('desktopSearchInput');
-      if (mobileInput) mobileInput.value = filterText;
-      if (desktopInput) desktopInput.value = filterText;
-      
-      // 应用筛选
-      const filtered = tacticsData.filter(tactic => {
+    // 根据当前搜索/筛选条件得到要显示的战术列表（不改变 UI 状态，供点赞等操作后重绘用）
+    function getFilteredTactics() {
+      const filterText = (activeFilters.text || '').toLowerCase().trim();
+      return tacticsData.filter(tactic => {
         // 文本筛选
         if (filterText && !(
           tactic.name.toLowerCase().includes(filterText) ||
@@ -6382,7 +6406,19 @@
         
         return true;
       });
+    }
+    
+    function applyFilters() {
+      const filterText = document.getElementById('filterTextInput').value.toLowerCase().trim();
+      activeFilters.text = filterText;
       
+      // 同步到搜索框
+      const mobileInput = document.getElementById('mobileSearchInput');
+      const desktopInput = document.getElementById('desktopSearchInput');
+      if (mobileInput) mobileInput.value = filterText;
+      if (desktopInput) desktopInput.value = filterText;
+      
+      const filtered = getFilteredTactics();
       renderTacticsList(filtered);
       
       const filterCount = Object.values(activeFilters).reduce((sum, filters) => {
@@ -6405,16 +6441,11 @@
         const searchTerm = event.target.value.toLowerCase().trim();
         activeFilters.text = searchTerm;
         
-        if (searchTerm) {
-          const filtered = tacticsData.filter(tactic => 
-            tactic.name.toLowerCase().includes(searchTerm) ||
-            (tactic.teamName && tactic.teamName.toLowerCase().includes(searchTerm)) ||
-            (tactic.dungeonName && tactic.dungeonName.toLowerCase().includes(searchTerm))
-          );
-          renderTacticsList(filtered);
+        const filtered = getFilteredTactics();
+        renderTacticsList(filtered);
+        if (searchTerm || Object.values(activeFilters).some(v => Array.isArray(v) ? v.length > 0 : (v && v !== ''))) {
           showStatus(`找到 ${filtered.length} 个匹配的战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'success');
         } else {
-          renderTacticsList(tacticsData);
           showStatus(`显示所有战术，排序：${tacticSortType === 'score' ? '净赞数' : '日期'}`,'info');
         }
       }, 300);
@@ -7113,7 +7144,8 @@
         }
         
         updateTacticsOnServer();
-        renderTacticsList(tacticsData);
+        // 用当前搜索/筛选结果重绘，不重置搜索和筛选
+        renderTacticsList(getFilteredTactics());
         showStatus(`评分已${userRatings[tacticName] === 0 ? '撤销' : '更新'}！`, 'success');
       }
     }
@@ -10892,112 +10924,122 @@
       }
     }
     
-    // 加载GitHub战报列表
+    // 后台用 metadata 丰富单个列表项（不阻塞首屏）
+    async function enrichWodLogListItem(logId) {
+      try {
+        const metadataPath = `wodlogs/${logId}/metadata.json`;
+        const content = await getGitHubFileContent(metadataPath);
+        if (!content) return;
+        const log = JSON.parse(content);
+        if (!log.id || !log.fileName) return;
+        log.isOwn = isOwnWodLog(log.id);
+        await recoverWodLogOwnership([log]);
+        log.isOwn = isOwnWodLog(log.id);
+        
+        const item = document.querySelector(`.wodlog-item[data-log-id="${logId}"]`);
+        if (!item) return;
+        const uploadDate = new Date(log.uploadTime || 0).toLocaleString('zh-CN');
+        const fileSize = ((log.fileSize || 0) / 1024).toFixed(2);
+        const htmlFileCount = (log.htmlFiles && log.htmlFiles.length) || 0;
+        const shortFileName = log.fileName.length > 20 ? log.fileName.substring(0, 20) + '...' : log.fileName;
+        const userIcon = log.isOwn ? '<i class="fas fa-user-circle own-wodlog-icon" title="我的战报"></i>' : '<i class="fas fa-user other-wodlog-icon" title="他人战报"></i>';
+        const safeId = logId.replace(/'/g, "\\'");
+        const safeFileName = (log.fileName || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        
+        const contentDiv = item.querySelector('.wodlog-item-content');
+        if (contentDiv) {
+          contentDiv.onclick = () => viewCloudWodLog(logId);
+          const nameDiv = item.querySelector('.wodlog-item-name');
+          const infoDiv = item.querySelector('.wodlog-item-info');
+          if (nameDiv) {
+            nameDiv.classList.remove('wodlog-item-name-minimal');
+            nameDiv.title = log.fileName;
+            nameDiv.innerHTML = `${userIcon} ${logId} - ${shortFileName}`;
+          }
+          if (infoDiv) {
+            infoDiv.classList.remove('wodlog-item-info-minimal');
+            infoDiv.innerHTML = `<span><i class="fas fa-clock"></i> ${uploadDate}</span><span><i class="fas fa-file"></i> ${fileSize} KB</span><span><i class="fas fa-code"></i> ${htmlFileCount} HTML</span>`;
+          }
+        }
+        const deleteBtn = item.querySelector('.wodlog-delete-btn');
+        if (deleteBtn && log.isOwn) {
+          deleteBtn.onclick = (e) => { e.stopPropagation(); deleteCloudWodLog(logId, log.fileName); };
+        }
+      } catch (e) {
+        console.warn('enrichWodLogListItem failed:', logId, e);
+      }
+    }
+    
+    // 加载GitHub战报列表（先只列目录，按需再拉战报内容，加快首屏）
     async function loadCloudWodLogs(forceRefresh = false) {
       const listContainer = document.getElementById('cloudWodLogList');
       listContainer.innerHTML = '<div class="loading-message"><i class="fas fa-spinner fa-spin spinner-rotate"></i> 正在加载...</div>';
       
-      // 禁用搜索功能
       const dungeonSearch = document.getElementById('dungeonSearch');
       if (dungeonSearch) {
         dungeonSearch.disabled = true;
         dungeonSearch.placeholder = '正在加载战报，请稍候...';
       }
       
-      // 确保本地记录已加载
       if (ownWodLogIds.size === 0) {
         loadOwnWodLogIds();
       }
       
       try {
-        // 如果强制刷新，添加时间戳避免缓存
         const files = await getGitHubFileList(forceRefresh);
         
         if (files.length === 0) {
           listContainer.innerHTML = '<div class="loading-message">暂无战报</div>';
+          if (dungeonSearch) {
+            dungeonSearch.disabled = false;
+            dungeonSearch.placeholder = '';
+          }
           return;
         }
         
-         // 加载所有元数据文件
-         const wodLogs = [];
-         for (const dir of files) {
-           try {
-             const metadataPath = `wodlogs/${dir.name}/metadata.json`;
-             const content = await getGitHubFileContent(metadataPath);
-             if (content) {
-               const metadata = JSON.parse(content);
-               // 验证元数据是否有效
-               if (metadata.id && metadata.fileName) {
-                 wodLogs.push(metadata);
-               } else {
-                 console.warn('无效的元数据，跳过:', dir.name);
-               }
-             } else {
-               console.warn('无法获取元数据，跳过:', dir.name);
-             }
-           } catch (error) {
-             console.error('解析元数据失败:', dir.name, error);
-           }
-         }
+        // 只使用目录名，不预拉 metadata，按 id 排序（wodlog_N 按数字排）
+        const dirs = files.filter(f => f.type === 'dir' && f.name.startsWith('wodlog_'));
+        const sortKey = (name) => {
+          const m = /wodlog_(\d+)/.exec(name);
+          return m ? parseInt(m[1], 10) : 0;
+        };
+        dirs.sort((a, b) => sortKey(b.name) - sortKey(a.name));
         
-        // 按上传时间排序
-        wodLogs.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
-        
-        // 去重：基于ID去重，保留最新的
-        const uniqueWodLogs = [];
-        const seenIds = new Set();
-        console.log('当前本地记录的战报ID:', Array.from(ownWodLogIds));
-        
-        // 尝试从元数据中恢复战报归属
-        await recoverWodLogOwnership(wodLogs);
-        
-        for (const log of wodLogs) {
-          if (!seenIds.has(log.id)) {
-            seenIds.add(log.id);
-            // 使用本地记录判断战报归属
-            log.isOwn = isOwnWodLog(log.id);
-            console.log(`战报 ${log.id} 归属判断: ${log.isOwn ? '自己的' : '他人的'}`);
-            uniqueWodLogs.push(log);
+        const uniqueIds = [];
+        const seen = new Set();
+        for (const d of dirs) {
+          if (!seen.has(d.name)) {
+            seen.add(d.name);
+            uniqueIds.push(d.name);
           }
         }
         
-        // 根据设置过滤战报
-        let filteredWodLogs = uniqueWodLogs;
+        let filteredIds = uniqueIds;
         if (showOnlyOwnWodLogs) {
-          filteredWodLogs = uniqueWodLogs.filter(log => log.isOwn);
+          filteredIds = uniqueIds.filter(id => isOwnWodLog(id));
         }
         
-        listContainer.innerHTML = filteredWodLogs.map(log => {
-          const uploadDate = new Date(log.uploadTime).toLocaleString('zh-CN');
-          const fileSize = (log.fileSize / 1024).toFixed(2);
-          const htmlFileCount = log.htmlFiles ? log.htmlFiles.length : 0;
-          const logNumber = log.id || '未知';
-          
-          // 简化文件名显示，超过20个字符就用...省略
-          const shortFileName = log.fileName.length > 20 ? 
-            log.fileName.substring(0, 20) + '...' : 
-            log.fileName;
-          
-          // 用户标识图标
-          const userIcon = log.isOwn ? 
-            '<i class="fas fa-user-circle own-wodlog-icon" title="我的战报"></i>' : 
+        // 渲染简要列表：仅 id + 归属，无 metadata
+        listContainer.innerHTML = filteredIds.map(logId => {
+          const isOwn = isOwnWodLog(logId);
+          const num = sortKey(logId) || logId;
+          const userIcon = isOwn ?
+            '<i class="fas fa-user-circle own-wodlog-icon" title="我的战报"></i>' :
             '<i class="fas fa-user other-wodlog-icon" title="他人战报"></i>';
-          
+          const safeId = logId.replace(/'/g, "\\'");
           return `
-            <div class="wodlog-item ${log.isOwn ? 'own-wodlog' : 'other-wodlog'}">
-              <div class="wodlog-item-content" onclick="viewCloudWodLog('${log.id}')">
-                <div class="wodlog-item-name" title="${log.fileName}">
-                  ${userIcon} ${logNumber} - ${shortFileName}
+            <div class="wodlog-item ${isOwn ? 'own-wodlog' : 'other-wodlog'}" data-log-id="${logId}">
+              <div class="wodlog-item-content" onclick="viewCloudWodLog('${safeId}')">
+                <div class="wodlog-item-name wodlog-item-name-minimal" title="${logId}">
+                  ${userIcon} ${logId}
                 </div>
-                <div class="wodlog-item-info">
-                  <span><i class="fas fa-clock"></i> ${uploadDate}</span>
-                  <span><i class="fas fa-file"></i> ${fileSize} KB</span>
-                  <span><i class="fas fa-code"></i> ${htmlFileCount} HTML</span>
+                <div class="wodlog-item-info wodlog-item-info-minimal">
+                  <span><i class="fas fa-info-circle"></i> 点击加载战报</span>
                 </div>
               </div>
               <div class="wodlog-item-actions">
-                ${log.isOwn ? `
-                  <button class="wodlog-delete-btn" onclick="deleteCloudWodLog('${log.id}', '${log.fileName}')" title="删除战报">
+                ${isOwn ? `
+                  <button class="wodlog-delete-btn" onclick="event.stopPropagation(); deleteCloudWodLog('${safeId}', '${safeId}')" title="删除战报">
                     <i class="fas fa-trash"></i>
                   </button>
                 ` : ''}
@@ -11006,8 +11048,13 @@
           `;
         }).join('');
         
-        // 战报列表加载完成后，立即提取地城名称
-        await extractDungeonNamesFromWodLogs();
+        // 后台逐步拉取 metadata，丰富列表显示（不阻塞首屏）
+        filteredIds.forEach((logId, idx) => {
+          setTimeout(() => enrichWodLogListItem(logId), 300 + idx * 180);
+        });
+        
+        // 地城名称延后提取，避免首屏 N 次请求
+        setTimeout(() => extractDungeonNamesFromWodLogs(), 2500);
         
         // 启用搜索功能
         if (dungeonSearch) {
@@ -11055,6 +11102,9 @@
         const log = JSON.parse(metadataContent);
         console.log('战报元数据:', log);
         
+        // 恢复归属（本地未记录但 metadata 里是当前用户）
+        await recoverWodLogOwnership([log]);
+        
         // 计算index.html路径（支持嵌套目录与旧数据）
         const indexPath = await findWodLogIndexPath(logId);
         const indexHtml = await getGitHubFileContent(indexPath);
@@ -11065,6 +11115,9 @@
         }
         
         console.log('成功加载index.html');
+        
+        // 用已拉取的 html 写入地城映射，避免地城搜索再重复请求
+        addWodLogDungeonsFromHtml(logId, indexHtml);
         
         const viewer = document.getElementById('zipContentViewer');
         const iframe = document.getElementById('contentFrame');
