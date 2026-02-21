@@ -5353,6 +5353,15 @@
     
     // 是否只显示自己的战报
     let showOnlyOwnWodLogs = true;
+    let currentDungeonFilter = ''; // 当前地城筛选名，空表示未按地城筛选
+    const deferredEnrichQueue = []; // 地城筛选时被延后的战报 id，后台逐个拉取
+    let deferredEnrichTimer = null;
+    
+    // 战报 id 的排序用数字（wodlog_123 -> 123），用于「最新优先」
+    function getWodLogSortKey(name) {
+      const m = /wodlog_(\d+)/.exec(String(name));
+      return m ? parseInt(m[1], 10) : 0;
+    }
     
     // 本地记录自己上传的战报ID
     let ownWodLogIds = new Set();
@@ -5655,8 +5664,8 @@
       return dungeonNames ? dungeonNames.includes(dungeonName) : false;
     }
     
-    // 根据地城名称筛选战报
-    function filterWodLogsByDungeon(dungeonName) {
+    // 仅在前端根据「只显示我的」和「当前地城筛选」显示/隐藏已有列表项，不重新请求
+    function applyWodLogListFilter() {
       const cloudWodLogList = document.getElementById('cloudWodLogList');
       if (!cloudWodLogList) return;
       
@@ -5672,64 +5681,62 @@
             if (m) logId = m[1];
           }
         }
-        let shouldShow = false;
-        if (logId) {
-          shouldShow = checkWodLogContainsDungeon(logId, dungeonName);
-        }
+        const passOwn = !showOnlyOwnWodLogs || isOwnWodLog(logId);
+        const passDungeon = !currentDungeonFilter || checkWodLogContainsDungeon(logId, currentDungeonFilter);
+        const shouldShow = logId && passOwn && passDungeon;
         
-        if (shouldShow) {
-          item.style.display = 'flex';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
+        item.style.display = shouldShow ? 'flex' : 'none';
+        if (shouldShow) visibleCount++;
       });
       
-      // 更新战报列表标题
       const titleElement = cloudWodLogList.previousElementSibling;
       if (titleElement && titleElement.tagName === 'H3') {
-        if (visibleCount > 0) {
-          titleElement.innerHTML = `战报分享平台 <span style="color: #28a745; font-size: 0.8em;">(${visibleCount}个战报 - 地城: ${dungeonName})</span>`;
+        if (currentDungeonFilter) {
+          if (visibleCount > 0) {
+            titleElement.innerHTML = `战报分享平台 <span style="color: #28a745; font-size: 0.8em;">(${visibleCount}个战报 - 地城: ${currentDungeonFilter})</span>`;
+          } else {
+            titleElement.innerHTML = `战报分享平台 <span style="color: #dc3545; font-size: 0.8em;">(无相关战报 - 地城: ${currentDungeonFilter})</span>`;
+          }
         } else {
-          titleElement.innerHTML = `战报分享平台 <span style="color: #dc3545; font-size: 0.8em;">(无相关战报 - 地城: ${dungeonName})</span>`;
+          titleElement.innerHTML = '战报分享平台';
         }
       }
       
-      // 显示清除筛选按钮
       const clearBtn = document.getElementById('clearDungeonFilterBtn');
       if (clearBtn) {
-        clearBtn.style.display = 'flex';
+        clearBtn.style.display = currentDungeonFilter ? 'flex' : 'none';
       }
-      
-      console.log(`筛选地城 "${dungeonName}" 的战报，显示 ${visibleCount} 个`);
     }
     
-    // 清除地城筛选
+    // 根据地城名称筛选战报（只改显示，不重新加载）
+    function filterWodLogsByDungeon(dungeonName) {
+      currentDungeonFilter = dungeonName || '';
+      applyWodLogListFilter();
+      // 优先拉取当前可见战报的 metadata
+      const listEl = document.getElementById('cloudWodLogList');
+      if (listEl && currentDungeonFilter) {
+        const visibleIds = [];
+        listEl.querySelectorAll('.wodlog-item').forEach(item => {
+          if (item.style.display !== 'none') {
+            const id = item.getAttribute('data-log-id');
+            if (id) visibleIds.push(id);
+          }
+        });
+        visibleIds.forEach((logId, idx) => {
+          setTimeout(() => enrichWodLogListItem(logId), 50 + idx * 60);
+        });
+      }
+      console.log(`筛选地城 "${dungeonName}" 的战报（未重新加载）`);
+    }
+    
+    // 清除地城筛选（只改显示，不重新加载）
     function clearDungeonFilter() {
-      const cloudWodLogList = document.getElementById('cloudWodLogList');
-      if (!cloudWodLogList) return;
-      
-      const wodLogItems = cloudWodLogList.querySelectorAll('.wodlog-item');
-      wodLogItems.forEach(item => {
-        item.style.display = 'flex';
-      });
-      
-      // 恢复战报列表标题
-      const titleElement = cloudWodLogList.previousElementSibling;
-      if (titleElement && titleElement.tagName === 'H3') {
-        titleElement.innerHTML = '战报分享平台';
-      }
-      
-      // 隐藏清除筛选按钮
-      const clearBtn = document.getElementById('clearDungeonFilterBtn');
-      if (clearBtn) {
-        clearBtn.style.display = 'none';
-      }
-      
+      currentDungeonFilter = '';
+      applyWodLogListFilter();
       console.log('已清除地城筛选');
     }
     
-    // 切换战报过滤模式
+    // 切换战报过滤模式（只改显示，不重新加载）
     function toggleWodLogFilter() {
       showOnlyOwnWodLogs = !showOnlyOwnWodLogs;
       
@@ -5744,9 +5751,25 @@
         }
       }
       
-      // 重新加载战报列表
-      loadCloudWodLogs(true);
+      applyWodLogListFilter();
       
+      // 切到「显示所有」时，对尚未丰富的项按最新优先拉取
+      if (!showOnlyOwnWodLogs) {
+        const listEl = document.getElementById('cloudWodLogList');
+        if (listEl) {
+          const unenriched = [];
+          listEl.querySelectorAll('.wodlog-item').forEach(item => {
+            if (item.querySelector('.wodlog-item-name-minimal')) {
+              const id = item.getAttribute('data-log-id');
+              if (id) unenriched.push(id);
+            }
+          });
+          unenriched.sort((a, b) => getWodLogSortKey(b) - getWodLogSortKey(a));
+          unenriched.forEach((logId, idx) => {
+            setTimeout(() => enrichWodLogListItem(logId), 60 + idx * 60);
+          });
+        }
+      }
       console.log('切换战报过滤模式:', showOnlyOwnWodLogs ? '只显示自己的' : '显示所有');
     }
     
@@ -6080,26 +6103,8 @@
       if (dungeonSearch) {
         // 输入搜索
       dungeonSearch.addEventListener('input', function() {
-          // 如果搜索功能被禁用，直接返回
-          if (this.disabled) {
-            return;
-          }
-          
+          if (this.disabled) return;
           const query = this.value.trim();
-          
-          // 如果有搜索内容，自动切换到显示所有战报状态
-          if (query && showOnlyOwnWodLogs) {
-            showOnlyOwnWodLogs = false;
-            const toggleBtn = document.getElementById('toggleWodLogFilter');
-            if (toggleBtn) {
-              toggleBtn.innerHTML = '<i class="fas fa-user"></i> 显示所有战报';
-              toggleBtn.title = '当前显示所有战报，点击只显示自己的战报';
-            }
-            // 重新加载战报列表
-            loadCloudWodLogs(true);
-          }
-          
-          // 确保地城名称已经提取完成后再搜索
           if (query && extractedDungeonNames.size === 0) {
             console.log('搜索时发现地城名称未提取，开始提取...');
             extractDungeonNamesFromWodLogs().then(() => {
@@ -6124,18 +6129,6 @@
           }
           
           const query = this.value.trim();
-          
-          // 如果有搜索内容，自动切换到显示所有战报状态
-          if (query && showOnlyOwnWodLogs) {
-            showOnlyOwnWodLogs = false;
-            const toggleBtn = document.getElementById('toggleWodLogFilter');
-            if (toggleBtn) {
-              toggleBtn.innerHTML = '<i class="fas fa-user"></i> 显示所有战报';
-              toggleBtn.title = '当前显示所有战报，点击只显示自己的战报';
-            }
-            // 重新加载战报列表
-            loadCloudWodLogs(true);
-          }
           
           // 确保地城名称已经提取完成后再搜索
           if (query && extractedDungeonNames.size === 0) {
@@ -10924,9 +10917,30 @@
       }
     }
     
-    // 后台用 metadata 丰富单个列表项（不阻塞首屏）
-    async function enrichWodLogListItem(logId) {
+    // 后台逐个处理延后队列（地城筛选时延后的战报，在后台继续拉取）
+    function processDeferredEnrichQueue() {
+      if (deferredEnrichQueue.length === 0) {
+        deferredEnrichTimer = null;
+        return;
+      }
+      const logId = deferredEnrichQueue.shift();
+      if (logId) enrichWodLogListItem(logId, { force: true });
+      deferredEnrichTimer = setTimeout(processDeferredEnrichQueue, 90);
+    }
+    
+    // 后台用 metadata 丰富单个列表项（不阻塞首屏）。opts.force=true 时忽略地城筛选，用于延后队列
+    async function enrichWodLogListItem(logId, opts) {
+      opts = opts || {};
       try {
+        if (!opts.force && currentDungeonFilter) {
+          if (!wodLogDungeonMap.has(logId) || !checkWodLogContainsDungeon(logId, currentDungeonFilter)) {
+            if (!deferredEnrichQueue.includes(logId)) {
+              deferredEnrichQueue.push(logId);
+              if (!deferredEnrichTimer) deferredEnrichTimer = setTimeout(processDeferredEnrichQueue, 200);
+            }
+            return;
+          }
+        }
         const metadataPath = `wodlogs/${logId}/metadata.json`;
         const content = await getGitHubFileContent(metadataPath);
         if (!content) return;
@@ -10999,11 +11013,7 @@
         
         // 只使用目录名，不预拉 metadata，按 id 排序（wodlog_N 按数字排）
         const dirs = files.filter(f => f.type === 'dir' && f.name.startsWith('wodlog_'));
-        const sortKey = (name) => {
-          const m = /wodlog_(\d+)/.exec(name);
-          return m ? parseInt(m[1], 10) : 0;
-        };
-        dirs.sort((a, b) => sortKey(b.name) - sortKey(a.name));
+        dirs.sort((a, b) => getWodLogSortKey(b.name) - getWodLogSortKey(a.name));
         
         const uniqueIds = [];
         const seen = new Set();
@@ -11014,15 +11024,10 @@
           }
         }
         
-        let filteredIds = uniqueIds;
-        if (showOnlyOwnWodLogs) {
-          filteredIds = uniqueIds.filter(id => isOwnWodLog(id));
-        }
-        
-        // 渲染简要列表：仅 id + 归属，无 metadata
-        listContainer.innerHTML = filteredIds.map(logId => {
+        // 始终渲染全部战报，由 applyWodLogListFilter 控制显示/隐藏，才能切换「只显示我的」/「显示所有」
+        listContainer.innerHTML = uniqueIds.map(logId => {
           const isOwn = isOwnWodLog(logId);
-          const num = sortKey(logId) || logId;
+          const num = getWodLogSortKey(logId) || logId;
           const userIcon = isOwn ?
             '<i class="fas fa-user-circle own-wodlog-icon" title="我的战报"></i>' :
             '<i class="fas fa-user other-wodlog-icon" title="他人战报"></i>';
@@ -11048,10 +11053,21 @@
           `;
         }).join('');
         
-        // 后台逐步拉取 metadata，丰富列表显示（不阻塞首屏）
-        filteredIds.forEach((logId, idx) => {
-          setTimeout(() => enrichWodLogListItem(logId), 300 + idx * 180);
+        // 优先拉取当前可见战报的 metadata（「只显示我的」时自己的先拉，否则按最新优先）
+        const enrichOrder = showOnlyOwnWodLogs
+          ? [...uniqueIds].sort((a, b) => {
+              const aOwn = isOwnWodLog(a) ? 1 : 0;
+              const bOwn = isOwnWodLog(b) ? 1 : 0;
+              if (bOwn !== aOwn) return bOwn - aOwn;
+              return getWodLogSortKey(b) - getWodLogSortKey(a);
+            })
+          : uniqueIds;
+        // 加快：每批 2 个，间隔 80ms
+        enrichOrder.forEach((logId, idx) => {
+          setTimeout(() => enrichWodLogListItem(logId), 200 + Math.floor(idx / 2) * 80);
         });
+        
+        applyWodLogListFilter();
         
         // 地城名称延后提取，避免首屏 N 次请求
         setTimeout(() => extractDungeonNamesFromWodLogs(), 2500);
