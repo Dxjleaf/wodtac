@@ -2148,8 +2148,9 @@
       flex-shrink: 0;
     }
     
-    .wodlog-delete-btn {
-      background: rgba(231, 76, 60, 0.8);
+    .wodlog-delete-btn,
+    .wodlog-download-btn {
+      background: rgba(52, 152, 219, 0.85);
       border: none;
       color: white;
       padding: calc(4px * var(--scale-factor)) calc(6px * var(--scale-factor));
@@ -2164,12 +2165,26 @@
       height: calc(24px * var(--scale-factor));
     }
     
-    .wodlog-delete-btn:hover {
-      background: rgba(231, 76, 60, 1);
+    .wodlog-delete-btn {
+      background: rgba(231, 76, 60, 0.8);
+    }
+    
+    .wodlog-download-btn {
+      margin-right: calc(4px * var(--scale-factor));
+    }
+    
+    .wodlog-delete-btn:hover,
+    .wodlog-download-btn:hover {
+      background: rgba(52, 152, 219, 1);
       transform: scale(1.05);
     }
     
-    .wodlog-delete-btn:active {
+    .wodlog-delete-btn:hover {
+      background: rgba(231, 76, 60, 1);
+    }
+    
+    .wodlog-delete-btn:active,
+    .wodlog-download-btn:active {
       transform: scale(0.95);
     }
     
@@ -2193,6 +2208,47 @@
     
     .wodlog-item-info span {
       white-space: nowrap;
+    }
+    
+    /* Office 主题下战报列表可读性增强 */
+    body.office-theme .wodlog-item {
+      background: #ffffff !important;
+      border: 1px solid #d0d7e5 !important;
+    }
+    
+    body.office-theme .wodlog-item-name {
+      color: #1a397b !important;
+    }
+    
+    body.office-theme .own-wodlog .wodlog-item-name {
+      color: #0b8235 !important;
+    }
+    
+    body.office-theme .other-wodlog .wodlog-item-name {
+      color: #555555 !important;
+    }
+    
+    body.office-theme .wodlog-item-info {
+      color: #6b7280 !important;
+    }
+    
+    body.office-theme .wodlog-item-actions .wodlog-download-btn {
+      background: #ffffff !important;
+      color: #1a397b !important;
+      border: 1px solid #b0c4de !important;
+    }
+    
+    body.office-theme .wodlog-item-actions .wodlog-download-btn:hover {
+      background: #e3eaf2 !important;
+    }
+    
+    body.office-theme .wodlog-item-actions .wodlog-delete-btn {
+      background: #c0392b !important;
+      color: #ffffff !important;
+    }
+    
+    body.office-theme .wodlog-item-actions .wodlog-delete-btn:hover {
+      background: #922b21 !important;
     }
     
     .loading-message {
@@ -4563,7 +4619,7 @@
         <!-- 内容查看器 -->
         <div id="zipContentViewer" class="zip-content-viewer" style="display: none;">
           <div class="viewer-header">
-            <h3><i class="fas fa-folder-open"></i> 文件内容</h3>
+            <h3 id="zipViewerTitle"><i class="fas fa-folder-open"></i> 文件内容</h3>
             <button class="close-viewer-btn" onclick="toggleFullscreen()" title="全屏显示">
               <i class="fas fa-expand"></i>
             </button>
@@ -9532,6 +9588,140 @@
       }
     }
     
+    // 下载指定战报为ZIP
+    async function downloadCloudWodLog(logId) {
+      try {
+        console.log('开始下载战报:', logId);
+        
+        // 查找对应列表项上的下载按钮，用于显示进度
+        let downloadBtn = null;
+        const listContainer = document.getElementById('cloudWodLogList');
+        if (listContainer) {
+          const item = listContainer.querySelector(`.wodlog-item[data-log-id="${logId}"]`);
+          if (item) {
+            downloadBtn = item.querySelector('.wodlog-download-btn');
+          }
+        }
+        
+        if (downloadBtn) {
+          downloadBtn.disabled = true;
+          downloadBtn.dataset.originalTitle = downloadBtn.title || '';
+          downloadBtn.title = '正在打包战报...';
+          const icon = downloadBtn.querySelector('i');
+          if (icon) {
+            icon.classList.remove('fa-download');
+            icon.classList.add('fa-spinner', 'fa-spin', 'spinner-rotate');
+          }
+        }
+        
+        if (typeof JSZip === 'undefined') {
+          throw new Error('JSZip 未加载，无法打包战报');
+        }
+        
+        // 递归获取该战报目录下的所有文件（使用 contents API，兼容当前仓库结构）
+        async function collectWodLogFiles(dirPath, relativeBase = '') {
+          const response = await fetch(`${GITHUB_API_URL}/contents/${dirPath}`, {
+            headers: {
+              'Authorization': `token ${getGitHubToken()}`,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          });
+          
+          if (!response.ok) {
+            const text = await response.text().catch(() => '');
+            console.warn(`无法获取目录内容: ${dirPath}, 状态: ${response.status}, 错误: ${text}`);
+            throw new Error('无法获取战报文件列表');
+          }
+          
+          const items = await response.json();
+          const files = [];
+          
+          for (const item of items) {
+            if (item.type === 'dir') {
+              const subDirPath = `${dirPath}/${item.name}`;
+              const subBase = relativeBase ? `${relativeBase}/${item.name}` : item.name;
+              const subFiles = await collectWodLogFiles(subDirPath, subBase);
+              files.push(...subFiles);
+            } else {
+              const repoPath = `${dirPath}/${item.name}`;
+              const zipPath = relativeBase ? `${relativeBase}/${item.name}` : item.name;
+              files.push({ repoPath, zipPath });
+            }
+          }
+          
+          return files;
+        }
+        
+        const allFiles = await collectWodLogFiles(`wodlogs/${logId}`);
+        
+        if (!allFiles.length) {
+          throw new Error('该战报目录为空或文件列表获取失败');
+        }
+        
+        const zip = new JSZip();
+        
+        // 依次拉取每个文件内容并加入ZIP
+        for (const file of allFiles) {
+          const content = await getGitHubFileContent(file.repoPath);
+          if (content == null) {
+            console.warn('跳过无法获取内容的文件:', file.repoPath);
+            continue;
+          }
+          zip.file(file.zipPath, content);
+        }
+        
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(blob);
+        
+        // 优先使用 metadata.json 中的原始文件名（如：wodlog_[纸蝶]「31.08级」脱帽，向亲王致敬！II-冥界之主202501252031.zip）
+        let downloadName = `${logId}.zip`;
+        try {
+          const metadataPath = `wodlogs/${logId}/metadata.json`;
+          const metaContent = await getGitHubFileContent(metadataPath);
+          if (metaContent) {
+            const meta = JSON.parse(metaContent);
+            if (meta && typeof meta.fileName === 'string' && meta.fileName.trim()) {
+              // 简单清理一下不适合作为文件名的字符
+              const rawName = meta.fileName.trim();
+              downloadName = rawName.replace(/[\/\\:*?"<>|]+/g, '_');
+            }
+          }
+        } catch (e) {
+          console.warn('读取metadata以获取原始文件名失败，使用默认文件名:', e);
+        }
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = downloadName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        
+        console.log('战报下载完成:', logId);
+      } catch (error) {
+        console.error('下载战报失败:', error);
+        alert('下载战报失败: ' + (error.message || error));
+      } finally {
+        const listContainer = document.getElementById('cloudWodLogList');
+        if (listContainer) {
+          const item = listContainer.querySelector(`.wodlog-item[data-log-id="${logId}"]`);
+          if (item) {
+            const downloadBtn = item.querySelector('.wodlog-download-btn');
+            if (downloadBtn) {
+              downloadBtn.disabled = false;
+              downloadBtn.title = downloadBtn.dataset.originalTitle || '下载战报';
+              const icon = downloadBtn.querySelector('i');
+              if (icon) {
+                icon.classList.remove('fa-spinner', 'fa-spin', 'spinner-rotate');
+                icon.classList.add('fa-download');
+              }
+            }
+          }
+        }
+      }
+    }
+    
     // 删除GitHub文件（带重试机制）
     async function deleteGitHubFile(filePath, message, retryCount = 0) {
       if (!getGitHubToken()) {
@@ -9819,10 +10009,11 @@
       const shortFileName = log.fileName.length > 20 ? 
         log.fileName.substring(0, 20) + '...' : 
         log.fileName;
+      const safeId = log.id.replace(/'/g, "\\'");
       
       return `
         <div class="wodlog-item">
-          <div class="wodlog-item-content" onclick="viewCloudWodLog('${log.id}')">
+          <div class="wodlog-item-content" onclick="viewCloudWodLog('${safeId}')">
             <div class="wodlog-item-name" title="${log.fileName}">${logNumber} - ${shortFileName}</div>
             <div class="wodlog-item-info">
               <span><i class="fas fa-clock"></i> ${uploadDate}</span>
@@ -9831,6 +10022,9 @@
             </div>
           </div>
           <div class="wodlog-item-actions">
+            <button class="wodlog-download-btn" onclick="event.stopPropagation(); downloadCloudWodLog('${safeId}')" title="下载战报">
+              <i class="fas fa-download"></i>
+            </button>
             <button class="wodlog-delete-btn" onclick="deleteCloudWodLog('${log.id}', '${log.fileName}')" title="删除战报">
               <i class="fas fa-trash"></i>
             </button>
@@ -11043,6 +11237,9 @@
                 </div>
               </div>
               <div class="wodlog-item-actions">
+                <button class="wodlog-download-btn" onclick="event.stopPropagation(); downloadCloudWodLog('${safeId}')" title="下载战报">
+                  <i class="fas fa-download"></i>
+                </button>
                 ${isOwn ? `
                   <button class="wodlog-delete-btn" onclick="event.stopPropagation(); deleteCloudWodLog('${safeId}', '${safeId}')" title="删除战报">
                     <i class="fas fa-trash"></i>
@@ -11137,9 +11334,14 @@
         
         const viewer = document.getElementById('zipContentViewer');
         const iframe = document.getElementById('contentFrame');
+        const titleEl = document.getElementById('zipViewerTitle');
         
-        // 确保内容查看器可见
+        // 确保内容查看器可见，并更新标题为当前战报名
         viewer.style.display = 'block';
+        if (titleEl) {
+          const safeName = (log.fileName || log.id || '').trim() || logId;
+          titleEl.innerHTML = `<i class="fas fa-folder-open"></i> ${safeName}`;
+        }
         
         // 处理HTML中的链接，使其能够跳转到其他HTML文件
         const processedHtml = processGitHubWodLogLinks(indexHtml, logId);
