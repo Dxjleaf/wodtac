@@ -1,0 +1,799 @@
+<html>
+<head><link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.2/themes/humanity/jquery-ui.css"><link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.2/themes/humanity/jquery-ui.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+<meta http-equiv="Content-Language" content="cn">
+
+
+<link rel="SHORTCUT ICON" href="http://info.world-of-dungeons.org/wod/css/WOD.gif" type="image/gif">
+    
+    
+
+<script type="text/javascript" src="http://delta.world-of-dungeons.org/wod/javascript/wod_standard.js?1767903353"></script>
+<script type="text/javascript" src="http://delta.world-of-dungeons.org/wod/javascript/wodtooltip.js?1767903353"></script>
+
+
+
+
+
+
+
+
+	<title>[努力的活着]摩-莫拉齐202604230131</title>
+	<link rel="stylesheet" type="text/css" href="http://delta.world-of-dungeons.org/wod/css/layout.css?1767903353">
+
+    <link rel="stylesheet" type="text/css" href="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/skin-cn.css?1767903353">
+        <style type="text/css">
+/*<![CDATA[*/
+      .tableMinWidthRespectingContent {
+        width:1px;
+        }
+        .tableMinHeightRespectingContent {
+        height:1px;
+        }
+/*]]>*/
+    .ui-progressbar .ui-progressbar-value {transition: width 0.7s ease 0s;} #progressbar .progress-label {position: absolute; left: 48%; font-weight: bold; text-shadow: 1px 1px 0 #fff; height: 31px; display: flex; justify-content: enter; align-items: center;}@media (min-width:1px) { .ui-dialog { width: 95% !important; } } @media (min-width: 768px) { .ui-dialog { max-width:900px !important; width:95% !important; } }.ui-dialog { height: 600px !important; } .ui-dialog .ui-dialog-content { height: 90% !important; } @media (min-width:1px) { .ui-dialog { width: 95% !important; } } @media (min-width: 768px) { .ui-dialog { max-width:900px !important; width:95% !important; } }</style>
+  <script type="text/javascript">window.onload = function(e){wodToolTipInit();wodInitialize('delta.world-of-dungeons.org','','/wod/spiel/','/wod/ajax/','WOD','cn','/wod/css//skins/skin-4/','/wod/css/','1','1');}
+function o(t,n){ 
+ var url="http://delta.world-of-dungeons.org/wod/spiel/";
+if(t=="n"){url += "help/npc"}
+if(t=="s"){url += "hero/skill"}
+if(t=="i"){url += "hero/item"}
+return wo(url + ".php?name=" + n + "&IS_POPUP=1");}
+var CTable=function(){};
+CTable.GetNumber = function (cell) {
+        var numberPatten = /^\s?([\d]+\.?[\d]*)\s?_?\s?([\d]*\.?[\d]*)\s?$/;
+        var pairTable = cell.firstChild;
+        var numberString = cell.textContent;
+        var numbers;
+        if (pairTable && pairTable.nodeName == "TABLE") {
+            numberString = pairTable.id;
+        }
+        if (numberPatten.test(numberString)) {
+            numbers = [];
+            var numberres = numberPatten.exec(numberString);
+            if (numberres[1])
+                numbers.push(numberres[1]);
+            if (numberres[2])
+                numbers.push(numberres[2]);
+        }
+        return numbers;
+    }
+CompareString = function CompareString(a, b) {
+        a = a || "";
+        b = b || "";
+        return a.toLowerCase().localeCompare(b.toLowerCase(), "zh-CN-u-co-pinyin");
+    }
+ct = function (Id) {
+        try {
+            var Table = document.getElementById(Id);
+            if (Table.hasAttribute("hide")) {
+                Table.removeAttribute("hide");
+            } else {
+                Table.setAttribute("hide", "hide");
+            }
+        } catch (e) {
+            alert("CTable.OnClickTitle(): " + e);
+        }
+    }
+cf = function (tableId, filterRowId) {
+        try {
+            var Table = document.getElementById(tableId);
+            var filterRow = document.getElementById(filterRowId);
+            var stringfilters = [];
+            var orgstringfilters = [];
+            var numberfilters = [];
+            var filterString = "";
+            var showIds = [];
+            var refilter = 0;
+
+            var showHero_0 = document.getElementById(tableId + "_checkbox_0_0");
+            var showHero_1 = document.getElementById(tableId + "_checkbox_0_1");
+            var showHero = [showHero_0.checked, showHero_1.checked];
+
+            for (var i = 0; i < filterRow.cells.length; i++) {
+                var cell = filterRow.cells[i];
+                var stringfilter = document.getElementById(filterRow.id + "_combobox_" + i);
+                var orgstringfilter = document.getElementById('org_' + filterRow.id + "_combobox_" + i);
+                var numberfilter = document.getElementById(filterRow.id + "_textbox_" + i);
+                if (stringfilter) {
+                    stringfilters.push(stringfilter.value);
+                    refilter += stringfilter.selectedIndex > 0 ? 1 : 0;
+                }
+                else
+                    stringfilters.push(null);
+                if (orgstringfilter) {
+                    for (var ii = 0, ij = orgstringfilter.options.length; ii < ij; ++ii) {
+                        if (orgstringfilter.options[ii].value === stringfilter.value) {
+                            orgstringfilter.selectedIndex = ii;
+                            break;
+                        }
+                    }
+                    orgstringfilters.push([stringfilter, orgstringfilter]);
+                    showIds.push([]);
+                }
+                if (numberfilter)
+                    numberfilters.push(numberfilter.value);
+                else
+                    numberfilters.push(null);
+            }
+            var index = 0;
+            var patten = /([\(|\[|>|<|=|]*)\s*([\d]*\.?[\d]*)\s*-?\s*([\d]*\.?[\d]*)\s*([\)|\]|\s]?)/;
+            for (var i = 2; i < Table.rows.length; i = i + 2) {
+                var row = Table.rows[i];
+                var rowInfo = Table.rows[i + 1];
+                var rowIds = row.id.split(",");
+                var show = true;
+
+                var hero = row.cells[0].getElementsByTagName('a')[0];
+                var heroKind = hero.getAttribute("kind");
+                show = showHero[heroKind];
+                if (show) {
+                    for (var fi = 0; fi < stringfilters.length; fi++) {
+                        var sfilter = stringfilters[fi];
+                        if (!sfilter)
+                            continue;
+                        if (sfilter != fi + "_all" && sfilter != rowIds[fi]) {
+                            show = false;
+                            break;
+                        }
+                    }
+                }
+                if (show) {
+                    for (var fi = 0; fi < numberfilters.length; fi++) {
+                        var nfilter = numberfilters[fi];
+
+                        if (!nfilter)
+                            continue;
+                        else {
+                            var numbers = CTable.GetNumber(row.cells[fi]);
+                            var nfilters = nfilter.split(/\s*[,|，]\s*/);
+                            for (ni = 0; ni < numbers.length; ni++) {
+                                var theFilter = nfilters[ni];
+                                var testString = "";
+                                if (theFilter && patten.test(theFilter)) {
+                                    var op = "==";
+                                    var res = patten.exec(theFilter);
+                                    if (res[1]) {
+                                        op = res[1];
+                                        if (res[3]) {
+                                            if (op == "[") op = ">=";
+                                            if (op == "(") op = ">";
+                                            if (op == "=") op = "==";
+                                        }
+                                    }
+                                    else {
+                                        if (res[3])
+                                            op = ">=";
+                                    }
+                                    testString = numbers[ni] + op + res[2];
+                                    if (res[3]) {
+                                        op = "<=";
+                                        if (res[4]) {
+                                            op = res[4];
+                                            if (op == "]") op = "<=";
+                                            if (op == ")") op = "<";
+                                        }
+                                        testString += " && " + numbers[ni] + op + res[3];
+                                    }
+                                    show = eval(testString);
+                                    if (!show)
+                                        break;
+                                }
+                            }
+                        }
+                        if (!show)
+                            break;
+                    }
+                }
+                row.style.display = show ? '' : 'none';
+                rowInfo.style.display = show ? rowInfo.style.display : 'none';
+                if (show) {
+                    row.className = "row" + index % 2;
+                    rowInfo.className = row.className;
+                    index++;
+                    for (var fi = 0; fi < orgstringfilters.length; fi++) {
+                        var id = rowIds[fi];
+                        if (showIds[fi].indexOf(id) <= -1)
+                            showIds[fi].push(id);
+                    }
+                }
+            }
+
+            if (orgstringfilters.length - refilter > 1) {
+                for (var fi = 0; fi < orgstringfilters.length; fi++) {
+                    var sfilter = orgstringfilters[fi][0];
+                    var sfilterorg = orgstringfilters[fi][1];
+                    if (!sfilter)
+                        continue;
+                    if (refilter == 1 && sfilter.selectedIndex > 0)
+                        continue;
+                    for (var i = sfilter.options.length - 1; i > 0; i--)
+                        sfilter.remove(i);
+                    for (var i = 0; i < sfilterorg.options.length; i++) {
+                        var opt = sfilterorg.options[i];
+                        if (showIds[fi].indexOf(opt.value) > -1) {
+                            var newopt = new Option(opt.text, opt.value);
+                            newopt.selected = opt.selected;
+                            sfilter.add(newopt);
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            alert("CTable.OnChangeFilter(): " + e);
+        }
+    }
+co = function (tableId, columnIndex, numberIndex) {
+        var Table = document.getElementById(tableId);
+        var index = numberIndex;
+        var ths = Table.getElementsByTagName("th");
+        if (index === null)
+            index = 0;
+        var th = ths[columnIndex];
+        var order = th.getAttribute("order");
+        for (var i = 0; i < ths.length - 1; i++) {
+
+            var span = document.getElementById(tableId + '_orderInfo_' + i);
+            var spans = span.getElementsByTagName('span');
+            if (spans && spans.length == 2) {
+                spans[0].innerHTML = '';
+                spans[1].innerHTML = '';
+                if (i == columnIndex)
+                    spans[numberIndex].innerHTML = order > 0 ? '&#9650;' : '&#9660;';
+            }
+        }
+        for (var i = 2; i < Table.rows.length - 2; i = i + 2) {
+            for (var j = i + 2; j < Table.rows.length; j = j + 2) {
+                var row_1 = Table.rows[i];
+                var row_1_info = Table.rows[i + 1];
+                var row_2 = Table.rows[j];
+                var row_2_info = Table.rows[j + 1];
+                var cell_1 = row_1.cells[columnIndex];
+                var cell_2 = row_2.cells[columnIndex];
+
+                n1 = CTable.GetNumber(cell_1);
+                n2 = CTable.GetNumber(cell_2);
+                var change = false;
+
+                if (columnIndex == ths.length - 1) {
+                    var n11 = Number(row_1.getAttribute("oriorder"));
+                    var n12 = Number(row_2.getAttribute("oriorder"));
+                    change = n11 > n12;
+                }
+                else {
+                    var c1 = row_1.cells[0].firstChild.className.replace("my", "");
+                    var c2 = row_2.cells[0].firstChild.className.replace("my", "");
+                    var s1 = cell_1.textContent;
+                    var s2 = cell_2.textContent;
+                    var cc = CompareString(c1, c2);
+                    if (cc < 0)
+                        change = false;
+                    else if (cc > 0)
+                        change = true;
+                    else {
+                        if (n1 && n2 && n1.length > 0 && n2.length > 0) {
+                            var number_1 = n1[index] * order;
+                            var number_2 = n2[index] * order;
+                            change = number_1 > number_2;
+                        }
+                        else
+                            change = (CompareString(s1, s2) == order);
+                    }
+                }
+
+                if (change) {
+                    row_2.parentNode.insertBefore(row_2, row_1);
+                    row_2_info.parentNode.insertBefore(row_2_info, row_1);
+                }
+            }
+            Table.rows[i].className = "row" + (i / 2) % 2;
+            Table.rows[i + 1].className = Table.rows[i].className;
+        }
+        th.setAttribute("order", -1 * order);
+    }
+sd = function (rowid, activeRows) {
+        var row = document.getElementById(rowid);
+        var cell = row.cells[0];
+        var button = row.previousSibling.getElementsByTagName('input')[0];
+        activeRows = activeRows || [];
+        if (cell) {
+            if (row.style.display == '') {
+                button.value = '显示';
+                row.style.display = 'none';
+            }
+            else {
+                button.value = '隐藏';
+                row.style.display = '';
+            }
+            var table = cell.getElementsByTagName('table')[0];
+            if (table.rows.length <= 1) {
+                if (activeRows.length > 0) {
+                    var ids = activeRows[0].split('_');
+                    var level = Number(ids[1]);
+                    var ac = table.insertRow(-1).insertCell(-1);
+                    ac.colSpan = '3';
+                    ac.innerHTML = '<hr/><br />层 ' + level + '<br /><hr/>';
+                    for (var i = 0; i < activeRows.length; i++) {
+                        ids = activeRows[i].split('_');
+                        var newlevel = Number(ids[1]);
+                        if (newlevel != level) {
+                            ac = table.insertRow(-1).insertCell(-1);
+                            ac.colSpan = '3';
+                            ac.innerHTML = '<hr/><br />层 ' + newlevel + '<br /><hr/>';
+                            level = newlevel;
+                        }
+                        var theRow = document.getElementById(activeRows[i]).cloneNode(true);
+                        if (theRow) {
+                            table.appendChild(theRow);
+                            var c = table.insertRow(-1).insertCell(-1);
+                            c.colSpan = '3';
+                            c.innerHTML = '<hr/>';
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+st = function (id) {
+        var statdiv = document.getElementById('stat_all');
+        var tabs = statdiv.getAttribute('tabs').split(',');
+        var showall = false;
+        var lishowall = document.getElementById('tab_showall');
+        var lihideall = document.getElementById('tab_hideall');
+        lishowall.className = 'not_selected';
+        lihideall.className = 'not_selected';
+        for (var i = 0; i < tabs.length; i++) {
+            var tabid = tabs[i];
+            var tab = document.getElementById(tabid);
+            var li = document.getElementById('tab_' + tabid);
+            li.className = 'not_selected';
+            if (id == 'showall') {
+                lishowall.className = 'selected';
+                tab.style.display = '';
+            }
+            else if (id == 'hideall') {
+                lihideall.className = 'selected';
+                tab.style.display = 'none';
+            }
+            else {
+                if (tabid == id) {
+                    tab.style.display = '';
+                    li.className = 'selected';
+                }
+                else {
+                    tab.style.display = 'none';
+                    li.className = 'not_selected';
+                }
+            }
+
+        }
+    }
+</script><style type="text/css">div.stat_all {font-size:14px;} div.stat_header {margin:1em auto 0.5em auto;} span.stat_title {margin: auto 1em auto 0em; font-size:20px; font-weight:bold; color:#FFF;} span.clickable {cursor:pointer;} span.pair_value {width:100%; font-size:12px;} span.pair_value span {width:50%; min-width:3em; text-align:right; color:#F8A400;} span.pair_value span + span {color:#00CC00;} table.pair_hero {width:100%; font-size:12px;} table.pair_hero td {width:50%; min-width:3em; text-align:right; color:#00CC00;} table.pair_hero td + td {color:#F8A400;} table[hide] {display:none;} table.pair_value {width:100%;} table.pair_value td {width:50%; min-width:3em; text-align:right; color:#F8A400;} table.pair_value td + td {color:#00CC00;} #myProgress {position: relative; width: 100%;  height: 3px; background-color: #ddd;} #myBar { position: absolute;  width: 1%;  height: 100%;  background-color: #4CAF50;}</style>
+</head>
+<body>
+<form action="/wod/spiel//dungeon/report.php?session_hero_id=214285&amp;is_popup=1" name="the_form" accept-charset="UTF-8" method="post"> <input type="hidden" name="session_hero_id" value="214285"><input type="hidden" name="wod_post_id" value="nncwuh7ohgfcaszc2ldlx2uzn1fy4tdn"><input type="hidden" name="wod_post_world" value="CD"><input type="hidden" name="IS_POPUP" value="1"><input type="hidden" name="pay_from_group_cash_box" value="0">
+<input type="hidden" name="put_purchases_to" value="go_lager">
+<input type="hidden" name="klasse_id" value="2"><input type="hidden" name="klasse_name" value="野蛮人"><input type="hidden" name="rasse_id" value="5"><input type="hidden" name="rasse_name" value="丁图安蛮族"><input type="hidden" name="gruppe_id" value="219530"><input type="hidden" name="gruppe_name" value="努力的活着"><input type="hidden" name="clan_id" value="376"><input type="hidden" name="clan_name" value="Prime"><input type="hidden" name="stufe" value="22"><input type="hidden" name="heldenname" value="慙愧の獅子-巴萨拉卡"><input type="hidden" name="spielername" value="这不是小号">
+
+          <div style="height: 100%">
+
+<input type="hidden" name="cur_rep_id" value="4694214">
+<input type="hidden" name="report_id[0]" value="4694214">
+<input type="hidden" name="nr" value="">
+
+<input type="hidden" name="current_level" value="3">
+
+
+<h1>战报: <i>努力的活着</i></h1>
+
+<p>
+ <input type="button" name="overview" value="摘要" class="button clickable" onclick="document.location.href='../index.html';"> <input type="button" name="stats[0]" value="统计表" class="button clickable" onclick="document.location.href='statistics.html';"> <input type="button" name="items[0]" value="获得物品" class="button clickable" onclick="document.location.href='items.html';"> <input type="button" name="disabled" value="详细资料" class="button_disabled"></p>
+
+
+
+<div id="stat_all" class="stat_all tab" tabs="stat_ini,stat_buff,stat_buffed"><ul><li id="tab_stat_ini" class="selected"><a href="#" onclick="st('stat_ini');">先攻权</a></li><li id="tab_stat_buff" class="not_selected"><a href="#" onclick="st('stat_buff');">给予增益</a></li><li id="tab_stat_buffed" class="not_selected"><a href="#" onclick="st('stat_buffed');">接受增益</a></li><li class="not_selected" id="tab_showall"><a id="show_all_a" href="#" onclick="st('showall');">全部显示</a></li><li class="not_selected" id="tab_hideall"><a id="show_all_a" href="#" onclick="st('hideall');">全部隐藏</a></li></ul><div id="stat_bar" class="bar"></div><div id="stat_ini" class="content"><div class="stat_header" style="text-align: center;"><span class="stat_title clickable" onclick="ct('table_stat_ini');">先攻权</span></div><table class="content_table" id="table_stat_ini" style="margin: 0px auto;"><tbody><tr class="content_table_header"><th class="content_table stat_order" id="th_stat_ini0" order="-1"><span id="stat_ini_col0">人物<span id="table_stat_ini_orderInfo_0" class="pair_hero"><span></span><span></span></span></span><table class="pair_hero"><tbody><tr><td><input type="checkbox" value="0" id="table_stat_ini_checkbox_0_0" onclick="cf('table_stat_ini','filter_stat_ini');" checked="">英雄</td><td><input type="checkbox" value="1" id="table_stat_ini_checkbox_0_1" onclick="cf('table_stat_ini','filter_stat_ini');" checked="">对手</td></tr></tbody></table></th><th class="content_table stat_order" id="th_stat_ini1" order="-1"><span id="stat_ini_col1" class="clickable" onclick="co('table_stat_ini',1,0);">平均值<span id="table_stat_ini_orderInfo_1"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini2" order="-1"><span id="stat_ini_col2" class="clickable" onclick="co('table_stat_ini',2,0);">次数<span id="table_stat_ini_orderInfo_2"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini3" order="-1"><span id="stat_ini_col3" class="clickable" onclick="co('table_stat_ini',3,0);">Max值<span id="table_stat_ini_orderInfo_3"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini4" order="-1"><span id="stat_ini_col4" class="clickable" onclick="co('table_stat_ini',4,0);">Min值<span id="table_stat_ini_orderInfo_4"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini5" order="-1"><span id="stat_ini_col5" class="clickable" onclick="co('table_stat_ini',5,0);">STD值<span id="table_stat_ini_orderInfo_5"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_ini6" order="-1"><span id="stat_ini_col6" class="clickable" onclick="co('table_stat_ini',6,0);">数值列表<span id="table_stat_ini_orderInfo_6"><span></span><span></span></span></span></th></tr><tr id="filter_stat_ini" class="content_table_filter_row"><td><select id="filter_stat_ini_combobox_0" onchange="cf('table_stat_ini','filter_stat_ini');"><option value="0_all">全部</option><option value="0_0">特工卡克斯</option></select><select id="org_filter_stat_ini_combobox_0" onchange="cf('table_stat_ini','filter_stat_ini');" style="display: none;"><option value="0_all">全部</option><option value="0_0">特工卡克斯</option></select></td><td><input type="text" size="6" id="filter_stat_ini_textbox_1"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_2"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_3"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_4"></td><td><input type="text" size="6" id="filter_stat_ini_textbox_5"></td><td style="text-align: center;"><input type="button" id="filter_stat_ini_button" value="查询" class="button" onclick="cf('table_stat_ini','filter_stat_ini');"></td></tr><tr class="row0" oriorder="0" id="0_0,1_-1,2_-1,3_-1,4_-1,5_-1,6_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');" kind="0" class="rep_hero">特工卡克斯</a></td><td class="content_table" style="text-align: right;">222.00</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: right;">222</td><td class="content_table" style="text-align: right;">222</td><td class="content_table" style="text-align: right;">0</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_ini_0',['activeRow_3_1_0_3']);"></td></tr><tr class="row0" id="table_stat_ini_0" style="display: none;"><td colspan="7"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"><span>222</span></td></tr></tbody></table></td></tr></tbody></table></div><div id="stat_buff" class="content" style="display: none;"><div class="stat_header" style="text-align: center;"><span class="stat_title clickable" onclick="ct('table_stat_buff');">给予增益</span></div><table class="content_table" id="table_stat_buff" style="margin: 0px auto;"><tbody><tr class="content_table_header"><th class="content_table stat_order" id="th_stat_buff0" order="-1"><span id="stat_buff_col0">人物<span id="table_stat_buff_orderInfo_0" class="pair_hero"><span></span><span></span></span></span><table class="pair_hero"><tbody><tr><td><input type="checkbox" value="0" id="table_stat_buff_checkbox_0_0" onclick="cf('table_stat_buff','filter_stat_buff');" checked="">英雄</td><td><input type="checkbox" value="1" id="table_stat_buff_checkbox_0_1" onclick="cf('table_stat_buff','filter_stat_buff');" checked="">对手</td></tr></tbody></table></th><th class="content_table stat_order" id="th_stat_buff1" order="-1"><span id="stat_buff_col1" class="clickable" onclick="co('table_stat_buff',1,0);">技能<span id="table_stat_buff_orderInfo_1"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff2" order="-1"><span id="stat_buff_col2" class="clickable" onclick="co('table_stat_buff',2,0);">物品<span id="table_stat_buff_orderInfo_2"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff3" order="-1"><span id="stat_buff_col3" class="clickable" onclick="co('table_stat_buff',3,0);">增益类型<span id="table_stat_buff_orderInfo_3"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff4" order="-1"><span id="stat_buff_col4" class="clickable" onclick="co('table_stat_buff',4,0);">次数<span id="table_stat_buff_orderInfo_4"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buff5" order="-1"><span id="stat_buff_col5" class="clickable" onclick="co('table_stat_buff',5,0);">详细列表<span id="table_stat_buff_orderInfo_5"><span></span><span></span></span></span></th></tr><tr id="filter_stat_buff" class="content_table_filter_row"><td><select id="filter_stat_buff_combobox_0" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="0_all">全部</option><option value="0_0">『涌潮悲歌』以实玛利</option><option value="0_1">特工福林格斯</option><option value="0_2">特工卡克斯</option></select><select id="org_filter_stat_buff_combobox_0" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="0_all">全部</option><option value="0_0">『涌潮悲歌』以实玛利</option><option value="0_1">特工福林格斯</option><option value="0_2">特工卡克斯</option></select></td><td><select id="filter_stat_buff_combobox_1" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="1_all">全部</option><option value="1_0">技巧：精确瞄准</option><option value="1_1">技巧：下流把戏</option><option value="1_2">仪式：火之祝福</option></select><select id="org_filter_stat_buff_combobox_1" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="1_all">全部</option><option value="1_0">技巧：精确瞄准</option><option value="1_1">技巧：下流把戏</option><option value="1_2">仪式：火之祝福</option></select></td><td><select id="filter_stat_buff_combobox_2" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="2_all">全部</option><option value="2_0"></option></select><select id="org_filter_stat_buff_combobox_2" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="2_all">全部</option><option value="2_0"></option></select></td><td><select id="filter_stat_buff_combobox_3" onchange="cf('table_stat_buff','filter_stat_buff');"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select><select id="org_filter_stat_buff_combobox_3" onchange="cf('table_stat_buff','filter_stat_buff');" style="display: none;"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select></td><td><input type="text" size="6" id="filter_stat_buff_textbox_4"></td><td style="text-align: center;"><input type="button" id="filter_stat_buff_button" value="查询" class="button" onclick="cf('table_stat_buff','filter_stat_buff');"></td></tr><tr class="row0" oriorder="0" id="0_0,1_1,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',214295)" kind="0" class="rep_hero">『涌潮悲歌』以实玛利</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8B%E6%B5%81%E6%8A%8A%E6%88%8F');" kind="-1">技巧：下流把戏</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_0',['activeRow_3_1_0_1']);"></td></tr><tr class="row0" id="table_stat_buff_0" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="1" id="0_1,1_0,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');" kind="0" class="rep_hero">特工福林格斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E7%B2%BE%E7%A1%AE%E7%9E%84%E5%87%86');" kind="-1">技巧：精确瞄准</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_1',['activeRow_3_1_0_2']);"></td></tr><tr class="row1" id="table_stat_buff_1" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row0" oriorder="2" id="0_2,1_1,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');" kind="0" class="rep_hero">特工卡克斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8B%E6%B5%81%E6%8A%8A%E6%88%8F');" kind="-1">技巧：下流把戏</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_2',['activeRow_3_1_0_0']);"></td></tr><tr class="row0" id="table_stat_buff_2" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="3" id="0_2,1_2,2_0,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');" kind="0" class="rep_hero">特工卡克斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E4%BB%AA%E5%BC%8F%EF%BC%9A%E7%81%AB%E4%B9%8B%E7%A5%9D%E7%A6%8F');" kind="-1">仪式：火之祝福</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buff_3',['activeRow_3_1_0_3']);"></td></tr><tr class="row1" id="table_stat_buff_3" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr></tbody></table></div><div id="stat_buffed" class="content" style="display: none;"><div class="stat_header" style="text-align: center;"><span class="stat_title clickable" onclick="ct('table_stat_buffed');">接受增益</span></div><table class="content_table" id="table_stat_buffed" style="margin: 0px auto;"><tbody><tr class="content_table_header"><th class="content_table stat_order" id="th_stat_buffed0" order="-1"><span id="stat_buffed_col0">人物<span id="table_stat_buffed_orderInfo_0" class="pair_hero"><span></span><span></span></span></span><table class="pair_hero"><tbody><tr><td><input type="checkbox" value="0" id="table_stat_buffed_checkbox_0_0" onclick="cf('table_stat_buffed','filter_stat_buffed');" checked="">英雄</td><td><input type="checkbox" value="1" id="table_stat_buffed_checkbox_0_1" onclick="cf('table_stat_buffed','filter_stat_buffed');" checked="">对手</td></tr></tbody></table></th><th class="content_table stat_order" id="th_stat_buffed1" order="-1"><span id="stat_buffed_col1" class="clickable" onclick="co('table_stat_buffed',1,0);">技能<span id="table_stat_buffed_orderInfo_1"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed2" order="-1"><span id="stat_buffed_col2" class="clickable" onclick="co('table_stat_buffed',2,0);">物品<span id="table_stat_buffed_orderInfo_2"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed3" order="-1"><span id="stat_buffed_col3" class="clickable" onclick="co('table_stat_buffed',3,0);">增益类型<span id="table_stat_buffed_orderInfo_3"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed4" order="-1"><span id="stat_buffed_col4" class="clickable" onclick="co('table_stat_buffed',4,0);">次数<span id="table_stat_buffed_orderInfo_4"><span></span><span></span></span></span></th><th class="content_table stat_order" id="th_stat_buffed5" order="-1"><span id="stat_buffed_col5" class="clickable" onclick="co('table_stat_buffed',5,0);">详细列表<span id="table_stat_buffed_orderInfo_5"><span></span><span></span></span></span></th></tr><tr id="filter_stat_buffed" class="content_table_filter_row"><td><select id="filter_stat_buffed_combobox_0" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="0_all">全部</option><option value="0_0">『涌潮悲歌』以实玛利</option><option value="0_1">特工福林格斯</option><option value="0_2">特工卡克斯</option></select><select id="org_filter_stat_buffed_combobox_0" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="0_all">全部</option><option value="0_0">『涌潮悲歌』以实玛利</option><option value="0_1">特工福林格斯</option><option value="0_2">特工卡克斯</option></select></td><td><select id="filter_stat_buffed_combobox_1" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="1_all">全部</option><option value="1_0">技巧：精确瞄准</option><option value="1_1">技巧：下流把戏</option><option value="1_2">仪式：火之祝福</option></select><select id="org_filter_stat_buffed_combobox_1" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="1_all">全部</option><option value="1_0">技巧：精确瞄准</option><option value="1_1">技巧：下流把戏</option><option value="1_2">仪式：火之祝福</option></select></td><td><select id="filter_stat_buffed_combobox_2" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="2_all">全部</option><option value="2_0"></option></select><select id="org_filter_stat_buffed_combobox_2" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="2_all">全部</option><option value="2_0"></option></select></td><td><select id="filter_stat_buffed_combobox_3" onchange="cf('table_stat_buffed','filter_stat_buffed');"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select><select id="org_filter_stat_buffed_combobox_3" onchange="cf('table_stat_buffed','filter_stat_buffed');" style="display: none;"><option value="3_all">全部</option><option value="3_0">回合前</option><option value="3_1">回合中</option></select></td><td><input type="text" size="6" id="filter_stat_buffed_textbox_4"></td><td style="text-align: center;"><input type="button" id="filter_stat_buffed_button" value="查询" class="button" onclick="cf('table_stat_buffed','filter_stat_buffed');"></td></tr><tr class="row0" oriorder="0" id="0_0,1_1,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return jump('h',214295)" kind="0" class="rep_hero">『涌潮悲歌』以实玛利</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8B%E6%B5%81%E6%8A%8A%E6%88%8F');" kind="-1">技巧：下流把戏</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_0',['activeRow_3_1_0_1']);"></td></tr><tr class="row0" id="table_stat_buffed_0" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="1" id="0_1,1_0,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');" kind="0" class="rep_hero">特工福林格斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E7%B2%BE%E7%A1%AE%E7%9E%84%E5%87%86');" kind="-1">技巧：精确瞄准</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_1',['activeRow_3_1_0_2']);"></td></tr><tr class="row1" id="table_stat_buffed_1" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row0" oriorder="2" id="0_1,1_2,2_0,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');" kind="0" class="rep_hero">特工福林格斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E4%BB%AA%E5%BC%8F%EF%BC%9A%E7%81%AB%E4%B9%8B%E7%A5%9D%E7%A6%8F');" kind="-1">仪式：火之祝福</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_2',['activeRow_3_1_0_3']);"></td></tr><tr class="row0" id="table_stat_buffed_2" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row1" oriorder="3" id="0_2,1_1,2_0,3_0,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');" kind="0" class="rep_hero">特工卡克斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8B%E6%B5%81%E6%8A%8A%E6%88%8F');" kind="-1">技巧：下流把戏</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合前</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_3',['activeRow_3_1_0_0']);"></td></tr><tr class="row1" id="table_stat_buffed_3" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr><tr class="row0" oriorder="4" id="0_2,1_2,2_0,3_1,4_-1,5_-1"><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');" kind="0" class="rep_hero">特工卡克斯</a></td><td class="content_table" style="text-align: left;"><a href="#" onclick="return o('s','%E4%BB%AA%E5%BC%8F%EF%BC%9A%E7%81%AB%E4%B9%8B%E7%A5%9D%E7%A6%8F');" kind="-1">仪式：火之祝福</a></td><td class="content_table" style="text-align: left;"><span></span></td><td class="content_table" style="text-align: left;">回合中</td><td class="content_table" style="text-align: right;">1</td><td class="content_table" style="text-align: center;"><input type="button" class="button" value="显示" onclick="sd('table_stat_buffed_4',['activeRow_3_1_0_3']);"></td></tr><tr class="row0" id="table_stat_buffed_4" style="display: none;"><td colspan="6"><table style="width: 100%;"><tbody><tr><td colspan="3" style="text-align: center;"></td></tr></tbody></table></td></tr></tbody></table></div></div><h2>2026年04月23日 01:31 - 摩-莫拉齐</h2>
+
+    
+        
+
+
+<table class="content_table" width="100%">
+ <tbody><tr class="row0">
+ <td>
+
+<p class="navigation levels">
+ <i><a name="1">层  3</a>
+    </i>
+
+ &nbsp;&nbsp;
+
+ <input type="button" name="level[1]" value="层  1" class="button clickable" onclick="document.location.href='level1.html';"> <input type="button" name="level[2]" value="层  2" class="button clickable" onclick="document.location.href='level2.html';"> <input type="button" name="disabled" value="层  3" class="button_disabled"> <input type="button" name="level[4]" value="层  4" class="button clickable" onclick="document.location.href='level4.html';"> <input type="button" name="level[5]" value="层  5" class="button clickable" onclick="document.location.href='level5.html';"> <input type="button" name="level[6]" value="层  6" class="button clickable" onclick="document.location.href='level6.html';"> <input type="button" name="level[7]" value="层  7" class="button clickable" onclick="document.location.href='level7.html';"> <input type="button" name="level[8]" value="层  8" class="button clickable" onclick="document.location.href='level8.html';"> <input type="button" name="level[9]" value="层  9" class="button clickable" onclick="document.location.href='level9.html';"> <input type="button" name="level[10]" value="层  10" class="button clickable" onclick="document.location.href='level10.html';"></p>
+
+ <p class="navigation in_report">
+          =返回=
+              <a href="#end">=下一步=</a>         
+     <a href="#1">=最后回合=</a> 
+    
+    
+ </p>
+
+
+
+    <h3><a name="1">埃斯梅拉达</a></h3>
+	<p class="rep_level_description">你小心地走上甲板,感觉到船身的木板在重量下逐渐弯曲,发出连串吱嘎声.你忍不住觉得你再次登上了来往钏宁湖两岸的老旧渡船.飞行船'埃斯梅拉达号'在干燥的陆上以三个轮子着地,四面用魔法提供动力的桨帆收在船身两侧.天知道SPQR哪里搞来这件失传的老古董.<br><br>
+
+两个侏儒上窜下跳,察看侏地精有没有造成任何损坏.福林格斯在船底下一边敲打一边发表评论:"没有损坏.唔,基本上没有...反正不是真正需要的部分,至少不常需要."<br>
+
+"SPQR是出了财政上的困难么?我们为什么非要用上这个--呃--老物件?"<br><br>
+
+"因为只有它的速度能追上摩-莫拉齐,它在天上跑得比马车还快.而我--还有这头胃涨气的老驴--是唯二知道怎么驾驶的人...好吧,其实还是有其他人的,但大部分都摔死了."最终,卡克斯抓住船舵,把你们挤到只有绳网临时座位的后方,福林格斯则坐在小小的领航员席上.<br>
+
+随着侏儒把摆弄着船头,飞船侧面的帆在魔法的作用下已经鼓满了风,船身被缓慢推动,现在已出现在埃肯瓦尔德的大街上,幸好月黑风高,人人沉浸在睡梦中.<br>
+随着地面造成的颠簸,全船所有木头的夹缝中传来噪声的大合唱,就好象某些部件正在密谋一次永久性解体.<br><br>
+
+"别改变重心,小鸭崽儿们,我们还有两百尺就要起飞了!".话音刚落,船头上仰,紧接着哐当一声,埃斯梅拉达号彻底离开地面,滑向漆黑的夜空.</p>
+
+
+
+
+<!-- computed by wod on 2026-04-22 at 19:31:31 (combat service build time: Jul  4 2025  08:26:58) -->
+<hr>
+<p class="rep_round_headline">回合 1</p>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero">慙愧の獅子-巴萨拉卡</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero"><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');">特工卡克斯</a>
+</td>
+<td>22</td>
+<td class="position">前排</td>
+<td>209</td>
+<td class="resource">204 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">准备好</td></tr>
+<tr>
+<td class="number">3</td>
+<td class="hero">YSGS</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">4</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'&lt;b&gt;集中：超凡反射:&lt;/b&gt;&lt;br /&gt;敏捷 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;行动次数 &lt;span class=\'rep_bonus bonus_positive\'&gt;+2&lt;span class=\'rep_decimal\'&gt;.05&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;法力回复 &lt;span class=\'rep_bonus bonus_negative\'&gt;-5&lt;span class=\'rep_decimal\'&gt;.25&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;感知 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;闪灵石项链:&lt;/b&gt;&lt;br /&gt;体力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;意志 &lt;span class=\'rep_bonus bonus_positive\'&gt;+5&lt;span class=\'rep_decimal\'&gt;.25&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;法力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;&lt;br /&gt;&lt;b&gt;华丽的书卷：法力回复技巧:&lt;/b&gt;&lt;br /&gt;法力回复 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;&lt;br /&gt;&lt;b&gt;集中：破甲:&lt;/b&gt;&lt;br /&gt;效果 近战派生 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 近战攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体质 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;力量 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 冲击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 派生：战车冲击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 派生：战车驾驭 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 派生：战·车·道 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;卡拉铎的脉动之心:&lt;/b&gt;&lt;br /&gt;防御 自然灾害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;魅力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;灵巧 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 心理攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;集中：战斗常识:&lt;/b&gt;&lt;br /&gt;技能 跑位（后方） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（左侧） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（右侧） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（前方） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（中间） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 心理攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 远程 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;特制的奇异果汁:&lt;/b&gt;&lt;br /&gt;智力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体质 &lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;魅力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;法力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;法力回复 &lt;span class=\'rep_bonus bonus_positive\'&gt;+3&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;体力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体力回复 &lt;span class=\'rep_bonus bonus_positive\'&gt;+3&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;仪式：火之祝福:&lt;/b&gt;&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;灵巧 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;敏捷 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;护甲 火焰伤害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;伤害 火焰伤害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体力回复 &lt;span class=\'rep_bonus bonus_negative\'&gt;-5&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;')"><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a><img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/inf.gif" alt=""></span>
+</td>
+<td>21</td>
+<td class="position">左翼</td>
+<td>147</td>
+<td class="resource">66 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+<tr>
+<td class="number">5</td>
+<td class="hero">樱羽艾玛</td>
+<td>22</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">6</td>
+<td class="hero">SCP-7000</td>
+<td>23</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">7</td>
+<td class="hero">仓库管理员下江小春</td>
+<td>20</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">8</td>
+<td class="hero">倾情岁月</td>
+<td>23</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">9</td>
+<td class="hero">某C</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">10</td>
+<td class="hero"><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');">特工福林格斯</a>
+</td>
+<td>22</td>
+<td class="position">中间</td>
+<td>169</td>
+<td class="resource">214 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">准备好</td></tr>
+<tr>
+<td class="number">11</td>
+<td class="hero">Mor'gana Ashveil</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">击倒</td></tr>
+<tr>
+<td class="number">12</td>
+<td class="hero">Sónar Steelmarch</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">13</td>
+<td class="hero">莱姆史</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">14</td>
+<td class="hero">谟涅摩叙涅·剑歌</td>
+<td>22</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr><td></td><td colspan="6"><i>没有可交战的对手</i></td></tr>
+</tbody></table>
+
+<hr>
+<table>
+<tbody><tr id="activeRow_3_1_0_0"><td class="rep_initiative">&nbsp;</td>
+<td><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');">特工卡克斯</a>
+使用<a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8B%E6%B5%81%E6%8A%8A%E6%88%8F');" onmouseover="wodToolTip(this,'伤害 切割伤害 &lt;span class=\'rep_bonus bonus_neutral\'&gt;+0&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+8&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt; (近战)&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+54&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;伤害 穿刺伤害 &lt;span class=\'rep_bonus bonus_neutral\'&gt;+0&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+8&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt; (近战)&lt;br /&gt;伤害 粉碎伤害 &lt;span class=\'rep_bonus bonus_neutral\'&gt;+0&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+8&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt; (近战)&lt;br /&gt;攻击 心理攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+54&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_positive\'&gt;+32&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 解除陷阱 &lt;span class=\'rep_bonus bonus_positive\'&gt;+27&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 偷袭 &lt;span class=\'rep_bonus bonus_positive\'&gt;+27&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+54&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 远程 &lt;span class=\'rep_bonus bonus_positive\'&gt;+54&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;')">技巧：下流把戏<img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">12 法力</span>)给</td><td>自身</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_3_1_0_1"><td class="rep_initiative">&nbsp;</td>
+<td><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a>
+使用<a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8B%E6%B5%81%E6%8A%8A%E6%88%8F');" onmouseover="wodToolTip(this,'伤害 切割伤害 &lt;span class=\'rep_bonus bonus_neutral\'&gt;+0&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+6&lt;span class=\'rep_decimal\'&gt;.10&lt;/span&gt;&lt;/span&gt; (近战)&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+40&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;伤害 穿刺伤害 &lt;span class=\'rep_bonus bonus_neutral\'&gt;+0&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+6&lt;span class=\'rep_decimal\'&gt;.10&lt;/span&gt;&lt;/span&gt; (近战)&lt;br /&gt;伤害 粉碎伤害 &lt;span class=\'rep_bonus bonus_neutral\'&gt;+0&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+6&lt;span class=\'rep_decimal\'&gt;.10&lt;/span&gt;&lt;/span&gt; (近战)&lt;br /&gt;攻击 心理攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+40&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_positive\'&gt;+25&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 解除陷阱 &lt;span class=\'rep_bonus bonus_positive\'&gt;+20&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 偷袭 &lt;span class=\'rep_bonus bonus_positive\'&gt;+20&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+40&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 远程 &lt;span class=\'rep_bonus bonus_positive\'&gt;+40&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;')">技巧：下流把戏<img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">9 法力</span>)给</td><td>自身</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_3_1_0_2"><td class="rep_initiative">&nbsp;</td>
+<td><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');">特工福林格斯</a>
+使用<a href="#" onclick="return o('s','%E6%8A%80%E5%B7%A7%EF%BC%9A%E7%B2%BE%E7%A1%AE%E7%9E%84%E5%87%86');" onmouseover="wodToolTip(this,'攻击 远程 &lt;span class=\'rep_bonus bonus_positive\'&gt;+13&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 战技：精准箭 &lt;span class=\'rep_bonus bonus_positive\'&gt;+22&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_negative\'&gt;-20%&lt;/span&gt;&lt;br /&gt;防御 远程 &lt;span class=\'rep_bonus bonus_negative\'&gt;-34%&lt;/span&gt;&lt;br /&gt;防御 近战 &lt;span class=\'rep_bonus bonus_negative\'&gt;-34%&lt;/span&gt;&lt;br /&gt;技能 战技：精准弩 &lt;span class=\'rep_bonus bonus_positive\'&gt;+22&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 战技：精准投石 &lt;span class=\'rep_bonus bonus_positive\'&gt;+22&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 派生：弩炮射击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+22&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 派生：巨人杀手 &lt;span class=\'rep_bonus bonus_positive\'&gt;+22&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 派生：百步穿杨 &lt;span class=\'rep_bonus bonus_positive\'&gt;+22&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;')">技巧：精确瞄准<img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">7 法力</span>)给</td><td>自身</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');">特工卡克斯</a>
+ 恢复<span class="rep_gain">5</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a>
+ 失去<span class="rep_loss">4</span>HP，恢复<span class="rep_gain">19</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');">特工福林格斯</a>
+ 恢复<span class="rep_gain">7</span>法力.</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');">特工卡克斯</a>
+使用<a href="#" onclick="return o('s','%E8%A1%8C%E5%8A%A8%EF%BC%9A%E7%8B%82%E6%9A%B4');">行动：狂暴</a> (<span class="rep_mana_cost">9 法力</span>): 先攻222</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a>
+使用<a href="#" onclick="return o('s','%E8%A1%8C%E5%8A%A8%EF%BC%9A%E8%BD%BB%E7%9B%88%E6%AD%A5%E4%BC%90');">行动：轻盈步伐</a> (<span class="rep_mana_cost">4 法力</span>): 先攻152</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr><td>&nbsp;</td><td colspan="2"><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');">特工福林格斯</a>
+使用<a href="#" onclick="return o('s','%E8%A1%8C%E5%8A%A8%EF%BC%9A%E6%9C%BA%E8%AD%A6');">行动：机警</a> (<span class="rep_mana_cost">6 法力</span>): 先攻158</td></tr><tr><td colspan="3"><hr></td></tr>
+<tr id="activeRow_3_1_0_3"><td class="rep_initiative">先攻222<br><span class="rep_action">第1步行动 / 共5步</span></td>
+<td><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E5%8D%A1%E5%85%8B%E6%96%AF');">特工卡克斯</a>
+使用<a href="#" onclick="return o('s','%E4%BB%AA%E5%BC%8F%EF%BC%9A%E7%81%AB%E4%B9%8B%E7%A5%9D%E7%A6%8F');" onmouseover="wodToolTip(this,'攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;灵巧 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;敏捷 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;护甲 火焰伤害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;伤害 火焰伤害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体力回复 &lt;span class=\'rep_bonus bonus_negative\'&gt;-5&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;')">仪式：火之祝福<img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/inf.gif" alt=""></a> (<span class="rep_mana_cost">15 法力</span>)给</td><td>自身<br><a href="#" class="rep_hero" onclick="return o('n','%E7%89%B9%E5%B7%A5%E7%A6%8F%E6%9E%97%E6%A0%BC%E6%96%AF');">特工福林格斯</a>
+</td></tr>
+<tr><td colspan="3"><hr></td></tr>
+</tbody></table>
+<hr>
+<p class="rep_status_headline">进攻者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr>
+<td class="number">1</td>
+<td class="hero">慙愧の獅子-巴萨拉卡</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">2</td>
+<td class="hero">YSGS</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">3</td>
+<td class="hero"><span onmouseover="wodToolTip(this,'&lt;b&gt;集中：超凡反射:&lt;/b&gt;&lt;br /&gt;敏捷 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;行动次数 &lt;span class=\'rep_bonus bonus_positive\'&gt;+2&lt;span class=\'rep_decimal\'&gt;.05&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;法力回复 &lt;span class=\'rep_bonus bonus_negative\'&gt;-5&lt;span class=\'rep_decimal\'&gt;.25&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;感知 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;闪灵石项链:&lt;/b&gt;&lt;br /&gt;体力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;意志 &lt;span class=\'rep_bonus bonus_positive\'&gt;+5&lt;span class=\'rep_decimal\'&gt;.25&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;法力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;&lt;br /&gt;&lt;b&gt;华丽的书卷：法力回复技巧:&lt;/b&gt;&lt;br /&gt;法力回复 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;&lt;br /&gt;&lt;b&gt;集中：破甲:&lt;/b&gt;&lt;br /&gt;效果 近战派生 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 近战攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体质 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;力量 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 冲击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 派生：战车冲击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 派生：战车驾驭 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;效果 派生：战·车·道 &lt;span class=\'rep_bonus bonus_positive\'&gt;+21&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;卡拉铎的脉动之心:&lt;/b&gt;&lt;br /&gt;防御 自然灾害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;魅力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;灵巧 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.20&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 心理攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;集中：战斗常识:&lt;/b&gt;&lt;br /&gt;技能 跑位（后方） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（左侧） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（右侧） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（前方） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;技能 跑位（中间） &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 心理攻击 &lt;span class=\'rep_bonus bonus_positive\'&gt;+31&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 远程 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+15&lt;span class=\'rep_decimal\'&gt;.75&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;先攻 &lt;span class=\'rep_bonus bonus_positive\'&gt;+10&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;特制的奇异果汁:&lt;/b&gt;&lt;br /&gt;智力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体质 &lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;魅力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+1&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;法力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;法力回复 &lt;span class=\'rep_bonus bonus_positive\'&gt;+3&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt; (法力)&lt;br /&gt;体力 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.00&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体力回复 &lt;span class=\'rep_bonus bonus_positive\'&gt;+3&lt;span class=\'rep_decimal\'&gt;.50&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;&lt;b&gt;仪式：火之祝福:&lt;/b&gt;&lt;br /&gt;攻击 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;灵巧 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;敏捷 &lt;span class=\'rep_bonus bonus_positive\'&gt;+4&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;护甲 火焰伤害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;伤害 火焰伤害 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;/&lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;体力回复 &lt;span class=\'rep_bonus bonus_negative\'&gt;-5&lt;span class=\'rep_decimal\'&gt;.74&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 近战 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;攻击 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;防御 魔法 &lt;span class=\'rep_bonus bonus_positive\'&gt;+7&lt;span class=\'rep_decimal\'&gt;.48&lt;/span&gt;&lt;/span&gt;')"><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a><img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/inf.gif" alt=""></span>
+</td>
+<td>21</td>
+<td class="position">左翼</td>
+<td>143</td>
+<td class="resource">72 <span class="rep_resource">法力</span>
+</td>
+<td class="rep_wounds_none">毫发无伤</td></tr>
+<tr>
+<td class="number">4</td>
+<td class="hero">樱羽艾玛</td>
+<td>22</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">5</td>
+<td class="hero">SCP-7000</td>
+<td>23</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">6</td>
+<td class="hero">仓库管理员下江小春</td>
+<td>20</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">7</td>
+<td class="hero">倾情岁月</td>
+<td>23</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">8</td>
+<td class="hero">某C</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">9</td>
+<td class="hero">Mor'gana Ashveil</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">击倒</td></tr>
+<tr>
+<td class="number">10</td>
+<td class="hero">Sónar Steelmarch</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">11</td>
+<td class="hero">莱姆史</td>
+<td>21</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+<tr>
+<td class="number">12</td>
+<td class="hero">谟涅摩叙涅·剑歌</td>
+<td>22</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td class="rep_status_msg">逃跑</td></tr>
+</tbody></table>
+
+<hr>
+<p class="rep_status_headline">防御者:</p>
+
+<table class="rep_status_table">
+<tbody><tr>
+<th></th>
+<th>名称</th>
+<th>等级</th>
+<th>位置</th>
+<th>体力</th>
+<th class="resource">Resource</th>
+<th>状态</th>
+</tr>
+<tr><td></td><td colspan="6"><i>没有可交战的对手</i></td></tr>
+</tbody></table>
+
+<p class="rep_room_end">进攻者胜利了！</p>
+<hr><p class="rep_level_success">过了一会儿,你的胃部平静了一点,开始适应这次飞行.埃斯梅拉达的速度的确够快,至少五级的冷风从船头吹向船尾,而且这样的高度让你们的脑袋开始缺氧,你们大部分人只好蜷缩在船后方.因为云层挡住了大部分星光,埃斯梅拉达号在一片完全的黑暗中行驶,四周只能偶尔辨认出一些大山的块垒.而船头的两个侏儒正在用一块水晶微弱的光亮(而且小心地不让光线从他们手掌中漏出来)阅读几张地图.他们用侏儒土话耳语着,完全搞不清他们在说什么.<br><br>
+
+"我们现在在哪儿?"你问福林格斯.<br>
+他坏笑着用手敲着前额:"你真的什么都不知道呀,什么都不知道!我们是在执行秘密任务,地点当然也是秘密的一部分!"<br>
+</p>
+<hr>
+<!-- WINNER MSG PLACEHOLDER -->
+<div class="rewards points"><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a>
+ 得到+3<span class="rep_decimal">.0</span><img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/lang/cn/fame.gif" alt="荣誉" title="荣誉"> 并找到19<img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/lang/cn/gold.gif" alt="金币" title="金币"></div>
+<div class="rewards item"><a href="#" onclick="return jump('h',214295)" class="rep_hero" x="214295">『涌潮悲歌』以实玛利</a>
+ 找到  <img border="0" src="http://delta.world-of-dungeons.org/wod/css//skins/skin-4/images/icons/zustand_3.gif" alt=""><a href="#" onclick="return o('i','%E5%8D%B0%E5%88%B7%E9%A1%B5%EF%BC%9A%E7%A9%BF%E5%B1%B1%E8%B6%8A%E5%B2%AD');" class="report ">印刷页：穿山越岭</a></div>
+
+
+<p class="navigation in_report">
+         <a href="#1">=返回=</a>             =下一步=
+        &nbsp;
+</p>
+
+
+<p class="navigation levels">
+<i><a name="1">层  3</a>
+    </i>
+ &nbsp;&nbsp;
+ 
+  <input type="button" name="level[1]" value="层  1" class="button clickable" onclick="document.location.href='level1.html';"> <input type="button" name="level[2]" value="层  2" class="button clickable" onclick="document.location.href='level2.html';"> <input type="button" name="disabled" value="层  3" class="button_disabled"> <input type="button" name="level[4]" value="层  4" class="button clickable" onclick="document.location.href='level4.html';"> <input type="button" name="level[5]" value="层  5" class="button clickable" onclick="document.location.href='level5.html';"> <input type="button" name="level[6]" value="层  6" class="button clickable" onclick="document.location.href='level6.html';"> <input type="button" name="level[7]" value="层  7" class="button clickable" onclick="document.location.href='level7.html';"> <input type="button" name="level[8]" value="层  8" class="button clickable" onclick="document.location.href='level8.html';"> <input type="button" name="level[9]" value="层  9" class="button clickable" onclick="document.location.href='level9.html';"> <input type="button" name="level[10]" value="层  10" class="button clickable" onclick="document.location.href='level10.html';"></p>
+
+
+ </td>
+ </tr>
+</tbody></table>
+
+    
+        
+ 
+<a name="end"></a>
+<p>
+ <input type="button" name="overview" value="摘要" class="button clickable" onclick="document.location.href='../index.html';"> <input type="button" name="stats[0]" value="统计表" class="button clickable" onclick="document.location.href='statistics.html';"> <input type="button" name="items[0]" value="获得物品" class="button clickable" onclick="document.location.href='items.html';"> <input type="button" name="disabled" value="详细资料" class="button_disabled"></p>
+
+
+</div>          </form>
+</body>
+</html>
